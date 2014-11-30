@@ -2,7 +2,7 @@ package com.github.coolsquid.SquidCore.utils;
 
 import java.util.Random;
 
-/**
+	/**
 	 * 
 	 * @author CoolSquid
 	 * All rights reserved.

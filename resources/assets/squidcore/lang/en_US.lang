@@ -1,0 +1,9 @@
+tile.flowing_lava.name=Flowing Lava
+tile.flowing_water.name=Flowing Water
+tile.end_portal.name=End Portal
+tile.brown_mushroom_block.name=Brown Mushroom Block
+tile.red_mushroom_block.name=Red Mushroom Block
+itemGroup.tabVanilla=Extra Vanilla Stuff
+itemGroup.tabSpawnEggs=Spawn Eggs
+itemGroup.tabColor=Colored Blocks
+itemGroup.tabWood=Wooden Blocks

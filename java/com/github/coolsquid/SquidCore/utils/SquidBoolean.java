@@ -2,14 +2,14 @@ package com.github.coolsquid.SquidCore.utils;
 
 import java.util.Random;
 
-public class SquidBoolean {
-	
-	/**
+/**
 	 * 
 	 * @author CoolSquid
 	 * All rights reserved.
 	 *
 	 */
+
+public class SquidBoolean {
 	
 	static Random rand = new Random();
 	

@@ -9,15 +9,15 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+/**
+ * 
+ * @author CoolSquid
+ * All rights reserved.
+ *
+ */
+
 @SideOnly(Side.CLIENT)
 public class VanillaTab extends CreativeTabs{
-	
-	/**
-	 * 
-	 * @author CoolSquid
-	 * All rights reserved.
-	 *
-	 */
 	
 	public static CreativeTabs tabVanilla = new VanillaTab("tabVanilla");
 	

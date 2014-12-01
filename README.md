@@ -1,2 +1,3 @@
 SquidCore
 =========
+All rights reserved.

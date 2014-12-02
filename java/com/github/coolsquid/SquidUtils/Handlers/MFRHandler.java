@@ -24,7 +24,7 @@ public class MFRHandler {
 				LogHandler.warn("Skyggy_sky_do_please_kindly_stuff_a_sock_in_it_xxx");
 				a++;
 			}
-			RecipeHandler.OreDictRecipe("Greggy_greg_do_please_kindly_stuff_a_sock_in_it_xxx");
+			//RecipeHandler.OreDictRecipe("Greggy_greg_do_please_kindly_stuff_a_sock_in_it_xxx");
 		}
 	}
 }

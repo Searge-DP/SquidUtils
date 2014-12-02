@@ -1,4 +1,4 @@
-package com.github.coolsquid.SquidCore.utils;
+package com.github.coolsquid.SquidUtils.utils;
 
 import java.util.Random;
 

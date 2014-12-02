@@ -7,6 +7,13 @@ import com.github.coolsquid.SquidCore.Handlers.LogHandler;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
+/**
+ * 
+ * @author CoolSquid
+ * All rights reserved.
+ *
+ */
+ 
 public class MFRHandler {
 	
 	@SubscribeEvent

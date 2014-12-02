@@ -13,7 +13,7 @@ public class SquidBoolean {
 	
 	static Random rand = new Random();
 	
-	public static boolean half(int I) {
+	public static boolean chance(int I) {
 
 		int a = rand.nextInt(I) + 1;
 		if (a == 1) {

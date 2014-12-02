@@ -3,7 +3,6 @@ package com.github.coolsquid.SquidUtils;
 import net.minecraftforge.oredict.OreDictionary;
 
 import com.github.coolsquid.SquidUtils.Handlers.LogHandler;
-//import com.github.coolsquid.SquidUtils.Handlers.RecipeHandler;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 

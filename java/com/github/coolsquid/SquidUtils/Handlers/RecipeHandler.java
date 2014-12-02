@@ -1,4 +1,4 @@
-package com.github.coolsquid.SquidCore.Handlers;
+package com.github.coolsquid.SquidUtils.Handlers;
 
 import net.minecraft.init.Blocks;
 import net.minecraftforge.oredict.ShapedOreRecipe;

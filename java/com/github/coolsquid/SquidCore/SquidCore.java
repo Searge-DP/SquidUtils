@@ -1,5 +1,7 @@
 package com.github.coolsquid.SquidCore;
 
+import net.minecraftforge.common.MinecraftForge;
+
 import com.github.coolsquid.SquidCore.CreativeTabs.ColorTab;
 import com.github.coolsquid.SquidCore.CreativeTabs.SpawnEggTab;
 import com.github.coolsquid.SquidCore.CreativeTabs.VanillaTab;
@@ -23,9 +25,12 @@ public class SquidCore {
 	@EventHandler
 	public static void PreInit(FMLPreInitializationEvent event) {
 		LogHandler.info(Ref.M, "Initializing creative tabs");
+		
 		WoodTab.PreInit(event);
 		ColorTab.PreInit(event);
 		SpawnEggTab.PreInit(event);
 		VanillaTab.PreInit(event);
+		
+		MinecraftForge.EVENT_BUS.register((Object)new MFRHandler());
 	}
 }

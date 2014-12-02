@@ -1,4 +1,4 @@
-package com.github.coolsquid.SquidCore.Handlers;
+package com.github.coolsquid.SquidUtils.Handlers;
 
 import org.apache.logging.log4j.Level;
 

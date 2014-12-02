@@ -1,4 +1,4 @@
-package com.github.coolsquid.SquidCore.CreativeTabs;
+package com.github.coolsquid.SquidUtils.CreativeTabs;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;

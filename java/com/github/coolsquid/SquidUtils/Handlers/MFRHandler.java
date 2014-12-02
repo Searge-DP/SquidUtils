@@ -1,9 +1,9 @@
-package com.github.coolsquid.SquidCore;
+package com.github.coolsquid.SquidUtils;
 
 import net.minecraftforge.oredict.OreDictionary;
 
-import com.github.coolsquid.SquidCore.Handlers.LogHandler;
-//import com.github.coolsquid.SquidCore.Handlers.RecipeHandler;
+import com.github.coolsquid.SquidUtils.Handlers.LogHandler;
+//import com.github.coolsquid.SquidUtils.Handlers.RecipeHandler;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 

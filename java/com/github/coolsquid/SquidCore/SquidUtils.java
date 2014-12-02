@@ -1,12 +1,12 @@
-package com.github.coolsquid.SquidCore;
+package com.github.coolsquid.SquidUtils;
 
 import net.minecraftforge.common.MinecraftForge;
 
-import com.github.coolsquid.SquidCore.CreativeTabs.ColorTab;
-import com.github.coolsquid.SquidCore.CreativeTabs.SpawnEggTab;
-import com.github.coolsquid.SquidCore.CreativeTabs.VanillaTab;
-import com.github.coolsquid.SquidCore.CreativeTabs.WoodTab;
-import com.github.coolsquid.SquidCore.LogHandler.LogHandler;
+import com.github.coolsquid.SquidUtils.CreativeTabs.ColorTab;
+import com.github.coolsquid.SquidUtils.CreativeTabs.SpawnEggTab;
+import com.github.coolsquid.SquidUtils.CreativeTabs.VanillaTab;
+import com.github.coolsquid.SquidUtils.CreativeTabs.WoodTab;
+import com.github.coolsquid.SquidUtils.LogHandler.LogHandler;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -19,8 +19,8 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
  *
  */
 
-@Mod(modid = "squidcore", name = "SquidCore", version = "1.0.0")
-public class SquidCore {
+@Mod(modid = "squidutils", name = "SquidUtils", version = "1.0.0")
+public class SquidUtils {
 	
 	@EventHandler
 	public static void PreInit(FMLPreInitializationEvent event) {

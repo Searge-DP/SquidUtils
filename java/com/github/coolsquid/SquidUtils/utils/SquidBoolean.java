@@ -13,9 +13,9 @@ public class SquidBoolean {
 	
 	static Random rand = new Random();
 	
-	public static boolean chance(int I) {
+	public static boolean chance(int D) {
 
-		int a = rand.nextInt(I) + 1;
+		int a = rand.nextInt(D) + 1;
 		if (a == 1) {
 			return true;
 		}

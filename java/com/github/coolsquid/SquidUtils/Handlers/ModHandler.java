@@ -4,7 +4,6 @@ import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
-/**
 package com.github.coolsquid.SquidUtils.Handlers;
 
 import net.minecraftforge.oredict.OreDictionary;

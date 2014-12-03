@@ -13,29 +13,29 @@ import cpw.mods.fml.common.FMLLog;
 
 public final class LogHandler {
 
-	public static void info(String M, String message) {
-		FMLLog.log(M, Level.INFO, message);
+	public static void info(String message) {
+		FMLLog.log("SquidUtils", Level.INFO, message);
 		}
 
-	public static void debug(String M, String message) {
-		FMLLog.log(M, Level.DEBUG, message);
+	public static void debug(String message) {
+		FMLLog.log("SquidUtils", Level.DEBUG, message);
 		}
 
-	public static void warn(String M, String message) {
-		FMLLog.log(M, Level.WARN, message);
+	public static void warn(String message) {
+		FMLLog.log("SquidUtils", Level.WARN, message);
 		}
 
-	public static void error(String M, String message) {
-		FMLLog.log(M, Level.ERROR, message);
+	public static void error(String message) {
+		FMLLog.log("SquidUtils", Level.ERROR, message);
 		}
 
-	public static void fatal(String M, String message) {
-		FMLLog.log(M, Level.FATAL, message);
+	public static void fatal(String message) {
+		FMLLog.log("SquidUtils", Level.FATAL, message);
 		}
 	
-	public static void bigWarning(String M, String message) {
-		FMLLog.log(M, Level.FATAL, "-------------------------------------------------------------------------------------------");
-		FMLLog.log(M, Level.FATAL, "!!!!!!!!!!!!!!!" + message + "!!!!!!!!!!!!!!!");
-		FMLLog.log(M, Level.FATAL, "-------------------------------------------------------------------------------------------");
+	public static void bigWarning(String message) {
+		FMLLog.log("SquidUtils", Level.FATAL, "-------------------------------------------------------------------------------------------");
+		FMLLog.log("SquidUtils", Level.FATAL, "!!!!!!!!!!!!!!!" + message + "!!!!!!!!!!!!!!!");
+		FMLLog.log("SquidUtils", Level.FATAL, "-------------------------------------------------------------------------------------------");
 		}
 }

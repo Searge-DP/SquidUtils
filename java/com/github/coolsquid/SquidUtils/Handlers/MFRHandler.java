@@ -1,4 +1,4 @@
-package com.github.coolsquid.SquidUtils;
+package com.github.coolsquid.SquidUtils.Handlers;
 
 import net.minecraftforge.oredict.OreDictionary;
 

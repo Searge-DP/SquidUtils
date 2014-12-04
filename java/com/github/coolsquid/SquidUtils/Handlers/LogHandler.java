@@ -35,7 +35,9 @@ public final class LogHandler {
 	
 	public static void bigWarning(String message) {
 		FMLLog.log("SquidUtils", Level.FATAL, "-------------------------------------------------------------------------------------------");
+		FMLLog.log("SquidUtils", Level.FATAL, "-------------------------------------------------------------------------------------------");
 		FMLLog.log("SquidUtils", Level.FATAL, "!!!!!!!!!!!!!!!" + message + "!!!!!!!!!!!!!!!");
+		FMLLog.log("SquidUtils", Level.FATAL, "-------------------------------------------------------------------------------------------");
 		FMLLog.log("SquidUtils", Level.FATAL, "-------------------------------------------------------------------------------------------");
 		}
 }

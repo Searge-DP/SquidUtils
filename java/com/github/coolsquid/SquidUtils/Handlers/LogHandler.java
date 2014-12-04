@@ -12,32 +12,34 @@ import cpw.mods.fml.common.FMLLog;
  */
 
 public final class LogHandler {
+	
+	public static string A = "SquidUtils";
 
 	public static void info(String message) {
-		FMLLog.log("SquidUtils", Level.INFO, message);
+		FMLLog.log(A, Level.INFO, message);
 		}
 
 	public static void debug(String message) {
-		FMLLog.log("SquidUtils", Level.DEBUG, message);
+		FMLLog.log(A, Level.DEBUG, message);
 		}
 
 	public static void warn(String message) {
-		FMLLog.log("SquidUtils", Level.WARN, message);
+		FMLLog.log(A, Level.WARN, message);
 		}
 
 	public static void error(String message) {
-		FMLLog.log("SquidUtils", Level.ERROR, message);
+		FMLLog.log(A, Level.ERROR, message);
 		}
 
 	public static void fatal(String message) {
-		FMLLog.log("SquidUtils", Level.FATAL, message);
+		FMLLog.log(A, Level.FATAL, message);
 		}
 	
 	public static void bigWarning(String message) {
-		FMLLog.log("SquidUtils", Level.FATAL, "-------------------------------------------------------------------------------------------");
-		FMLLog.log("SquidUtils", Level.FATAL, "-------------------------------------------------------------------------------------------");
-		FMLLog.log("SquidUtils", Level.FATAL, message);
-		FMLLog.log("SquidUtils", Level.FATAL, "-------------------------------------------------------------------------------------------");
-		FMLLog.log("SquidUtils", Level.FATAL, "-------------------------------------------------------------------------------------------");
+		FMLLog.log(A, Level.FATAL, "-------------------------------------------------------------------------------------------");
+		FMLLog.log(A, Level.FATAL, "-------------------------------------------------------------------------------------------");
+		FMLLog.log(A, Level.FATAL, message);
+		FMLLog.log(A, Level.FATAL, "-------------------------------------------------------------------------------------------");
+		FMLLog.log(A, Level.FATAL, "-------------------------------------------------------------------------------------------");
 		}
 }

@@ -13,7 +13,7 @@ import cpw.mods.fml.common.FMLLog;
 
 public final class LogHandler {
 	
-	public static string A = "SquidUtils";
+	public static String A = "SquidUtils";
 
 	public static void info(String message) {
 		FMLLog.log(A, Level.INFO, message);

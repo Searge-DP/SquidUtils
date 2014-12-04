@@ -14,7 +14,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 public class ModHandler {
 	
 	@SubscribeEvent
-	public void oredict(OreDictionary.OreRegisterEvent event) {
+	public void oreDictHandler(OreDictionary.OreRegisterEvent event) {
 		if (event.Name == "Greggy_greg_do_please_kindly_stuff_a_sock_in_it_xxx") {
 			int a = 1;
 			while (a <= 20) {

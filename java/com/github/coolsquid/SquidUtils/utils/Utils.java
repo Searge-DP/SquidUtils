@@ -9,14 +9,14 @@ import java.util.Random;
 *
 */
 
-public class SquidBoolean {
+public class Utils {
 	
 	static Random rand = new Random();
 	
-	public static boolean chance(int D) {
+	public static boolean chance(int D, int K) {
 
-		int a = rand.nextInt(D) + 1;
-		if (a == 1) {
+		int A = rand.nextInt(D) + 1;
+		if (A <= K) {
 			return true;
 		}
 		else {

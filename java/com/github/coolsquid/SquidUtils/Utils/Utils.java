@@ -25,13 +25,4 @@ public class Utils {
 			return false;
 		}
 	}
-	
-	public static boolean isModNotLoaded(String mod) {
-		if (Loader.isModLoaded(mod)) {
-			return false;
-		}
-		else {
-			return true;
-		}
-	}
 }

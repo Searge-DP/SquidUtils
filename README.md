@@ -1,4 +1,4 @@
 SquidUtils
 =========
 All rights reserved.
-Out of date.
+This repository is out of date.

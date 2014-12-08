@@ -1,7 +1,6 @@
 package com.github.coolsquid.SquidUtils.Handlers;
 
 import net.minecraftforge.oredict.OreDictionary;
-//import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 /**
@@ -15,17 +14,22 @@ public class ModHandler {
 	
 	@SubscribeEvent
 	public void oreDictHandler(OreDictionary.OreRegisterEvent event) {
-		if (event.Name == "Greggy_greg_do_please_kindly_stuff_a_sock_in_it_xxx") {
+		if (event.Name == "Greggy_greg_do_please_kindly_stuff_a_sock_in_it") {
 			int a = 1;
-			while (a <= 20) {
+			while (a <= ConfigHandler.MFR) {
 				LogHandler.warn("Skyggy_sky_do_please_kindly_shut_up");
 				a++;
 			}
-			//RecipeHandler.OreDictRecipeBlock("Greggy_greg_do_please_kindly_stuff_a_sock_in_it_xxx", Blocks.diamond_block);
 		}
-		else if (event.Name.length() > 20) {
-			LogHandler.bigWarning("Too long oredictionary entry!");
-			LogHandler.info("Oredictionary entry " + event.Name + " is too long. Please do not use more than 20 letters.");
+		if (event.Name.length() > 20 && ConfigHandler.OreDictComplain) {
+			LogHandler.warn("Oredictionary entry \"" + event.Name + "\" is very long. Please do not use more than 20 symbols.");
 		}
 	}
+	
+	/**
+	public static void OreDictRecipeBlock() {
+		GameRegistry.addRecipe(new ShapedOreRecipe(Blocks.diamond_block, true, new Object[]{
+				"G", Character.valueOf('G'), "Greggy_greg_do_please_kindly_stuff_a_sock_in_it_xxx"}));
+	}
+	*/
 }

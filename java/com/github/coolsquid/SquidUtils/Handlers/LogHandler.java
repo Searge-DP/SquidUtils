@@ -13,7 +13,7 @@ import cpw.mods.fml.common.FMLLog;
 
 public final class LogHandler {
 	
-	public static String A = "SquidUtils";
+	private static String A = "SquidUtils";
 
 	public static void info(String message) {
 		FMLLog.log(A, Level.INFO, message);
@@ -37,9 +37,7 @@ public final class LogHandler {
 	
 	public static void bigWarning(String message) {
 		FMLLog.log(A, Level.FATAL, "-------------------------------------------------------------------------------------------");
-		FMLLog.log(A, Level.FATAL, "-------------------------------------------------------------------------------------------");
 		FMLLog.log(A, Level.FATAL, message);
-		FMLLog.log(A, Level.FATAL, "-------------------------------------------------------------------------------------------");
 		FMLLog.log(A, Level.FATAL, "-------------------------------------------------------------------------------------------");
 		}
 }

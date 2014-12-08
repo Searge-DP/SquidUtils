@@ -1,10 +1,8 @@
 package com.github.coolsquid.SquidUtils.Handlers;
 
-package com.github.coolsquid.SquidUtils.Handlers;
-
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
@@ -15,14 +13,11 @@ import cpw.mods.fml.common.registry.GameRegistry;
  */
 
 public class RecipeHandler {
-
-	public static void OreDictRecipeBlock(String input, Block output) {
-		GameRegistry.addRecipe(new ShapedOreRecipe(output, true, new Object[]{
-				"G", Character.valueOf('G'), input}));
-	}
 	
-	public static void OreDictRecipeItem(String input, Item output) {
-		GameRegistry.addRecipe(new ShapedOreRecipe(output, true, new Object[]{
-				"G", Character.valueOf('G'), input}));
+	public static void ChainRecipes() {
+		GameRegistry.addRecipe(new ItemStack(Items.chainmail_helmet), new Object[] {"IPI","B B", 'I', Items.iron_ingot, 'P', Blocks.stone_pressure_plate, 'B', Blocks.stone_button});
+		GameRegistry.addRecipe(new ItemStack(Items.chainmail_chestplate), new Object[] {"B B","IPI","IBI", 'I', Items.iron_ingot, 'P', Blocks.stone_pressure_plate, 'B', Blocks.stone_button});
+		GameRegistry.addRecipe(new ItemStack(Items.chainmail_leggings), new Object[] {"IPI","B B","I I", 'I', Items.iron_ingot, 'P', Blocks.stone_pressure_plate, 'B', Blocks.stone_button});
+		GameRegistry.addRecipe(new ItemStack(Items.chainmail_boots), new Object[] {"I I","B B", 'I', Items.iron_ingot, 'B', Blocks.stone_button});
 	}
 }

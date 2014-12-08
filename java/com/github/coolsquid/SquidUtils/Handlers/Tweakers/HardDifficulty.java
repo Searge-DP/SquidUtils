@@ -1,0 +1,31 @@
+package com.github.coolsquid.SquidUtils.Handlers.Tweakers;
+
+import com.github.coolsquid.SquidUtils.Handlers.ConfigHandler;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.EnumDifficulty;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+
+public class HardDifficulty {
+
+	@SubscribeEvent
+	public void event(LivingUpdateEvent event) {
+		if (event.entity instanceof EntityPlayer) {
+			if (Minecraft.getMinecraft().gameSettings.difficulty != EnumDifficulty.HARD && ConfigHandler.forceDifficulty.equalsIgnoreCase("HARD")) {
+				Minecraft.getMinecraft().gameSettings.difficulty = EnumDifficulty.HARD;
+			}
+			else if (Minecraft.getMinecraft().gameSettings.difficulty != EnumDifficulty.NORMAL && ConfigHandler.forceDifficulty.equalsIgnoreCase("NORMAL")) {
+				Minecraft.getMinecraft().gameSettings.difficulty = EnumDifficulty.NORMAL;
+			}
+			else if (Minecraft.getMinecraft().gameSettings.difficulty != EnumDifficulty.EASY && ConfigHandler.forceDifficulty.equalsIgnoreCase("EASY")) {
+				Minecraft.getMinecraft().gameSettings.difficulty = EnumDifficulty.EASY;
+			}
+			else if (Minecraft.getMinecraft().gameSettings.difficulty != EnumDifficulty.PEACEFUL && ConfigHandler.forceDifficulty.equalsIgnoreCase("PEACEFUL")) {
+				Minecraft.getMinecraft().gameSettings.difficulty = EnumDifficulty.PEACEFUL;
+			}
+			Minecraft.getMinecraft().gameSettings.saveOptions();
+		}
+	}
+}

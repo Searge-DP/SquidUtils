@@ -22,7 +22,7 @@ public class ModHandler {
 			}
 		}
 		if (event.Name.length() > 20 && ConfigHandler.OreDictComplain) {
-			LogHandler.warn("Oredictionary entry \"" + event.Name + "\" is very long. Please do not use more than 20 symbols.");
+			LogHandler.bigWarning("Oredictionary entry \"" + event.Name + "\" is very long. Please do not use more than 20 symbols.");
 		}
 	}
 	

@@ -35,9 +35,14 @@ public final class LogHandler {
 		FMLLog.log(A, Level.FATAL, message);
 		}
 	
-	public static void bigWarning(String message) {
+	public static void fatalWarning(String message) {
 		FMLLog.log(A, Level.FATAL, "-------------------------------------------------------------------------------------------");
 		FMLLog.log(A, Level.FATAL, message);
 		FMLLog.log(A, Level.FATAL, "-------------------------------------------------------------------------------------------");
+		}
+	public static void bigWarning(String message) {
+		FMLLog.log(A, Level.WARN, "-------------------------------------------------------------------------------------------");
+		FMLLog.log(A, Level.WARN, message);
+		FMLLog.log(A, Level.WARN, "-------------------------------------------------------------------------------------------");
 		}
 }

@@ -8,6 +8,13 @@ import com.github.coolsquid.SquidUtils.Handlers.ConfigHandler;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
+/**
+ * 
+ * @author CoolSquid
+ * All rights reserved.
+ *
+ */
+
 public class RenderDistanceHandler {
 	
 	@SubscribeEvent

@@ -3,6 +3,13 @@ package com.github.coolsquid.SquidUtils.Handlers.Tweakers;
 import net.minecraft.init.Items;
 import cpw.mods.fml.common.Mod.EventHandler;
 
+/**
+ * 
+ * @author CoolSquid
+ * All rights reserved.
+ *
+ */
+
 public class StackSizeHandler {
 
 	@EventHandler

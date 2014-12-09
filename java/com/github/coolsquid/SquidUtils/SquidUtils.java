@@ -18,6 +18,7 @@ import com.github.coolsquid.SquidUtils.Handlers.Tweakers.WitherHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 /**
@@ -37,7 +38,7 @@ public class SquidUtils {
 		if (Loader.MC_VERSION.equals("1.7.2")) {
 			LogHandler.bigWarning("MC is running 1.7.2! Problems may occur.");
 		}
-		
+				
 		File configFile = event.getSuggestedConfigurationFile();
 		ConfigHandler.load(configFile);
 		config();
@@ -48,7 +49,7 @@ public class SquidUtils {
 			MinecraftForge.EVENT_BUS.register((Object)new HardDifficulty());
 		}
 		if (!ConfigHandler.forceDifficulty.equalsIgnoreCase("FALSE") || !ConfigHandler.forceDifficulty.equalsIgnoreCase("PEACEFUL") || !ConfigHandler.forceDifficulty.equalsIgnoreCase("EASY") || !ConfigHandler.forceDifficulty.equalsIgnoreCase("NORMAL") || !ConfigHandler.forceDifficulty.equalsIgnoreCase("HARD")) {
-			LogHandler.error("Error in the config. ForceHard has a wrong value.");
+			LogHandler.error("Error in the config. F+orceHard has a wrong value.");
 		}
 		if (ConfigHandler.NoTNT) {
 			MinecraftForge.EVENT_BUS.register((Object)new TNTHandler());
@@ -71,5 +72,10 @@ public class SquidUtils {
 		if (ConfigHandler.MaxRenderDistance != 16) {
 			MinecraftForge.EVENT_BUS.register((Object)new RenderDistanceHandler());
 		}
+	}
+	
+	@EventHandler
+	private static void PostInit(FMLPostInitializationEvent event) {
+		
 	}
 }

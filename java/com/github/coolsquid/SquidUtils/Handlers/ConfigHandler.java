@@ -4,6 +4,13 @@ import java.io.File;
 
 import net.minecraftforge.common.config.Configuration;
 
+/**
+ * 
+ * @author CoolSquid
+ * All rights reserved.
+ *
+ */
+
 public class ConfigHandler {
 
 	private static Configuration config;

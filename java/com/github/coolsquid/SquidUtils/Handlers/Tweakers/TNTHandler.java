@@ -8,6 +8,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
+/**
+ * 
+ * @author CoolSquid
+ * All rights reserved.
+ *
+ */
+
 public class TNTHandler {
 	
 	@SubscribeEvent

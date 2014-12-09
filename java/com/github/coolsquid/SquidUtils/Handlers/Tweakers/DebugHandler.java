@@ -5,6 +5,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
+/**
+ * 
+ * @author CoolSquid
+ * All rights reserved.
+ *
+ */
+
 public class DebugHandler {
 	
 	@SubscribeEvent

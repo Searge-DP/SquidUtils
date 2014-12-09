@@ -2,6 +2,9 @@ package com.github.coolsquid.SquidUtils.Handlers;
 
 import java.io.File;
 
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.config.Configuration;
+
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.AchievementHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.DebugHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.HardDifficulty;
@@ -9,9 +12,6 @@ import com.github.coolsquid.SquidUtils.Handlers.Tweakers.RenderDistanceHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.StackSizeHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.TNTHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.WitherHandler;
-
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.Configuration;
 
 /**
  * 
@@ -47,7 +47,8 @@ public class ConfigHandler {
 	public static int MaxRenderDistance = 16;
 	public static int MFR = 20;
 	public static boolean OreDictComplain = true;
-	
+	public static boolean TNTDropItems = true;
+		
 	private static void readConfig() {
 		
 		config.addCustomCategoryComment(CATEGORY_GENERAL, "General options.");
@@ -66,6 +67,7 @@ public class ConfigHandler {
 		MaxRenderDistance = config.getInt("maxRenderDistance", CATEGORY_GENERAL, 16, 1, 16, "Sets the max render distance. Set to 16 to disable.");
 		MFR = config.getInt("MFR", CATEGORY_COMPAT, 20, 0, 50, "Amount of lines...");
 		OreDictComplain = config.getBoolean("oreDictComplaining", CATEGORY_COMPAT, true, "Should the mod complain about long entries?");
+		TNTDropItems = config.getBoolean("TNTDropItems", CATEGORY_GENERAL, true, "Should TNT drop items when removed? Only applies if \"noTNT\" is true.");
 		
 		if (config.hasChanged()) {
 			config.save();
@@ -79,7 +81,7 @@ public class ConfigHandler {
 			MinecraftForge.EVENT_BUS.register((Object)new HardDifficulty());
 		}
 		if (!ConfigHandler.forceDifficulty.equalsIgnoreCase("FALSE") || !ConfigHandler.forceDifficulty.equalsIgnoreCase("PEACEFUL") || !ConfigHandler.forceDifficulty.equalsIgnoreCase("EASY") || !ConfigHandler.forceDifficulty.equalsIgnoreCase("NORMAL") || !ConfigHandler.forceDifficulty.equalsIgnoreCase("HARD")) {
-			LogHandler.error("Error in the config. F+orceHard has a wrong value.");
+			LogHandler.error("Error in the config. ForceDifficulty has a wrong value.");
 		}
 		if (ConfigHandler.NoTNT) {
 			MinecraftForge.EVENT_BUS.register((Object)new TNTHandler());

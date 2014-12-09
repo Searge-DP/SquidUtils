@@ -1,5 +1,7 @@
 package com.github.coolsquid.SquidUtils.Handlers.Tweakers;
 
+import com.github.coolsquid.SquidUtils.Handlers.ConfigHandler;
+
 import net.minecraft.entity.item.EntityMinecartTNT;
 import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.init.Blocks;
@@ -21,11 +23,15 @@ public class TNTHandler {
 	public void EntityJoinWorldEvent(EntityJoinWorldEvent event) {
 		if(event.entity instanceof EntityMinecartTNT) {
 			event.setCanceled(true);
-			event.entity.entityDropItem(new ItemStack(Items.tnt_minecart, 1), 0);
+			if (ConfigHandler.TNTDropItems) {
+				event.entity.entityDropItem(new ItemStack(Items.tnt_minecart, 1), 0);
+			}
 		}
 		else if(event.entity instanceof EntityTNTPrimed) {
 			event.setCanceled(true);
-			event.entity.entityDropItem(new ItemStack(Blocks.tnt, 1), 0);
+			if (ConfigHandler.TNTDropItems) {
+				event.entity.entityDropItem(new ItemStack(Blocks.tnt, 1), 0);
+			}
 		}
 	}
 }

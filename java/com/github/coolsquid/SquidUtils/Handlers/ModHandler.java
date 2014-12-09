@@ -29,7 +29,7 @@ public class ModHandler {
 	/**
 	public static void OreDictRecipeBlock() {
 		GameRegistry.addRecipe(new ShapedOreRecipe(Blocks.diamond_block, true, new Object[]{
-				"G", Character.valueOf('G'), "Greggy_greg_do_please_kindly_stuff_a_sock_in_it_xxx"}));
+				"G", Character.valueOf('G'), "Greggy_greg_do_please_kindly_stuff_a_sock_in_it"}));
 	}
 	*/
 }

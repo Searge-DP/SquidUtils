@@ -24,11 +24,10 @@ sourceSets
 main
 {
 java { srcDirs = ["$projectDir/java"] }
-resources { srcDirs = ["$projectDir/resources"] }
 }
 }
 
-version = "1.0.3"
+version = "1.0.5"
 group= "com.github.coolsquid"
 archivesBaseName = "SquidUtils"
 minecraft.version = "1.7.10-10.13.1.1217"

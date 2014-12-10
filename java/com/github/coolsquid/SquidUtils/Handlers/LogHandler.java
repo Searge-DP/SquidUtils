@@ -13,36 +13,36 @@ import cpw.mods.fml.common.FMLLog;
 
 public final class LogHandler {
 	
-	private static String A = "SquidUtils";
-
+	private static final String name = "SquidUtils";
+	
 	public static void info(String message) {
-		FMLLog.log(A, Level.INFO, message);
+		FMLLog.log(name, Level.INFO, message);
 		}
 
 	public static void debug(String message) {
-		FMLLog.log(A, Level.DEBUG, message);
+		FMLLog.log(name, Level.DEBUG, message);
 		}
 
 	public static void warn(String message) {
-		FMLLog.log(A, Level.WARN, message);
+		FMLLog.log(name, Level.WARN, message);
 		}
 
 	public static void error(String message) {
-		FMLLog.log(A, Level.ERROR, message);
+		FMLLog.log(name, Level.ERROR, message);
 		}
 
 	public static void fatal(String message) {
-		FMLLog.log(A, Level.FATAL, message);
+		FMLLog.log(name, Level.FATAL, message);
 		}
 	
 	public static void fatalWarning(String message) {
-		FMLLog.log(A, Level.FATAL, "-------------------------------------------------------------------------------------------");
-		FMLLog.log(A, Level.FATAL, message);
-		FMLLog.log(A, Level.FATAL, "-------------------------------------------------------------------------------------------");
+		FMLLog.log(name, Level.FATAL, "-------------------------------------------------------------------------------------------");
+		FMLLog.log(name, Level.FATAL, message);
+		FMLLog.log(name, Level.FATAL, "-------------------------------------------------------------------------------------------");
 		}
 	public static void bigWarning(String message) {
-		FMLLog.log(A, Level.WARN, "-------------------------------------------------------------------------------------------");
-		FMLLog.log(A, Level.WARN, message);
-		FMLLog.log(A, Level.WARN, "-------------------------------------------------------------------------------------------");
+		FMLLog.log(name, Level.WARN, "-------------------------------------------------------------------------------------------");
+		FMLLog.log(name, Level.WARN, message);
+		FMLLog.log(name, Level.WARN, "-------------------------------------------------------------------------------------------");
 		}
 }

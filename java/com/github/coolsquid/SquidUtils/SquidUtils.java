@@ -18,9 +18,12 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
  *
  */
 
-@Mod(modid = "squidutils", name = "SquidUtils", version = "1.0.3", acceptableRemoteVersions = "*", dependencies = "")
+@Mod(modid = SquidUtils.modid, name = "SquidUtils", version = SquidUtils.version, acceptableRemoteVersions = "*")
 public class SquidUtils {
-
+	
+	public static final String modid = "SquidUtils";
+	public static final String version = "SquidUtils";
+	
 	@EventHandler
 	private static void PreInit(FMLPreInitializationEvent event) {
 		LogHandler.info("Preinitializing");
@@ -28,8 +31,9 @@ public class SquidUtils {
 		if (Loader.MC_VERSION.equals("1.7.2")) {
 			LogHandler.bigWarning("MC is running 1.7.2! Problems may occur.");
 		}
-				
+		
 		File configFile = event.getSuggestedConfigurationFile();
+		ConfigHandler.portConfig(configFile);
 		ConfigHandler.createConfig(configFile);
 	}
 	

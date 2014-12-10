@@ -24,9 +24,13 @@ public class ConfigHandler {
 
 	private static Configuration config;
 	
+	public static void portConfig(File configFile) {
+		File oldConfig = new File("config/squidutils");
+		oldConfig.renameTo(configFile);
+	}
+	
 	public static void createConfig(File configFile)
 	{
-
 		if (config == null) {
 			config = new Configuration(configFile);
 			readConfig();
@@ -36,18 +40,18 @@ public class ConfigHandler {
 	private static final String CATEGORY_GENERAL = "General";
 	private static final String CATEGORY_COMPAT = "Compatibility";
 	
-	public static String forceDifficulty = "FALSE";
-	public static boolean NoTNT = false;
-	public static boolean NoAchievements = false;
-	public static boolean NoWitherBoss = false;
-	public static int PotionStacks = 1;
-	public static boolean ChainRecipes = false;
-	public static boolean NoDebug = false;
-	public static int PearlStack = 16;
-	public static int MaxRenderDistance = 16;
-	public static int MFR = 20;
-	public static boolean OreDictComplain = true;
-	public static boolean TNTDropItems = true;
+	private static String forceDifficulty = "FALSE";
+	private static boolean NoTNT = false;
+	private static boolean NoAchievements = false;
+	private static boolean NoWitherBoss = false;
+	private static int PotionStacks = 1;
+	private static boolean ChainRecipes = false;
+	private static boolean NoDebug = false;
+	private static int PearlStack = 16;
+	private static int MaxRenderDistance = 16;
+	private static int MFR = 20;
+	private static boolean OreDictComplain = true;
+	private static boolean TNTDropItems = true;
 		
 	private static void readConfig() {
 		
@@ -80,7 +84,7 @@ public class ConfigHandler {
 		if (!ConfigHandler.forceDifficulty.equalsIgnoreCase("FALSE")) {
 			MinecraftForge.EVENT_BUS.register((Object)new HardDifficulty());
 		}
-		if (!ConfigHandler.forceDifficulty.equalsIgnoreCase("FALSE") || !ConfigHandler.forceDifficulty.equalsIgnoreCase("PEACEFUL") || !ConfigHandler.forceDifficulty.equalsIgnoreCase("EASY") || !ConfigHandler.forceDifficulty.equalsIgnoreCase("NORMAL") || !ConfigHandler.forceDifficulty.equalsIgnoreCase("HARD")) {
+		if (!ConfigHandler.forceDifficulty.equalsIgnoreCase("FALSE") && !ConfigHandler.forceDifficulty.equalsIgnoreCase("PEACEFUL") && !ConfigHandler.forceDifficulty.equalsIgnoreCase("EASY") && !ConfigHandler.forceDifficulty.equalsIgnoreCase("NORMAL") && !ConfigHandler.forceDifficulty.equalsIgnoreCase("HARD")) {
 			LogHandler.error("Error in the config. ForceDifficulty has a wrong value.");
 		}
 		if (ConfigHandler.NoTNT) {
@@ -104,5 +108,44 @@ public class ConfigHandler {
 		if (ConfigHandler.MaxRenderDistance != 16) {
 			MinecraftForge.EVENT_BUS.register((Object)new RenderDistanceHandler());
 		}
+	}
+	
+	public static String getForceDifficulty() {
+		return forceDifficulty;
+	}
+	
+	public static boolean getNoTNT() {
+		return NoTNT;
+	}
+	
+	public static boolean getNoAchievements() {
+		return NoAchievements;
+	}
+	public static boolean getNoWitherBoss() {
+		return NoWitherBoss;
+	}
+	public static int getPotionStacks() {
+		return PotionStacks;
+	}
+	public static boolean getChainRecipes() {
+		return ChainRecipes;
+	}
+	public static boolean getNoDebug() {
+		return NoDebug;
+	}
+	public static int getPearlStack() {
+		return PearlStack;
+	}
+	public static int getMaxRenderDistance() {
+		return MaxRenderDistance;
+	}
+	public static int getMFR() {
+		return MFR;
+	}
+	public static boolean getOreDictComplain() {
+		return OreDictComplain;
+	}
+	public static boolean getTNTDropItems() {
+		return TNTDropItems;
 	}
 }

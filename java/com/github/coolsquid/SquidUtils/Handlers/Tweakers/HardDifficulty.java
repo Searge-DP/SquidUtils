@@ -21,16 +21,16 @@ public class HardDifficulty {
 	@SubscribeEvent
 	public void event(LivingUpdateEvent event) {
 		if (event.entity instanceof EntityPlayer) {
-			if (Minecraft.getMinecraft().gameSettings.difficulty != EnumDifficulty.HARD && ConfigHandler.forceDifficulty.equalsIgnoreCase("HARD")) {
+			if (Minecraft.getMinecraft().gameSettings.difficulty != EnumDifficulty.HARD && ConfigHandler.getForceDifficulty().equalsIgnoreCase("HARD")) {
 				Minecraft.getMinecraft().gameSettings.difficulty = EnumDifficulty.HARD;
 			}
-			else if (Minecraft.getMinecraft().gameSettings.difficulty != EnumDifficulty.NORMAL && ConfigHandler.forceDifficulty.equalsIgnoreCase("NORMAL")) {
+			else if (Minecraft.getMinecraft().gameSettings.difficulty != EnumDifficulty.NORMAL && ConfigHandler.getForceDifficulty().equalsIgnoreCase("NORMAL")) {
 				Minecraft.getMinecraft().gameSettings.difficulty = EnumDifficulty.NORMAL;
 			}
-			else if (Minecraft.getMinecraft().gameSettings.difficulty != EnumDifficulty.EASY && ConfigHandler.forceDifficulty.equalsIgnoreCase("EASY")) {
+			else if (Minecraft.getMinecraft().gameSettings.difficulty != EnumDifficulty.EASY && ConfigHandler.getForceDifficulty().equalsIgnoreCase("EASY")) {
 				Minecraft.getMinecraft().gameSettings.difficulty = EnumDifficulty.EASY;
 			}
-			else if (Minecraft.getMinecraft().gameSettings.difficulty != EnumDifficulty.PEACEFUL && ConfigHandler.forceDifficulty.equalsIgnoreCase("PEACEFUL")) {
+			else if (Minecraft.getMinecraft().gameSettings.difficulty != EnumDifficulty.PEACEFUL && ConfigHandler.getForceDifficulty().equalsIgnoreCase("PEACEFUL")) {
 				Minecraft.getMinecraft().gameSettings.difficulty = EnumDifficulty.PEACEFUL;
 			}
 			Minecraft.getMinecraft().gameSettings.saveOptions();

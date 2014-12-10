@@ -22,7 +22,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 public class SquidUtils {
 	
 	public static final String modid = "SquidUtils";
-	public static final String version = "SquidUtils";
+	public static final String version = "1.0.5";
 	
 	@EventHandler
 	private static void PreInit(FMLPreInitializationEvent event) {

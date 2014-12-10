@@ -1,6 +1,7 @@
 package com.github.coolsquid.SquidUtils.Handlers.Tweakers;
 
 import com.github.coolsquid.SquidUtils.Handlers.ConfigHandler;
+import com.github.coolsquid.SquidUtils.Handlers.LogHandler;
 
 import net.minecraft.entity.item.EntityMinecartTNT;
 import net.minecraft.entity.item.EntityTNTPrimed;
@@ -33,5 +34,6 @@ public class TNTHandler {
 				event.entity.entityDropItem(new ItemStack(Blocks.tnt, 1), 0);
 			}
 		}
+		LogHandler.debug("TNT blocked.");
 	}
 }

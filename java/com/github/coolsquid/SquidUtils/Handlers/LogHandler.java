@@ -20,7 +20,8 @@ public final class LogHandler {
 		}
 
 	public static void debug(String message) {
-		FMLLog.log(name, Level.DEBUG, message);
+		if (ConfigHandler.getDebugLogging())
+			FMLLog.log(name, Level.DEBUG, message);
 		}
 
 	public static void warn(String message) {

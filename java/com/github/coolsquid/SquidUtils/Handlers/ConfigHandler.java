@@ -7,7 +7,7 @@ import net.minecraftforge.common.config.Configuration;
 
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.AchievementHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.DebugHandler;
-import com.github.coolsquid.SquidUtils.Handlers.Tweakers.HardDifficulty;
+import com.github.coolsquid.SquidUtils.Handlers.Tweakers.DifficultyHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.RenderDistanceHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.StackSizeHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.TNTHandler;
@@ -23,11 +23,6 @@ import com.github.coolsquid.SquidUtils.Handlers.Tweakers.WitherHandler;
 public class ConfigHandler {
 
 	private static Configuration config;
-	
-	public static void portConfig(File configFile) {
-		File oldConfig = new File("config/squidutils");
-		oldConfig.renameTo(configFile);
-	}
 	
 	public static void createConfig(File configFile)
 	{
@@ -52,7 +47,8 @@ public class ConfigHandler {
 	private static int MFR = 20;
 	private static boolean OreDictComplain = true;
 	private static boolean TNTDropItems = true;
-		
+	private static boolean DebugLogging = false;
+	
 	private static void readConfig() {
 		
 		config.addCustomCategoryComment(CATEGORY_GENERAL, "General options.");
@@ -72,6 +68,7 @@ public class ConfigHandler {
 		MFR = config.getInt("MFR", CATEGORY_COMPAT, 20, 0, 50, "Amount of lines...");
 		OreDictComplain = config.getBoolean("oreDictComplaining", CATEGORY_COMPAT, true, "Should the mod complain about long entries?");
 		TNTDropItems = config.getBoolean("TNTDropItems", CATEGORY_GENERAL, true, "Should TNT drop items when removed? Only applies if \"noTNT\" is true.");
+		DebugLogging = config.getBoolean("debugLogging", CATEGORY_GENERAL, false, "Enables debugging to the log.");
 		
 		if (config.hasChanged()) {
 			config.save();
@@ -82,7 +79,7 @@ public class ConfigHandler {
 	
 	private static void loadModules() {
 		if (!ConfigHandler.forceDifficulty.equalsIgnoreCase("FALSE")) {
-			MinecraftForge.EVENT_BUS.register((Object)new HardDifficulty());
+			MinecraftForge.EVENT_BUS.register((Object)new DifficultyHandler());
 		}
 		if (!ConfigHandler.forceDifficulty.equalsIgnoreCase("FALSE") && !ConfigHandler.forceDifficulty.equalsIgnoreCase("PEACEFUL") && !ConfigHandler.forceDifficulty.equalsIgnoreCase("EASY") && !ConfigHandler.forceDifficulty.equalsIgnoreCase("NORMAL") && !ConfigHandler.forceDifficulty.equalsIgnoreCase("HARD")) {
 			LogHandler.error("Error in the config. ForceDifficulty has a wrong value.");
@@ -108,6 +105,7 @@ public class ConfigHandler {
 		if (ConfigHandler.MaxRenderDistance != 16) {
 			MinecraftForge.EVENT_BUS.register((Object)new RenderDistanceHandler());
 		}
+		LogConfig();
 	}
 	
 	public static String getForceDifficulty() {
@@ -156,5 +154,23 @@ public class ConfigHandler {
 	
 	public static boolean getTNTDropItems() {
 		return TNTDropItems;
+	}
+	
+	public static boolean getDebugLogging() {
+		return DebugLogging;
+	}
+	
+	public static void LogConfig() {
+		LogHandler.debug("ConfigHandler.getForceDifficulty() = " + ConfigHandler.getForceDifficulty());
+		LogHandler.debug("ConfigHandler.getNoTNT() = " + ConfigHandler.getNoTNT());
+		LogHandler.debug("ConfigHandler.getNoAchievements() = " + ConfigHandler.getNoAchievements());
+		LogHandler.debug("ConfigHandler.getNoWitherBoss() = " + ConfigHandler.getNoWitherBoss());
+		LogHandler.debug("ConfigHandler.getPotionStacks() = " + ConfigHandler.getPotionStacks());
+		LogHandler.debug("ConfigHandler.getNoDebug() = " + ConfigHandler.getNoDebug());
+		LogHandler.debug("ConfigHandler.getPearlStack() = " + ConfigHandler.getPearlStack());
+		LogHandler.debug("ConfigHandler.getMaxRenderDistance() = " + ConfigHandler.getMaxRenderDistance());
+		LogHandler.debug("ConfigHandler.getMFR() = " + ConfigHandler.getMFR());
+		LogHandler.debug("ConfigHandler.getOreDictComplain() = " + ConfigHandler.getOreDictComplain());
+		LogHandler.debug("ConfigHandler.getTNTDropItems() = " + ConfigHandler.getTNTDropItems());
 	}
 }

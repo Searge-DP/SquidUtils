@@ -33,7 +33,6 @@ public class SquidUtils {
 		}
 		
 		File configFile = event.getSuggestedConfigurationFile();
-		ConfigHandler.portConfig(configFile);
 		ConfigHandler.createConfig(configFile);
 	}
 	

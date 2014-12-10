@@ -121,30 +121,39 @@ public class ConfigHandler {
 	public static boolean getNoAchievements() {
 		return NoAchievements;
 	}
+	
 	public static boolean getNoWitherBoss() {
 		return NoWitherBoss;
 	}
+	
 	public static int getPotionStacks() {
 		return PotionStacks;
 	}
+	
 	public static boolean getChainRecipes() {
 		return ChainRecipes;
 	}
+	
 	public static boolean getNoDebug() {
 		return NoDebug;
 	}
+	
 	public static int getPearlStack() {
 		return PearlStack;
 	}
+	
 	public static int getMaxRenderDistance() {
 		return MaxRenderDistance;
 	}
+	
 	public static int getMFR() {
 		return MFR;
 	}
+	
 	public static boolean getOreDictComplain() {
 		return OreDictComplain;
 	}
+	
 	public static boolean getTNTDropItems() {
 		return TNTDropItems;
 	}

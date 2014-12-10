@@ -1,6 +1,7 @@
 .gradle
 build/
 bin/
+java\com\github\coolsquid\SquidUtils\Handlers\FileHandler.java
 .project
 .classpath
 .settings/

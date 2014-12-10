@@ -73,10 +73,10 @@ public class ConfigHandler {
 			config.save();
 		}
 		
-		loadConfig();
+		loadModules();
 	}
 	
-	private static void loadConfig() {
+	private static void loadModules() {
 		if (!ConfigHandler.forceDifficulty.equalsIgnoreCase("FALSE")) {
 			MinecraftForge.EVENT_BUS.register((Object)new HardDifficulty());
 		}

@@ -1,5 +1,7 @@
 package com.github.coolsquid.SquidUtils.Handlers;
 
+import com.github.coolsquid.SquidUtils.Handlers.Config.ConfigHandler;
+
 import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 

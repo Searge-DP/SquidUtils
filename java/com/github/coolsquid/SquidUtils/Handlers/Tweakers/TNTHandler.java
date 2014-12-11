@@ -1,7 +1,7 @@
 package com.github.coolsquid.SquidUtils.Handlers.Tweakers;
 
-import com.github.coolsquid.SquidUtils.Handlers.ConfigHandler;
 import com.github.coolsquid.SquidUtils.Handlers.LogHandler;
+import com.github.coolsquid.SquidUtils.Handlers.Config.ConfigHandler;
 
 import net.minecraft.entity.item.EntityMinecartTNT;
 import net.minecraft.entity.item.EntityTNTPrimed;

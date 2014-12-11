@@ -5,8 +5,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 
-import com.github.coolsquid.SquidUtils.Handlers.ConfigHandler;
 import com.github.coolsquid.SquidUtils.Handlers.LogHandler;
+import com.github.coolsquid.SquidUtils.Handlers.Config.ConfigHandler;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 

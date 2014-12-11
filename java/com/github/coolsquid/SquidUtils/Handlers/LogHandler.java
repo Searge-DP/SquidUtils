@@ -2,6 +2,8 @@ package com.github.coolsquid.SquidUtils.Handlers;
 
 import org.apache.logging.log4j.Level;
 
+import com.github.coolsquid.SquidUtils.Handlers.Config.ConfigHandler;
+
 import cpw.mods.fml.common.FMLLog;
 
 /**

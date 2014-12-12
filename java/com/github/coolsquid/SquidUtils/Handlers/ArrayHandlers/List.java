@@ -7,7 +7,7 @@ import net.minecraft.item.Item;
 
 public class List {
 	
-	public static final ArrayList<Item> LIST = new ArrayList<Item>();
+	private static final ArrayList<Item> LIST = new ArrayList<Item>();
 
 	public static boolean contains(Item item) {
 		return LIST.contains(item);

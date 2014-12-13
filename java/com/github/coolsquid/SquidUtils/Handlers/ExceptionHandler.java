@@ -4,13 +4,13 @@ import java.util.ArrayList;
 
 public class ExceptionHandler {
 
-	private static final ArrayList<String> LIST = new ArrayList<String>();
+	private static final ArrayList<String> DIR_LIST = new ArrayList<String>();
 	
 	public static void arrayInit() {
-		LIST.add(".technic");
-		LIST.add(".Technic");
-		LIST.add("Technic");
-		LIST.add("technic");
+		DIR_LIST.add(".technic");
+		DIR_LIST.add(".Technic");
+		DIR_LIST.add("Technic");
+		DIR_LIST.add("technic");
 		init();
 	}
 
@@ -19,8 +19,8 @@ public class ExceptionHandler {
 		String dir = System.getProperty("user.dir");
 		
 		int A = 0;
-		while (A < LIST.size()) {
-			if (dir.contains(LIST.get(A))) {
+		while (A < DIR_LIST.size()) {
+			if (dir.contains(DIR_LIST.get(A))) {
 				PermissionException();
 			}
 			A++;

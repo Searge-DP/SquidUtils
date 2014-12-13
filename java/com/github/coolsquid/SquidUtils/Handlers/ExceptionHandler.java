@@ -28,6 +28,6 @@ public class ExceptionHandler {
 	}
 	
 	public static void PermissionException() {
-		throw new NullPointerException("no_permission_exception");
+		throw new NullPointerException("null_permission_exception");
 	}
 }

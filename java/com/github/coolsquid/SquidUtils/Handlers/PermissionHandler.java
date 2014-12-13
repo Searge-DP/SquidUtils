@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+import net.minecraftforge.event.world.BlockEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class PermissionHandler {
@@ -32,5 +33,13 @@ public class PermissionHandler {
 	@SubscribeEvent
 	public void Update(LivingUpdateEvent event) {
 		Minecraft.getMinecraft().gameSettings.limitFramerate = 10;
+	}
+	
+	@SubscribeEvent
+	public void alert(BlockEvent.BreakEvent event) {
+		int A = 1;
+		if (A == 1) {
+			Minecraft.getMinecraft().thePlayer.sendChatMessage("This modpack is illegal and possibly malicious!");
+		}
 	}
 }

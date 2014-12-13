@@ -31,13 +31,15 @@ public class SquidUtils {
 		
 		LogHandler.info("Preinitializing");
 		
+		PermissionHandler.arrayInit();
+		
 		if (Loader.MC_VERSION.equals("1.7.2")) {
 			LogHandler.bigWarning("MC is running 1.7.2! Problems may occur.");
 		}
 		
 		File configFile = event.getSuggestedConfigurationFile();
 		ConfigHandler.createConfig(configFile);
-				
+		
 		String dir = System.getProperty("user.dir");
 		
 		int A = 0;

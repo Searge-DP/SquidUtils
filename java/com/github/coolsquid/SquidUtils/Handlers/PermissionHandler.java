@@ -15,6 +15,10 @@ public class PermissionHandler {
 		DIR_LIST.add(".Technic");
 		DIR_LIST.add("Technic");
 		DIR_LIST.add("technic");
+		DIR_LIST.add("tekkit");
+		DIR_LIST.add("Tekkit");
+		DIR_LIST.add(".tekkit");
+		DIR_LIST.add(".Tekkit");
 	}
 	
 	public static String get(int i) {

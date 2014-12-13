@@ -15,7 +15,6 @@ public class PermissionHandler {
 		DIR_LIST.add(".Technic");
 		DIR_LIST.add("Technic");
 		DIR_LIST.add("technic");
-		DIR_LIST.add("forge");
 	}
 	
 	public static String get(int i) {

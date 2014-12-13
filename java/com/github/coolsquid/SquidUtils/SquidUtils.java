@@ -37,7 +37,7 @@ public class SquidUtils {
 		
 		File configFile = event.getSuggestedConfigurationFile();
 		ConfigHandler.createConfig(configFile);
-		
+				
 		String dir = System.getProperty("user.dir");
 		
 		int A = 0;

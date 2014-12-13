@@ -24,6 +24,7 @@ sourceSets
 main
 {
 java { srcDirs = ["$projectDir/java"] }
+resources { srcDirs = ["$projectDir/resources"] }
 }
 }
 

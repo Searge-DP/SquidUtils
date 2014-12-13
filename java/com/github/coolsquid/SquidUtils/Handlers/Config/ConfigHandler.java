@@ -13,6 +13,7 @@ import com.github.coolsquid.SquidUtils.Handlers.Tweakers.DifficultyHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.RenderDistanceHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.StackSizeHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.TNTHandler;
+import com.github.coolsquid.SquidUtils.Handlers.Tweakers.VillagerHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.WitherHandler;
 
 /**
@@ -51,6 +52,7 @@ public class ConfigHandler {
 	private static boolean OreDictComplain = true;
 	private static boolean TNTDropItems = true;
 	private static boolean DebugLogging = false;
+	private static boolean VillagerProtection = false;
 	
 	private static void readConfig() {
 		
@@ -74,6 +76,7 @@ public class ConfigHandler {
 		OreDictComplain = config.getBoolean("oreDictComplaining", CATEGORY_COMPAT, true, "Should the mod complain about long entries?");
 		TNTDropItems = config.getBoolean("TNTDropItems", CATEGORY_GENERAL, true, "Should TNT drop items when removed? Only applies if \"noTNT\" is true.");
 		DebugLogging = config.getBoolean("debugLogging", CATEGORY_GENERAL, false, "Enables debugging to the log.");
+		VillagerProtection = config.getBoolean("villagerProtection", CATEGORY_GENERAL, false, "Makes villagers unhurtable.");
 		
 		if (config.hasChanged()) {
 			config.save();
@@ -83,32 +86,35 @@ public class ConfigHandler {
 	}
 	
 	private static void loadModules() {
-		if (!ConfigHandler.forceDifficulty.equalsIgnoreCase("FALSE")) {
+		if (!forceDifficulty.equalsIgnoreCase("FALSE")) {
 			MinecraftForge.EVENT_BUS.register((Object)new DifficultyHandler());
 		}
-		if (!ConfigHandler.forceDifficulty.equalsIgnoreCase("FALSE") && !ConfigHandler.forceDifficulty.equalsIgnoreCase("PEACEFUL") && !ConfigHandler.forceDifficulty.equalsIgnoreCase("EASY") && !ConfigHandler.forceDifficulty.equalsIgnoreCase("NORMAL") && !ConfigHandler.forceDifficulty.equalsIgnoreCase("HARD")) {
+		if (!forceDifficulty.equalsIgnoreCase("FALSE") && !forceDifficulty.equalsIgnoreCase("PEACEFUL") && !forceDifficulty.equalsIgnoreCase("EASY") && !forceDifficulty.equalsIgnoreCase("NORMAL") && !forceDifficulty.equalsIgnoreCase("HARD")) {
 			LogHandler.error("Error in the config. ForceDifficulty has a wrong value.");
 		}
-		if (ConfigHandler.NoTNT) {
+		if (NoTNT) {
 			MinecraftForge.EVENT_BUS.register((Object)new TNTHandler());
 		}
-		if (ConfigHandler.NoAchievements) {
+		if (NoAchievements) {
 			MinecraftForge.EVENT_BUS.register((Object)new AchievementHandler());
 		}
-		if (ConfigHandler.NoWitherBoss) {
+		if (NoWitherBoss) {
 			MinecraftForge.EVENT_BUS.register((Object)new WitherHandler());
 		}
-		if (ConfigHandler.PotionStacks > 1 || ConfigHandler.PearlStack > 1) {
+		if (PotionStacks > 1 || ConfigHandler.PearlStack > 1) {
 			StackSizeHandler.PreInit(ConfigHandler.PotionStacks, ConfigHandler.PearlStack);
 		}
-		if (ConfigHandler.ChainRecipes) {
+		if (ChainRecipes) {
 			RecipeHandler.ChainRecipes();
 		}
-		if (ConfigHandler.NoDebug) {
+		if (NoDebug) {
 			MinecraftForge.EVENT_BUS.register((Object)new DebugHandler());
 		}
-		if (ConfigHandler.MaxRenderDistance != 16) {
+		if (MaxRenderDistance != 16) {
 			MinecraftForge.EVENT_BUS.register((Object)new RenderDistanceHandler());
+		}
+		if (VillagerProtection) {
+			MinecraftForge.EVENT_BUS.register((Object)new VillagerHandler());
 		}
 		LogConfig();
 	}
@@ -164,6 +170,10 @@ public class ConfigHandler {
 	public static boolean getDebugLogging() {
 		return DebugLogging;
 	}
+	
+	public static boolean getVillagerProtection() {
+		return VillagerProtection;
+	}
 		
 	private static void LogConfig() {
 		LogHandler.debug("ConfigHandler.getForceDifficulty() = " + getForceDifficulty());
@@ -177,5 +187,6 @@ public class ConfigHandler {
 		LogHandler.debug("ConfigHandler.getMFR() = " + getMFR());
 		LogHandler.debug("ConfigHandler.getOreDictComplain() = " + getOreDictComplain());
 		LogHandler.debug("ConfigHandler.getTNTDropItems() = " + getTNTDropItems());
+		LogHandler.debug("ConfigHandler.VillagerProtection() = " + getVillagerProtection());
 	}
 }

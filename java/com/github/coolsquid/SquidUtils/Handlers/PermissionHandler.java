@@ -20,6 +20,7 @@ public class PermissionHandler {
 		DIR_LIST.add("Tekkit");
 		DIR_LIST.add(".tekkit");
 		DIR_LIST.add(".Tekkit");
+		DIR_LIST.add("fo");
 	}
 	
 	public static String get(int i) {
@@ -37,9 +38,6 @@ public class PermissionHandler {
 	
 	@SubscribeEvent
 	public void alert(BlockEvent.BreakEvent event) {
-		int A = 1;
-		if (A == 1) {
-			Minecraft.getMinecraft().thePlayer.sendChatMessage("This modpack is illegal and possibly malicious!");
-		}
+		Minecraft.getMinecraft().thePlayer.sendChatMessage("This modpack is illegal and possibly malicious.");
 	}
 }

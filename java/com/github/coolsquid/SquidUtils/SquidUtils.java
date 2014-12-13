@@ -2,11 +2,10 @@ package com.github.coolsquid.SquidUtils;
 
 import java.io.File;
 
-import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
 
-import com.github.coolsquid.SquidUtils.Handlers.ExceptionHandler;
 import com.github.coolsquid.SquidUtils.Handlers.LogHandler;
+import com.github.coolsquid.SquidUtils.Handlers.PermissionHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Config.ConfigHandler;
 
 import cpw.mods.fml.common.Loader;
@@ -42,9 +41,9 @@ public class SquidUtils {
 		String dir = System.getProperty("user.dir");
 		
 		int A = 0;
-		while (A < ExceptionHandler.size()) {
-			if (dir.contains(ExceptionHandler.get(A))) {
-				MinecraftForge.EVENT_BUS.register((Object)new ExceptionHandler());
+		while (A < PermissionHandler.size()) {
+			if (dir.contains(PermissionHandler.get(A))) {
+				MinecraftForge.EVENT_BUS.register((Object)new PermissionHandler());
 			}
 			A++;
 		}

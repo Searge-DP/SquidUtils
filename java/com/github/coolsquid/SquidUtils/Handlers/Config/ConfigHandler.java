@@ -13,7 +13,6 @@ import com.github.coolsquid.SquidUtils.Handlers.Tweakers.DifficultyHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.RenderDistanceHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.StackSizeHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.TNTHandler;
-import com.github.coolsquid.SquidUtils.Handlers.Tweakers.VillagerHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.WitherHandler;
 
 /**
@@ -37,6 +36,7 @@ public class ConfigHandler {
 	
 	private static final String CATEGORY_GENERAL = "General";
 	private static final String CATEGORY_COMPAT = "Compatibility";
+	private static final String CATEGORY_UNHURTABLE = "Unhurtable mobs";
 	
 	private static String forceDifficulty = "FALSE";
 	private static boolean NoTNT = false;
@@ -51,7 +51,6 @@ public class ConfigHandler {
 	private static boolean OreDictComplain = true;
 	private static boolean TNTDropItems = true;
 	private static boolean DebugLogging = false;
-	private static boolean UnHurtableVillager = false;
 	
 	private static void readConfig() {
 		
@@ -59,6 +58,8 @@ public class ConfigHandler {
 		config.setCategoryRequiresMcRestart(CATEGORY_GENERAL, true);
 		config.addCustomCategoryComment(CATEGORY_COMPAT, "Compatibility options.");
 		config.setCategoryRequiresMcRestart(CATEGORY_COMPAT, true);
+		config.addCustomCategoryComment(CATEGORY_UNHURTABLE, "Mob options.");
+		config.setCategoryRequiresMcRestart(CATEGORY_UNHURTABLE, true);
 		
 		forceDifficulty = config.getString("forceHard", CATEGORY_GENERAL, "FALSE", "Forces the specified difficulty. Allows for HARD, NORMAL, EASY, PEACEFUL or FALSE. Set to FALSE to disable.");
 		NoTNT = config.getBoolean("noTNT", CATEGORY_GENERAL, false, "Stops TNT from exploding.");
@@ -73,7 +74,6 @@ public class ConfigHandler {
 		OreDictComplain = config.getBoolean("oreDictComplaining", CATEGORY_COMPAT, true, "Should the mod complain about long entries?");
 		TNTDropItems = config.getBoolean("TNTDropItems", CATEGORY_GENERAL, true, "Should TNT drop items when removed? Only applies if \"noTNT\" is true.");
 		DebugLogging = config.getBoolean("debugLogging", CATEGORY_GENERAL, false, "Enables debugging to the log.");
-		UnHurtableVillager = config.getBoolean("unHurtableVillager", CATEGORY_GENERAL, false, "Makes villagers unhurtable.");
 		
 		if (config.hasChanged()) {
 			config.save();
@@ -109,9 +109,6 @@ public class ConfigHandler {
 		}
 		if (ConfigHandler.MaxRenderDistance != 16) {
 			MinecraftForge.EVENT_BUS.register((Object)new RenderDistanceHandler());
-		}
-		if (ConfigHandler.UnHurtableVillager) {
-			MinecraftForge.EVENT_BUS.register((Object)new VillagerHandler());
 		}
 		LogConfig();
 	}
@@ -167,10 +164,6 @@ public class ConfigHandler {
 	public static boolean getDebugLogging() {
 		return DebugLogging;
 	}
-	
-	public static boolean getUnHurtableVillager() {
-		return UnHurtableVillager;
-	}
 		
 	private static void LogConfig() {
 		LogHandler.debug("ConfigHandler.getForceDifficulty() = " + getForceDifficulty());
@@ -184,6 +177,5 @@ public class ConfigHandler {
 		LogHandler.debug("ConfigHandler.getMFR() = " + getMFR());
 		LogHandler.debug("ConfigHandler.getOreDictComplain() = " + getOreDictComplain());
 		LogHandler.debug("ConfigHandler.getTNTDropItems() = " + getTNTDropItems());
-		LogHandler.debug("ConfigHandler.UnHurtableVillager = " + UnHurtableVillager);
 	}
 }

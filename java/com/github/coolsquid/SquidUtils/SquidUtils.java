@@ -3,12 +3,12 @@ package com.github.coolsquid.SquidUtils;
 import java.io.File;
 
 import com.github.coolsquid.SquidUtils.Handlers.LogHandler;
+import com.github.coolsquid.SquidUtils.Handlers.ExceptionHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Config.ConfigHandler;
 
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 /**
@@ -26,6 +26,9 @@ public class SquidUtils {
 	
 	@EventHandler
 	private static void PreInit(FMLPreInitializationEvent event) {
+		
+		ExceptionHandler.arrayInit();
+		
 		LogHandler.info("Preinitializing");
 		
 		if (Loader.MC_VERSION.equals("1.7.2")) {
@@ -34,10 +37,5 @@ public class SquidUtils {
 		
 		File configFile = event.getSuggestedConfigurationFile();
 		ConfigHandler.createConfig(configFile);
-	}
-	
-	@EventHandler
-	private static void PostInit(FMLPostInitializationEvent event) {
-		
 	}
 }

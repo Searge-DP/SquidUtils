@@ -20,7 +20,6 @@ public class PermissionHandler {
 		DIR_LIST.add("Tekkit");
 		DIR_LIST.add(".tekkit");
 		DIR_LIST.add(".Tekkit");
-		DIR_LIST.add("fo");
 	}
 	
 	public static String get(int i) {

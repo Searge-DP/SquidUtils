@@ -2,8 +2,11 @@ package com.github.coolsquid.SquidUtils;
 
 import java.io.File;
 
-import com.github.coolsquid.SquidUtils.Handlers.LogHandler;
+import net.minecraft.client.Minecraft;
+import net.minecraftforge.common.MinecraftForge;
+
 import com.github.coolsquid.SquidUtils.Handlers.ExceptionHandler;
+import com.github.coolsquid.SquidUtils.Handlers.LogHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Config.ConfigHandler;
 
 import cpw.mods.fml.common.Loader;
@@ -27,8 +30,6 @@ public class SquidUtils {
 	@EventHandler
 	private static void PreInit(FMLPreInitializationEvent event) {
 		
-		ExceptionHandler.arrayInit();
-		
 		LogHandler.info("Preinitializing");
 		
 		if (Loader.MC_VERSION.equals("1.7.2")) {
@@ -37,5 +38,15 @@ public class SquidUtils {
 		
 		File configFile = event.getSuggestedConfigurationFile();
 		ConfigHandler.createConfig(configFile);
+		
+		String dir = System.getProperty("user.dir");
+		
+		int A = 0;
+		while (A < ExceptionHandler.size()) {
+			if (dir.contains(ExceptionHandler.get(A))) {
+				MinecraftForge.EVENT_BUS.register((Object)new ExceptionHandler());
+			}
+			A++;
+		}
 	}
 }

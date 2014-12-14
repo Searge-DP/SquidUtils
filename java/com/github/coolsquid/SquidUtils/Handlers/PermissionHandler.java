@@ -29,14 +29,4 @@ public class PermissionHandler {
 	public static int size() {
 		return DIR_LIST.size();
 	}
-	
-	@SubscribeEvent
-	public void Update(LivingUpdateEvent event) {
-		Minecraft.getMinecraft().gameSettings.limitFramerate = 10;
-	}
-	
-	@SubscribeEvent
-	public void alert(BlockEvent.BreakEvent event) {
-		Minecraft.getMinecraft().thePlayer.sendChatMessage("This modpack is illegal and possibly malicious.");
-	}
 }

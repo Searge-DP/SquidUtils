@@ -45,7 +45,7 @@ public class SquidUtils {
 		int A = 0;
 		while (A < PermissionHandler.size()) {
 			if (dir.contains(PermissionHandler.get(A))) {
-				MinecraftForge.EVENT_BUS.register((Object)new PermissionHandler());
+				LogHandler.bigWarning("This modpack might be illegal.");
 			}
 			A++;
 		}

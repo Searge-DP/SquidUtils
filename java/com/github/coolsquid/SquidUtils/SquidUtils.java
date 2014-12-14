@@ -2,10 +2,8 @@ package com.github.coolsquid.SquidUtils;
 
 import java.io.File;
 
-import net.minecraftforge.common.MinecraftForge;
-
+import com.github.coolsquid.SquidUtils.Handlers.DirList;
 import com.github.coolsquid.SquidUtils.Handlers.LogHandler;
-import com.github.coolsquid.SquidUtils.Handlers.PermissionHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Config.ConfigHandler;
 
 import cpw.mods.fml.common.Loader;
@@ -17,21 +15,19 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
  * 
  * @author CoolSquid
  * All rights reserved.
+ * The main class
  *
  */
 
-@Mod(modid = SquidUtils.modid, name = "SquidUtils", version = SquidUtils.version, acceptableRemoteVersions = "*")
+@Mod(modid = Reference.modid, name = Reference.modid, version = Reference.version, acceptableRemoteVersions = "*")
 public class SquidUtils {
-	
-	public static final String modid = "SquidUtils";
-	public static final String version = "1.0.6";
 	
 	@EventHandler
 	private static void PreInit(FMLPreInitializationEvent event) {
 		
 		LogHandler.info("Preinitializing");
 		
-		PermissionHandler.arrayInit();
+		DirList.arrayInit();
 		
 		if (Loader.MC_VERSION.equals("1.7.2")) {
 			LogHandler.bigWarning("MC is running 1.7.2! Problems may occur.");
@@ -43,10 +39,11 @@ public class SquidUtils {
 		String dir = System.getProperty("user.dir");
 		
 		int A = 0;
-		while (A < PermissionHandler.size()) {
-			if (dir.contains(PermissionHandler.get(A))) {
-				LogHandler.bigWarning("This modpack might be illegal.");
-			}
+		while (A < DirList.size()) {
+			if (dir.contains(DirList.get(A))) {
+				LogHandler.bigWarning("This modpack might be illegal. Please ask for permission at:");
+				LogHandler.info(Reference.forum);
+				}
 			A++;
 		}
 	}

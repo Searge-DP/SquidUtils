@@ -39,10 +39,11 @@ public class SquidUtils {
 		String dir = System.getProperty("user.dir");
 		
 		int A = 0;
-		while (A < DirList.size()) {
+		int B = 0;
+		while (A < DirList.size() && B == 0) {
 			if (dir.contains(DirList.get(A))) {
-				LogHandler.bigWarning("This modpack might be illegal. Please ask for permission at:");
-				LogHandler.info(Reference.forum);
+				LogHandler.bigWarning("This modpack might be illegal. Please ask for permission at: " + Reference.forum);
+				B++;
 				}
 			A++;
 		}

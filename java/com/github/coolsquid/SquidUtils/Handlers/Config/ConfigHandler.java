@@ -76,7 +76,7 @@ public class ConfigHandler {
 		OreDictComplain = config.getBoolean("oreDictComplaining", CATEGORY_COMPAT, true, "Should the mod complain about long entries?");
 		TNTDropItems = config.getBoolean("TNTDropItems", CATEGORY_GENERAL, true, "Should TNT drop items when removed? Only applies if \"noTNT\" is true.");
 		DebugLogging = config.getBoolean("debugLogging", CATEGORY_GENERAL, false, "Enables debugging to the log.");
-		VillagerProtection = config.getBoolean("villagerProtection", CATEGORY_GENERAL, false, "Makes villagers unhurtable.");
+		VillagerProtection = config.getBoolean("villagerProtection", CATEGORY_UNHURTABLE, false, "Makes villagers unhurtable.");
 		
 		if (config.hasChanged()) {
 			config.save();

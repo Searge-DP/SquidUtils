@@ -27,11 +27,4 @@ public class ModHandler {
 			LogHandler.bigWarning("Oredictionary entry \"" + event.Name + "\" is very long. Please do not use more than 20 symbols.");
 		}
 	}
-	
-	/**
-	public static void OreDictRecipeBlock() {
-		GameRegistry.addRecipe(new ShapedOreRecipe(Blocks.diamond_block, true, new Object[]{
-				"G", Character.valueOf('G'), "Greggy_greg_do_please_kindly_stuff_a_sock_in_it"}));
-	}
-	*/
 }

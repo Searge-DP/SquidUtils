@@ -24,7 +24,6 @@ public class SquidUtils {
 	
 	@EventHandler
 	private static void PreInit(FMLPreInitializationEvent event) {
-		
 		LogHandler.info("Preinitializing");
 		
 		DirList.arrayInit();

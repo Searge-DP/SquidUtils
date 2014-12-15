@@ -2,6 +2,7 @@ package com.github.coolsquid.SquidUtils.Handlers;
 
 import org.apache.logging.log4j.Level;
 
+import com.github.coolsquid.SquidUtils.Reference;
 import com.github.coolsquid.SquidUtils.Handlers.Config.ConfigHandler;
 
 import cpw.mods.fml.common.FMLLog;
@@ -15,7 +16,7 @@ import cpw.mods.fml.common.FMLLog;
 
 public final class LogHandler {
 	
-	private static final String name = "SquidUtils";
+	private static final String name = Reference.modid;
 	
 	public static void info(String message) {
 		FMLLog.log(name, Level.INFO, message);

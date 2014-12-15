@@ -48,8 +48,8 @@ public class DirList {
 		String dir = System.getProperty("user.dir");
 		int A = 0;
 		int B = 0;
-		while (A < DirList.size() && B == 0) {
-			if (dir.contains(DirList.get(A))) {
+		while (A < size() && B == 0) {
+			if (dir.contains(get(A))) {
 				LogHandler.bigWarning("This modpack might be illegal. Please ask for permission at: " + Reference.forum);
 				B++;
 				}

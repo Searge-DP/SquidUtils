@@ -5,6 +5,7 @@ import java.io.File;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 
+import com.github.coolsquid.SquidUtils.Handlers.EventLogger;
 import com.github.coolsquid.SquidUtils.Handlers.LogHandler;
 import com.github.coolsquid.SquidUtils.Handlers.RecipeHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.AchievementHandler;
@@ -53,6 +54,7 @@ public class ConfigHandler {
 	private static boolean TNTDropItems = true;
 	private static boolean DebugLogging = false;
 	private static boolean VillagerProtection = false;
+	private static boolean LogStuff = false;
 	
 	private static void readConfig() {
 		
@@ -77,6 +79,7 @@ public class ConfigHandler {
 		TNTDropItems = config.getBoolean("TNTDropItems", CATEGORY_GENERAL, true, "Should TNT drop items when removed? Only applies if \"noTNT\" is true.");
 		DebugLogging = config.getBoolean("debugLogging", CATEGORY_GENERAL, false, "Enables debugging to the log.");
 		VillagerProtection = config.getBoolean("villagerProtection", CATEGORY_UNHURTABLE, false, "Makes villagers unhurtable.");
+		LogStuff = config.getBoolean("logStuff", CATEGORY_GENERAL, false, "Logs all blocks broken and all entity deaths.");
 		
 		if (config.hasChanged()) {
 			config.save();
@@ -116,7 +119,10 @@ public class ConfigHandler {
 		if (VillagerProtection) {
 			MinecraftForge.EVENT_BUS.register((Object)new VillagerHandler());
 		}
-		LogConfig();
+		if (LogStuff) {
+			MinecraftForge.EVENT_BUS.register((Object)new EventLogger());
+		}
+		DebugConfig();
 	}
 	
 	public static String getForceDifficulty() {
@@ -174,8 +180,12 @@ public class ConfigHandler {
 	public static boolean getVillagerProtection() {
 		return VillagerProtection;
 	}
+	
+	public static boolean getLogStuff() {
+		return LogStuff;
+	}
 		
-	private static void LogConfig() {
+	private static void DebugConfig() {
 		LogHandler.debug("ConfigHandler.getForceDifficulty() = " + getForceDifficulty());
 		LogHandler.debug("ConfigHandler.getNoTNT() = " + getNoTNT());
 		LogHandler.debug("ConfigHandler.getNoAchievements() = " + getNoAchievements());
@@ -188,5 +198,6 @@ public class ConfigHandler {
 		LogHandler.debug("ConfigHandler.getOreDictComplain() = " + getOreDictComplain());
 		LogHandler.debug("ConfigHandler.getTNTDropItems() = " + getTNTDropItems());
 		LogHandler.debug("ConfigHandler.VillagerProtection() = " + getVillagerProtection());
+		LogHandler.debug("ConfigHandler.LogStuff() = " + getLogStuff());
 	}
 }

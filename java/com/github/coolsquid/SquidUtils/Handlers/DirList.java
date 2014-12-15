@@ -2,6 +2,8 @@ package com.github.coolsquid.SquidUtils.Handlers;
 
 import java.util.ArrayList;
 
+import com.github.coolsquid.SquidUtils.Reference;
+
 /**
  * 
  * @author CoolSquid
@@ -13,6 +15,15 @@ import java.util.ArrayList;
 public class DirList {
 	
 	private static final ArrayList<String> DIR_LIST = new ArrayList<String>();
+	
+	public static void startInit() {
+		int A = 0;
+		if (A == 0) {
+			arrayInit();
+			Init();
+			A++;
+		}
+	}
 	
 	public static void arrayInit() {
 		add("Technic");
@@ -31,5 +42,18 @@ public class DirList {
 	
 	static void add(String string) {
 		DIR_LIST.add(string);
+	}
+	
+	private static void Init() {
+		String dir = System.getProperty("user.dir");
+		int A = 0;
+		int B = 0;
+		while (A < DirList.size() && B == 0) {
+			if (dir.contains(DirList.get(A))) {
+				LogHandler.bigWarning("This modpack might be illegal. Please ask for permission at: " + Reference.forum);
+				B++;
+				}
+			A++;
+		}
 	}
 }

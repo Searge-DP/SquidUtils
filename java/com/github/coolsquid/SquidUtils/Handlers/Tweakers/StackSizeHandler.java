@@ -25,7 +25,9 @@ public class StackSizeHandler {
 		while (A != 32000) {
 			if (Item.itemRegistry.getObjectById(A) != null) {
 				Item item = (Item) Item.itemRegistry.getObjectById(A);
-				item.setMaxStackSize(MaxStackSize);
+				if (!(item.getMaxStackSize == 1)) {
+					item.setMaxStackSize(MaxStackSize);
+				}
 			}
 			A++;
 		}

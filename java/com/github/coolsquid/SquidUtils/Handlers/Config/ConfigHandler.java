@@ -55,6 +55,7 @@ public class ConfigHandler {
 	private static boolean DebugLogging = false;
 	private static boolean VillagerProtection = false;
 	private static boolean LogStuff = false;
+	private static int MaxStackSize = 0;
 	
 	private static void readConfig() {
 		
@@ -80,6 +81,7 @@ public class ConfigHandler {
 		DebugLogging = config.getBoolean("debugLogging", CATEGORY_GENERAL, false, "Enables debugging to the log.");
 		VillagerProtection = config.getBoolean("villagerProtection", CATEGORY_UNHURTABLE, false, "Makes villagers unhurtable.");
 		LogStuff = config.getBoolean("logStuff", CATEGORY_GENERAL, false, "Logs all blocks broken and all entity deaths.");
+		MaxStackSize = config.getInt("defaultMaxStackSize", CATEGORY_GENERAL, 0, 0, 64, "Sets the max stack size for all items. Set to 0 to disable.");
 		
 		if (config.hasChanged()) {
 			config.save();
@@ -105,7 +107,7 @@ public class ConfigHandler {
 			MinecraftForge.EVENT_BUS.register((Object)new WitherHandler());
 		}
 		if (PotionStacks > 1 || ConfigHandler.PearlStack > 1) {
-			StackSizeHandler.PreInit(ConfigHandler.PotionStacks, ConfigHandler.PearlStack);
+			StackSizeHandler.some(ConfigHandler.PotionStacks, ConfigHandler.PearlStack);
 		}
 		if (ChainRecipes) {
 			RecipeHandler.ChainRecipes();
@@ -184,6 +186,10 @@ public class ConfigHandler {
 	public static boolean getLogStuff() {
 		return LogStuff;
 	}
+	
+	public static int getMaxStackSize() {
+		return MaxStackSize;
+	}
 		
 	private static void DebugConfig() {
 		LogHandler.debug("ConfigHandler.getForceDifficulty() = " + getForceDifficulty());
@@ -199,5 +205,11 @@ public class ConfigHandler {
 		LogHandler.debug("ConfigHandler.getTNTDropItems() = " + getTNTDropItems());
 		LogHandler.debug("ConfigHandler.VillagerProtection() = " + getVillagerProtection());
 		LogHandler.debug("ConfigHandler.LogStuff() = " + getLogStuff());
+	}
+	
+	public static void postInit() {
+		if (MaxStackSize != 0) {
+			StackSizeHandler.all(MaxStackSize);
+		}
 	}
 }

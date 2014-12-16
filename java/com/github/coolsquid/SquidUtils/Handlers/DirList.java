@@ -25,7 +25,7 @@ public class DirList {
 		}
 	}
 	
-	public static void arrayInit() {
+	private static void arrayInit() {
 		add("Technic");
 		add("technic");
 		add("tekkit");

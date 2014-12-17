@@ -1,6 +1,6 @@
 package com.github.coolsquid.SquidUtils.Handlers.Tweakers;
 
-import com.github.coolsquid.SquidUtils.Handlers.LogHandler;
+import com.github.coolsquid.SquidUtils.Utils.LogHelper;
 
 import net.minecraft.entity.boss.EntityWither;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -20,6 +20,6 @@ public class WitherHandler {
 		if(event.entity instanceof EntityWither) {
 			event.setCanceled(true);
 		}
-		LogHandler.debug("Wither blocked.");
+		LogHelper.debug("Wither blocked.");
 	}
 }

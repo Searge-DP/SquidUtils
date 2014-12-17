@@ -1,6 +1,6 @@
 package com.github.coolsquid.SquidUtils.Handlers.Tweakers;
 
-import com.github.coolsquid.SquidUtils.Handlers.LogHandler;
+import com.github.coolsquid.SquidUtils.Utils.LogHelper;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,7 +20,7 @@ public class DebugHandler {
 	public final void event(LivingUpdateEvent event) {
 		if (event.entity instanceof EntityPlayer && Minecraft.getMinecraft().gameSettings.showDebugInfo == true) {
 			Minecraft.getMinecraft().gameSettings.showDebugInfo = false;
-			LogHandler.debug("Debug screen blocked.");
+			LogHelper.debug("Debug screen blocked.");
 		}
 	}
 }

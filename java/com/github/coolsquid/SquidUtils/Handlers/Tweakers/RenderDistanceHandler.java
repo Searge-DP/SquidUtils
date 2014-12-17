@@ -4,8 +4,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 
-import com.github.coolsquid.SquidUtils.Handlers.LogHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Config.ConfigHandler;
+import com.github.coolsquid.SquidUtils.Utils.LogHelper;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
@@ -23,7 +23,7 @@ public class RenderDistanceHandler {
 		if (Minecraft.getMinecraft().gameSettings.renderDistanceChunks > ConfigHandler.getMaxRenderDistance() && event.entity instanceof EntityPlayer) {
 			Minecraft.getMinecraft().gameSettings.renderDistanceChunks = ConfigHandler.getMaxRenderDistance();
 			Minecraft.getMinecraft().gameSettings.saveOptions();
-			LogHandler.debug("Render distance forced.");
+			LogHelper.debug("Render distance forced.");
 		}
 	}
 }

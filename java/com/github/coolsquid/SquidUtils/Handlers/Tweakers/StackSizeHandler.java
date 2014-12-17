@@ -3,7 +3,7 @@ package com.github.coolsquid.SquidUtils.Handlers.Tweakers;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 
-import com.github.coolsquid.SquidUtils.Handlers.LogHandler;
+import com.github.coolsquid.SquidUtils.Utils.LogHelper;
 
 /**
  * 
@@ -17,7 +17,7 @@ public class StackSizeHandler {
 	public static final void some(int PotionStack, int PearlStack) {
 		Items.potionitem.setMaxStackSize(PotionStack);
 		Items.ender_pearl.setMaxStackSize(PearlStack);
-		LogHandler.debug("Stack sizes set.");
+		LogHelper.debug("Stack sizes set.");
 	}
 	
 	public static final void all(int MaxStackSize) {

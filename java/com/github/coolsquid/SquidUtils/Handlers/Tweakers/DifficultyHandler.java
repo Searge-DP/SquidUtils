@@ -5,8 +5,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 
-import com.github.coolsquid.SquidUtils.Handlers.LogHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Config.ConfigHandler;
+import com.github.coolsquid.SquidUtils.Utils.LogHelper;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
@@ -35,7 +35,7 @@ public class DifficultyHandler {
 				Minecraft.getMinecraft().gameSettings.difficulty = EnumDifficulty.PEACEFUL;
 			}
 			Minecraft.getMinecraft().gameSettings.saveOptions();
-			LogHandler.debug("Difficulty forced.");
+			LogHelper.debug("Difficulty forced.");
 		}
 	}
 }

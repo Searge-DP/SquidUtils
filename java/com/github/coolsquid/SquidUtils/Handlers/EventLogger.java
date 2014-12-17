@@ -1,5 +1,7 @@
 package com.github.coolsquid.SquidUtils.Handlers;
 
+import com.github.coolsquid.SquidUtils.Utils.LogHelper;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -24,7 +26,7 @@ public class EventLogger {
 		String pos = event.x + s + event.y + s + event.z;
 		String m = "\"";
 		event.setResult(Result.ALLOW);
-		LogHandler.info((m + event.block.getLocalizedName()+ m + " was broken by: " + m + event.getPlayer().getDisplayName()) + m + " at: " + pos);
+		LogHelper.info((m + event.block.getLocalizedName()+ m + " was broken by: " + m + event.getPlayer().getDisplayName()) + m + " at: " + pos);
 	}
 	
 	@SubscribeEvent
@@ -33,15 +35,15 @@ public class EventLogger {
 		String m = "\"";
 		if (source instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer) event.source.getEntity();
-			LogHandler.info(m + player.getDisplayName() + m + " killed " + event.entity);
+			LogHelper.info(m + player.getDisplayName() + m + " killed " + event.entity);
 		}
 		
 		else if (!(source instanceof EntityPlayer) && source instanceof Entity) {
-			LogHandler.info(m + source + m + " killed " + event.entity);
+			LogHelper.info(m + source + m + " killed " + event.entity);
 		}
 		
 		else if (!(event.source.getEntity() instanceof Entity) && !(event.source.damageType.equals("generic"))) {
-			LogHandler.info(m + event.source.getDamageType() + m + " killed " + event.entity);
+			LogHelper.info(m + event.source.getDamageType() + m + " killed " + event.entity);
 		}
 	}
 }

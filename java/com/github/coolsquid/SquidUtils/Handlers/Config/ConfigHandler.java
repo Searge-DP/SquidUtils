@@ -7,17 +7,17 @@ import net.minecraftforge.common.config.Configuration;
 
 import com.github.coolsquid.SquidUtils.Exception.InvalidConfigValueException;
 import com.github.coolsquid.SquidUtils.Handlers.EventLogger;
-import com.github.coolsquid.SquidUtils.Handlers.LogHandler;
-import com.github.coolsquid.SquidUtils.Handlers.RecipeHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.AchievementHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.DebugHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.DifficultyHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.HardnessHandler;
+import com.github.coolsquid.SquidUtils.Handlers.Tweakers.RecipeHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.RenderDistanceHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.StackSizeHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.TNTHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.VillagerHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.WitherHandler;
+import com.github.coolsquid.SquidUtils.Utils.LogHelper;
 
 /**
  * 
@@ -99,7 +99,7 @@ public class ConfigHandler {
 			MinecraftForge.EVENT_BUS.register((Object)new DifficultyHandler());
 		}
 		if (!forceDifficulty.equalsIgnoreCase("FALSE") && !forceDifficulty.equalsIgnoreCase("PEACEFUL") && !forceDifficulty.equalsIgnoreCase("EASY") && !forceDifficulty.equalsIgnoreCase("NORMAL") && !forceDifficulty.equalsIgnoreCase("HARD")) {
-			LogHandler.error("Error in the config. ForceDifficulty has a wrong value.");
+			LogHelper.error("Error in the config. ForceDifficulty has a wrong value.");
 			throw new InvalidConfigValueException("forceDifficulty");
 		}
 		if (NoTNT) {
@@ -201,20 +201,20 @@ public class ConfigHandler {
 	}
 		
 	private static void DebugConfig() {
-		LogHandler.debug("ConfigHandler.getForceDifficulty() = " + getForceDifficulty());
-		LogHandler.debug("ConfigHandler.getNoTNT() = " + getNoTNT());
-		LogHandler.debug("ConfigHandler.getNoAchievements() = " + getNoAchievements());
-		LogHandler.debug("ConfigHandler.getNoWitherBoss() = " + getNoWitherBoss());
-		LogHandler.debug("ConfigHandler.getPotionStacks() = " + getPotionStacks());
-		LogHandler.debug("ConfigHandler.getNoDebug() = " + getNoDebug());
-		LogHandler.debug("ConfigHandler.getPearlStack() = " + getPearlStack());
-		LogHandler.debug("ConfigHandler.getMaxRenderDistance() = " + getMaxRenderDistance());
-		LogHandler.debug("ConfigHandler.getMFR() = " + getMFR());
-		LogHandler.debug("ConfigHandler.getOreDictComplain() = " + getOreDictComplain());
-		LogHandler.debug("ConfigHandler.getTNTDropItems() = " + getTNTDropItems());
-		LogHandler.debug("ConfigHandler.getVillagerProtection() = " + getVillagerProtection());
-		LogHandler.debug("ConfigHandler.getLogStuff() = " + getLogStuff());
-		LogHandler.debug("ConfigHandler.getAllBlocksUnbreakable = " + getAllBlocksUnbreakable());
+		LogHelper.debug("ConfigHandler.getForceDifficulty() = " + getForceDifficulty());
+		LogHelper.debug("ConfigHandler.getNoTNT() = " + getNoTNT());
+		LogHelper.debug("ConfigHandler.getNoAchievements() = " + getNoAchievements());
+		LogHelper.debug("ConfigHandler.getNoWitherBoss() = " + getNoWitherBoss());
+		LogHelper.debug("ConfigHandler.getPotionStacks() = " + getPotionStacks());
+		LogHelper.debug("ConfigHandler.getNoDebug() = " + getNoDebug());
+		LogHelper.debug("ConfigHandler.getPearlStack() = " + getPearlStack());
+		LogHelper.debug("ConfigHandler.getMaxRenderDistance() = " + getMaxRenderDistance());
+		LogHelper.debug("ConfigHandler.getMFR() = " + getMFR());
+		LogHelper.debug("ConfigHandler.getOreDictComplain() = " + getOreDictComplain());
+		LogHelper.debug("ConfigHandler.getTNTDropItems() = " + getTNTDropItems());
+		LogHelper.debug("ConfigHandler.getVillagerProtection() = " + getVillagerProtection());
+		LogHelper.debug("ConfigHandler.getLogStuff() = " + getLogStuff());
+		LogHelper.debug("ConfigHandler.getAllBlocksUnbreakable = " + getAllBlocksUnbreakable());
 	}
 	
 	public static void postInit() {

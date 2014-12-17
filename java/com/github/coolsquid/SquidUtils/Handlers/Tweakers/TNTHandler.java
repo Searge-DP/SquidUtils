@@ -21,7 +21,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 public class TNTHandler {
 	
 	@SubscribeEvent
-	public void EntityJoinWorldEvent(EntityJoinWorldEvent event) {
+	public final void EntityJoinWorldEvent(EntityJoinWorldEvent event) {
 		if(event.entity instanceof EntityMinecartTNT) {
 			event.setCanceled(true);
 			if (ConfigHandler.getTNTDropItems()) {

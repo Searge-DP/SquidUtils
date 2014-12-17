@@ -20,7 +20,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 public class DifficultyHandler {
 
 	@SubscribeEvent
-	public void event(LivingUpdateEvent event) {
+	public final void event(LivingUpdateEvent event) {
 		if (event.entity instanceof EntityPlayer) {
 			if (Minecraft.getMinecraft().gameSettings.difficulty != EnumDifficulty.HARD && ConfigHandler.getForceDifficulty().equalsIgnoreCase("HARD")) {
 				Minecraft.getMinecraft().gameSettings.difficulty = EnumDifficulty.HARD;

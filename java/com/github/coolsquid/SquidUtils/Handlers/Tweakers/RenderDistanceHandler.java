@@ -19,7 +19,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 public class RenderDistanceHandler {
 	
 	@SubscribeEvent
-	public void event(LivingUpdateEvent event) {
+	public final void event(LivingUpdateEvent event) {
 		if (Minecraft.getMinecraft().gameSettings.renderDistanceChunks > ConfigHandler.getMaxRenderDistance() && event.entity instanceof EntityPlayer) {
 			Minecraft.getMinecraft().gameSettings.renderDistanceChunks = ConfigHandler.getMaxRenderDistance();
 			Minecraft.getMinecraft().gameSettings.saveOptions();

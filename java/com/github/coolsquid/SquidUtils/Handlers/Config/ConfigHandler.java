@@ -5,12 +5,14 @@ import java.io.File;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 
+import com.github.coolsquid.SquidUtils.Exception.InvalidConfigValueException;
 import com.github.coolsquid.SquidUtils.Handlers.EventLogger;
 import com.github.coolsquid.SquidUtils.Handlers.LogHandler;
 import com.github.coolsquid.SquidUtils.Handlers.RecipeHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.AchievementHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.DebugHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.DifficultyHandler;
+import com.github.coolsquid.SquidUtils.Handlers.Tweakers.HardnessHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.RenderDistanceHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.StackSizeHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.TNTHandler;
@@ -56,6 +58,7 @@ public class ConfigHandler {
 	private static boolean VillagerProtection = false;
 	private static boolean LogStuff = false;
 	private static int MaxStackSize = 0;
+	private static boolean AllBlocksUnbreakable = false;
 	
 	private static void readConfig() {
 		
@@ -82,6 +85,7 @@ public class ConfigHandler {
 		VillagerProtection = config.getBoolean("villagerProtection", CATEGORY_UNHURTABLE, false, "Makes villagers unhurtable.");
 		LogStuff = config.getBoolean("logStuff", CATEGORY_GENERAL, false, "Logs all blocks broken and all entity deaths.");
 		MaxStackSize = config.getInt("defaultMaxStackSize", CATEGORY_GENERAL, 0, 0, 64, "Sets the max stack size for all items. Set to 0 to disable.");
+		AllBlocksUnbreakable = config.getBoolean("allBlocksUnbreakable", CATEGORY_GENERAL, false, "Makes all blocks unbreakable.");
 		
 		if (config.hasChanged()) {
 			config.save();
@@ -96,6 +100,7 @@ public class ConfigHandler {
 		}
 		if (!forceDifficulty.equalsIgnoreCase("FALSE") && !forceDifficulty.equalsIgnoreCase("PEACEFUL") && !forceDifficulty.equalsIgnoreCase("EASY") && !forceDifficulty.equalsIgnoreCase("NORMAL") && !forceDifficulty.equalsIgnoreCase("HARD")) {
 			LogHandler.error("Error in the config. ForceDifficulty has a wrong value.");
+			throw new InvalidConfigValueException("forceDifficulty");
 		}
 		if (NoTNT) {
 			MinecraftForge.EVENT_BUS.register((Object)new TNTHandler());
@@ -190,6 +195,10 @@ public class ConfigHandler {
 	public static int getMaxStackSize() {
 		return MaxStackSize;
 	}
+	
+	public static boolean getAllBlocksUnbreakable() {
+		return AllBlocksUnbreakable;
+	}
 		
 	private static void DebugConfig() {
 		LogHandler.debug("ConfigHandler.getForceDifficulty() = " + getForceDifficulty());
@@ -203,13 +212,18 @@ public class ConfigHandler {
 		LogHandler.debug("ConfigHandler.getMFR() = " + getMFR());
 		LogHandler.debug("ConfigHandler.getOreDictComplain() = " + getOreDictComplain());
 		LogHandler.debug("ConfigHandler.getTNTDropItems() = " + getTNTDropItems());
-		LogHandler.debug("ConfigHandler.VillagerProtection() = " + getVillagerProtection());
-		LogHandler.debug("ConfigHandler.LogStuff() = " + getLogStuff());
+		LogHandler.debug("ConfigHandler.getVillagerProtection() = " + getVillagerProtection());
+		LogHandler.debug("ConfigHandler.getLogStuff() = " + getLogStuff());
+		LogHandler.debug("ConfigHandler.getAllBlocksUnbreakable = " + getAllBlocksUnbreakable());
 	}
 	
 	public static void postInit() {
 		if (MaxStackSize != 0) {
 			StackSizeHandler.all(MaxStackSize);
+		}
+		
+		if (AllBlocksUnbreakable) {
+			HardnessHandler.blockSearch();
 		}
 	}
 }

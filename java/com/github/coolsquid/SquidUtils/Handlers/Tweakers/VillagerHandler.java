@@ -14,7 +14,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 public class VillagerHandler {
 	
 	@SubscribeEvent
-	public void hurt(LivingHurtEvent event) {
+	public final void hurt(LivingHurtEvent event) {
 		if (event.entity instanceof EntityVillager) {
 			event.setCanceled(true);
 		}

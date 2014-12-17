@@ -16,7 +16,7 @@ public class DirList {
 	
 	private static final ArrayList<String> DIR_LIST = new ArrayList<String>();
 	
-	public static void startInit() {
+	public static final void startInit() {
 		int A = 0;
 		if (A == 0) {
 			arrayInit();
@@ -40,7 +40,7 @@ public class DirList {
 		return DIR_LIST.size();
 	}
 	
-	static void add(String string) {
+	private static void add(String string) {
 		DIR_LIST.add(string);
 	}
 	

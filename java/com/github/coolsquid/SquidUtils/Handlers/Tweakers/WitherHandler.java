@@ -16,7 +16,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 public class WitherHandler {
 	
 	@SubscribeEvent
-	public void EntityJoinWorldEvent(EntityJoinWorldEvent event) {
+	public final void EntityJoinWorldEvent(EntityJoinWorldEvent event) {
 		if(event.entity instanceof EntityWither) {
 			event.setCanceled(true);
 		}

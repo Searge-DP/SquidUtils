@@ -2,6 +2,13 @@ package com.github.coolsquid.SquidUtils.Handlers.Tweakers;
 
 import net.minecraft.block.Block;
 
+/**
+ * 
+ * @author CoolSquid
+ * All rights reserved.
+ *
+ */
+
 public class HardnessHandler {
 	
 	public static final void blockSearch() {

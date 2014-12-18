@@ -20,27 +20,26 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
  * 
  * @author CoolSquid
  * All rights reserved.
- * The main class
  *
  */
 
 @Mod(modid = Reference.modid, name = Reference.modid, version = Reference.version, acceptableRemoteVersions = "*")
 public class SquidUtils {
-		
+	
 	@EventHandler
-	private static void PreInit(FMLPreInitializationEvent event) {
+	private static void preInit(FMLPreInitializationEvent event) {
 		LogHelper.info("Preinitializing");
 		
 		MinecraftForge.EVENT_BUS.register((Object)new EventLogger());
-				
+		
 		if (Loader.MC_VERSION.equals("1.7.2")) {
 			LogHelper.bigWarning("MC is running 1.7.2! Problems may occur.");
 		}
 		
 		File configFile = event.getSuggestedConfigurationFile();
-		ConfigHandler.createConfig(configFile);
+		ConfigHandler.preInit(configFile);
 		
-		DirList.startInit();
+		DirList.preInit();
 	}
 	
 	@EventHandler

@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * 
  * @author CoolSquid
  * All rights reserved.
- * List off pack directories
+ * List of pack directories
  *
  */
 
@@ -14,7 +14,7 @@ public class DirList {
 	
 	private static final ArrayList<String> DIR_LIST = new ArrayList<String>();
 	
-	public static final void startInit() {
+	public static final void preInit() {
 		int A = 0;
 		if (A == 0) {
 			arrayInit();
@@ -38,11 +38,11 @@ public class DirList {
 		return DIR_LIST.size();
 	}
 	
-	private static void add(String string) {
+	private static final void add(String string) {
 		DIR_LIST.add(string);
 	}
 	
-	private static void Init() {
+	private static final void Init() {
 		String dir = System.getProperty("user.dir");
 		int A = 0;
 		int B = 0;

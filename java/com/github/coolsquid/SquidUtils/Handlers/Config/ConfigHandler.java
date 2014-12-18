@@ -11,6 +11,7 @@ import com.github.coolsquid.SquidUtils.Handlers.Tweakers.AchievementHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.DebugHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.DifficultyHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.HardnessHandler;
+import com.github.coolsquid.SquidUtils.Handlers.Tweakers.ItemSearcher;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.RecipeHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.RenderDistanceHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.StackSizeHandler;
@@ -30,12 +31,18 @@ public class ConfigHandler {
 
 	private static Configuration config;
 	
-	public static void createConfig(File configFile)
-	{
+	public static void preInit(File configFile) {
 		if (config == null) {
-			config = new Configuration(configFile);
-			readConfig();
+			createConfig(configFile);
 		}
+		readConfig();
+		loadModules();
+		DebugConfig();
+	}
+	
+	private static void createConfig(File configFile)
+	{
+		config = new Configuration(configFile);
 	}
 	
 	private static final String CATEGORY_GENERAL = "General";
@@ -90,8 +97,6 @@ public class ConfigHandler {
 		if (config.hasChanged()) {
 			config.save();
 		}
-		
-		loadModules();
 	}
 	
 	private static void loadModules() {
@@ -99,8 +104,7 @@ public class ConfigHandler {
 			MinecraftForge.EVENT_BUS.register((Object)new DifficultyHandler());
 		}
 		if (!forceDifficulty.equalsIgnoreCase("FALSE") && !forceDifficulty.equalsIgnoreCase("PEACEFUL") && !forceDifficulty.equalsIgnoreCase("EASY") && !forceDifficulty.equalsIgnoreCase("NORMAL") && !forceDifficulty.equalsIgnoreCase("HARD")) {
-			LogHelper.error("Error in the config. ForceDifficulty has a wrong value.");
-			throw new InvalidConfigValueException("forceDifficulty");
+			throw new InvalidConfigValueException("error at \"forceDifficulty\"");
 		}
 		if (NoTNT) {
 			MinecraftForge.EVENT_BUS.register((Object)new TNTHandler());
@@ -110,9 +114,6 @@ public class ConfigHandler {
 		}
 		if (NoWitherBoss) {
 			MinecraftForge.EVENT_BUS.register((Object)new WitherHandler());
-		}
-		if (PotionStacks > 1 || ConfigHandler.PearlStack > 1) {
-			StackSizeHandler.some(ConfigHandler.PotionStacks, ConfigHandler.PearlStack);
 		}
 		if (ChainRecipes) {
 			RecipeHandler.ChainRecipes();
@@ -129,7 +130,6 @@ public class ConfigHandler {
 		if (LogStuff) {
 			MinecraftForge.EVENT_BUS.register((Object)new EventLogger());
 		}
-		DebugConfig();
 	}
 	
 	public static String getForceDifficulty() {
@@ -219,11 +219,14 @@ public class ConfigHandler {
 	
 	public static void postInit() {
 		if (MaxStackSize != 0) {
-			StackSizeHandler.all(MaxStackSize);
+			ItemSearcher.search(MaxStackSize);
 		}
 		
 		if (AllBlocksUnbreakable) {
 			HardnessHandler.blockSearch();
+		}
+		if (PotionStacks > 1 || ConfigHandler.PearlStack > 1) {
+			StackSizeHandler.some(ConfigHandler.PotionStacks, ConfigHandler.PearlStack);
 		}
 	}
 }

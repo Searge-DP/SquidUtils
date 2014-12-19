@@ -6,7 +6,6 @@ import net.minecraftforge.common.MinecraftForge;
 
 import com.github.coolsquid.SquidUtils.Handlers.EventLogger;
 import com.github.coolsquid.SquidUtils.Handlers.Config.ConfigHandler;
-import com.github.coolsquid.SquidUtils.Utils.DirList;
 import com.github.coolsquid.SquidUtils.Utils.LogHelper;
 import com.github.coolsquid.SquidUtils.Utils.Reference;
 

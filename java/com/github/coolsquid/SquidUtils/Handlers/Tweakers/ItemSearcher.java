@@ -6,6 +6,7 @@ import com.github.coolsquid.SquidUtils.Handlers.Config.ConfigHandler;
 
 public class ItemSearcher {
 	
+	@SuppressWarnings("deprecation")
 	public static final void search(int stackdivider, int divider) {
 		int A = 0;
 		while (A != 32000) {

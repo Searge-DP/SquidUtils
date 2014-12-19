@@ -38,8 +38,6 @@ public class SquidUtils {
 		
 		File configFile = event.getSuggestedConfigurationFile();
 		ConfigHandler.preInit(configFile);
-		
-		DirList.preInit();
 	}
 	
 	@EventHandler

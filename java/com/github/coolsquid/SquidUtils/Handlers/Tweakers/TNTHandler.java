@@ -1,14 +1,15 @@
 package com.github.coolsquid.SquidUtils.Handlers.Tweakers;
 
-import com.github.coolsquid.SquidUtils.Handlers.Config.ConfigHandler;
-import com.github.coolsquid.SquidUtils.Utils.LogHelper;
-
 import net.minecraft.entity.item.EntityMinecartTNT;
 import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+
+import com.github.coolsquid.SquidUtils.Handlers.Config.ConfigHandler;
+import com.github.coolsquid.SquidUtils.Utils.LogHelper;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 /**

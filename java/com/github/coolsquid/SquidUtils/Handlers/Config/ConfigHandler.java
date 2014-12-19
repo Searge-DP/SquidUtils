@@ -10,7 +10,7 @@ import com.github.coolsquid.SquidUtils.Handlers.EventLogger;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.AchievementHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.DebugHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.DifficultyHandler;
-import com.github.coolsquid.SquidUtils.Handlers.Tweakers.HardnessHandler;
+import com.github.coolsquid.SquidUtils.Handlers.Tweakers.BlockSearcher;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.ItemSearcher;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.RecipeHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.RenderDistanceHandler;
@@ -48,6 +48,7 @@ public class ConfigHandler {
 	private static final String CATEGORY_GENERAL = "General";
 	private static final String CATEGORY_COMPAT = "Compatibility";
 	private static final String CATEGORY_UNHURTABLE = "Unhurtable mobs";
+	private static final String CATEGORY_PROPERTIES = "Block and item properties";
 	
 	private static String forceDifficulty = "FALSE";
 	private static boolean NoTNT = false;
@@ -64,8 +65,9 @@ public class ConfigHandler {
 	private static boolean DebugLogging = false;
 	private static boolean VillagerProtection = false;
 	private static boolean LogStuff = false;
-	private static int MaxStackSize = 0;
+	private static int StackSizeDivider = 0;
 	private static boolean AllBlocksUnbreakable = false;
+	private static int DurabilityDivider = 1;
 	
 	private static void readConfig() {
 		
@@ -75,15 +77,16 @@ public class ConfigHandler {
 		config.setCategoryRequiresMcRestart(CATEGORY_COMPAT, true);
 		config.addCustomCategoryComment(CATEGORY_UNHURTABLE, "Mob options.");
 		config.setCategoryRequiresMcRestart(CATEGORY_UNHURTABLE, true);
+		config.addCustomCategoryComment(CATEGORY_PROPERTIES, "Configure block and item properties.");
 		
 		forceDifficulty = config.getString("forceHard", CATEGORY_GENERAL, "FALSE", "Forces the specified difficulty. Allows for HARD, NORMAL, EASY, PEACEFUL or FALSE. Set to FALSE to disable.");
 		NoTNT = config.getBoolean("noTNT", CATEGORY_GENERAL, false, "Stops TNT from exploding.");
 		NoAchievements = config.getBoolean("noAchievements", CATEGORY_GENERAL, false, "Disables achievements.");
 		NoWitherBoss = config.getBoolean("noWitherBoss", CATEGORY_GENERAL, false, "Disables the witherboss.");
-		PotionStacks = config.getInt("maxPotionStackSize", CATEGORY_GENERAL, 1, 1, 64, "Sets the max stacksize for potions.");
+		PotionStacks = config.getInt("maxPotionStackSize", CATEGORY_PROPERTIES, 1, 1, 64, "Sets the max stacksize for potions.");
 		ChainRecipes = config.getBoolean("chainRecipes", CATEGORY_GENERAL, false, "Makes recipes for all pieces of chain armor.");
 		NoDebug = config.getBoolean("noDebug", CATEGORY_GENERAL, false, "Makes it impossible to open the debug screen.");
-		PearlStack = config.getInt("maxEnderPearlStackSize", CATEGORY_GENERAL, 16, 1, 64, "Sets the max stacksize for enderpearls.");
+		PearlStack = config.getInt("maxEnderPearlStackSize", CATEGORY_PROPERTIES, 16, 1, 64, "Sets the max stacksize for enderpearls.");
 		MaxRenderDistance = config.getInt("maxRenderDistance", CATEGORY_GENERAL, 16, 1, 16, "Sets the max render distance. Set to 16 to disable.");
 		MFR = config.getInt("MFR", CATEGORY_COMPAT, 20, 0, 50, "Amount of lines...");
 		OreDictComplain = config.getBoolean("oreDictComplaining", CATEGORY_COMPAT, true, "Should the mod complain about long entries?");
@@ -91,8 +94,9 @@ public class ConfigHandler {
 		DebugLogging = config.getBoolean("debugLogging", CATEGORY_GENERAL, false, "Enables debugging to the log.");
 		VillagerProtection = config.getBoolean("villagerProtection", CATEGORY_UNHURTABLE, false, "Makes villagers unhurtable.");
 		LogStuff = config.getBoolean("logStuff", CATEGORY_GENERAL, false, "Logs all blocks broken and all entity deaths.");
-		MaxStackSize = config.getInt("defaultMaxStackSize", CATEGORY_GENERAL, 0, 0, 64, "Sets the max stack size for all items. Set to 0 to disable.");
-		AllBlocksUnbreakable = config.getBoolean("allBlocksUnbreakable", CATEGORY_GENERAL, false, "Makes all blocks unbreakable.");
+		StackSizeDivider = config.getInt("stackSizeDivider", CATEGORY_PROPERTIES, 0, 0, 64, "Sets the max stack size for all items. Set to 0 to disable.");
+		AllBlocksUnbreakable = config.getBoolean("allBlocksUnbreakable", CATEGORY_PROPERTIES, false, "Makes all blocks unbreakable.");
+		DurabilityDivider = config.getInt("durabilityDivider", CATEGORY_PROPERTIES, 1, 1, 1080, "All tools and armors durability will be divided by this.");
 		
 		if (config.hasChanged()) {
 			config.save();
@@ -193,13 +197,17 @@ public class ConfigHandler {
 	}
 	
 	public static int getMaxStackSize() {
-		return MaxStackSize;
+		return StackSizeDivider;
 	}
 	
 	public static boolean getAllBlocksUnbreakable() {
 		return AllBlocksUnbreakable;
 	}
-		
+	
+	public static int getDurabilityDivider() {
+		return DurabilityDivider;
+	}
+	
 	private static void DebugConfig() {
 		LogHelper.debug("ConfigHandler.getForceDifficulty() = " + getForceDifficulty());
 		LogHelper.debug("ConfigHandler.getNoTNT() = " + getNoTNT());
@@ -215,16 +223,18 @@ public class ConfigHandler {
 		LogHelper.debug("ConfigHandler.getVillagerProtection() = " + getVillagerProtection());
 		LogHelper.debug("ConfigHandler.getLogStuff() = " + getLogStuff());
 		LogHelper.debug("ConfigHandler.getAllBlocksUnbreakable = " + getAllBlocksUnbreakable());
+		LogHelper.debug("ConfigHandler.getDurabilityDivider" + getDurabilityDivider());
 	}
 	
 	public static void postInit() {
-		if (MaxStackSize != 0) {
-			ItemSearcher.search(MaxStackSize);
+		if (StackSizeDivider != 0 || DurabilityDivider != 1) {
+			ItemSearcher.search(StackSizeDivider, DurabilityDivider);
 		}
 		
 		if (AllBlocksUnbreakable) {
-			HardnessHandler.blockSearch();
+			BlockSearcher.search();
 		}
+		
 		if (PotionStacks > 1 || ConfigHandler.PearlStack > 1) {
 			StackSizeHandler.some(ConfigHandler.PotionStacks, ConfigHandler.PearlStack);
 		}

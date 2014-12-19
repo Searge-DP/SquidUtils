@@ -4,7 +4,7 @@ public class DO_NOT_REPORT_EXCEPTION extends RuntimeException {
 	
 	private static final long serialVersionUID = 434986525;
 	
-	String comment = "This is not SquidUtils fault!";
+	String comment = "This is not SquidUtils fault!\n	DO NOT REPORT THIS ERROR!";
 	
 	public DO_NOT_REPORT_EXCEPTION() {
 		throw this;

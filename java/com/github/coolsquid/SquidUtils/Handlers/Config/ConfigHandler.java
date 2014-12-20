@@ -35,6 +35,7 @@ public class ConfigHandler {
 		if (config == null) {
 			createConfig(configFile);
 		}
+		initCategories();
 		readConfig();
 		loadModules();
 		DebugConfig();
@@ -49,6 +50,7 @@ public class ConfigHandler {
 	private static final String CATEGORY_COMPAT = "Compatibility";
 	private static final String CATEGORY_UNHURTABLE = "Unhurtable mobs";
 	private static final String CATEGORY_PROPERTIES = "Block and item properties";
+	private static final String CATEGORY_STUFFZ = "Force game options";
 	
 	private static String forceDifficulty = "FALSE";
 	private static boolean NoTNT = false;
@@ -69,17 +71,17 @@ public class ConfigHandler {
 	private static boolean AllBlocksUnbreakable = false;
 	private static int DurabilityDivider = 1;
 	
+	private static void initCategories() {
+		config.setCategoryComment(CATEGORY_GENERAL, "General options.");
+		config.setCategoryComment(CATEGORY_COMPAT, "Compatibility options.");
+		config.setCategoryComment(CATEGORY_UNHURTABLE, "Mob options.");
+		config.setCategoryComment(CATEGORY_PROPERTIES, "Configure block and item properties.");
+		config.setCategoryComment(CATEGORY_STUFFZ, "Force game options.");
+	}
+	
 	private static void readConfig() {
 		
-		config.addCustomCategoryComment(CATEGORY_GENERAL, "General options.");
-		config.setCategoryRequiresMcRestart(CATEGORY_GENERAL, true);
-		config.addCustomCategoryComment(CATEGORY_COMPAT, "Compatibility options.");
-		config.setCategoryRequiresMcRestart(CATEGORY_COMPAT, true);
-		config.addCustomCategoryComment(CATEGORY_UNHURTABLE, "Mob options.");
-		config.setCategoryRequiresMcRestart(CATEGORY_UNHURTABLE, true);
-		config.addCustomCategoryComment(CATEGORY_PROPERTIES, "Configure block and item properties.");
-		
-		forceDifficulty = config.getString("forceHard", CATEGORY_GENERAL, "FALSE", "Forces the specified difficulty. Allows for HARD, NORMAL, EASY, PEACEFUL or FALSE. Set to FALSE to disable.");
+		forceDifficulty = config.getString("forceHard", CATEGORY_STUFFZ, "FALSE", "Forces the specified difficulty. Allows for HARD, NORMAL, EASY, PEACEFUL or FALSE. Set to FALSE to disable.");
 		NoTNT = config.getBoolean("noTNT", CATEGORY_GENERAL, false, "Stops TNT from exploding.");
 		NoAchievements = config.getBoolean("noAchievements", CATEGORY_GENERAL, false, "Disables achievements.");
 		NoWitherBoss = config.getBoolean("noWitherBoss", CATEGORY_GENERAL, false, "Disables the witherboss.");
@@ -87,7 +89,7 @@ public class ConfigHandler {
 		ChainRecipes = config.getBoolean("chainRecipes", CATEGORY_GENERAL, false, "Makes recipes for all pieces of chain armor.");
 		NoDebug = config.getBoolean("noDebug", CATEGORY_GENERAL, false, "Makes it impossible to open the debug screen.");
 		PearlStack = config.getInt("maxEnderPearlStackSize", CATEGORY_PROPERTIES, 16, 1, 64, "Sets the max stacksize for enderpearls.");
-		MaxRenderDistance = config.getInt("maxRenderDistance", CATEGORY_GENERAL, 16, 1, 16, "Sets the max render distance. Set to 16 to disable.");
+		MaxRenderDistance = config.getInt("maxRenderDistance", CATEGORY_STUFFZ, 16, 1, 16, "Sets the max render distance. Set to 16 to disable.");
 		MFR = config.getInt("MFR", CATEGORY_COMPAT, 20, 0, 50, "Amount of lines...");
 		OreDictComplain = config.getBoolean("oreDictComplaining", CATEGORY_COMPAT, true, "Should the mod complain about long entries?");
 		TNTDropItems = config.getBoolean("TNTDropItems", CATEGORY_GENERAL, true, "Should TNT drop items when removed? Only applies if \"noTNT\" is true.");

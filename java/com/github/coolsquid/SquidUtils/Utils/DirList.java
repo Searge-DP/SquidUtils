@@ -48,7 +48,7 @@ public class DirList {
 		int B = 0;
 		while (A < size() && B == 0) {
 			if (dir.contains(get(A))) {
-				LogHelper.bigWarning("This modpack might be illegal. Please ask for permission at: " + Reference.forum);
+				LogHelper.bigWarning("This modpack might be illegal. Please ask for permission at: " + Data.forum);
 				B++;
 				}
 			A++;

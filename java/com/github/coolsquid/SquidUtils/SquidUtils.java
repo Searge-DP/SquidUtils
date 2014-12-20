@@ -4,10 +4,7 @@ import java.io.File;
 
 import org.apache.logging.log4j.Level;
 
-import net.minecraftforge.common.MinecraftForge;
-
 import com.github.coolsquid.SquidUtils.Handlers.Config.ConfigHandler;
-import com.github.coolsquid.SquidUtils.Handlers.Tweakers.DamageHandler;
 import com.github.coolsquid.SquidUtils.Utils.Data;
 import com.github.coolsquid.SquidUtils.Utils.LogHelper;
 
@@ -31,8 +28,6 @@ public class SquidUtils {
 	private static void preInit(FMLPreInitializationEvent event) {
 		LogHelper.info("Preinitializing");
 		
-		MinecraftForge.EVENT_BUS.register((Object)new DamageHandler());
-				
 		if (Loader.MC_VERSION.equals("1.7.2")) {
 			LogHelper.bigWarning(Level.WARN, "MC is running 1.7.2! Problems may occur.");
 		}

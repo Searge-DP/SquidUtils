@@ -8,9 +8,10 @@ import net.minecraftforge.common.config.Configuration;
 import com.github.coolsquid.SquidUtils.Exception.InvalidConfigValueException;
 import com.github.coolsquid.SquidUtils.Handlers.EventLogger;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.AchievementHandler;
+import com.github.coolsquid.SquidUtils.Handlers.Tweakers.BlockSearcher;
+import com.github.coolsquid.SquidUtils.Handlers.Tweakers.DamageHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.DebugHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.DifficultyHandler;
-import com.github.coolsquid.SquidUtils.Handlers.Tweakers.BlockSearcher;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.ItemSearcher;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.RecipeHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.RenderDistanceHandler;
@@ -50,7 +51,7 @@ public class ConfigHandler {
 	private static final String CATEGORY_COMPAT = "Compatibility";
 	private static final String CATEGORY_UNHURTABLE = "Unhurtable mobs";
 	private static final String CATEGORY_PROPERTIES = "Block and item properties";
-	private static final String CATEGORY_STUFFZ = "Force game options";
+	private static final String CATEGORY_GAMESETTINGS = "Force game options";
 	
 	private static String forceDifficulty = "FALSE";
 	private static boolean NoTNT = false;
@@ -70,18 +71,19 @@ public class ConfigHandler {
 	private static int StackSizeDivider = 0;
 	private static boolean AllBlocksUnbreakable = false;
 	private static int DurabilityDivider = 1;
+	private static boolean DamageNiceCreatures = false;
 	
 	private static void initCategories() {
 		config.setCategoryComment(CATEGORY_GENERAL, "General options.");
 		config.setCategoryComment(CATEGORY_COMPAT, "Compatibility options.");
 		config.setCategoryComment(CATEGORY_UNHURTABLE, "Mob options.");
 		config.setCategoryComment(CATEGORY_PROPERTIES, "Configure block and item properties.");
-		config.setCategoryComment(CATEGORY_STUFFZ, "Force game options.");
+		config.setCategoryComment(CATEGORY_GAMESETTINGS, "Force game options.");
 	}
 	
 	private static void readConfig() {
 		
-		forceDifficulty = config.getString("forceHard", CATEGORY_STUFFZ, "FALSE", "Forces the specified difficulty. Allows for HARD, NORMAL, EASY, PEACEFUL or FALSE. Set to FALSE to disable.");
+		forceDifficulty = config.getString("forceHard", CATEGORY_GAMESETTINGS, "FALSE", "Forces the specified difficulty. Allows for HARD, NORMAL, EASY, PEACEFUL or FALSE. Set to FALSE to disable.");
 		NoTNT = config.getBoolean("noTNT", CATEGORY_GENERAL, false, "Stops TNT from exploding.");
 		NoAchievements = config.getBoolean("noAchievements", CATEGORY_GENERAL, false, "Disables achievements.");
 		NoWitherBoss = config.getBoolean("noWitherBoss", CATEGORY_GENERAL, false, "Disables the witherboss.");
@@ -89,7 +91,7 @@ public class ConfigHandler {
 		ChainRecipes = config.getBoolean("chainRecipes", CATEGORY_GENERAL, false, "Makes recipes for all pieces of chain armor.");
 		NoDebug = config.getBoolean("noDebug", CATEGORY_GENERAL, false, "Makes it impossible to open the debug screen.");
 		PearlStack = config.getInt("maxEnderPearlStackSize", CATEGORY_PROPERTIES, 16, 1, 64, "Sets the max stacksize for enderpearls.");
-		MaxRenderDistance = config.getInt("maxRenderDistance", CATEGORY_STUFFZ, 16, 1, 16, "Sets the max render distance. Set to 16 to disable.");
+		MaxRenderDistance = config.getInt("maxRenderDistance", CATEGORY_GAMESETTINGS, 16, 1, 16, "Sets the max render distance. Set to 16 to disable.");
 		MFR = config.getInt("MFR", CATEGORY_COMPAT, 20, 0, 50, "Amount of lines...");
 		OreDictComplain = config.getBoolean("oreDictComplaining", CATEGORY_COMPAT, true, "Should the mod complain about long entries?");
 		TNTDropItems = config.getBoolean("TNTDropItems", CATEGORY_GENERAL, true, "Should TNT drop items when removed? Only applies if \"noTNT\" is true.");
@@ -99,6 +101,7 @@ public class ConfigHandler {
 		StackSizeDivider = config.getInt("stackSizeDivider", CATEGORY_PROPERTIES, 0, 0, 64, "Sets the max stack size for all items. Set to 0 to disable.");
 		AllBlocksUnbreakable = config.getBoolean("allBlocksUnbreakable", CATEGORY_PROPERTIES, false, "Makes all blocks unbreakable.");
 		DurabilityDivider = config.getInt("durabilityDivider", CATEGORY_PROPERTIES, 1, 1, 1080, "All tools and armors durability will be divided by this.");
+		DamageNiceCreatures = config.getBoolean("damageNiceCreatures", CATEGORY_GENERAL, false, "Randomly damages players, and kills animals.");
 		
 		if (config.hasChanged()) {
 			config.save();
@@ -135,6 +138,9 @@ public class ConfigHandler {
 		}
 		if (LogStuff) {
 			MinecraftForge.EVENT_BUS.register((Object)new EventLogger());
+		}
+		if (DamageNiceCreatures) {
+			MinecraftForge.EVENT_BUS.register((Object)new DamageHandler());
 		}
 	}
 	
@@ -210,6 +216,10 @@ public class ConfigHandler {
 		return DurabilityDivider;
 	}
 	
+	public static boolean getDamageNiceCreatures() {
+		return DamageNiceCreatures;
+	}
+	
 	private static void DebugConfig() {
 		LogHelper.debug("ConfigHandler.getForceDifficulty() = " + getForceDifficulty());
 		LogHelper.debug("ConfigHandler.getNoTNT() = " + getNoTNT());
@@ -225,7 +235,8 @@ public class ConfigHandler {
 		LogHelper.debug("ConfigHandler.getVillagerProtection() = " + getVillagerProtection());
 		LogHelper.debug("ConfigHandler.getLogStuff() = " + getLogStuff());
 		LogHelper.debug("ConfigHandler.getAllBlocksUnbreakable = " + getAllBlocksUnbreakable());
-		LogHelper.debug("ConfigHandler.getDurabilityDivider" + getDurabilityDivider());
+		LogHelper.debug("ConfigHandler.getDurabilityDivider = " + getDurabilityDivider());
+		LogHelper.debug("ConfigHandler.getDamageNiceCreatures = " + getDamageNiceCreatures());
 	}
 	
 	public static void postInit() {

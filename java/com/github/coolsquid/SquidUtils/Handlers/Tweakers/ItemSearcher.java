@@ -4,6 +4,13 @@ import net.minecraft.item.Item;
 
 import com.github.coolsquid.SquidUtils.Handlers.Config.ConfigHandler;
 
+/**
+ * 
+ * @author CoolSquid
+ * All rights reserved.
+ *
+ */
+
 public class ItemSearcher {
 	
 	@SuppressWarnings("deprecation")

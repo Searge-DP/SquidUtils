@@ -10,6 +10,13 @@ import com.github.coolsquid.SquidUtils.Utils.Utils;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
+/**
+ * 
+ * @author CoolSquid
+ * All rights reserved.
+ *
+ */
+
 public class DamageHandler {
 	
 	@SubscribeEvent

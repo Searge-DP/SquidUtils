@@ -11,12 +11,9 @@ import java.util.Random;
 
 public class Utils {
 	
-	static Random rand = new Random();
-	
-	static int difficultyInt = 1;
-	
+	private static Random rand = new Random();
+		
 	public static boolean chance(int D, int K) {
-
 		int A = rand.nextInt(K) + 1;
 		if (A <= D) {
 			return true;

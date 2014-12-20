@@ -1,8 +1,8 @@
 package com.github.coolsquid.SquidUtils.Handlers.Tweakers;
 
-import com.github.coolsquid.SquidUtils.Handlers.Config.ConfigHandler;
-
 import net.minecraft.block.Block;
+
+import com.github.coolsquid.SquidUtils.Handlers.Config.ConfigHandler;
 
 /**
  * 

@@ -102,7 +102,6 @@ public class ConfigHandler {
 		AllBlocksUnbreakable = config.getBoolean("allBlocksUnbreakable", CATEGORY_PROPERTIES, false, "Makes all blocks unbreakable.");
 		DurabilityDivider = config.getInt("durabilityDivider", CATEGORY_PROPERTIES, 1, 1, 1080, "All tools and armors durability will be divided by this.");
 		DamageNiceCreatures = config.getBoolean("damageNiceCreatures", CATEGORY_GENERAL, false, "Randomly damages players, and kills animals.");
-		
 		if (config.hasChanged()) {
 			config.save();
 		}

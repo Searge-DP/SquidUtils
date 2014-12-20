@@ -8,7 +8,6 @@ import org.apache.logging.log4j.Level;
  * 
  * @author CoolSquid
  * All rights reserved.
- * List of pack directories
  *
  */
 

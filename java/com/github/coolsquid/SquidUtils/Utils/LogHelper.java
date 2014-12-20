@@ -15,10 +15,14 @@ import cpw.mods.fml.common.FMLLog;
 
 public final class LogHelper {
 	
-	private static final String name = Reference.modid;
+	private static final String name = Data.modid;
 	
 	public static void info(String message) {
 		FMLLog.log(name, Level.INFO, message);
+		}
+	
+	public static void info(int i) {
+		FMLLog.log(name, Level.INFO, i + "");
 		}
 
 	public static void debug(String message) {
@@ -32,6 +36,10 @@ public final class LogHelper {
 
 	public static void error(String message) {
 		FMLLog.log(name, Level.ERROR, message);
+		}
+	
+	public static void error(Throwable t) {
+		FMLLog.log(name, Level.ERROR, t + "");
 		}
 
 	public static void fatal(String message) {

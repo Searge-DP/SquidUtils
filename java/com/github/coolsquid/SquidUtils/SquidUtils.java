@@ -2,6 +2,8 @@ package com.github.coolsquid.SquidUtils;
 
 import java.io.File;
 
+import org.apache.logging.log4j.Level;
+
 import net.minecraftforge.common.MinecraftForge;
 
 import com.github.coolsquid.SquidUtils.Handlers.Config.ConfigHandler;
@@ -32,7 +34,7 @@ public class SquidUtils {
 		MinecraftForge.EVENT_BUS.register((Object)new DamageHandler());
 				
 		if (Loader.MC_VERSION.equals("1.7.2")) {
-			LogHelper.bigWarning("MC is running 1.7.2! Problems may occur.");
+			LogHelper.bigWarning(Level.WARN, "MC is running 1.7.2! Problems may occur.");
 		}
 		
 		File configFile = event.getSuggestedConfigurationFile();

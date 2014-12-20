@@ -2,6 +2,8 @@ package com.github.coolsquid.SquidUtils.Utils;
 
 import java.util.ArrayList;
 
+import org.apache.logging.log4j.Level;
+
 /**
  * 
  * @author CoolSquid
@@ -48,7 +50,7 @@ public class DirList {
 		int B = 0;
 		while (A < size() && B == 0) {
 			if (dir.contains(get(A))) {
-				LogHelper.bigWarning("This modpack might be illegal. Please ask for permission at: " + Data.forum);
+				LogHelper.bigWarning(Level.WARN, "This modpack might be illegal. Please ask for permission at: " + Data.forum);
 				B++;
 				}
 			A++;

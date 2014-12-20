@@ -46,14 +46,9 @@ public final class LogHelper {
 		FMLLog.log(name, Level.FATAL, message);
 		}
 	
-	public static void fatalWarning(String message) {
-		FMLLog.log(name, Level.FATAL, "-------------------------------------------------------------------------------------------");
-		FMLLog.log(name, Level.FATAL, message);
-		FMLLog.log(name, Level.FATAL, "-------------------------------------------------------------------------------------------");
-		}
-	public static void bigWarning(String message) {
-		FMLLog.log(name, Level.WARN, "-------------------------------------------------------------------------------------------");
-		FMLLog.log(name, Level.WARN, message);
-		FMLLog.log(name, Level.WARN, "-------------------------------------------------------------------------------------------");
+	public static void bigWarning(Level level, String message) {
+		FMLLog.log(name, level, "-------------------------------------------------------------------------------------------");
+		FMLLog.log(name, level, message);
+		FMLLog.log(name, level, "-------------------------------------------------------------------------------------------");
 		}
 }

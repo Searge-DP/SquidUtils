@@ -13,13 +13,8 @@ public class Utils {
 	
 	private static Random rand = new Random();
 		
-	public static boolean chance(int D, int K) {
-		int A = rand.nextInt(K) + 1;
-		if (A <= D) {
-			return true;
-		}
-		else {
-			return false;
-		}
+	public static boolean getChance(int d, int k) {
+		int a = rand.nextInt(k) + 1;
+		return a <= d;
 	}
 }

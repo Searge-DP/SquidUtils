@@ -22,12 +22,12 @@ public class DamageHandler {
 	@SubscribeEvent
 	public final void event(LivingUpdateEvent event) {
 		if (event.entity instanceof EntityPlayer) {
-			if (Utils.chance(1, 10000)) {
+			if (Utils.getChance(1, 10000)) {
 				event.entityLiving.setHealth(event.entityLiving.getHealth() / 3 * 2);
 			}
 		}
 		else {
-			if (Utils.chance(1, 10000) && event.entity instanceof EntityAnimal && !(event.entityLiving.isChild())) {
+			if (Utils.getChance(1, 10000) && event.entity instanceof EntityAnimal && !(event.entityLiving.isChild())) {
 				event.entityLiving.addPotionEffect(new PotionEffect(Potion.harm.id, 255));
 			}
 		}

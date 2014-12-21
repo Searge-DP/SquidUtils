@@ -1,8 +1,8 @@
 package com.github.coolsquid.SquidUtils.Handlers;
 
-import org.apache.logging.log4j.Level;
-
 import net.minecraftforge.oredict.OreDictionary;
+
+import org.apache.logging.log4j.Level;
 
 import com.github.coolsquid.SquidUtils.Handlers.Config.ConfigHandler;
 import com.github.coolsquid.SquidUtils.Utils.LogHelper;

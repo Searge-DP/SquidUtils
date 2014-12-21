@@ -7,7 +7,7 @@ public class InvalidConfigValueException extends RuntimeException {
 	String comment;
 	
 	public InvalidConfigValueException(String string) {
-		comment = "The config value " + "\"" + string + "\" has a bad value";
+		comment = "The config value " + "\"" + string + "\" has an invalid value";
 		throw this;
 	}
 	

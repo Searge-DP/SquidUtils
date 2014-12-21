@@ -5,7 +5,6 @@ import java.io.File;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 
-import com.github.coolsquid.SquidUtils.Exception.InvalidConfigValueException;
 import com.github.coolsquid.SquidUtils.Handlers.EventLogger;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.AchievementHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.BlockSearcher;
@@ -19,6 +18,7 @@ import com.github.coolsquid.SquidUtils.Handlers.Tweakers.StackSizeHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.TNTHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.VillagerHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.WitherHandler;
+import com.github.coolsquid.SquidUtils.Utils.InvalidConfigValueException;
 import com.github.coolsquid.SquidUtils.Utils.LogHelper;
 
 /**

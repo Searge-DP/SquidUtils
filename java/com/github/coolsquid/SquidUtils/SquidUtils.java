@@ -25,7 +25,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 public class SquidUtils {
 	
 	@EventHandler
-	private static void preInit(FMLPreInitializationEvent event) {
+	private void preInit(FMLPreInitializationEvent event) {
 		LogHelper.info("Preinitializing");
 		
 		if (Loader.MC_VERSION.equals("1.7.2")) {
@@ -39,7 +39,7 @@ public class SquidUtils {
 	}
 	
 	@EventHandler
-	private static void postInit(FMLPostInitializationEvent event) {
+	private void postInit(FMLPostInitializationEvent event) {
 		LogHelper.info("Postinitializing");
 		ConfigHandler.postInit();
 		LogHelper.info("Postinitialization finished.");

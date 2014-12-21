@@ -17,5 +17,9 @@ public class EnvironmentChecks {
 		if (Data.developmentEnvironment) {
 			LogHelper.info("Running in a dev environment.");
 		}
+		
+		if (!Data.isJava7()) {
+			LogHelper.warn("Minecraft is not running Java 7. Java 7 is optimal for this mod.");
+		}
 	}
 }

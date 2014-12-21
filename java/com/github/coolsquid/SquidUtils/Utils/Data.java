@@ -27,6 +27,10 @@ public class Data {
 		return System.getProperty("os.arch").contains("64");
 	}
 	
+	public static final boolean isJava7() {
+		return System.getProperty("java.version").contains("1.7.0_");
+	}
+	
 	public static final String modid = "SquidUtils";
 	public static final String version = "1.1.1";
 	public static final String forum = "http://bit.ly/squidutilsforum";

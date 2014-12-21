@@ -24,8 +24,8 @@ public class SquidUtils {
 	
 	@EventHandler
 	private void preInit(FMLPreInitializationEvent event) {
-		LogHelper.info("Preinitializing");
-		
+		LogHelper.info("Preinitializing...");
+		LogHelper.info(System.getProperty("java.version"));
 		EnvironmentChecks.preInit();
 		
 		File configFile = event.getSuggestedConfigurationFile();
@@ -36,7 +36,7 @@ public class SquidUtils {
 	
 	@EventHandler
 	private void postInit(FMLPostInitializationEvent event) {
-		LogHelper.info("Postinitializing");
+		LogHelper.info("Postinitializing...");
 		ConfigHandler.postInit();
 		LogHelper.info("Postinitialization finished.");
 	}

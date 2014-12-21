@@ -1,4 +1,4 @@
-package com.github.coolsquid.SquidUtils.Utils;
+package com.github.coolsquid.SquidUtils.Utils.Exception;
 
 public class InvalidConfigValueException extends RuntimeException {
 	

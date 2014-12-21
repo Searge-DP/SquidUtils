@@ -18,8 +18,8 @@ import com.github.coolsquid.SquidUtils.Handlers.Tweakers.StackSizeHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.TNTHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.VillagerHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.WitherHandler;
-import com.github.coolsquid.SquidUtils.Utils.InvalidConfigValueException;
 import com.github.coolsquid.SquidUtils.Utils.LogHelper;
+import com.github.coolsquid.SquidUtils.Utils.Exception.InvalidConfigValueException;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;

@@ -21,6 +21,9 @@ import com.github.coolsquid.SquidUtils.Handlers.Tweakers.WitherHandler;
 import com.github.coolsquid.SquidUtils.Utils.InvalidConfigValueException;
 import com.github.coolsquid.SquidUtils.Utils.LogHelper;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
+
 /**
  * 
  * @author CoolSquid
@@ -29,7 +32,7 @@ import com.github.coolsquid.SquidUtils.Utils.LogHelper;
  */
 
 public class ConfigHandler {
-
+	
 	private static Configuration config;
 	
 	public static void preInit(File configFile) {
@@ -108,7 +111,7 @@ public class ConfigHandler {
 	}
 	
 	private static void loadModules() {
-		if (!forceDifficulty.equalsIgnoreCase("FALSE")) {
+		if (!forceDifficulty.equalsIgnoreCase("FALSE") && FMLCommonHandler.instance().getSide().equals(Side.CLIENT)) {
 			MinecraftForge.EVENT_BUS.register((Object)new DifficultyHandler());
 		}
 		if (!forceDifficulty.equalsIgnoreCase("FALSE") && !forceDifficulty.equalsIgnoreCase("PEACEFUL") && !forceDifficulty.equalsIgnoreCase("EASY") && !forceDifficulty.equalsIgnoreCase("NORMAL") && !forceDifficulty.equalsIgnoreCase("HARD")) {
@@ -126,10 +129,10 @@ public class ConfigHandler {
 		if (ChainRecipes) {
 			RecipeHandler.ChainRecipes();
 		}
-		if (NoDebug) {
+		if (NoDebug && FMLCommonHandler.instance().getSide().equals(Side.CLIENT)) {
 			MinecraftForge.EVENT_BUS.register((Object)new DebugHandler());
 		}
-		if (MaxRenderDistance != 16) {
+		if (MaxRenderDistance != 16 && FMLCommonHandler.instance().getSide().equals(Side.CLIENT)) {
 			MinecraftForge.EVENT_BUS.register((Object)new RenderDistanceHandler());
 		}
 		if (VillagerProtection) {

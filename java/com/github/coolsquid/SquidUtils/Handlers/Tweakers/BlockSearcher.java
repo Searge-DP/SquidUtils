@@ -18,7 +18,7 @@ public class BlockSearcher {
 		while (A != 4095) {
 			if (Block.blockRegistry.getObjectById(A) != null) {
 				Block block = (Block) Block.blockRegistry.getObjectById(A);
-				if (ConfigHandler.getAllBlocksUnbreakable()) {
+				if (ConfigHandler.AllBlocksUnbreakable) {
 					block.setBlockUnbreakable();
 				}
 			}

@@ -26,7 +26,7 @@ public final class LogHelper {
 		}
 
 	public static void debug(String message) {
-		if (ConfigHandler.getDebugLogging())
+		if (ConfigHandler.DebugLogging)
 			FMLLog.log(name, Level.DEBUG, message);
 		}
 

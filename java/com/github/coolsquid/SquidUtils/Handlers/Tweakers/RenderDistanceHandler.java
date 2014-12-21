@@ -20,8 +20,8 @@ public class RenderDistanceHandler {
 	
 	@SubscribeEvent
 	public final void event(LivingUpdateEvent event) {
-		if (Minecraft.getMinecraft().gameSettings.renderDistanceChunks > ConfigHandler.getMaxRenderDistance() && event.entity instanceof EntityPlayer) {
-			Minecraft.getMinecraft().gameSettings.renderDistanceChunks = ConfigHandler.getMaxRenderDistance();
+		if (Minecraft.getMinecraft().gameSettings.renderDistanceChunks > ConfigHandler.MaxRenderDistance && event.entity instanceof EntityPlayer) {
+			Minecraft.getMinecraft().gameSettings.renderDistanceChunks = ConfigHandler.MaxRenderDistance;
 			Minecraft.getMinecraft().gameSettings.saveOptions();
 			LogHelper.debug("Render distance forced.");
 		}

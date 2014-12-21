@@ -53,25 +53,25 @@ public class ConfigHandler {
 	private static final String CATEGORY_PROPERTIES = "Block and item properties";
 	private static final String CATEGORY_GAMESETTINGS = "Force game options";
 	
-	private static String forceDifficulty = "FALSE";
-	private static boolean NoTNT = false;
-	private static boolean NoAchievements = false;
-	private static boolean NoWitherBoss = false;
-	private static int PotionStacks = 1;
-	private static boolean ChainRecipes = false;
-	private static boolean NoDebug = false;
-	private static int PearlStack = 16;
-	private static int MaxRenderDistance = 16;
-	private static int MFR = 20;
-	private static boolean OreDictComplain = true;
-	private static boolean TNTDropItems = true;
-	private static boolean DebugLogging = false;
-	private static boolean VillagerProtection = false;
-	private static boolean LogStuff = false;
-	private static int StackSizeDivider = 0;
-	private static boolean AllBlocksUnbreakable = false;
-	private static int DurabilityDivider = 1;
-	private static boolean DamageNiceCreatures = false;
+	public static String forceDifficulty = "FALSE";
+	public static boolean NoTNT = false;
+	public static boolean NoAchievements = false;
+	public static boolean NoWitherBoss = false;
+	public static int PotionStacks = 1;
+	public static boolean ChainRecipes = false;
+	public static boolean NoDebug = false;
+	public static int PearlStack = 16;
+	public static int MaxRenderDistance = 16;
+	public static int MFR = 20;
+	public static boolean OreDictComplain = true;
+	public static boolean TNTDropItems = true;
+	public static boolean DebugLogging = false;
+	public static boolean VillagerProtection = false;
+	public static boolean LogStuff = false;
+	public static int StackSizeDivider = 0;
+	public static boolean AllBlocksUnbreakable = false;
+	public static int DurabilityDivider = 1;
+	public static boolean DamageNiceCreatures = false;
 	
 	private static void initCategories() {
 		config.setCategoryComment(CATEGORY_GENERAL, "General options.");
@@ -143,99 +143,23 @@ public class ConfigHandler {
 		}
 	}
 	
-	public static String getForceDifficulty() {
-		return forceDifficulty;
-	}
-	
-	public static boolean getNoTNT() {
-		return NoTNT;
-	}
-	
-	public static boolean getNoAchievements() {
-		return NoAchievements;
-	}
-	
-	public static boolean getNoWitherBoss() {
-		return NoWitherBoss;
-	}
-	
-	public static int getPotionStacks() {
-		return PotionStacks;
-	}
-	
-	public static boolean getChainRecipes() {
-		return ChainRecipes;
-	}
-	
-	public static boolean getNoDebug() {
-		return NoDebug;
-	}
-	
-	public static int getPearlStack() {
-		return PearlStack;
-	}
-	
-	public static int getMaxRenderDistance() {
-		return MaxRenderDistance;
-	}
-	
-	public static int getMFR() {
-		return MFR;
-	}
-	
-	public static boolean getOreDictComplain() {
-		return OreDictComplain;
-	}
-	
-	public static boolean getTNTDropItems() {
-		return TNTDropItems;
-	}
-	
-	public static boolean getDebugLogging() {
-		return DebugLogging;
-	}
-	
-	public static boolean getVillagerProtection() {
-		return VillagerProtection;
-	}
-	
-	public static boolean getLogStuff() {
-		return LogStuff;
-	}
-	
-	public static int getMaxStackSize() {
-		return StackSizeDivider;
-	}
-	
-	public static boolean getAllBlocksUnbreakable() {
-		return AllBlocksUnbreakable;
-	}
-	
-	public static int getDurabilityDivider() {
-		return DurabilityDivider;
-	}
-	
-	public static boolean getDamageNiceCreatures() {
-		return DamageNiceCreatures;
-	}
-	
 	private static void DebugConfig() {
-		LogHelper.debug("ConfigHandler.getForceDifficulty() = " + getForceDifficulty());
-		LogHelper.debug("ConfigHandler.getNoTNT() = " + getNoTNT());
-		LogHelper.debug("ConfigHandler.getNoAchievements() = " + getNoAchievements());
-		LogHelper.debug("ConfigHandler.getNoWitherBoss() = " + getNoWitherBoss());
-		LogHelper.debug("ConfigHandler.getPotionStacks() = " + getPotionStacks());
-		LogHelper.debug("ConfigHandler.getNoDebug() = " + getNoDebug());
-		LogHelper.debug("ConfigHandler.getPearlStack() = " + getPearlStack());
-		LogHelper.debug("ConfigHandler.getMaxRenderDistance() = " + getMaxRenderDistance());
-		LogHelper.debug("ConfigHandler.getMFR() = " + getMFR());
-		LogHelper.debug("ConfigHandler.getOreDictComplain() = " + getOreDictComplain());
-		LogHelper.debug("ConfigHandler.getTNTDropItems() = " + getTNTDropItems());
-		LogHelper.debug("ConfigHandler.getVillagerProtection() = " + getVillagerProtection());
-		LogHelper.debug("ConfigHandler.getLogStuff() = " + getLogStuff());
-		LogHelper.debug("ConfigHandler.getAllBlocksUnbreakable = " + getAllBlocksUnbreakable());
-		LogHelper.debug("ConfigHandler.getDurabilityDivider = " + getDurabilityDivider());
-		LogHelper.debug("ConfigHandler.getDamageNiceCreatures = " + getDamageNiceCreatures());
+		LogHelper.debug("ConfigHandler.getForceDifficulty() = " + forceDifficulty);
+		LogHelper.debug("ConfigHandler.getNoTNT() = " + NoTNT);
+		LogHelper.debug("ConfigHandler.getNoAchievements() = " + NoAchievements);
+		LogHelper.debug("ConfigHandler.getNoWitherBoss() = " + NoWitherBoss);
+		LogHelper.debug("ConfigHandler.getPotionStacks() = " + PotionStacks);
+		LogHelper.debug("ConfigHandler.getNoDebug() = " + NoDebug);
+		LogHelper.debug("ConfigHandler.getPearlStack() = " + PearlStack);
+		LogHelper.debug("ConfigHandler.getMaxRenderDistance() = " + MaxRenderDistance);
+		LogHelper.debug("ConfigHandler.getMFR() = " + MFR);
+		LogHelper.debug("ConfigHandler.getOreDictComplain() = " + OreDictComplain);
+		LogHelper.debug("ConfigHandler.getTNTDropItems() = " + TNTDropItems);
+		LogHelper.debug("ConfigHandler.getVillagerProtection() = " + VillagerProtection);
+		LogHelper.debug("ConfigHandler.getLogStuff() = " + LogStuff);
+		LogHelper.debug("ConfigHandler.getAllBlocksUnbreakable = " + AllBlocksUnbreakable);
+		LogHelper.debug("ConfigHandler.getDurabilityDivider = " + DurabilityDivider);
+		LogHelper.debug("ConfigHandler.getDamageNiceCreatures = " + DamageNiceCreatures);
 	}
 	
 	public static void postInit() {

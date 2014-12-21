@@ -25,13 +25,13 @@ public class TNTHandler {
 	public final void EntityJoinWorldEvent(EntityJoinWorldEvent event) {
 		if(event.entity instanceof EntityMinecartTNT) {
 			event.setCanceled(true);
-			if (ConfigHandler.getTNTDropItems()) {
+			if (ConfigHandler.TNTDropItems) {
 				event.entity.entityDropItem(new ItemStack(Items.tnt_minecart, 1), 0);
 			}
 		}
 		else if(event.entity instanceof EntityTNTPrimed) {
 			event.setCanceled(true);
-			if (ConfigHandler.getTNTDropItems()) {
+			if (ConfigHandler.TNTDropItems) {
 				event.entity.entityDropItem(new ItemStack(Blocks.tnt, 1), 0);
 			}
 		}

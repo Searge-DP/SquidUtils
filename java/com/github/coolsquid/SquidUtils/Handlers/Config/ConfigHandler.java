@@ -8,7 +8,6 @@ import net.minecraftforge.common.config.Configuration;
 import com.github.coolsquid.SquidUtils.Handlers.EventLogger;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.AchievementHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.BlockSearcher;
-import com.github.coolsquid.SquidUtils.Handlers.Tweakers.DamageHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.DebugHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.DifficultyHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.ItemSearcher;
@@ -74,7 +73,6 @@ public class ConfigHandler {
 	public static int StackSizeDivider = 0;
 	public static boolean AllBlocksUnbreakable = false;
 	public static int DurabilityDivider = 1;
-	public static boolean DamageNiceCreatures = false;
 	
 	private static void initCategories() {
 		config.setCategoryComment(CATEGORY_GENERAL, "General options.");
@@ -104,7 +102,6 @@ public class ConfigHandler {
 		StackSizeDivider = config.getInt("stackSizeDivider", CATEGORY_PROPERTIES, 0, 0, 64, "Sets the max stack size for all items. Set to 0 to disable.");
 		AllBlocksUnbreakable = config.getBoolean("allBlocksUnbreakable", CATEGORY_PROPERTIES, false, "Makes all blocks unbreakable.");
 		DurabilityDivider = config.getInt("durabilityDivider", CATEGORY_PROPERTIES, 1, 1, 1080, "All tools and armors durability will be divided by this.");
-		DamageNiceCreatures = config.getBoolean("damageNiceCreatures", CATEGORY_GENERAL, false, "Randomly damages players, and kills animals.");
 		if (config.hasChanged()) {
 			config.save();
 		}
@@ -141,9 +138,6 @@ public class ConfigHandler {
 		if (LogStuff) {
 			MinecraftForge.EVENT_BUS.register((Object)new EventLogger());
 		}
-		if (DamageNiceCreatures) {
-			MinecraftForge.EVENT_BUS.register((Object)new DamageHandler());
-		}
 	}
 	
 	private static void DebugConfig() {
@@ -162,7 +156,6 @@ public class ConfigHandler {
 		LogHelper.debug("ConfigHandler.getLogStuff() = " + LogStuff);
 		LogHelper.debug("ConfigHandler.getAllBlocksUnbreakable = " + AllBlocksUnbreakable);
 		LogHelper.debug("ConfigHandler.getDurabilityDivider = " + DurabilityDivider);
-		LogHelper.debug("ConfigHandler.getDamageNiceCreatures = " + DamageNiceCreatures);
 	}
 	
 	public static void postInit() {

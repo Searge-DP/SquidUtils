@@ -2,6 +2,7 @@ package com.github.coolsquid.SquidUtils.Handlers.Config;
 
 import java.io.File;
 
+import net.minecraft.item.crafting.CraftingManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 
@@ -33,6 +34,10 @@ import cpw.mods.fml.relauncher.Side;
 public class ConfigHandler {
 	
 	private static Configuration config;
+		
+	public static boolean eic(String s, String s2) {
+		return s.equalsIgnoreCase(s2);
+	}
 	
 	public static void preInit(File configFile) {
 		if (config == null) {
@@ -44,8 +49,7 @@ public class ConfigHandler {
 		DebugConfig();
 	}
 	
-	private static void createConfig(File configFile)
-	{
+	private static void createConfig(File configFile) {
 		config = new Configuration(configFile);
 	}
 	
@@ -73,6 +77,7 @@ public class ConfigHandler {
 	public static int StackSizeDivider = 0;
 	public static boolean AllBlocksUnbreakable = false;
 	public static int DurabilityDivider = 1;
+	public static boolean ClearVanillaRecipes = false;
 	
 	private static void initCategories() {
 		config.setCategoryComment(CATEGORY_GENERAL, "General options.");
@@ -102,6 +107,8 @@ public class ConfigHandler {
 		StackSizeDivider = config.getInt("stackSizeDivider", CATEGORY_PROPERTIES, 0, 0, 64, "Sets the max stack size for all items. Set to 0 to disable.");
 		AllBlocksUnbreakable = config.getBoolean("allBlocksUnbreakable", CATEGORY_PROPERTIES, false, "Makes all blocks unbreakable.");
 		DurabilityDivider = config.getInt("durabilityDivider", CATEGORY_PROPERTIES, 1, 1, 1080, "All tools and armors durability will be divided by this.");
+		ClearVanillaRecipes = config.getBoolean("clearVanillaRecipes", CATEGORY_GENERAL, false, "Clears all Vanilla recipes.");
+		
 		if (config.hasChanged()) {
 			config.save();
 		}
@@ -111,8 +118,8 @@ public class ConfigHandler {
 		if (!forceDifficulty.equalsIgnoreCase("FALSE") && FMLCommonHandler.instance().getSide().equals(Side.CLIENT)) {
 			MinecraftForge.EVENT_BUS.register((Object)new DifficultyHandler());
 		}
-		if (!forceDifficulty.equalsIgnoreCase("FALSE") && !forceDifficulty.equalsIgnoreCase("PEACEFUL") && !forceDifficulty.equalsIgnoreCase("EASY") && !forceDifficulty.equalsIgnoreCase("NORMAL") && !forceDifficulty.equalsIgnoreCase("HARD")) {
-			throw new InvalidConfigValueException("error at \"forceDifficulty\"");
+		if (!eic(forceDifficulty, "FALSE") && !eic(forceDifficulty, "PEACEFUL") && !eic(forceDifficulty, "EASY") && !eic(forceDifficulty, "NORMAL") && !eic(forceDifficulty, "HARD")) {
+			throw new InvalidConfigValueException("forceDifficulty");
 		}
 		if (NoTNT) {
 			MinecraftForge.EVENT_BUS.register((Object)new TNTHandler());
@@ -137,6 +144,9 @@ public class ConfigHandler {
 		}
 		if (LogStuff) {
 			MinecraftForge.EVENT_BUS.register((Object)new EventLogger());
+		}
+		if (ClearVanillaRecipes) {
+			CraftingManager.getInstance().getRecipeList().clear();
 		}
 	}
 	

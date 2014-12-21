@@ -15,6 +15,7 @@ import cpw.mods.fml.common.FMLLog;
 
 public final class LogHelper {
 	
+	private static final boolean debug = ConfigHandler.DebugLogging;
 	private static final String name = Data.modid;
 	
 	public static void info(String message) {
@@ -26,8 +27,8 @@ public final class LogHelper {
 		}
 
 	public static void debug(String message) {
-		if (ConfigHandler.DebugLogging)
-			FMLLog.log(name, Level.DEBUG, message);
+		if (debug)
+			FMLLog.log(name, Level.INFO, message);
 		}
 
 	public static void warn(String message) {

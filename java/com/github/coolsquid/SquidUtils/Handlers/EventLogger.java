@@ -1,12 +1,12 @@
 package com.github.coolsquid.SquidUtils.Handlers;
 
-import com.github.coolsquid.SquidUtils.Utils.LogHelper;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
-import cpw.mods.fml.common.eventhandler.Event.Result;
+
+import com.github.coolsquid.SquidUtils.Utils.LogHelper;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 /**
@@ -25,7 +25,6 @@ public class EventLogger {
 		String s = " ";
 		String pos = event.x + s + event.y + s + event.z;
 		String m = "\"";
-		event.setResult(Result.ALLOW);
 		LogHelper.info((m + event.block.getLocalizedName()+ m + " was broken by: " + m + event.getPlayer().getDisplayName()) + m + " at: " + pos);
 	}
 	

@@ -6,5 +6,8 @@ resources/
 .classpath
 .settings/
 
+#temporary
+java/
+
 # Ignore Gradle GUI config
 gradle-app.setting

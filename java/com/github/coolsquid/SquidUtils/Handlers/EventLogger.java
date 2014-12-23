@@ -26,7 +26,7 @@ public class EventLogger {
 		String pos = event.x + s + event.y + s + event.z;
 		String m = "\"";
 		LogHelper.info((m + event.block.getLocalizedName() + m + " was broken by: " + m + event.getPlayer().getDisplayName()) + m + " at: " + pos);
-		Logger.log("BlockBroken", "INFO", m + event.block.getLocalizedName()+ m + " was broken by: " + m + event.getPlayer().getDisplayName() + m + " at: " + pos);
+		Logger.add("BlockBroken", "INFO", m + event.block.getLocalizedName()+ m + " was broken by: " + m + event.getPlayer().getDisplayName() + m + " at: " + pos);
 	}
 	
 	@SubscribeEvent
@@ -36,17 +36,17 @@ public class EventLogger {
 		if (source instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer) event.source.getEntity();
 			LogHelper.info(m + player.getDisplayName() + m + " killed " + event.entity);
-			Logger.log("EntityDeath", "INFO", m + player.getDisplayName() + m + " killed " + event.entity);
+			Logger.add("EntityDeath", "INFO", m + player.getDisplayName() + m + " killed " + event.entity);
 		}
 		
 		else if (!(source instanceof EntityPlayer) && source instanceof Entity) {
 			LogHelper.info(m + source + m + " killed " + event.entity);
-			Logger.log("EntityDeath", "INFO", m + source + m + " killed " + event.entity);
+			Logger.add("EntityDeath", "INFO", m + source + m + " killed " + event.entity);
 		}
 		
 		else if (!(event.source.getEntity() instanceof Entity) && !(event.source.damageType.equals("generic"))) {
 			LogHelper.info(m + event.source.getDamageType() + m + " killed " + event.entity);
-			Logger.log("EntityDeath", "INFO", m + event.source.getDamageType() + m + " killed " + event.entity);
+			Logger.add("EntityDeath", "INFO", m + event.source.getDamageType() + m + " killed " + event.entity);
 		}
 	}
 	

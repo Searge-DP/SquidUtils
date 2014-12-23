@@ -5,7 +5,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.Level;
 
 import com.github.coolsquid.SquidUtils.Handlers.Config.ConfigHandler;
-import com.github.coolsquid.SquidUtils.Utils.LogHelper;
+import com.github.coolsquid.SquidUtils.Utils.Logging.LogHelper;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 

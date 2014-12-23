@@ -31,6 +31,10 @@ public class ItemSearcher {
 						item.setMaxDamage(1);
 					}
 				}
+				
+				if (ConfigHandler.InfiniteDurability) {
+					item.setMaxDamage(0);
+				}
 			}
 			A++;
 		}

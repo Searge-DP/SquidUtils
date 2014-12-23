@@ -1,6 +1,6 @@
 package com.github.coolsquid.SquidUtils.Handlers.Tweakers;
 
-import com.github.coolsquid.SquidUtils.Utils.LogHelper;
+import com.github.coolsquid.SquidUtils.Utils.Logging.LogHelper;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;

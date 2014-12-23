@@ -5,7 +5,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 
 import com.github.coolsquid.SquidUtils.Handlers.Config.ConfigHandler;
-import com.github.coolsquid.SquidUtils.Utils.LogHelper;
+import com.github.coolsquid.SquidUtils.Utils.Logging.LogHelper;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 

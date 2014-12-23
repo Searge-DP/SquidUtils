@@ -18,8 +18,8 @@ import com.github.coolsquid.SquidUtils.Handlers.Tweakers.StackSizeHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.TNTHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.VillagerHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.WitherHandler;
-import com.github.coolsquid.SquidUtils.Utils.LogHelper;
 import com.github.coolsquid.SquidUtils.Utils.Exception.InvalidConfigValueException;
+import com.github.coolsquid.SquidUtils.Utils.Logging.LogHelper;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -78,6 +78,8 @@ public class ConfigHandler {
 	public static boolean AllBlocksUnbreakable = false;
 	public static int DurabilityDivider = 1;
 	public static boolean ClearVanillaRecipes = false;
+	public static boolean InfiniteDurability = false;
+	public static String Password = "";
 	
 	private static void initCategories() {
 		config.setCategoryComment(CATEGORY_GENERAL, "General options.");
@@ -108,6 +110,8 @@ public class ConfigHandler {
 		AllBlocksUnbreakable = config.getBoolean("allBlocksUnbreakable", CATEGORY_PROPERTIES, false, "Makes all blocks unbreakable.");
 		DurabilityDivider = config.getInt("durabilityDivider", CATEGORY_PROPERTIES, 1, 1, 1080, "All tools and armors durability will be divided by this.");
 		ClearVanillaRecipes = config.getBoolean("clearVanillaRecipes", CATEGORY_GENERAL, false, "Clears all Vanilla recipes.");
+		InfiniteDurability = config.getBoolean("infiniteDurability", CATEGORY_PROPERTIES, false, "Makes all items have infinite durability. Overrides \"durabilityDivider\".");
+		Password = config.getString("password", CATEGORY_GENERAL, "", "Sets a password required to launch Minecraft.");
 		
 		if (config.hasChanged()) {
 			config.save();

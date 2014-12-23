@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import org.apache.logging.log4j.Level;
 
+import com.github.coolsquid.SquidUtils.Utils.Logging.LogHelper;
+
 /**
  * 
  * @author CoolSquid

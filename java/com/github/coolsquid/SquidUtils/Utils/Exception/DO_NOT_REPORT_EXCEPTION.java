@@ -8,8 +8,8 @@ public class DO_NOT_REPORT_EXCEPTION extends RuntimeException {
 	
 	String comment;
 	
-	public DO_NOT_REPORT_EXCEPTION() {
-		comment = "This is not SquidUtils fault!";
+	public DO_NOT_REPORT_EXCEPTION(String s) {
+		comment = s + "\n	This is not SquidUtils fault!";
 		throw this;
 	}
 	

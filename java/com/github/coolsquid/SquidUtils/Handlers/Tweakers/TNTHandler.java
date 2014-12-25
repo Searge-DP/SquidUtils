@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 
 import com.github.coolsquid.SquidUtils.Handlers.Config.ConfigHandler;
-import com.github.coolsquid.SquidUtils.Utils.Logging.LogHelper;
+import com.github.coolsquid.SquidUtils.Utils.LogHelper;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 

@@ -1,9 +1,10 @@
 package com.github.coolsquid.SquidUtils.Handlers.Tweakers;
 
-import com.github.coolsquid.SquidUtils.Utils.Logging.LogHelper;
-
 import net.minecraft.entity.boss.EntityWither;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+
+import com.github.coolsquid.SquidUtils.Utils.LogHelper;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 /**

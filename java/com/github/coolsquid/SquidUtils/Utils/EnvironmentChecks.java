@@ -2,8 +2,6 @@ package com.github.coolsquid.SquidUtils.Utils;
 
 import org.apache.logging.log4j.Level;
 
-import com.github.coolsquid.SquidUtils.Utils.Logging.LogHelper;
-
 public class EnvironmentChecks {
 	
 	public static final void preInit() {

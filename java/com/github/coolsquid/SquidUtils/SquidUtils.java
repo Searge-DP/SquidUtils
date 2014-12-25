@@ -7,9 +7,8 @@ import javax.swing.JOptionPane;
 import com.github.coolsquid.SquidUtils.Handlers.Config.ConfigHandler;
 import com.github.coolsquid.SquidUtils.Utils.Data;
 import com.github.coolsquid.SquidUtils.Utils.EnvironmentChecks;
-import com.github.coolsquid.SquidUtils.Utils.ShutdownHandler;
+import com.github.coolsquid.SquidUtils.Utils.LogHelper;
 import com.github.coolsquid.SquidUtils.Utils.Exception.DO_NOT_REPORT_EXCEPTION;
-import com.github.coolsquid.SquidUtils.Utils.Logging.LogHelper;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -33,9 +32,7 @@ public class SquidUtils {
 		if (Data.isClient()) {
 			EnvironmentChecks.preInit();
 		}
-		
-		ShutdownHandler.run();
-		
+						
 		File configFile = event.getSuggestedConfigurationFile();
 		ConfigHandler.preInit(configFile);
 		

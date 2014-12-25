@@ -1,10 +1,11 @@
 package com.github.coolsquid.SquidUtils.Handlers.Tweakers;
 
-import com.github.coolsquid.SquidUtils.Utils.Logging.LogHelper;
-
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+
+import com.github.coolsquid.SquidUtils.Utils.LogHelper;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 
 /**

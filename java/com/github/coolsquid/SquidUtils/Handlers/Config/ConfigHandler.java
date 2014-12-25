@@ -6,6 +6,7 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 
+import com.github.coolsquid.SquidUtils.CreativeTabs.VanillaTab;
 import com.github.coolsquid.SquidUtils.Handlers.EventLogger;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.AchievementHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.BlockSearcher;
@@ -19,8 +20,8 @@ import com.github.coolsquid.SquidUtils.Handlers.Tweakers.TNTHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.VillagerHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.WitherHandler;
 import com.github.coolsquid.SquidUtils.Utils.Data;
+import com.github.coolsquid.SquidUtils.Utils.LogHelper;
 import com.github.coolsquid.SquidUtils.Utils.Exception.InvalidConfigValueException;
-import com.github.coolsquid.SquidUtils.Utils.Logging.LogHelper;
 
 /**
  * 
@@ -56,6 +57,7 @@ public class ConfigHandler {
 	private static final String CATEGORY_UNHURTABLE = "Unhurtable mobs";
 	private static final String CATEGORY_PROPERTIES = "Block and item properties";
 	private static final String CATEGORY_GAMESETTINGS = "Force game options";
+	private static final String CATEGORY_CREATIVETABS = "Creative tabs";
 	
 	public static String forceDifficulty = "FALSE";
 	public static boolean NoTNT = false;
@@ -78,6 +80,7 @@ public class ConfigHandler {
 	public static boolean ClearVanillaRecipes = false;
 	public static boolean InfiniteDurability = false;
 	public static String Password = "";
+	public static boolean tabVanilla = true;
 	
 	private static void initCategories() {
 		config.setCategoryComment(CATEGORY_GENERAL, "General options.");
@@ -85,6 +88,7 @@ public class ConfigHandler {
 		config.setCategoryComment(CATEGORY_UNHURTABLE, "Mob options.");
 		config.setCategoryComment(CATEGORY_PROPERTIES, "Configure block and item properties.");
 		config.setCategoryComment(CATEGORY_GAMESETTINGS, "Force game options.");
+		config.setCategoryComment(CATEGORY_CREATIVETABS, "Disable or enable creative tabs.");
 	}
 	
 	private static void readConfig() {
@@ -110,6 +114,7 @@ public class ConfigHandler {
 		ClearVanillaRecipes = config.getBoolean("clearVanillaRecipes", CATEGORY_GENERAL, false, "Clears all Vanilla recipes.");
 		InfiniteDurability = config.getBoolean("infiniteDurability", CATEGORY_PROPERTIES, false, "Makes all items have infinite durability. Overrides \"durabilityDivider\".");
 		Password = config.getString("password", CATEGORY_GENERAL, "", "Sets a password required to launch Minecraft.");
+		tabVanilla = config.getBoolean("tabVanilla", CATEGORY_CREATIVETABS, true, "Enables the extra Vanilla stuff creative tab.");
 		
 		if (config.hasChanged()) {
 			config.save();
@@ -149,6 +154,9 @@ public class ConfigHandler {
 		}
 		if (ClearVanillaRecipes) {
 			CraftingManager.getInstance().getRecipeList().clear();
+		}
+		if (tabVanilla && Data.isClient()) {
+			VanillaTab.preInit();
 		}
 	}
 	

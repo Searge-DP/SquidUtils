@@ -1,9 +1,8 @@
-package com.github.coolsquid.SquidUtils.Utils.Logging;
+package com.github.coolsquid.SquidUtils.Utils;
 
 import org.apache.logging.log4j.Level;
 
 import com.github.coolsquid.SquidUtils.Handlers.Config.ConfigHandler;
-import com.github.coolsquid.SquidUtils.Utils.Data;
 
 import cpw.mods.fml.common.FMLLog;
 
@@ -16,12 +15,7 @@ import cpw.mods.fml.common.FMLLog;
 
 public final class LogHelper {
 	
-	private static final boolean debug = ConfigHandler.DebugLogging;
 	private static final String name = Data.modid;
-	
-	public static void writeToLog(String message) {
-		
-	}
 	
 	public static void info(String message) {
 		FMLLog.log(name, Level.INFO, message);
@@ -32,10 +26,9 @@ public final class LogHelper {
 		}
 
 	public static void debug(String message) {
-		if (debug) {
-			FMLLog.log(name, Level.INFO, message);
+		if (ConfigHandler.DebugLogging)
+			FMLLog.log(name, Level.DEBUG, message);
 		}
-	}
 
 	public static void warn(String message) {
 		FMLLog.log(name, Level.WARN, message);

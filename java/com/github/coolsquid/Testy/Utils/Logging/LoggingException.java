@@ -1,4 +1,4 @@
-package com.coolsquid.Testy.Utils.Logging;
+package com.github.coolsquid.Testy.Utils.Logging;
 
 
 /**
@@ -11,7 +11,6 @@ package com.coolsquid.Testy.Utils.Logging;
 public class LoggingException extends RuntimeException {
 	
 	private static final long serialVersionUID = 528745347;
-	public static final int EID = 534;
 	
 	private static String s;
 	

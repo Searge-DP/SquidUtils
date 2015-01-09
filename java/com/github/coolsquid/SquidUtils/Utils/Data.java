@@ -1,10 +1,10 @@
 package com.github.coolsquid.SquidUtils.Utils;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.launchwrapper.Launch;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
-import net.minecraft.client.Minecraft;
-import net.minecraft.launchwrapper.Launch;
 
 /**
  * 
@@ -16,6 +16,13 @@ import net.minecraft.launchwrapper.Launch;
 public class Data {
 	
 	public static final boolean developmentEnvironment = (Boolean)Launch.blackboard.get("fml.deobfuscatedEnvironment");
+	public static final boolean isBukkit() {
+		try {
+			return Class.forName("org.bukkit.Bukkit") != null;
+		} catch (ClassNotFoundException e) {
+			return false;
+		}
+	}
 	
 	public static final boolean wV() {
 		return !Loader.MC_VERSION.equals("1.7.10");
@@ -38,7 +45,9 @@ public class Data {
 	}
 	
 	public static final String modid = "SquidUtils";
-	public static final String version = "1.1.1";
+	public static final String name = "§bSquidUtils";
+	public static final String version = "1.1.3";
 	public static final String forum = "http://bit.ly/squidutilsforum";
 	public static final String author = "CoolSquid";
+	public static final String dependencies = "";
 }

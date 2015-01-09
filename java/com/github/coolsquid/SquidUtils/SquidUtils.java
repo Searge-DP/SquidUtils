@@ -1,14 +1,10 @@
 package com.github.coolsquid.SquidUtils;
 
-import java.io.File;
-
-import javax.swing.JOptionPane;
-
 import com.github.coolsquid.SquidUtils.Handlers.Config.ConfigHandler;
+import com.github.coolsquid.SquidUtils.Handlers.Tweakers.RecipeHandler;
+import com.github.coolsquid.SquidUtils.Utils.CommonHandler;
 import com.github.coolsquid.SquidUtils.Utils.Data;
-import com.github.coolsquid.SquidUtils.Utils.EnvironmentChecks;
-import com.github.coolsquid.SquidUtils.Utils.LogHelper;
-import com.github.coolsquid.SquidUtils.Utils.Exception.DO_NOT_REPORT_EXCEPTION;
+import com.github.coolsquid.SquidUtils.Utils.Logging.LogHelper;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -22,31 +18,17 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
  *
  */
 
-@Mod(modid = Data.modid, name = Data.modid, version = Data.version, acceptableRemoteVersions = "*")
+@Mod(modid = Data.modid, name = Data.name, version = Data.version, dependencies = Data.dependencies, acceptableRemoteVersions = "*")
 public class SquidUtils {
 	
 	@EventHandler
 	private void preInit(FMLPreInitializationEvent event) {
 		LogHelper.info("Preinitializing...");
 		
-		if (Data.isClient()) {
-			EnvironmentChecks.preInit();
-		}
-						
-		File configFile = event.getSuggestedConfigurationFile();
-		ConfigHandler.preInit(configFile);
+		CommonHandler.init();
 		
-		if (!(ConfigHandler.Password.isEmpty())) {
-			try {
-				String p = JOptionPane.showInputDialog("Password:");
-				if (!p.equals(ConfigHandler.Password)) {
-					throw new DO_NOT_REPORT_EXCEPTION("Wrong password.");
-				}
-			}
-			catch (NullPointerException e) {
-				throw new DO_NOT_REPORT_EXCEPTION("Wrong password.");
-			}
-		}
+		ConfigHandler.configFile = event.getSuggestedConfigurationFile();
+		new Thread(new ConfigHandler()).start();
 		
 		LogHelper.info("Preinitialization finished.");
 	}
@@ -55,6 +37,7 @@ public class SquidUtils {
 	private void postInit(FMLPostInitializationEvent event) {
 		LogHelper.info("Postinitializing...");
 		ConfigHandler.postInit();
+		RecipeHandler.removeRecipes();
 		LogHelper.info("Postinitialization finished.");
 	}
 }

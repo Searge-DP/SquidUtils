@@ -1,6 +1,8 @@
-package com.coolsquid.Testy.Utils.Logging;
+package com.github.coolsquid.Testy.Utils.Logging;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -14,20 +16,24 @@ import java.util.List;
  *
  */
 
-public class Logger {
+public class Logger extends Thread {
 	
 	private static List<String> loglist = new ArrayList<String>();
 	
-	public static final void log(String caller, String level, String message, boolean print) {
-		SimpleDateFormat t = new SimpleDateFormat("HH:mm:ss");
+	private static SimpleDateFormat t = new SimpleDateFormat("HH:mm:ss");
+	public static final void log(String caller, Level level, String message, boolean print) {
+		if (message.length() > 150) {
+			throw new LoggingException("The message was too long!");
+		}
+		
 		String time = t.format(Calendar.getInstance().getTime());
-		if (level.matches("(INFO|WARN)")) {
+		if (level.equals(Level.INFO)) {
 			loglist.add("[" + time + "]" + "[" + caller + "]" + "[" + level + "]: " + message);
 			if (print) {
 				System.out.println("[" + time + "]" + "[" + caller + "]" + "[" + level + "]: " + message);
 			}
 		}
-		else if (level.matches("(ERROR|FATAL)")) {
+		else if (level.equals(Level.WARN) || level.equals(Level.ERROR) || level.equals(Level.FATAL)) {
 			loglist.add("[" + time + "]" + "[" + caller + "]" + "[" + level + "]: " + message);
 			if (print) {
 				System.err.println("[" + time + "]" + "[" + caller + "]" + "[" + level + "]: " + message);
@@ -38,11 +44,11 @@ public class Logger {
 		}
 	}
 	
+	private static SimpleDateFormat ft = new SimpleDateFormat("HH-mm-ss");
+	private static SimpleDateFormat fd = new SimpleDateFormat("dd-MM-YYYY");
 	public static final void save(String location, String name) {
 		int a = 0;
 		
-		SimpleDateFormat ft = new SimpleDateFormat("HH-mm-ss");
-		SimpleDateFormat fd = new SimpleDateFormat("dd-MM-YYYY");
 		String fileTime = ft.format(Calendar.getInstance().getTime());
 		String fileDate = fd.format(Calendar.getInstance().getTime());
 		
@@ -59,12 +65,12 @@ public class Logger {
 		try {
 			logFolder.mkdirs();
 			if (!loglist.isEmpty()) {
-				w = new PrintWriter(log);
+				w = new PrintWriter(new OutputStreamWriter(new FileOutputStream(log)));
 				while (a < loglist.size()) {
 					if (a == 0) {
-						w.format("#Log");
+						w.print("#Log");
 					}
-					w.format("\n" + loglist.get(a));
+					w.print("\n");w.print(loglist.get(a));
 					a++;
 				}
 				w.close();

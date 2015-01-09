@@ -2,19 +2,11 @@ package com.github.coolsquid.SquidUtils.Utils.Exception;
 
 
 
-public class DO_NOT_REPORT_EXCEPTION extends RuntimeException {
+
+public class DO_NOT_REPORT_EXCEPTION extends SquidUtilsException {
+	private static final long serialVersionUID = 6583935765453828886L;
 	
-	private static final long serialVersionUID = 434986525;
-	
-	String comment;
-	
-	public DO_NOT_REPORT_EXCEPTION(String s) {
-		comment = s + "\n	This is not SquidUtils fault!";
-		throw this;
-	}
-	
-	@Override
-	public final String getMessage() {
-		return comment;
+	public DO_NOT_REPORT_EXCEPTION(String comment) {
+		super(comment);
 	}
 }

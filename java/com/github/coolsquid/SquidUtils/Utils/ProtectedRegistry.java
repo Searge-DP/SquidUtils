@@ -5,6 +5,13 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.function.Predicate;
 
+/**
+ * 
+ * @author CoolSquid
+ * All rights reserved.
+ *
+ */
+
 public class ProtectedRegistry extends ArrayList<Object> {
 	private static final long serialVersionUID = 8173664693420638448L;
 	

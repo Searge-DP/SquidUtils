@@ -3,6 +3,13 @@ package com.github.coolsquid.SquidUtils.Utils;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+/**
+ * 
+ * @author CoolSquid
+ * All rights reserved.
+ *
+ */
+
 public class ReflectionHelper {
 	
 	public static final String getString(Class<?> c, String fieldName) {

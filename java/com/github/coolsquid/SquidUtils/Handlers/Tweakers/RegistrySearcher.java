@@ -5,6 +5,13 @@ import net.minecraft.item.Item;
 
 import com.github.coolsquid.SquidUtils.Handlers.Config.ConfigHandler;
 
+/**
+ * 
+ * @author CoolSquid
+ * All rights reserved.
+ *
+ */
+
 public class RegistrySearcher {
 
 	public static final void start() {

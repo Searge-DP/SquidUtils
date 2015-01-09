@@ -8,6 +8,13 @@ import java.io.PrintWriter;
 
 import com.github.coolsquid.SquidUtils.Utils.Logging.LogHelper;
 
+/**
+ * 
+ * @author CoolSquid
+ * All rights reserved.
+ *
+ */
+
 public class CommonHandler {
 	
 	public static final void init() {

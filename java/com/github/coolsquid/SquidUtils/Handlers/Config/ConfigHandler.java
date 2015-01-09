@@ -9,7 +9,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 
 import com.github.coolsquid.SquidUtils.CreativeTabs.VanillaTab;
-import com.github.coolsquid.SquidUtils.Handlers.RunEventLogger;
+import com.github.coolsquid.SquidUtils.Handlers.EventLogger;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.AchievementHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.DebugHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.DifficultyHandler;
@@ -164,7 +164,7 @@ public class ConfigHandler implements Runnable {
 			MinecraftForge.EVENT_BUS.register((Object)new VillagerHandler());
 		}
 		if (logStuff) {
-			new Thread(new RunEventLogger()).start();
+			MinecraftForge.EVENT_BUS.register((Object)new EventLogger());
 		}
 		if (clearVanillaRecipes) {
 			CraftingManager.getInstance().getRecipeList().clear();

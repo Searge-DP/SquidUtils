@@ -7,7 +7,14 @@ import org.apache.logging.log4j.Level;
 
 import com.github.coolsquid.SquidUtils.Utils.Logging.LogHelper;
 
-//Will be used for known modpacks illegally featuring SquidUtils
+/**
+ * 
+ * @author CoolSquid
+ * All rights reserved.
+ *
+ */
+
+//Will be used for modpacks stealing SquidUtils
 public class DirList {
 	
 	private static List<String> DIR_LIST = new ArrayList<String>();

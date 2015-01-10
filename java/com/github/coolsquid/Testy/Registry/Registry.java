@@ -14,7 +14,7 @@ public class Registry {
 	
 	public int maxSize = Integer.MAX_VALUE;
 	
-	protected static int a = 0;
+	private static int a = 0;
 	
 	public Registry(int i) {
 		maxSize = i;
@@ -46,5 +46,9 @@ public class Registry {
 		public RegistryException(String comment) {
 			super(comment);
 		}
+	}
+
+	public int size() {
+		return l.size();
 	}
 }

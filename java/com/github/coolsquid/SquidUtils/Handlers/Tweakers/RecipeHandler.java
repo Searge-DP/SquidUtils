@@ -8,7 +8,7 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 
 import com.github.coolsquid.SquidUtils.Utils.Logging.LogHelper;
-import com.github.coolsquid.Testy.Registry.ProtectedRegistry;
+import com.github.coolsquid.Testy.Registry.Registry;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -21,7 +21,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 public class RecipeHandler {
 	
-	public static final ProtectedRegistry recipesToRemove = new ProtectedRegistry();
+	public static final Registry recipesToRemove = new Registry();
 	
 	public static void chainRecipes() {
 		GameRegistry.addRecipe(new ItemStack(Items.chainmail_helmet), new Object[] {"IPI","B B", 'I', Items.iron_ingot, 'P', Blocks.stone_pressure_plate, 'B', Blocks.stone_button});

@@ -2,6 +2,7 @@ package com.github.coolsquid.SquidUtils.Utils.Logging;
 
 import org.apache.logging.log4j.Level;
 
+import com.github.coolsquid.SquidUtils.Handlers.Config.ConfigHandler;
 import com.github.coolsquid.SquidUtils.Utils.Data;
 
 import cpw.mods.fml.common.FMLLog;
@@ -26,8 +27,9 @@ public final class LogHelper {
 		}
 	
 	public static void debug(String message) {
-		FMLLog.log(name, Level.DEBUG, message);
-		}
+		if (ConfigHandler.debug)
+			FMLLog.log(name, Level.INFO, message);
+	}
 	
 	public static void warn(String message) {
 		FMLLog.log(name, Level.WARN, message);

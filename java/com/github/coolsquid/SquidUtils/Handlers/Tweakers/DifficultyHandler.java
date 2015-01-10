@@ -18,24 +18,28 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
  */
 
 public class DifficultyHandler {
-
+	
+	private static final String difficulty = ConfigHandler.forceDifficulty;
 	@SubscribeEvent
 	public final void event(LivingUpdateEvent event) {
 		if (event.entity instanceof EntityPlayer) {
-			if (Minecraft.getMinecraft().gameSettings.difficulty != EnumDifficulty.HARD && ConfigHandler.forceDifficulty.equalsIgnoreCase("HARD")) {
+			if (Minecraft.getMinecraft().gameSettings.difficulty != EnumDifficulty.HARD && difficulty.equalsIgnoreCase("HARD")) {
 				Minecraft.getMinecraft().gameSettings.difficulty = EnumDifficulty.HARD;
+				LogHelper.debug("Difficulty forced.");
 			}
-			else if (Minecraft.getMinecraft().gameSettings.difficulty != EnumDifficulty.NORMAL && ConfigHandler.forceDifficulty.equalsIgnoreCase("NORMAL")) {
+			else if (Minecraft.getMinecraft().gameSettings.difficulty != EnumDifficulty.NORMAL && difficulty.equalsIgnoreCase("NORMAL")) {
 				Minecraft.getMinecraft().gameSettings.difficulty = EnumDifficulty.NORMAL;
+				LogHelper.debug("Difficulty forced.");
 			}
-			else if (Minecraft.getMinecraft().gameSettings.difficulty != EnumDifficulty.EASY && ConfigHandler.forceDifficulty.equalsIgnoreCase("EASY")) {
+			else if (Minecraft.getMinecraft().gameSettings.difficulty != EnumDifficulty.EASY && difficulty.equalsIgnoreCase("EASY")) {
 				Minecraft.getMinecraft().gameSettings.difficulty = EnumDifficulty.EASY;
+				LogHelper.debug("Difficulty forced.");
 			}
-			else if (Minecraft.getMinecraft().gameSettings.difficulty != EnumDifficulty.PEACEFUL && ConfigHandler.forceDifficulty.equalsIgnoreCase("PEACEFUL")) {
+			else if (Minecraft.getMinecraft().gameSettings.difficulty != EnumDifficulty.PEACEFUL && difficulty.equalsIgnoreCase("PEACEFUL")) {
 				Minecraft.getMinecraft().gameSettings.difficulty = EnumDifficulty.PEACEFUL;
+				LogHelper.debug("Difficulty forced.");
 			}
 			Minecraft.getMinecraft().gameSettings.saveOptions();
-			LogHelper.debug("Difficulty forced.");
 		}
 	}
 }

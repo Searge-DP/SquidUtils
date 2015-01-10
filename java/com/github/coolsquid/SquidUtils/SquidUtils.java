@@ -1,7 +1,9 @@
 package com.github.coolsquid.SquidUtils;
 
+import net.minecraft.init.Items;
+import net.minecraftforge.oredict.OreDictionary;
+
 import com.github.coolsquid.SquidUtils.Handlers.Config.ConfigHandler;
-import com.github.coolsquid.SquidUtils.Handlers.Tweakers.RecipeHandler;
 import com.github.coolsquid.SquidUtils.Utils.CommonHandler;
 import com.github.coolsquid.SquidUtils.Utils.Data;
 import com.github.coolsquid.SquidUtils.Utils.Logging.LogHelper;
@@ -27,8 +29,7 @@ public class SquidUtils {
 		
 		CommonHandler.init();
 		
-		ConfigHandler.configFile = event.getSuggestedConfigurationFile();
-		new Thread(new ConfigHandler()).start();
+		ConfigHandler.preInit(event.getSuggestedConfigurationFile());
 		
 		LogHelper.info("Preinitialization finished.");
 	}
@@ -37,7 +38,6 @@ public class SquidUtils {
 	private void postInit(FMLPostInitializationEvent event) {
 		LogHelper.info("Postinitializing...");
 		ConfigHandler.postInit();
-		RecipeHandler.removeRecipes();
 		LogHelper.info("Postinitialization finished.");
 	}
 }

@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 
+import net.minecraftforge.common.MinecraftForge;
+
+import com.github.coolsquid.SquidUtils.Handlers.ModHandler;
 import com.github.coolsquid.SquidUtils.Utils.Logging.LogHelper;
 
 /**
@@ -38,5 +41,7 @@ public class CommonHandler {
 		
 		if (Data.isBukkit())
 			LogHelper.warn("Running on Bukkit! No support will be given.");
+		
+		MinecraftForge.EVENT_BUS.register((Object)new ModHandler());
 	}
 }

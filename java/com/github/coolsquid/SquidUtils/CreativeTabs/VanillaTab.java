@@ -12,7 +12,7 @@ import net.minecraft.item.Item;
  *
  */
 
-public class VanillaTab extends CreativeTabs{
+public class VanillaTab extends CreativeTabs {
 	
 	public static CreativeTabs tabVanilla = new VanillaTab("tabVanilla");
 	

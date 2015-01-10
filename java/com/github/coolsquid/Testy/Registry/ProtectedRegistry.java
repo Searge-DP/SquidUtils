@@ -1,4 +1,4 @@
-package com.github.coolsquid.SquidUtils.Utils;
+package com.github.coolsquid.Testy.Registry;
 
 import java.util.ArrayList;
 import java.util.Collection;

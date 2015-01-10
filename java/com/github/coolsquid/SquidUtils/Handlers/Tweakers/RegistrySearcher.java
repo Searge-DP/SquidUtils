@@ -52,7 +52,6 @@ public class RegistrySearcher {
 						item.setMaxDamage(1);
 					}
 				}
-				
 				if (ConfigHandler.infiniteDurability) {
 					item.setMaxDamage(0);
 				}

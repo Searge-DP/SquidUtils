@@ -7,8 +7,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 
-import com.github.coolsquid.SquidUtils.Utils.ProtectedRegistry;
 import com.github.coolsquid.SquidUtils.Utils.Logging.LogHelper;
+import com.github.coolsquid.Testy.Registry.ProtectedRegistry;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 

@@ -16,8 +16,8 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 public class AchievementHandler {
 	
 	@SubscribeEvent
-	public final void event(AchievementEvent Achievement) {
-		Achievement.setCanceled(true);
+	public final void event(AchievementEvent event) {
+		event.setCanceled(true);
 		LogHelper.debug("Achievement blocked.");
 	}
 }

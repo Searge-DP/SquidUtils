@@ -15,7 +15,7 @@ import cpw.mods.fml.relauncher.Side;
 
 public class Data {
 	
-	public static final boolean developmentEnvironment = (Boolean)Launch.blackboard.get("fml.deobfuscatedEnvironment");
+	public static final boolean developmentEnvironment = (Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
 	public static final boolean isBukkit() {
 		try {
 			return Class.forName("org.bukkit.Bukkit") != null;
@@ -24,7 +24,7 @@ public class Data {
 		}
 	}
 	
-	public static final boolean wV() {
+	public static final boolean wrongVersion() {
 		return !Loader.MC_VERSION.equals("1.7.10");
 	}
 	
@@ -40,13 +40,13 @@ public class Data {
 		return System.getProperty("os.arch").contains("64");
 	}
 	
-	public static final boolean isJava7() {
-		return System.getProperty("java.version").contains("1.7.0_");
+	public static final boolean isJava8() {
+		return System.getProperty("java.version").contains("1.8.0_");
 	}
 	
 	public static final String modid = "SquidUtils";
 	public static final String name = "§bSquidUtils";
-	public static final String version = "1.1.3";
+	public static final String version = "1.1.4";
 	public static final String forum = "http://bit.ly/squidutilsforum";
 	public static final String author = "CoolSquid";
 	public static final String dependencies = "";

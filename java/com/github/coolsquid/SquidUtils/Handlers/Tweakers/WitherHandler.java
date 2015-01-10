@@ -20,7 +20,7 @@ public class WitherHandler {
 	public final void event(EntityJoinWorldEvent event) {
 		if(event.entity instanceof EntityWither) {
 			event.setCanceled(true);
+			LogHelper.debug("Wither blocked.");
 		}
-		LogHelper.debug("Wither blocked.");
 	}
 }

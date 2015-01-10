@@ -31,22 +31,13 @@ import com.github.coolsquid.SquidUtils.Utils.Exception.InvalidConfigValueExcepti
  *
  */
 
-public class ConfigHandler implements Runnable {
+public class ConfigHandler {
 	
-	public static File configFile;
-	
-	@Override
-	public void run() {
-		preInit();
-	}
-	
+	private static File configFile;
 	private static Configuration config;
 	
-	public static boolean eic(String s, String s2) {
-		return s.equalsIgnoreCase(s2);
-	}
-	
-	public static void preInit() {
+	public static void preInit(File file) {
+		configFile = file;
 		createConfig();
 		initCategories();
 		readConfig();
@@ -74,7 +65,7 @@ public class ConfigHandler implements Runnable {
 	public static boolean noDebug = false;
 	public static int pearlStack = 16;
 	public static int maxRenderDistance = 16;
-	public static int mfr = 20;
+	public static boolean mfr = true;
 	public static boolean tntDropItems = true;
 	public static boolean villagerProtection = false;
 	public static boolean logStuff = false;
@@ -85,6 +76,7 @@ public class ConfigHandler implements Runnable {
 	public static String password = "";
 	public static boolean tabVanilla = true;
 	public static boolean infiniteDurability = false;
+	public static boolean debug = false;
 	
 	private static void initCategories() {
 		config.setCategoryComment(CATEGORY_GENERAL, "General options.");
@@ -97,7 +89,7 @@ public class ConfigHandler implements Runnable {
 	
 	private static void readConfig() {
 		
-		forceDifficulty = config.getString("forceDifficulty", CATEGORY_GAMESETTINGS, "FALSE", "Forces the specified difficulty. Allows for HARD, noRMAL, EASY, PEACEFUL or FALSE. Set to FALSE to disable.");
+		forceDifficulty = config.getString("forceDifficulty", CATEGORY_GAMESETTINGS, "FALSE", "Forces the specified difficulty. Allows for HARD, NORMAL, EASY, PEACEFUL or FALSE. Set to FALSE to disable.");
 		noTNT = config.getBoolean("noTNT", CATEGORY_GENERAL, false, "Stops TNT from exploding.");
 		noAchievements = config.getBoolean("noAchievements", CATEGORY_GENERAL, false, "Disables achievements.");
 		noWitherBoss = config.getBoolean("noWitherBoss", CATEGORY_GENERAL, false, "Disables the witherboss.");
@@ -106,7 +98,7 @@ public class ConfigHandler implements Runnable {
 		noDebug = config.getBoolean("noDebug", CATEGORY_GENERAL, false, "Makes it impossible to open the debug screen.");
 		pearlStack = config.getInt("maxEnderPearlStackSize", CATEGORY_PROPERTIES, 16, 1, 64, "Sets the max stacksize for enderpearls.");
 		maxRenderDistance = config.getInt("maxRenderDistance", CATEGORY_GAMESETTINGS, 16, 1, 16, "Sets the max render distance. Set to 16 to disable.");
-		mfr = config.getInt("mfr", CATEGORY_COMPAT, 20, 0, 50, "Amount of lines...");
+		mfr = config.getBoolean("mfr", CATEGORY_COMPAT, true, "Amount of lines...");
 		tntDropItems = config.getBoolean("tntDropItems", CATEGORY_GENERAL, true, "Should TNT drop items when removed? Only applies if \"noTNT\" is true.");
 		villagerProtection = config.getBoolean("villagerProtection", CATEGORY_UNHURTABLE, false, "Makes villagers unhurtable.");
 		logStuff = config.getBoolean("logStuff", CATEGORY_GENERAL, false, "Logs all blocks broken and all entity deaths.");
@@ -139,7 +131,7 @@ public class ConfigHandler implements Runnable {
 		if (!forceDifficulty.equalsIgnoreCase("FALSE") && Data.isClient()) {
 			MinecraftForge.EVENT_BUS.register((Object)new DifficultyHandler());
 		}
-		if (!eic(forceDifficulty, "FALSE") && !eic(forceDifficulty, "PEACEFUL") && !eic(forceDifficulty, "EASY") && !eic(forceDifficulty, "NORMAL") && !eic(forceDifficulty, "HARD")) {
+		if (!forceDifficulty.equalsIgnoreCase("FALSE") && !forceDifficulty.equalsIgnoreCase("PEACEFUL") && !forceDifficulty.equalsIgnoreCase("EASY") && !forceDifficulty.equalsIgnoreCase("NORMAL") && !forceDifficulty.equalsIgnoreCase("HARD")) {
 			throw new InvalidConfigValueException("forceDifficulty");
 		}
 		if (noTNT) {

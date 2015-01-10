@@ -4,7 +4,6 @@ import com.github.coolsquid.SquidUtils.Handlers.Config.ConfigHandler;
 import com.github.coolsquid.SquidUtils.Utils.CommonHandler;
 import com.github.coolsquid.SquidUtils.Utils.Data;
 import com.github.coolsquid.SquidUtils.Utils.Logging.LogHelper;
-import com.github.coolsquid.Testy.Utils.Exception.TestyRuntimeException;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -30,7 +29,6 @@ public class SquidUtils {
 		ConfigHandler.preInit(event.getSuggestedConfigurationFile());
 		
 		LogHelper.info("Preinitialization finished.");
-		throw new TestyRuntimeException(new Throwable());
 	}
 	
 	@EventHandler

@@ -7,6 +7,13 @@ import java.util.Map;
 
 import com.github.coolsquid.Testy.Utils.Exception.TestyRuntimeException;
 
+/**
+ * 
+ * @author CoolSquid
+ * All rights reserved.
+ *
+ */
+
 public class Registry {
 	
 	protected static Map<Object, Integer> m = new HashMap<Object, Integer>();

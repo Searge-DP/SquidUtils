@@ -1,6 +1,7 @@
 package com.github.coolsquid.SquidUtils.Utils.Logging;
 
 import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
 
 import com.github.coolsquid.SquidUtils.Handlers.Config.ConfigHandler;
 import com.github.coolsquid.SquidUtils.Utils.Data;
@@ -52,4 +53,9 @@ public final class LogHelper {
 		FMLLog.log(name, level, message);
 		FMLLog.log(name, level, "-------------------------------------------------------------------------------------------");
 		}
+	
+	public static void log(Level level, String msg) {
+		org.apache.logging.log4j.Logger logger = LogManager.getLogger(Data.modid);
+		logger.log(level, msg);
+	}
 }

@@ -31,8 +31,10 @@ public class Registry {
 	
 	public void register(Object o) {
 		if (maxSize < a) {
-			l.add(o);
-			m.put(o, a);
+			if (m.get(o) == null) {
+				l.add(o);
+				m.put(o, a);
+			}
 			a++;
 		}
 		else {

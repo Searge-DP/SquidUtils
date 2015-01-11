@@ -49,5 +49,5 @@ public class Data {
 	public static final String version = "1.1.4";
 	public static final String forum = "http://bit.ly/squidutilsforum";
 	public static final String author = "CoolSquid";
-	public static final String dependencies = "before:OpenBlocks,before:FighterMobs";
+	public static final String dependencies = "";
 }

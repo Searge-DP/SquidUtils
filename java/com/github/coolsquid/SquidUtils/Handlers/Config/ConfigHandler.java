@@ -38,7 +38,7 @@ public class ConfigHandler {
 	private static File configFile;
 	private static Configuration config;
 	
-	public static void preInit(File file) {
+	public static final void preInit(File file) {
 		configFile = file;
 		createConfig();
 		initCategories();
@@ -46,7 +46,7 @@ public class ConfigHandler {
 		loadModules();
 	}
 	
-	private static void createConfig() {
+	private static final void createConfig() {
 		if (config == null)
 			config = new Configuration(configFile);
 	}
@@ -75,7 +75,6 @@ public class ConfigHandler {
 	public static boolean allBlocksUnbreakable = false;
 	public static int durabilityDivider = 1;
 	public static int clearRecipes = 0;
-	public static String password = "";
 	public static boolean tabVanilla = true;
 	public static boolean infiniteDurability = false;
 	public static boolean debug = false;
@@ -89,8 +88,7 @@ public class ConfigHandler {
 		config.setCategoryComment(CATEGORY_CREATIVETABS, "Disable or enable creative tabs.");
 	}
 	
-	private static void readConfig() {
-		
+	private static final void readConfig() {
 		forceDifficulty = config.getString("forceDifficulty", CATEGORY_GAMESETTINGS, "FALSE", "Forces the specified difficulty. Allows for HARD, NORMAL, EASY, PEACEFUL or FALSE. Set to FALSE to disable.");
 		noTNT = config.getBoolean("noTNT", CATEGORY_GENERAL, false, "Stops TNT from exploding.");
 		noAchievements = config.getBoolean("noAchievements", CATEGORY_GENERAL, false, "Disables achievements.");
@@ -107,21 +105,15 @@ public class ConfigHandler {
 		stackSizeDivider = config.getInt("stackSizeDivider", CATEGORY_PROPERTIES, 0, 0, 64, "Sets the max stack size for all items. Set to 0 to disable.");
 		allBlocksUnbreakable = config.getBoolean("allBlocksUnbreakable", CATEGORY_PROPERTIES, false, "Makes all blocks unbreakable.");
 		durabilityDivider = config.getInt("durabilityDivider", CATEGORY_PROPERTIES, 1, 1, 1080, "All tools and armors durability will be divided by this.");
-		clearRecipes = config.getInt("clearRecipes", CATEGORY_GENERAL, 0, 0, 2, "Clears Vanilla recipes if 1, clears all recipes if 2. Set to 0 to disable.");
+		clearRecipes = config.getInt("clearRecipes", CATEGORY_GENERAL, 0, 0, 2, "Clears Vanilla recipes if 1, clears all recipes if 2. Set to 0 to disable. Will not work if any of Reika's mods are loaded.");
 		infiniteDurability = config.getBoolean("infiniteDurability", CATEGORY_PROPERTIES, false, "Makes all items have infinite durability. Overrides \"durabilityDivider\".");
-		password = config.getString("password", CATEGORY_GENERAL, "", "Sets a password required to launch Minecraft.");
 		tabVanilla = config.getBoolean("tabVanilla", CATEGORY_CREATIVETABS, true, "Enables the extra Vanilla stuff creative tab.");
 		
-		if (config.hasChanged()) {
-			config.save();
-		}
-	}
-	
-	private static void loadModules() {
-		if (!(ConfigHandler.password.isEmpty())) {
+		String password = config.getString("password", CATEGORY_GENERAL, "", "Sets a password required to launch Minecraft.");
+		if (!(password.isEmpty())) {
 			try {
 				String p = JOptionPane.showInputDialog("password:");
-				if (!p.equals(ConfigHandler.password)) {
+				if (!p.equals(password)) {
 					throw new DO_NOT_REPORT_EXCEPTION("Wrong password.");
 				}
 			}
@@ -130,6 +122,12 @@ public class ConfigHandler {
 			}
 		}
 		
+		if (config.hasChanged()) {
+			config.save();
+		}
+	}
+	
+	private static final void loadModules() {		
 		if (!forceDifficulty.equalsIgnoreCase("FALSE") && Data.isClient()) {
 			MinecraftForge.EVENT_BUS.register((Object)new DifficultyHandler());
 		}
@@ -161,19 +159,20 @@ public class ConfigHandler {
 			MinecraftForge.EVENT_BUS.register((Object)new EventLogger());
 		}
 		if (clearRecipes == 1) {
-			RecipeHandler.removeVanillaRecipes();
+			CraftingManager.getInstance().getRecipeList().clear();
 		}
 		if (tabVanilla && Data.isClient()) {
 			VanillaTab.preInit();
 		}
 	}
 	
-	public static void postInit() {
+	public static final void postInit() {
 		if (stackSizeDivider != 0 || durabilityDivider != 1 || infiniteDurability || allBlocksUnbreakable) {
 			RegistrySearcher.start();
 		}
-		if (clearRecipes == 2 && !Loader.isModLoaded("DragonAPI")) {
-			CraftingManager.getInstance().getRecipeList().clear();
+		if (clearRecipes == 2) {
+			if (!Loader.isModLoaded("DragonAPI"))
+				CraftingManager.getInstance().getRecipeList().clear();
 		}
 		if (potionStacks > 1 || ConfigHandler.pearlStack > 1) {
 			StackSizeHandler.some(ConfigHandler.potionStacks, ConfigHandler.pearlStack);

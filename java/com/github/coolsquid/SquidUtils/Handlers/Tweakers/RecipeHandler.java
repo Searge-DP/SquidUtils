@@ -49,15 +49,4 @@ public class RecipeHandler {
 			b = 0;
 		}
 	}
-	
-	public static final void removeVanillaRecipes() {
-		int a = 0;
-		while (a < CraftingManager.getInstance().getRecipeList().size()) {
-			IRecipe r = (IRecipe) CraftingManager.getInstance().getRecipeList().get(a);
-			Class<?> itemClass = r.getRecipeOutput().getClass();
-			if (itemClass == Items.class || itemClass == Blocks.class)
-				CraftingManager.getInstance().getRecipeList().remove(a);
-			a++;
-		}
-	}
 }

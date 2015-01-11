@@ -47,8 +47,9 @@ public class ReflectionHelper {
 		}
 	}
 	
-	public static final void invoke(Class<?> c, String methodName) {
+	public static final void invoke(String className, String methodName) {
 		try {
+			Class<?> c = Class.forName(className);
 			Method m = c.getDeclaredMethod(methodName);
 			m.setAccessible(true);
 			m.invoke(true);

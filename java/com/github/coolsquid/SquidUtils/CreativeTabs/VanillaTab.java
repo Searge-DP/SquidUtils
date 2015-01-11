@@ -1,6 +1,5 @@
 package com.github.coolsquid.SquidUtils.CreativeTabs;
 
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -12,20 +11,11 @@ import net.minecraft.item.Item;
  *
  */
 
-public class VanillaTab extends CreativeTabs {
+public class VanillaTab {
 	
-	public static CreativeTabs tabVanilla = new VanillaTab("tabVanilla");
+	public static ITab tabVanilla = new ITab("tabVanilla", Item.getItemFromBlock(Blocks.command_block));
 	
-	public VanillaTab(String tabVanilla) {
-		super(tabVanilla);
-	}
-
-	@Override
-	public Item getTabIconItem() {
-		return Item.getItemFromBlock(Blocks.command_block);
-	}
-	
-	public static void preInit() {
+	public static final void preInit() {
 		Blocks.mob_spawner.setCreativeTab(tabVanilla);
 		Blocks.cocoa.setCreativeTab(tabVanilla);
 		Blocks.command_block.setCreativeTab(tabVanilla);

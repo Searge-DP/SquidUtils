@@ -17,9 +17,11 @@ public class RegistrySearcher {
 	public static final void start() {
 		if (ConfigHandler.allBlocksUnbreakable)
 			blockSearch();
-		if (ConfigHandler.stackSizeDivider != 0 || ConfigHandler.durabilityDivider != 1 || ConfigHandler.infiniteDurability)
+		if (ConfigHandler.stackSizeDivider != 0 || ConfigHandler.durabilityDivider != 1 || ConfigHandler.infiniteDurability || ConfigHandler.hardnessMultiplier > 1)
 			itemSearch();
 	}
+	
+	private static final float hardnessMultiplier = ConfigHandler.hardnessMultiplier;
 	
 	private static final void blockSearch() {
 		int a = 0;
@@ -29,6 +31,10 @@ public class RegistrySearcher {
 				if (ConfigHandler.allBlocksUnbreakable) {
 					block.setBlockUnbreakable();
 				}
+				if (hardnessMultiplier > 1) {
+					float f = block.getBlockHardness(null, 0, 0, 0);
+					block.setHardness(f * hardnessMultiplier);
+				}
 			}
 			a++;
 		}
@@ -36,10 +42,10 @@ public class RegistrySearcher {
 	
 	@SuppressWarnings("deprecation")
 	private static final void itemSearch() {
-		int A = 0;
-		while (A != 32000) {
-			if (Item.itemRegistry.getObjectById(A) != null) {
-				Item item = (Item) Item.itemRegistry.getObjectById(A);
+		int a = 0;
+		while (a != 32000) {
+			if (Item.itemRegistry.getObjectById(a) != null) {
+				Item item = (Item) Item.itemRegistry.getObjectById(a);
 				if (ConfigHandler.stackSizeDivider != 0) {
 					item.setMaxStackSize(item.getItemStackLimit() / ConfigHandler.stackSizeDivider);
 					if (item.getItemStackLimit() < 1) {
@@ -56,7 +62,7 @@ public class RegistrySearcher {
 					item.setMaxDamage(0);
 				}
 			}
-			A++;
+			a++;
 		}
 	}
 }

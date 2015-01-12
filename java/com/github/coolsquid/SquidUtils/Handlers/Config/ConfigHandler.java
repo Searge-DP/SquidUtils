@@ -78,6 +78,7 @@ public class ConfigHandler {
 	public static boolean tabVanilla = true;
 	public static boolean infiniteDurability = false;
 	public static boolean debug = false;
+	public static float hardnessMultiplier = 1;
 	
 	private static void initCategories() {
 		config.setCategoryComment(CATEGORY_GENERAL, "General options.");
@@ -108,6 +109,7 @@ public class ConfigHandler {
 		clearRecipes = config.getInt("clearRecipes", CATEGORY_GENERAL, 0, 0, 2, "Clears Vanilla recipes if 1, clears all recipes if 2. Set to 0 to disable. Will not work if any of Reika's mods are loaded.");
 		infiniteDurability = config.getBoolean("infiniteDurability", CATEGORY_PROPERTIES, false, "Makes all items have infinite durability. Overrides \"durabilityDivider\".");
 		tabVanilla = config.getBoolean("tabVanilla", CATEGORY_CREATIVETABS, true, "Enables the extra Vanilla stuff creative tab.");
+		hardnessMultiplier = config.getFloat("hardnessMultiplier", CATEGORY_PROPERTIES, 1, 1, 100, "Multiplies all blocks hardness by the specified number. Set to 1.0 to disable.");
 		
 		String password = config.getString("password", CATEGORY_GENERAL, "", "Sets a password required to launch Minecraft.");
 		if (!(password.isEmpty())) {
@@ -167,7 +169,7 @@ public class ConfigHandler {
 	}
 	
 	public static final void postInit() {
-		if (stackSizeDivider != 0 || durabilityDivider != 1 || infiniteDurability || allBlocksUnbreakable) {
+		if (stackSizeDivider != 0 || durabilityDivider != 1 || infiniteDurability || allBlocksUnbreakable || hardnessMultiplier > 1) {
 			RegistrySearcher.start();
 		}
 		if (clearRecipes == 2) {

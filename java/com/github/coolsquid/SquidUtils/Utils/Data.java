@@ -1,6 +1,5 @@
 package com.github.coolsquid.SquidUtils.Utils;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.launchwrapper.Launch;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
@@ -30,14 +29,6 @@ public class Data {
 	
 	public static final boolean isClient() {
 		return FMLCommonHandler.instance().getSide().equals(Side.CLIENT);
-	}
-	
-	public static final boolean isJava64bit() {
-		return Minecraft.getMinecraft().isJava64bit();
-	}
-	
-	public static final boolean isOs64bit() {
-		return System.getProperty("os.arch").contains("64");
 	}
 	
 	public static final boolean isJava8() {

@@ -16,27 +16,15 @@ public class Registrer {
 			while (f[a].get(null) != null) {
 				if (f[a].get(null) instanceof Block) {
 					Block b = (Block) f[a].get(null);
-					if (b.getUnlocalizedName().equals("null")) {
-						b.setCreativeTab(CreativeTabs.tabBlock);
-						GameRegistry.registerBlock(b, b.getUnlocalizedName());
-					}
-					else {
-						b.setBlockName("block" + a);
-						b.setCreativeTab(CreativeTabs.tabBlock);
-						GameRegistry.registerBlock(b, b.getUnlocalizedName());
-					}
+					b.setBlockName("block" + a);
+					b.setCreativeTab(CreativeTabs.tabBlock);
+					GameRegistry.registerBlock(b, b.getUnlocalizedName());
 				}
 				else if (f[a].get(null) instanceof Item) {
 					Item i = (Item) f[a].get(null);
-					if (i.getUnlocalizedName().equals("null")) {
-						i.setCreativeTab(CreativeTabs.tabBlock);
-						GameRegistry.registerItem(i, i.getUnlocalizedName());
-					}
-					else {
-						i.setUnlocalizedName("item" + a);
-						i.setCreativeTab(CreativeTabs.tabBlock);
-						GameRegistry.registerItem(i, i.getUnlocalizedName());
-					}
+					i.setUnlocalizedName("item" + a);
+					i.setCreativeTab(CreativeTabs.tabDecorations);
+					GameRegistry.registerItem(i, i.getUnlocalizedName());
 				}
 				a++;
 			}

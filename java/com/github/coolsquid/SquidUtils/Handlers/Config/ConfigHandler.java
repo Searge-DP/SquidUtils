@@ -58,6 +58,8 @@ public class ConfigHandler {
 	private static final String CATEGORY_GAMESETTINGS = "Force game options";
 	private static final String CATEGORY_CREATIVETABS = "Creative tabs";
 	
+	public static boolean debug = false;
+	
 	public static String forceDifficulty = "FALSE";
 	public static boolean noTNT = false;
 	public static boolean noAchievements = false;
@@ -67,7 +69,6 @@ public class ConfigHandler {
 	public static boolean noDebug = false;
 	public static int pearlStack = 16;
 	public static int maxRenderDistance = 16;
-	public static boolean mfr = true;
 	public static boolean tntDropItems = true;
 	public static boolean villagerProtection = false;
 	public static boolean logStuff = false;
@@ -77,7 +78,6 @@ public class ConfigHandler {
 	public static int clearRecipes = 0;
 	public static boolean tabVanilla = true;
 	public static boolean infiniteDurability = false;
-	public static boolean debug = false;
 	public static float hardnessMultiplier = 1;
 	
 	private static void initCategories() {
@@ -99,7 +99,6 @@ public class ConfigHandler {
 		noDebug = config.getBoolean("noDebug", CATEGORY_GENERAL, false, "Makes it impossible to open the debug screen.");
 		pearlStack = config.getInt("maxEnderPearlStackSize", CATEGORY_PROPERTIES, 16, 1, 64, "Sets the max stacksize for enderpearls.");
 		maxRenderDistance = config.getInt("maxRenderDistance", CATEGORY_GAMESETTINGS, 16, 1, 16, "Sets the max render distance. Set to 16 to disable.");
-		mfr = config.getBoolean("mfr", CATEGORY_COMPAT, true, "Amount of lines...");
 		tntDropItems = config.getBoolean("tntDropItems", CATEGORY_GENERAL, true, "Should TNT drop items when removed? Only applies if \"noTNT\" is true.");
 		villagerProtection = config.getBoolean("villagerProtection", CATEGORY_UNHURTABLE, false, "Makes villagers unhurtable.");
 		logStuff = config.getBoolean("logStuff", CATEGORY_GENERAL, false, "Logs all blocks broken and all entity deaths.");

@@ -16,19 +16,22 @@ public class VanillaTab {
 	public static ITab tabVanilla = new ITab("tabVanilla", Item.getItemFromBlock(Blocks.command_block));
 	
 	public static final void preInit() {
-		Blocks.mob_spawner.setCreativeTab(tabVanilla);
-		Blocks.cocoa.setCreativeTab(tabVanilla);
-		Blocks.command_block.setCreativeTab(tabVanilla);
-		Blocks.dragon_egg.setCreativeTab(tabVanilla);
-		Blocks.water.setCreativeTab(tabVanilla);
-		Blocks.lava.setCreativeTab(tabVanilla);
-		Blocks.fire.setCreativeTab(tabVanilla);
-		Blocks.end_portal.setCreativeTab(tabVanilla).setBlockName("end_portal");
-		Blocks.flowing_lava.setCreativeTab(tabVanilla).setBlockName("flowing_lava");
-		Blocks.flowing_water.setCreativeTab(tabVanilla).setBlockName("flowing_water");
-		Blocks.farmland.setCreativeTab(tabVanilla);
-		Blocks.brown_mushroom_block.setCreativeTab(tabVanilla).setBlockName("brown_mushroom_block");
-		Blocks.red_mushroom_block.setCreativeTab(tabVanilla).setBlockName("red_mushroom_block");
-		Items.command_block_minecart.setCreativeTab(tabVanilla);
+		Object[] o = {
+				Blocks.mob_spawner,
+				Blocks.cocoa,
+				Blocks.command_block,
+				Blocks.dragon_egg,
+				Blocks.water,
+				Blocks.lava,
+				Blocks.fire,
+				Blocks.end_portal,
+				Blocks.flowing_lava,
+				Blocks.flowing_water,
+				Blocks.farmland,
+				Blocks.brown_mushroom_block,
+				Blocks.red_mushroom_block,
+				Items.command_block_minecart
+				};
+		tabVanilla.addItems(o);
 	}
 }

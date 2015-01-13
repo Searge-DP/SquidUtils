@@ -4,6 +4,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
+import net.minecraft.init.Items;
+
 /**
  * 
  * @author CoolSquid
@@ -11,7 +13,7 @@ import java.lang.reflect.Modifier;
  *
  */
 
-public class ReflectionHelper {
+public class ReflectionHelper extends Items {
 	
 	public static final String getString(Class<?> c, String fieldName) {
 		try {
@@ -60,7 +62,7 @@ public class ReflectionHelper {
 	
 	public static final void replaceField(Class<?> c, String fieldName, Object replacement) {
 		try {
-			Field f = c.getDeclaredField(fieldName);
+			Field f = c.getField(fieldName);
 			
 			Field m = Field.class.getDeclaredField("modifiers");
 			m.setAccessible(true);

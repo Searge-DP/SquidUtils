@@ -8,7 +8,7 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 
-import com.github.coolsquid.SquidUtils.CreativeTabs.VanillaTab;
+import com.github.coolsquid.SquidUtils.CreativeTabs.CreativeTabs;
 import com.github.coolsquid.SquidUtils.Handlers.EventLogger;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.AchievementHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.DebugHandler;
@@ -163,7 +163,7 @@ public class ConfigHandler {
 			CraftingManager.getInstance().getRecipeList().clear();
 		}
 		if (tabVanilla && Data.isClient()) {
-			VanillaTab.preInit();
+			CreativeTabs.preInit();
 		}
 	}
 	

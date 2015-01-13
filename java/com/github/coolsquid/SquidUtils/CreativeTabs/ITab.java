@@ -25,7 +25,7 @@ public class ITab extends CreativeTabs {
 		return it;
 	}
 	
-	public void addItems(Object[] item) {
+	public void add(Object[] item) {
 		int a = 0;
 		try {
 			while (item[a] != null) {

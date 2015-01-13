@@ -12,7 +12,7 @@ public class Registrer {
 	public static final void register(String className) {
 		int a = 0;
 		try {
-			Field[] f = Class.forName(className).getDeclaredFields();
+			Field[] f = Class.forName(className).getFields();
 			while (f[a].get(null) != null) {
 				if (f[a].get(null) instanceof Block) {
 					Block b = (Block) f[a].get(null);

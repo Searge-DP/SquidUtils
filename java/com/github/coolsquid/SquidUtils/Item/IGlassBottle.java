@@ -22,8 +22,7 @@ public class IGlassBottle extends ItemGlassBottle {
 		if (world.getBlock(x, y, z) == Blocks.water) {
 			world.setBlock(x, y, z, Blocks.air);
 			itemStack.stackSize--;
-			if (player.inventory.addItemStackToInventory(new ItemStack(Items.potionitem, 1)))
-				player.inventory.addItemStackToInventory(new ItemStack(Items.potionitem, 1));
+			if (player.inventory.addItemStackToInventory(new ItemStack(Items.potionitem, 1)));
 			else
 				player.dropPlayerItemWithRandomChoice(new ItemStack(Items.potionitem, 1, 0), false);
 		}

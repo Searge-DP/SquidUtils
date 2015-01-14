@@ -37,4 +37,17 @@ public class ITab extends CreativeTabs {
 			}
 		} catch (ArrayIndexOutOfBoundsException e) {}
 	}
+	
+	public void remove(Object[] item) {
+		int a = 0;
+		try {
+			while (item[a] != null) {
+				if (item[a] instanceof Item)
+					((Item) item[a]).setCreativeTab(null);
+				if (item[a] instanceof Block)
+					((Block) item[a]).setCreativeTab(null);
+				a++;
+			}
+		} catch (ArrayIndexOutOfBoundsException e) {}
+	}
 }

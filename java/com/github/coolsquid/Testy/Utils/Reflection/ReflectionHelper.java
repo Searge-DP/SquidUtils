@@ -62,7 +62,7 @@ public class ReflectionHelper extends Items {
 	
 	public static final void replaceField(Class<?> c, String fieldName, Object replacement) {
 		try {
-			Field f = c.getField(fieldName);
+			Field f = c.getDeclaredField(fieldName);
 			
 			Field m = Field.class.getDeclaredField("modifiers");
 			m.setAccessible(true);

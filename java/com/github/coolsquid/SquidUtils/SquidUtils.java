@@ -1,9 +1,6 @@
 package com.github.coolsquid.SquidUtils;
 
-import net.minecraftforge.common.MinecraftForge;
-
 import com.github.coolsquid.SquidUtils.Handlers.Config.ConfigHandler;
-import com.github.coolsquid.SquidUtils.Handlers.Tweakers.BottleHandler;
 import com.github.coolsquid.SquidUtils.Utils.CommonHandler;
 import com.github.coolsquid.SquidUtils.Utils.Data;
 import com.github.coolsquid.SquidUtils.Utils.Logging.LogHelper;
@@ -28,9 +25,7 @@ public class SquidUtils {
 		LogHelper.info("Preinitializing...");
 		
 		CommonHandler.init();
-		
-		MinecraftForge.EVENT_BUS.register(new BottleHandler());
-		
+				
 		ConfigHandler.preInit(event.getSuggestedConfigurationFile());
 		
 		LogHelper.info("Preinitialization finished.");

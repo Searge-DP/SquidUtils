@@ -11,6 +11,7 @@ import net.minecraftforge.common.config.Configuration;
 import com.github.coolsquid.SquidUtils.CreativeTabs.CreativeTabs;
 import com.github.coolsquid.SquidUtils.Handlers.EventLogger;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.AchievementHandler;
+import com.github.coolsquid.SquidUtils.Handlers.Tweakers.BottleHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.DebugHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.DifficultyHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.RecipeHandler;
@@ -79,6 +80,7 @@ public class ConfigHandler {
 	public static boolean tabVanilla = true;
 	public static boolean infiniteDurability = false;
 	public static float hardnessMultiplier = 1;
+	public static boolean nerfBottles = false;
 	
 	private static void initCategories() {
 		config.setCategoryComment(CATEGORY_GENERAL, "General options.");
@@ -109,6 +111,7 @@ public class ConfigHandler {
 		infiniteDurability = config.getBoolean("infiniteDurability", CATEGORY_PROPERTIES, false, "Makes all items have infinite durability. Overrides \"durabilityDivider\".");
 		tabVanilla = config.getBoolean("tabVanilla", CATEGORY_CREATIVETABS, true, "Enables the extra Vanilla stuff creative tab.");
 		hardnessMultiplier = config.getFloat("hardnessMultiplier", CATEGORY_PROPERTIES, 1, 1, 100, "Multiplies all blocks hardness by the specified number. Set to 1.0 to disable.");
+		nerfBottles = config.getBoolean("nerfBottles", CATEGORY_GENERAL, false, "Nerfs bottles by removing the water source block after it has been used.");
 		
 		String password = config.getString("password", CATEGORY_GENERAL, "", "Sets a password required to launch Minecraft.");
 		if (!(password.isEmpty())) {
@@ -164,6 +167,9 @@ public class ConfigHandler {
 		}
 		if (tabVanilla && Data.isClient()) {
 			CreativeTabs.preInit();
+		}
+		if (nerfBottles) {
+			MinecraftForge.EVENT_BUS.register(new BottleHandler());
 		}
 	}
 	

@@ -2,18 +2,12 @@ package com.github.coolsquid.SquidUtils.CreativeTabs;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-
-/**
- * 
- * @author CoolSquid
- * All rights reserved.
- *
- */
 
 public class CreativeTabs {
 	
-	public static ITab tabVanilla = new ITab("tabVanilla", Item.getItemFromBlock(Blocks.command_block));
+	/**
+	 * Adds items to creative tabs.
+	 */
 	
 	public static final void preInit() {
 		Object[] o = {
@@ -30,8 +24,8 @@ public class CreativeTabs {
 				Blocks.farmland,
 				Blocks.brown_mushroom_block,
 				Blocks.red_mushroom_block,
-				Items.command_block_minecart
+				Items.command_block_minecart,
 				};
-		tabVanilla.add(o);
+		ITab.add(o, new VanillaTab());
 	}
 }

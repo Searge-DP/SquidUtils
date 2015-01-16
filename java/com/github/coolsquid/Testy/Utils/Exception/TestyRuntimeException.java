@@ -4,6 +4,7 @@ package com.github.coolsquid.Testy.Utils.Exception;
  * 
  * @author CoolSquid
  * All rights reserved.
+ * My RuntimeException superclass.
  *
  */
 

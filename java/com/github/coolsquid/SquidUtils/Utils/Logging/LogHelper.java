@@ -6,8 +6,6 @@ import org.apache.logging.log4j.LogManager;
 import com.github.coolsquid.SquidUtils.Handlers.Config.ConfigHandler;
 import com.github.coolsquid.SquidUtils.Utils.Data;
 
-import cpw.mods.fml.common.FMLLog;
-
 /**
  * 
  * @author CoolSquid
@@ -17,45 +15,44 @@ import cpw.mods.fml.common.FMLLog;
 
 public final class LogHelper {
 	
-	private static final String name = Data.modid;
+	public static final org.apache.logging.log4j.Logger logger = LogManager.getLogger(Data.modid);
 	
-	public static void info(String message) {
-		FMLLog.log(name, Level.INFO, message);
+	public static void info(String msg) {
+		logger.log(Level.INFO, msg);
 		}
 	
 	public static void info(int i) {
-		FMLLog.log(name, Level.INFO, i + "");
+		logger.log(Level.INFO, i + "");
 		}
 	
-	public static void debug(String message) {
+	public static void debug(String msg) {
 		if (ConfigHandler.debug)
-			FMLLog.log(name, Level.INFO, message);
+			logger.log(Level.INFO, msg);
 	}
 	
-	public static void warn(String message) {
-		FMLLog.log(name, Level.WARN, message);
+	public static void warn(String msg) {
+		logger.log(Level.WARN, msg);
 		}
 	
-	public static void error(String message) {
-		FMLLog.log(name, Level.ERROR, message);
+	public static void error(String msg) {
+		logger.log(Level.ERROR, msg);
 		}
 	
 	public static void error(Throwable t) {
-		FMLLog.log(name, Level.ERROR, t + "");
+		logger.log(Level.ERROR, t + "");
 		}
 	
-	public static void fatal(String message) {
-		FMLLog.log(name, Level.FATAL, message);
+	public static void fatal(String msg) {
+		logger.log(Level.FATAL, msg);
 		}
 	
-	public static void bigWarning(Level level, String message) {
-		FMLLog.log(name, level, "-------------------------------------------------------------------------------------------");
-		FMLLog.log(name, level, message);
-		FMLLog.log(name, level, "-------------------------------------------------------------------------------------------");
+	public static void bigWarning(Level level, String msg) {
+		logger.log(level, "-------------------------------------------------------------------------------------------");
+		logger.log(level, msg);
+		logger.log(level, "-------------------------------------------------------------------------------------------");
 		}
 	
 	public static void log(Level level, String msg) {
-		org.apache.logging.log4j.Logger logger = LogManager.getLogger(Data.modid);
 		logger.log(level, msg);
 	}
 }

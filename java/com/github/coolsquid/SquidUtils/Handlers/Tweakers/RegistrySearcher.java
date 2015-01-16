@@ -13,7 +13,11 @@ import com.github.coolsquid.SquidUtils.Handlers.Config.ConfigHandler;
  */
 
 public class RegistrySearcher {
-
+	
+	/**
+	 * Checks configs and starts the requested features.
+	 */
+	
 	public static final void start() {
 		if (ConfigHandler.allBlocksUnbreakable)
 			blockSearch();
@@ -22,6 +26,10 @@ public class RegistrySearcher {
 	}
 	
 	private static final float hardnessMultiplier = ConfigHandler.hardnessMultiplier;
+	
+	/**
+	 * Searches blocks and modifies block properties.
+	 */
 	
 	private static final void blockSearch() {
 		int a = 0;
@@ -39,6 +47,10 @@ public class RegistrySearcher {
 			a++;
 		}
 	}
+	
+	/**
+	 * Searches items and modifies item properties.
+	 */
 	
 	@SuppressWarnings("deprecation")
 	private static final void itemSearch() {

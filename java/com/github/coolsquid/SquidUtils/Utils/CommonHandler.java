@@ -17,6 +17,10 @@ import com.github.coolsquid.SquidUtils.Utils.Logging.LogHelper;
 
 public class CommonHandler {
 	
+	/**
+	 * Generates a crash reporting info file and starts the environment checks.
+	 */
+	
 	public static final void init() {
 		File file = new File("./crash-reports/README-I-AM-VERY-IMPORTANT.txt");
 		try {
@@ -25,6 +29,7 @@ public class CommonHandler {
 				PrintWriter w = new PrintWriter(new OutputStreamWriter(new FileOutputStream(file)));
 				w.format("Read through crash reports before posting them!\n");
 				w.format("If you do not do this, you might be ignored, or in worst case banned for spamming.\n");
+				w.format("Learn how to write bug reports at: http://vazkii.us/br101/");
 				w.close();
 			}
 			else if (file.exists())

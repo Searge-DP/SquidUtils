@@ -15,8 +15,11 @@ import com.github.coolsquid.SquidUtils.Utils.Logging.LogHelper;
 
 public class EnvironmentChecks {
 	
+	/**
+	 * Checks if the MC version is correct, and loads dev features in decompiled environments.
+	 */
+	
 	public static final void preInit() {
-		
 		if (Data.wrongVersion())
 			LogHelper.bigWarning(Level.WARN, "MC is not running 1.7.10! Problems may occur. Do not report any errors.");
 		

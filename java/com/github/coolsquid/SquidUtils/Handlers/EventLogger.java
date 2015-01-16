@@ -19,7 +19,11 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
  */
 
 public class EventLogger {
-		
+	
+	/**
+	 * Logs all blocks broken.
+	 */
+	
 	@SubscribeEvent
 	public void blockBreak(BreakEvent event) {
 		String s = " ";
@@ -27,6 +31,10 @@ public class EventLogger {
 		String m = "\"";
 		Logger.log("BlockBroken", Level.INFO, m + event.block.getLocalizedName()+ m + " was broken by: " + m + event.getPlayer().getDisplayName() + m + " at: " + pos, false);
 	}
+	
+	/**
+	 * Logs all entities killed.
+	 */
 	
 	@SubscribeEvent
 	public void kill(LivingDeathEvent event) {

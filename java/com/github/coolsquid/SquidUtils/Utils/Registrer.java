@@ -9,6 +9,11 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 public class Registrer {
 	
+	/**
+	 * Automatically registers all items/blocks in a class.
+	 * @param className
+	 */
+	
 	public static final void register(String className) {
 		int a = 0;
 		try {

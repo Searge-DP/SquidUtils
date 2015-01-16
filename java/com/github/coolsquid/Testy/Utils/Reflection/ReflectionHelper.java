@@ -60,6 +60,13 @@ public class ReflectionHelper extends Items {
 		}
 	}
 	
+	/**
+	 * Replaces the value of the specified field.
+	 * @param c
+	 * @param fieldName
+	 * @param replacement
+	 */
+	
 	public static final void replaceField(Class<?> c, String fieldName, Object replacement) {
 		try {
 			Field f = c.getDeclaredField(fieldName);

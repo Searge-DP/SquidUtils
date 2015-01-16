@@ -1,6 +1,7 @@
 package com.github.coolsquid.SquidUtils;
 
 import com.github.coolsquid.SquidUtils.Handlers.Config.ConfigHandler;
+import com.github.coolsquid.SquidUtils.Handlers.Tweakers.RecipeHandler;
 import com.github.coolsquid.SquidUtils.Utils.CommonHandler;
 import com.github.coolsquid.SquidUtils.Utils.Data;
 import com.github.coolsquid.SquidUtils.Utils.Logging.LogHelper;
@@ -25,7 +26,7 @@ public class SquidUtils {
 		LogHelper.info("Preinitializing...");
 		
 		CommonHandler.init();
-				
+		
 		ConfigHandler.preInit(event.getSuggestedConfigurationFile());
 		
 		LogHelper.info("Preinitialization finished.");
@@ -35,6 +36,7 @@ public class SquidUtils {
 	private void postInit(FMLPostInitializationEvent event) {
 		LogHelper.info("Postinitializing...");
 		ConfigHandler.postInit();
+		RecipeHandler.removeRecipes();
 		LogHelper.info("Postinitialization finished.");
 	}
 }

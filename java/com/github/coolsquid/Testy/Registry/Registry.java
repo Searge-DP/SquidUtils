@@ -29,11 +29,16 @@ public class Registry {
 	
 	public Registry() {}
 	
-	public void register(Object o) {
-		if (maxSize < a) {
-			if (m.get(o) == null) {
-				l.add(o);
-				m.put(o, a);
+	/**
+	 * Registers an object to the registry, as long as the registry is smaller than the max size.
+	 * @param object
+	 */
+	
+	public void register(Object object) {
+		if (a < maxSize) {
+			if (m.get(object) == null) {
+				l.add(object);
+				m.put(object, a);
 			}
 			a++;
 		}

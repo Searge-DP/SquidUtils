@@ -52,6 +52,10 @@ public class ConfigHandler {
 			config = new Configuration(configFile);
 	}
 	
+	/*
+	 * Available categories. Do not modify, as it breaks configs.
+	 */
+	
 	private static final String CATEGORY_GENERAL = "General";
 	private static final String CATEGORY_COMPAT = "Compatibility";
 	private static final String CATEGORY_UNHURTABLE = "Unhurtable mobs";
@@ -59,7 +63,15 @@ public class ConfigHandler {
 	private static final String CATEGORY_GAMESETTINGS = "Force game options";
 	private static final String CATEGORY_CREATIVETABS = "Creative tabs";
 	
+	/*
+	 * Hardcoded options. Modify them as you want to.
+	 */
+	
 	public static boolean debug = false;
+	
+	/*
+	 * All available config options. Modify them as you want to.
+	 */
 	
 	public static String forceDifficulty = "FALSE";
 	public static boolean noTNT = false;
@@ -80,7 +92,11 @@ public class ConfigHandler {
 	public static boolean tabVanilla = true;
 	public static boolean infiniteDurability = false;
 	public static float hardnessMultiplier = 1;
-	public static boolean nerfBottles = false;
+	public static boolean waterOnlyBottles = false;
+	
+	/**
+	 * Sets category comments.
+	 */
 	
 	private static void initCategories() {
 		config.setCategoryComment(CATEGORY_GENERAL, "General options.");
@@ -90,6 +106,10 @@ public class ConfigHandler {
 		config.setCategoryComment(CATEGORY_GAMESETTINGS, "Force game options.");
 		config.setCategoryComment(CATEGORY_CREATIVETABS, "Disable or enable creative tabs.");
 	}
+	
+	/**
+	 * Reads the config.
+	 */
 	
 	private static final void readConfig() {
 		forceDifficulty = config.getString("forceDifficulty", CATEGORY_GAMESETTINGS, "FALSE", "Forces the specified difficulty. Allows for HARD, NORMAL, EASY, PEACEFUL or FALSE. Set to FALSE to disable.");
@@ -111,7 +131,7 @@ public class ConfigHandler {
 		infiniteDurability = config.getBoolean("infiniteDurability", CATEGORY_PROPERTIES, false, "Makes all items have infinite durability. Overrides \"durabilityDivider\".");
 		tabVanilla = config.getBoolean("tabVanilla", CATEGORY_CREATIVETABS, true, "Enables the extra Vanilla stuff creative tab.");
 		hardnessMultiplier = config.getFloat("hardnessMultiplier", CATEGORY_PROPERTIES, 1, 1, 100, "Multiplies all blocks hardness by the specified number. Set to 1.0 to disable.");
-		nerfBottles = config.getBoolean("nerfBottles", CATEGORY_GENERAL, false, "Nerfs bottles by removing the water source block after it has been used.");
+		waterOnlyBottles = config.getBoolean("waterOnlyBottles", CATEGORY_GENERAL, false, "Makes water bottles only work with Vanilla water.");
 		
 		String password = config.getString("password", CATEGORY_GENERAL, "", "Sets a password required to launch Minecraft.");
 		if (!(password.isEmpty())) {
@@ -130,6 +150,10 @@ public class ConfigHandler {
 			config.save();
 		}
 	}
+	
+	/**
+	 * Loads features.
+	 */
 	
 	private static final void loadModules() {		
 		if (!forceDifficulty.equalsIgnoreCase("FALSE") && Data.isClient()) {
@@ -168,10 +192,14 @@ public class ConfigHandler {
 		if (tabVanilla && Data.isClient()) {
 			CreativeTabs.preInit();
 		}
-		if (nerfBottles) {
+		if (waterOnlyBottles) {
 			MinecraftForge.EVENT_BUS.register(new BottleHandler());
 		}
 	}
+	
+	/**
+	 * Loads features.
+	 */
 	
 	public static final void postInit() {
 		if (stackSizeDivider != 0 || durabilityDivider != 1 || infiniteDurability || allBlocksUnbreakable || hardnessMultiplier > 1) {

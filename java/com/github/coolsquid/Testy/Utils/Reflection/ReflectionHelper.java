@@ -18,7 +18,7 @@ public class ReflectionHelper {
 	 * Get a string.
 	 * @param c
 	 * @param fieldName
-	 * @return
+	 * @return String
 	 */
 	
 	public static final String getString(Class<?> c, String fieldName) {
@@ -37,7 +37,7 @@ public class ReflectionHelper {
 	 * Get an object.
 	 * @param c
 	 * @param fieldName
-	 * @return
+	 * @return Object
 	 */
 	
 	public static final Object getObject(Class<?> c, String fieldName) {
@@ -55,7 +55,7 @@ public class ReflectionHelper {
 	 * Gets a method (why did I add this?).
 	 * @param c
 	 * @param methodName
-	 * @return
+	 * @return Method
 	 */
 	
 	public static final Method getMethod(Class<?> c, String methodName) {

@@ -4,27 +4,9 @@ import java.io.File;
 
 import javax.swing.JOptionPane;
 
-import net.minecraft.item.crafting.CraftingManager;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 
-import com.github.coolsquid.SquidUtils.CreativeTabs.CreativeTabs;
-import com.github.coolsquid.SquidUtils.Handlers.EventLogger;
-import com.github.coolsquid.SquidUtils.Handlers.Tweakers.AchievementHandler;
-import com.github.coolsquid.SquidUtils.Handlers.Tweakers.DebugHandler;
-import com.github.coolsquid.SquidUtils.Handlers.Tweakers.DifficultyHandler;
-import com.github.coolsquid.SquidUtils.Handlers.Tweakers.RecipeHandler;
-import com.github.coolsquid.SquidUtils.Handlers.Tweakers.RegistrySearcher;
-import com.github.coolsquid.SquidUtils.Handlers.Tweakers.RenderDistanceHandler;
-import com.github.coolsquid.SquidUtils.Handlers.Tweakers.StackSizeHandler;
-import com.github.coolsquid.SquidUtils.Handlers.Tweakers.TNTHandler;
-import com.github.coolsquid.SquidUtils.Handlers.Tweakers.VillagerHandler;
-import com.github.coolsquid.SquidUtils.Handlers.Tweakers.WitherHandler;
-import com.github.coolsquid.SquidUtils.Utils.Data;
 import com.github.coolsquid.SquidUtils.Utils.Exception.DO_NOT_REPORT_EXCEPTION;
-import com.github.coolsquid.SquidUtils.Utils.Exception.InvalidConfigValueException;
-
-import cpw.mods.fml.common.Loader;
 
 /**
  * 

@@ -13,6 +13,7 @@ import net.minecraft.init.Items;
  *
  */
 
+@Deprecated
 public class ReflectionHelper extends Items {
 	
 	public static final String getString(Class<?> c, String fieldName) {

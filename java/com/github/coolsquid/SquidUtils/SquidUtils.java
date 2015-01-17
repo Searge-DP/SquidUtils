@@ -33,6 +33,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
  * 
  * @author CoolSquid
  * All rights reserved.
+ * @since 1.0.0
  * 
  */
 
@@ -49,6 +50,7 @@ public class SquidUtils {
 		LogHelper.info("Preinitializing...");
 		
 		CommonHandler.init();
+		
 		ConfigHandler.preInit(event.getSuggestedConfigurationFile());
 		
 		if (ConfigHandler.clearRecipes == 1) {

@@ -7,7 +7,8 @@ import cpw.mods.fml.common.ICrashCallable;
  * @author CoolSquid
  * All rights reserved.
  * Adds a message to crash reports.
- *
+ * @since 1.1.4
+ * @see PackIntegrityChecker
  */
 
 public class CrashReportInterceptor implements ICrashCallable {

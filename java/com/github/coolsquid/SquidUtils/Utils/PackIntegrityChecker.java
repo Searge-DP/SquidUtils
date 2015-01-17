@@ -15,6 +15,7 @@ import cpw.mods.fml.common.Loader;
  * @author CoolSquid
  * All rights reserved.
  * Checks if any mods have been added/removed from the pack.
+ * @since 1.1.4
  * 
  */
 

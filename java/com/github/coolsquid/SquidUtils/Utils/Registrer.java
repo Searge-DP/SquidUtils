@@ -7,6 +7,14 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import cpw.mods.fml.common.registry.GameRegistry;
 
+/**
+ * 
+ * @author CoolSquid
+ * All rights reserved.
+ * @since 1.1.4
+ *
+ */
+
 public class Registrer {
 	
 	/**

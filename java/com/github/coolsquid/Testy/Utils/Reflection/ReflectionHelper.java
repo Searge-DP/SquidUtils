@@ -4,17 +4,22 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
-import net.minecraft.init.Items;
-
 /**
  * 
  * @author CoolSquid
  * All rights reserved.
- *
+ * 
  */
 
 @Deprecated
-public class ReflectionHelper extends Items {
+public class ReflectionHelper {
+	
+	/**
+	 * Get a string.
+	 * @param c
+	 * @param fieldName
+	 * @return
+	 */
 	
 	public static final String getString(Class<?> c, String fieldName) {
 		try {
@@ -27,6 +32,13 @@ public class ReflectionHelper extends Items {
 			return "";
 		}
 	}
+	
+	/**
+	 * Get an object.
+	 * @param c
+	 * @param fieldName
+	 * @return
+	 */
 	
 	public static final Object getObject(Class<?> c, String fieldName) {
 		try {

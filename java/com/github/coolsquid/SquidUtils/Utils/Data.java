@@ -9,7 +9,7 @@ import cpw.mods.fml.relauncher.Side;
  * 
  * @author CoolSquid
  * All rights reserved.
- *
+ * 
  */
 
 public class Data {

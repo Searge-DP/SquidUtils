@@ -210,7 +210,7 @@ public class ConfigHandler {
 	 * Fixes a bug with glass bottles.
 	 */
 	
-	//public static boolean waterOnlyBottles = false;
+	public static boolean waterOnlyBottles = false;
 	
 	/**
 	 * List of modids. All mods missing will be logged.

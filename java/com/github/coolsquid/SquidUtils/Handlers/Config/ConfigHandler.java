@@ -18,10 +18,15 @@ import com.github.coolsquid.SquidUtils.Utils.Exception.DO_NOT_REPORT_EXCEPTION;
 public class ConfigHandler {
 	
 	/**
-	 * The config file
+	 * The config file.
 	 */
 	
 	private static File configFile;
+	
+	/**
+	 * The configuration.
+	 */
+	
 	private static Configuration config;
 	
 	public static final void preInit(File file) {
@@ -40,11 +45,40 @@ public class ConfigHandler {
 	 * Available categories. DO NOT MODIFY, as it breaks configs.
 	 */
 	
+	/**
+	 * For options that doesn't fit elsewhere.
+	 */
+	
 	private static final String CATEGORY_GENERAL = "General";
+	
+	/**
+	 * For intermod compatibility.
+	 */
+	
 	private static final String CATEGORY_COMPAT = "Compatibility";
-	private static final String CATEGORY_UNHURTABLE = "Unhurtable mobs";
+	
+	/**
+	 * Options regarding mobs.
+	 */
+	
+	private static final String CATEGORY_MOBS = "Mob options";
+	
+	/**
+	 * Options changing block and item properties.
+	 */
+	
 	private static final String CATEGORY_PROPERTIES = "Block and item properties";
+	
+	/**
+	 * Options regarding Minecraft settings.
+	 */
+	
 	private static final String CATEGORY_GAMESETTINGS = "Force game options";
+	
+	/**
+	 * All options regarding creative tabs.
+	 */
+	
 	private static final String CATEGORY_CREATIVETABS = "Creative tabs";
 	
 	/*
@@ -191,7 +225,7 @@ public class ConfigHandler {
 	private static void initCategories() {
 		config.setCategoryComment(CATEGORY_GENERAL, "General options.");
 		config.setCategoryComment(CATEGORY_COMPAT, "Compatibility options.");
-		config.setCategoryComment(CATEGORY_UNHURTABLE, "Mob options.");
+		config.setCategoryComment(CATEGORY_MOBS, "Mob options.");
 		config.setCategoryComment(CATEGORY_PROPERTIES, "Configure block and item properties.");
 		config.setCategoryComment(CATEGORY_GAMESETTINGS, "Force game options.");
 		config.setCategoryComment(CATEGORY_CREATIVETABS, "Disable or enable creative tabs.");
@@ -212,7 +246,7 @@ public class ConfigHandler {
 		pearlStack = config.getInt("maxEnderPearlStackSize", CATEGORY_PROPERTIES, 16, 1, 64, "Sets the max stacksize for enderpearls.");
 		maxRenderDistance = config.getInt("maxRenderDistance", CATEGORY_GAMESETTINGS, 16, 1, 16, "Sets the max render distance. Set to 16 to disable.");
 		tntDropItems = config.getBoolean("tntDropItems", CATEGORY_GENERAL, true, "Should TNT drop items when removed? Only applies if \"noTNT\" is true.");
-		villagerProtection = config.getBoolean("villagerProtection", CATEGORY_UNHURTABLE, false, "Makes villagers unhurtable.");
+		villagerProtection = config.getBoolean("villagerProtection", CATEGORY_MOBS, false, "Makes villagers unhurtable.");
 		logStuff = config.getBoolean("logStuff", CATEGORY_GENERAL, false, "Logs all blocks broken and all entity deaths.");
 		stackSizeDivider = config.getInt("stackSizeDivider", CATEGORY_PROPERTIES, 0, 0, 64, "Sets the max stack size for all items. Set to 0 to disable.");
 		allBlocksUnbreakable = config.getBoolean("allBlocksUnbreakable", CATEGORY_PROPERTIES, false, "Makes all blocks unbreakable.");

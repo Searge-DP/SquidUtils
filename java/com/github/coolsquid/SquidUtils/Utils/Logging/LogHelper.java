@@ -10,7 +10,7 @@ import com.github.coolsquid.SquidUtils.Utils.Data;
  * 
  * @author CoolSquid
  * All rights reserved.
- *
+ * @see Logger.class for more advanced logging.
  */
 
 public final class LogHelper {

@@ -8,7 +8,7 @@ import net.minecraft.item.Item;
  * 
  * @author CoolSquid
  * All rights reserved.
- *
+ * 
  */
 
 public class ITab extends CreativeTabs {
@@ -19,7 +19,7 @@ public class ITab extends CreativeTabs {
 		super(label);
 		it = icon;
 	}
-
+	
 	@Override
 	public Item getTabIconItem() {
 		return it;

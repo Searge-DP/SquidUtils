@@ -33,7 +33,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
  * 
  * @author CoolSquid
  * All rights reserved.
- *
+ * 
  */
 
 @Mod(modid = Data.modid, name = Data.name, version = Data.version, dependencies = Data.dependencies, acceptableRemoteVersions = "*")
@@ -102,7 +102,7 @@ public class SquidUtils {
 		}
 		/*
 		if (ConfigHandler.waterOnlyBottles) {
-			
+			TODO
 		}
 		*/
 	}

@@ -61,7 +61,7 @@ public class Registry {
 			super(comment);
 		}
 	}
-
+	
 	public int size() {
 		return l.size();
 	}

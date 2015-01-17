@@ -8,6 +8,8 @@ import java.io.PrintWriter;
 
 import com.github.coolsquid.SquidUtils.Utils.Logging.LogHelper;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+
 /**
  * 
  * @author CoolSquid
@@ -38,10 +40,12 @@ public class CommonHandler {
 			
 		}
 		
+		FMLCommonHandler.instance().registerCrashCallable(new CrashReportInterceptor());
+		
 		if (Data.isClient())
 			EnvironmentChecks.preInit();
 		
 		if (Data.isBukkit())
 			LogHelper.warn("Running on Bukkit! No support will be given.");
-		}
+	}
 }

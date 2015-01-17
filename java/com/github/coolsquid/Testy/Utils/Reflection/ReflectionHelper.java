@@ -38,6 +38,13 @@ public class ReflectionHelper extends Items {
 		}
 	}
 	
+	/**
+	 * Gets a method (why did I add this?).
+	 * @param c
+	 * @param methodName
+	 * @return
+	 */
+	
 	public static final Method getMethod(Class<?> c, String methodName) {
 		try {
 			Method m = c.getDeclaredMethod(methodName);
@@ -48,6 +55,12 @@ public class ReflectionHelper extends Items {
 			return null;
 		}
 	}
+	
+	/**
+	 * Invokes a method.
+	 * @param className
+	 * @param methodName
+	 */
 	
 	public static final void invoke(String className, String methodName) {
 		try {

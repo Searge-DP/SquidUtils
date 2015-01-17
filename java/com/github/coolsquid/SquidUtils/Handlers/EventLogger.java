@@ -54,6 +54,11 @@ public class EventLogger {
 		}
 	}
 	
+	/**
+	 * Saves the log to minecraft/logs/EventLogs
+	 * @param event
+	 */
+	
 	@SubscribeEvent
 	public void tick(WorldEvent.Save event) {
 		Logger.save("logs/EventLogs/", "");

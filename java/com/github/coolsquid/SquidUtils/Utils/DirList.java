@@ -11,15 +11,19 @@ import com.github.coolsquid.SquidUtils.Utils.Logging.LogHelper;
  * 
  * @author CoolSquid
  * All rights reserved.
- *
+ * Will be used for modpacks stealing SquidUtils
+ * 
  */
 
-//Will be used for modpacks stealing SquidUtils
 public class DirList {
+	
+	/**
+	 * Registry of folder names for illegal packs.
+	 */
 	
 	private static List<String> DIR_LIST = new ArrayList<String>();
 	
-	public static final void stop() {
+	public static final void warn() {
 		LogHelper.bigWarning(Level.WARN, "You are running an illegal modpack! Please report this at: " + Data.forum);
 	}
 	

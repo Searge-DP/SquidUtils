@@ -11,7 +11,6 @@ import net.minecraftforge.common.config.Configuration;
 import com.github.coolsquid.SquidUtils.CreativeTabs.CreativeTabs;
 import com.github.coolsquid.SquidUtils.Handlers.EventLogger;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.AchievementHandler;
-import com.github.coolsquid.SquidUtils.Handlers.Tweakers.BottleHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.DebugHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.DifficultyHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.RecipeHandler;
@@ -36,6 +35,10 @@ import cpw.mods.fml.common.Loader;
 
 public class ConfigHandler {
 	
+	/**
+	 * The config file
+	 */
+	
 	private static File configFile;
 	private static Configuration config;
 	
@@ -44,7 +47,6 @@ public class ConfigHandler {
 		createConfig();
 		initCategories();
 		readConfig();
-		loadModules();
 	}
 	
 	private static final void createConfig() {
@@ -53,7 +55,7 @@ public class ConfigHandler {
 	}
 	
 	/*
-	 * Available categories. Do not modify, as it breaks configs.
+	 * Available categories. DO NOT MODIFY, as it breaks configs.
 	 */
 	
 	private static final String CATEGORY_GENERAL = "General";
@@ -73,26 +75,132 @@ public class ConfigHandler {
 	 * All available config options. Modify them as you want to.
 	 */
 	
+	/**
+	 * Forces the specified difficulty. Will crash if set to something else than FALSE, PEACEFUL, EASY, NORMAL or HARD.
+	 */
+	
 	public static String forceDifficulty = "FALSE";
+	
+	/**
+	 * Disables TNT.
+	 */
+	
 	public static boolean noTNT = false;
+	
+	/**
+	 * Disables achievements.
+	 */
+	
 	public static boolean noAchievements = false;
+	
+	/**
+	 * Disables the wither.
+	 */
+	
 	public static boolean noWitherBoss = false;
+	
+	/**
+	 * Sets the max stack size for potions to the specified amount.
+	 */
+	
 	public static int potionStacks = 1;
+	
+	/**
+	 * Adds recipes for chain armor.
+	 */
+	
 	public static boolean chainRecipes = false;
+	
+	/**
+	 * Disables the debug screen.
+	 */
+	
 	public static boolean noDebug = false;
+	
+	/**
+	 * Sets the max stack size for ender pearls to the specified amount.
+	 */
+	
 	public static int pearlStack = 16;
+	
+	/**
+	 * Sets the max render distance to the specified amount.
+	 */
+	
 	public static int maxRenderDistance = 16;
+	
+	/**
+	 * Makes TNT drop as an item when it explodes. Requires noTNT to be true.
+	 */
+	
 	public static boolean tntDropItems = true;
+	
+	/**
+	 * Makes villagers unhurtable.
+	 */
+	
 	public static boolean villagerProtection = false;
+	
+	/**
+	 * Logs all blocks broken and all entities killed.
+	 */
+	
 	public static boolean logStuff = false;
+	
+	/**
+	 * Divides all stack sizes by the specified amount.
+	 */
+	
 	public static int stackSizeDivider = 0;
+	
+	/**
+	 * Makes all blocks unbreakable.
+	 */
+	
 	public static boolean allBlocksUnbreakable = false;
+	
+	/**
+	 * Divides all items durability by the specified amount.
+	 */
+	
 	public static int durabilityDivider = 1;
+	
+	/**
+	 * Clears all Vanilla recipes if 1, and clears all recipes if 2.
+	 */
+	
 	public static int clearRecipes = 0;
+	
+	/**
+	 * Adds an extra creative tab for Vanilla stuff.
+	 */
+	
 	public static boolean tabVanilla = true;
+	
+	/**
+	 * Gives all items infinite durability.
+	 */
+	
 	public static boolean infiniteDurability = false;
+	
+	/**
+	 * Multiplies all blocks hardness by the specified amount.
+	 */
+	
 	public static float hardnessMultiplier = 1;
-	public static boolean waterOnlyBottles = false;
+	
+	/**
+	 * TODO
+	 * Fixes a bug with glass bottles.
+	 */
+	
+	//public static boolean waterOnlyBottles = false;
+	
+	/**
+	 * List of modids. All mods missing will be logged.
+	 */
+	
+	public static String[] modList = new String[] {};
 	
 	/**
 	 * Sets category comments.
@@ -131,7 +239,8 @@ public class ConfigHandler {
 		infiniteDurability = config.getBoolean("infiniteDurability", CATEGORY_PROPERTIES, false, "Makes all items have infinite durability. Overrides \"durabilityDivider\".");
 		tabVanilla = config.getBoolean("tabVanilla", CATEGORY_CREATIVETABS, true, "Enables the extra Vanilla stuff creative tab.");
 		hardnessMultiplier = config.getFloat("hardnessMultiplier", CATEGORY_PROPERTIES, 1, 1, 100, "Multiplies all blocks hardness by the specified number. Set to 1.0 to disable.");
-		waterOnlyBottles = config.getBoolean("waterOnlyBottles", CATEGORY_GENERAL, false, "Makes water bottles only work with Vanilla water.");
+		//waterOnlyBottles = config.getBoolean("waterOnlyBottles", CATEGORY_GENERAL, false, "Makes water bottles only work with Vanilla water.");
+		modList = config.getStringList("modList", CATEGORY_GENERAL, new String[] {}, "If any of the mods listed are missing, a warning will be printed to the log.");
 		
 		String password = config.getString("password", CATEGORY_GENERAL, "", "Sets a password required to launch Minecraft.");
 		if (!(password.isEmpty())) {
@@ -148,69 +257,6 @@ public class ConfigHandler {
 		
 		if (config.hasChanged()) {
 			config.save();
-		}
-	}
-	
-	/**
-	 * Loads features.
-	 */
-	
-	private static final void loadModules() {		
-		if (!forceDifficulty.equalsIgnoreCase("FALSE") && Data.isClient()) {
-			MinecraftForge.EVENT_BUS.register((Object)new DifficultyHandler());
-		}
-		if (!forceDifficulty.equalsIgnoreCase("FALSE") && !forceDifficulty.equalsIgnoreCase("PEACEFUL") && !forceDifficulty.equalsIgnoreCase("EASY") && !forceDifficulty.equalsIgnoreCase("NORMAL") && !forceDifficulty.equalsIgnoreCase("HARD")) {
-			throw new InvalidConfigValueException("forceDifficulty");
-		}
-		if (noTNT) {
-			MinecraftForge.EVENT_BUS.register((Object)new TNTHandler());
-		}
-		if (noAchievements) {
-			MinecraftForge.EVENT_BUS.register((Object)new AchievementHandler());
-		}
-		if (noWitherBoss) {
-			MinecraftForge.EVENT_BUS.register((Object)new WitherHandler());
-		}
-		if (chainRecipes) {
-			RecipeHandler.chainRecipes();
-		}
-		if (noDebug && Data.isClient()) {
-			MinecraftForge.EVENT_BUS.register((Object)new DebugHandler());
-		}
-		if (maxRenderDistance != 16 && Data.isClient()) {
-			MinecraftForge.EVENT_BUS.register((Object)new RenderDistanceHandler());
-		}
-		if (villagerProtection) {
-			MinecraftForge.EVENT_BUS.register((Object)new VillagerHandler());
-		}
-		if (logStuff) {
-			MinecraftForge.EVENT_BUS.register((Object)new EventLogger());
-		}
-		if (clearRecipes == 1) {
-			CraftingManager.getInstance().getRecipeList().clear();
-		}
-		if (tabVanilla && Data.isClient()) {
-			CreativeTabs.preInit();
-		}
-		if (waterOnlyBottles) {
-			MinecraftForge.EVENT_BUS.register(new BottleHandler());
-		}
-	}
-	
-	/**
-	 * Loads features.
-	 */
-	
-	public static final void postInit() {
-		if (stackSizeDivider != 0 || durabilityDivider != 1 || infiniteDurability || allBlocksUnbreakable || hardnessMultiplier > 1) {
-			RegistrySearcher.start();
-		}
-		if (clearRecipes == 2) {
-			if (!Loader.isModLoaded("DragonAPI"))
-				CraftingManager.getInstance().getRecipeList().clear();
-		}
-		if (potionStacks > 1 || ConfigHandler.pearlStack > 1) {
-			StackSizeHandler.some(ConfigHandler.potionStacks, ConfigHandler.pearlStack);
 		}
 	}
 }

@@ -1,1 +1,2 @@
 - Anvil disabling
+- Damage multiplier (fits better in FighterMobs?)

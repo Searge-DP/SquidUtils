@@ -4,9 +4,9 @@
 - Locking sound settings (#6)
 - ~~Teleportation disabling~~ (Finished)
 - Bow disabling
-- Bonemeal disabling
+- ~~Bonemeal disabling~~ (Finished)
 - XP disabling
-- Disabling Vanilla hoes/all hoes
+- ~~Disabling Vanilla hoes/all hoes~~(Finished)
 - Disabling certain items (config.getStringList, map of item names, containsKey(event.item.getUnlocalizedName()))
 - ~~Disabling certain commands~~ (Finished)
 - Mobs spawning in packs (fits better in FighterMobs?)

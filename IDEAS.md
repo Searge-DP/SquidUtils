@@ -1,5 +1,4 @@
 - ~~Anvil disabling~~ (Finished)
-- Damage multiplier (fits better in FighterMobs?)
 - Hunger depletion rate (#9)
 - Locking sound settings (#6)
 - ~~Teleportation disabling~~ (Finished)
@@ -9,6 +8,5 @@
 - ~~Disabling Vanilla hoes/all hoes~~(Finished)
 - Disabling certain items (config.getStringList, map of item names, containsKey(event.item.getUnlocalizedName()))
 - ~~Disabling certain commands~~ (Finished)
-- Mobs spawning in packs (fits better in FighterMobs?)
 - Anvil repair cost multiplier
 - Nicknames

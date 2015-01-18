@@ -3,3 +3,8 @@
 - Hunger depletion rate (#9)
 - Locking sound settings (#6)
 - Teleportation disabling
+- Bow disabling
+- Bonemeal disabling
+- XP disabling
+- Disabling Vanilla hoes/all hoes
+- Disabling certain items (config.getStringList, map of item names, containsKey(event.item.getUnlocalizedName()))

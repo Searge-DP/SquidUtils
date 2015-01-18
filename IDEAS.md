@@ -10,7 +10,4 @@
 - Disabling certain items (config.getStringList, map of item names, containsKey(event.item.getUnlocalizedName()))
 - Disabling certain commands
 - Mobs spawning in packs (fits better in FighterMobs?)
-- Clear chat command
-- Nicknames
 - Anvil repair cost multiplier
-- Ban system (mute, tempban)

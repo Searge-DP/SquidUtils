@@ -2,3 +2,4 @@
 - Damage multiplier (fits better in FighterMobs?)
 - Hunger depletion rate (#9)
 - Locking sound settings (#6)
+- Teleportation disabling

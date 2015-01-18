@@ -1,10 +1,10 @@
-package com.github.coolsquid.SquidUtils.Utils.Logging;
+package com.github.coolsquid.squidutils.util.logging;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 
-import com.github.coolsquid.SquidUtils.Handlers.Config.ConfigHandler;
-import com.github.coolsquid.SquidUtils.Utils.Data;
+import com.github.coolsquid.squidutils.config.ConfigHandler;
+import com.github.coolsquid.squidutils.util.Data;
 
 /**
  * 

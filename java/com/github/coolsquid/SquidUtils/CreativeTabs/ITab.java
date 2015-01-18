@@ -1,4 +1,4 @@
-package com.github.coolsquid.SquidUtils.CreativeTabs;
+package com.github.coolsquid.squidutils.creativetabs;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;

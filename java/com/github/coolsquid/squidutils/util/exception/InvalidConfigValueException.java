@@ -1,4 +1,4 @@
-package com.github.coolsquid.SquidUtils.Utils.Exception;
+package com.github.coolsquid.squidutils.util.exception;
 
 import com.github.coolsquid.Testy.Utils.Exception.TestyRuntimeException;
 

@@ -1,11 +1,11 @@
-package com.github.coolsquid.SquidUtils.Utils;
+package com.github.coolsquid.squidutils.util;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.Level;
 
-import com.github.coolsquid.SquidUtils.Utils.Logging.LogHelper;
+import com.github.coolsquid.squidutils.util.logging.LogHelper;
 
 /**
  * 

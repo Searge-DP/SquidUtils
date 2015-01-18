@@ -1,4 +1,4 @@
-package com.github.coolsquid.SquidUtils.Handlers.Config;
+package com.github.coolsquid.squidutils.config;
 
 import java.io.File;
 
@@ -6,7 +6,7 @@ import javax.swing.JOptionPane;
 
 import net.minecraftforge.common.config.Configuration;
 
-import com.github.coolsquid.SquidUtils.Utils.Exception.DO_NOT_REPORT_EXCEPTION;
+import com.github.coolsquid.squidutils.util.exception.DO_NOT_REPORT_EXCEPTION;
 
 /**
  * 

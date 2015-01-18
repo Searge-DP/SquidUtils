@@ -1,4 +1,4 @@
-package com.github.coolsquid.SquidUtils.Handlers;
+package com.github.coolsquid.squidutils.handlers;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;

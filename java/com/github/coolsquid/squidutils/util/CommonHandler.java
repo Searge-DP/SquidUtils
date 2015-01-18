@@ -1,4 +1,4 @@
-package com.github.coolsquid.SquidUtils.Utils;
+package com.github.coolsquid.squidutils.util;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 
-import com.github.coolsquid.SquidUtils.Utils.Logging.LogHelper;
+import com.github.coolsquid.squidutils.util.logging.LogHelper;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 

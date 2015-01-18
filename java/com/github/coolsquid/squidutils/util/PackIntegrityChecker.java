@@ -1,12 +1,12 @@
-package com.github.coolsquid.SquidUtils.Utils;
+package com.github.coolsquid.squidutils.util;
 
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.ArrayList;
 
 import org.apache.logging.log4j.Level;
 
-import com.github.coolsquid.SquidUtils.Handlers.Config.ConfigHandler;
-import com.github.coolsquid.SquidUtils.Utils.Logging.LogHelper;
+import com.github.coolsquid.squidutils.config.ConfigHandler;
+import com.github.coolsquid.squidutils.util.logging.LogHelper;
 
 import cpw.mods.fml.common.Loader;
 

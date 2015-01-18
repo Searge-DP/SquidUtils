@@ -1,4 +1,4 @@
-package com.github.coolsquid.SquidUtils.Utils;
+package com.github.coolsquid.squidutils.util;
 
 import net.minecraft.launchwrapper.Launch;
 import cpw.mods.fml.common.FMLCommonHandler;

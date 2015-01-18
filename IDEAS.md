@@ -9,6 +9,8 @@
 - Disabling Vanilla hoes/all hoes
 - Disabling certain items (config.getStringList, map of item names, containsKey(event.item.getUnlocalizedName()))
 - Disabling certain commands
-- Muting feature (player can't speak in chat)
 - Mobs spawning in packs (fits better in FighterMobs?)
 - Clear chat command
+- Nicknames
+- Anvil repair cost multiplier
+- Ban system (mute, tempban)

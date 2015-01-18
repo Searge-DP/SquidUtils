@@ -11,3 +11,4 @@
 - Disabling certain commands
 - Muting feature (player can't speak in chat)
 - Mobs spawning in packs (fits better in FighterMobs?)
+- Clear chat command

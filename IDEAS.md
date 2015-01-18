@@ -10,4 +10,4 @@
 - Disabling certain items (config.getStringList, map of item names, containsKey(event.item.getUnlocalizedName()))
 - Disabling certain commands
 - Muting feature (player can't speak in chat)
-- Mobs spawning in packs
+- Mobs spawning in packs (fits better in FighterMobs?)

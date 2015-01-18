@@ -20,9 +20,7 @@ import cpw.mods.fml.common.Loader;
  */
 
 public class PackIntegrityChecker implements UncaughtExceptionHandler {
-	
-	private static final String[] modList = ConfigHandler.modList;
-	
+		
 	/**
 	 * List of removed mods.
 	 */
@@ -41,13 +39,14 @@ public class PackIntegrityChecker implements UncaughtExceptionHandler {
 	
 	public static void check() {
 		int a = 0;
-		while (a < modList.length) {
-			if (!Loader.isModLoaded(modList[a])) {
-				missingMods.add(modList[a]);
+		while (a < ConfigHandler.modList.length) {
+			if (!Loader.isModLoaded(ConfigHandler.modList[a])) {
+				missingMods.add(ConfigHandler.modList[a]);
 			}
 			a++;
 		}
-		if (modList.length != 0) {
+		missingMods.get(0);
+		if (!missingMods.isEmpty()) {
 			LogHelper.bigWarning(Level.WARN, "The modpack has been modified. DO NOT REPORT ANY BUGS!!!");
 			LogHelper.warn("Missing mods:");
 			int a2 = 0;
@@ -60,7 +59,7 @@ public class PackIntegrityChecker implements UncaughtExceptionHandler {
 	
 	@Override
 	public void uncaughtException(Thread t, Throwable e) {
-		if (modList.length != 0) {
+		if (!missingMods.isEmpty()) {
 			LogHelper.bigWarning(Level.WARN, "The modpack has been modified. DO NOT REPORT ANY BUGS!!! Missing mods:");
 			int a = 0;
 			while (a < missingMods.size()) {

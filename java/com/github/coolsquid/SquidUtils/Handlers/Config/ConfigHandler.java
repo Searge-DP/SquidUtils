@@ -206,7 +206,6 @@ public class ConfigHandler {
 	public static float hardnessMultiplier = 1;
 	
 	/**
-	 * TODO
 	 * Fixes a bug with glass bottles.
 	 */
 	
@@ -217,6 +216,36 @@ public class ConfigHandler {
 	 */
 	
 	public static String[] modList = new String[] {};
+
+	/**
+	 * Disables the Vanilla anvil.
+	 */
+	
+	public static boolean disableAnvil = false;
+	
+	/**
+	 * List of commands to disable.
+	 */
+	
+	public static String[] commandsToDisable = new String[] {};
+	
+	/**
+	 * Disables enderman and enderpearl teleportation.
+	 */
+	
+	public static boolean disableTeleportation = false;
+
+	/**
+	 * Disables bonemeal.
+	 */
+	
+	public static boolean disableBonemeal = false;
+	
+	/**
+	 * Disables hoes.
+	 */
+	
+	public static boolean disableHoes = false;
 	
 	/**
 	 * Sets category comments.
@@ -251,12 +280,17 @@ public class ConfigHandler {
 		stackSizeDivider = config.getInt("stackSizeDivider", CATEGORY_PROPERTIES, 0, 0, 64, "Sets the max stack size for all items. Set to 0 to disable.");
 		allBlocksUnbreakable = config.getBoolean("allBlocksUnbreakable", CATEGORY_PROPERTIES, false, "Makes all blocks unbreakable.");
 		durabilityDivider = config.getInt("durabilityDivider", CATEGORY_PROPERTIES, 1, 1, 1080, "All tools and armors durability will be divided by this.");
-		clearRecipes = config.getInt("clearRecipes", CATEGORY_GENERAL, 0, 0, 2, "Clears Vanilla recipes if 1, clears all recipes if 2. Set to 0 to disable. Will not work if any of Reika's mods are loaded.");
+		clearRecipes = config.getInt("clearRecipes", CATEGORY_GENERAL, 0, 0, 2, "Clears Vanilla recipes if 1, clears all recipes if 2. Set to 0 to disable. Clearing all recipes will not work if any of Reika's mods are loaded.");
 		infiniteDurability = config.getBoolean("infiniteDurability", CATEGORY_PROPERTIES, false, "Makes all items have infinite durability. Overrides \"durabilityDivider\".");
 		tabVanilla = config.getBoolean("tabVanilla", CATEGORY_CREATIVETABS, true, "Enables the extra Vanilla stuff creative tab.");
 		hardnessMultiplier = config.getFloat("hardnessMultiplier", CATEGORY_PROPERTIES, 1, 1, 100, "Multiplies all blocks hardness by the specified number. Set to 1.0 to disable.");
 		//waterOnlyBottles = config.getBoolean("waterOnlyBottles", CATEGORY_GENERAL, false, "Makes water bottles only work with Vanilla water.");
 		modList = config.getStringList("modList", CATEGORY_GENERAL, new String[] {}, "If any of the mods listed are missing, a warning will be printed to the log.");
+		disableAnvil = config.getBoolean("disableAnvil", CATEGORY_GENERAL, false, "Disables the Vanilla anvil.");
+		commandsToDisable = config.getStringList("commandsToDisable", CATEGORY_GENERAL, new String[] {}, "List of commands to disable.");
+		disableTeleportation = config.getBoolean("disableTeleportation", CATEGORY_GENERAL, false, "Disables enderman and enderpearl teleportation.");
+		disableBonemeal = config.getBoolean("disableBonemeal", CATEGORY_GENERAL, false, "Disables bonemeal.");
+		disableHoes = config.getBoolean("disableHoes", CATEGORY_GENERAL, false, "Disables hoes.");
 		
 		String password = config.getString("password", CATEGORY_GENERAL, "", "Sets a password required to launch Minecraft.");
 		if (!(password.isEmpty())) {

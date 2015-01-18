@@ -47,9 +47,9 @@ public final class LogHelper {
 		}
 	
 	public static void bigWarning(Level level, String msg) {
-		logger.log(level, "-------------------------------------------------------------------------------------------");
+		logger.log(level, "-------------------------------------------------------------------------------------");
 		logger.log(level, msg);
-		logger.log(level, "-------------------------------------------------------------------------------------------");
+		logger.log(level, "-------------------------------------------------------------------------------------");
 		}
 	
 	public static void log(Level level, String msg) {

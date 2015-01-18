@@ -7,6 +7,9 @@ import com.github.coolsquid.SquidUtils.CreativeTabs.CreativeTabs;
 import com.github.coolsquid.SquidUtils.Handlers.EventLogger;
 import com.github.coolsquid.SquidUtils.Handlers.Config.ConfigHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.AchievementHandler;
+import com.github.coolsquid.SquidUtils.Handlers.Tweakers.AnvilHandler;
+import com.github.coolsquid.SquidUtils.Handlers.Tweakers.BonemealHandler;
+import com.github.coolsquid.SquidUtils.Handlers.Tweakers.CommandHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.DebugHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.DifficultyHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.RecipeHandler;
@@ -14,6 +17,8 @@ import com.github.coolsquid.SquidUtils.Handlers.Tweakers.RegistrySearcher;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.RenderDistanceHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.StackSizeHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.TNTHandler;
+import com.github.coolsquid.SquidUtils.Handlers.Tweakers.TeleportationHandler;
+import com.github.coolsquid.SquidUtils.Handlers.Tweakers.ToolHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.VillagerHandler;
 import com.github.coolsquid.SquidUtils.Handlers.Tweakers.WitherHandler;
 import com.github.coolsquid.SquidUtils.Utils.CommonHandler;
@@ -67,6 +72,8 @@ public class SquidUtils {
 	
 	@EventHandler
 	private void init(FMLInitializationEvent event) {
+		LogHelper.info("Initializing...");
+		
 		PackIntegrityChecker.check();
 		
 		if (!ConfigHandler.forceDifficulty.equalsIgnoreCase("FALSE") && Data.isClient()) {
@@ -107,6 +114,24 @@ public class SquidUtils {
 			TODO
 		}
 		*/
+		if (ConfigHandler.disableAnvil) {
+			MinecraftForge.EVENT_BUS.register(new AnvilHandler());
+		}
+		if (ConfigHandler.commandsToDisable.length != 0) {
+			CommandHandler.init();
+			MinecraftForge.EVENT_BUS.register(new CommandHandler());
+		}
+		if (ConfigHandler.disableTeleportation) {
+			MinecraftForge.EVENT_BUS.register(new TeleportationHandler());
+		}
+		if (ConfigHandler.disableBonemeal) {
+			MinecraftForge.EVENT_BUS.register(new BonemealHandler());
+		}
+		if (ConfigHandler.disableHoes) {
+			MinecraftForge.EVENT_BUS.register(new ToolHandler());
+		}
+		
+		LogHelper.info("Initialization finished.");
 	}
 	
 	/**

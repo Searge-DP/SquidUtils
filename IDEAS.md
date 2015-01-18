@@ -11,3 +11,4 @@
 - Disabling certain commands
 - Mobs spawning in packs (fits better in FighterMobs?)
 - Anvil repair cost multiplier
+- Nicknames

@@ -1,6 +1,7 @@
 package com.github.coolsquid.squidutils;
 
 import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
 
 import com.github.coolsquid.squidutils.config.ConfigHandler;
@@ -31,6 +32,7 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
@@ -130,6 +132,10 @@ public class SquidUtils {
 		if (ConfigHandler.disableHoes) {
 			MinecraftForge.EVENT_BUS.register(new ToolHandler());
 		}
+		
+		NBTTagCompound nbttag = new NBTTagCompound();
+		nbttag.setString("curseProjectName", "226025-squidutils");
+		FMLInterModComms.sendRuntimeMessage(Data.modid, "VersionChecker", "addCurseCheck", nbttag);
 		
 		LogHelper.info("Initialization finished.");
 	}

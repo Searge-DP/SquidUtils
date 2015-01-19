@@ -41,19 +41,21 @@ public class RecipeHandler {
 	public static final void removeRecipes() {
 		int a = 0;
 		int b = 0;
-		while (a < CraftingManager.getInstance().getRecipeList().size()) {
-			IRecipe r = (IRecipe) CraftingManager.getInstance().getRecipeList().get(a);
-			try {
-				while (b < recipesToRemove.size()) {
-					String i = (String) recipesToRemove.get(b);
-					if (r.getRecipeOutput().getItem().getUnlocalizedName().equals(i)) {
-						CraftingManager.getInstance().getRecipeList().remove(a);
+		if (recipesToRemove.size() != 0) {
+			while (a < CraftingManager.getInstance().getRecipeList().size()) {
+				IRecipe r = (IRecipe) CraftingManager.getInstance().getRecipeList().get(a);
+				try {
+					while (b < recipesToRemove.size()) {
+						String i = (String) recipesToRemove.get(b);
+						if (r.getRecipeOutput().getItem().getUnlocalizedName().equals(i)) {
+							CraftingManager.getInstance().getRecipeList().remove(a);
+						}
+						b++;
 					}
-					b++;
-				}
-			} catch (NullPointerException e) {}
-			a++;
-			b = 0;
+				} catch (NullPointerException e) {}
+				a++;
+				b = 0;
+			}
 		}
 	}
 }

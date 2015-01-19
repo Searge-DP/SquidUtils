@@ -5,10 +5,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
 
 import com.github.coolsquid.squidutils.config.ConfigHandler;
-import com.github.coolsquid.squidutils.creativetabs.CreativeTabs;
+import com.github.coolsquid.squidutils.creativetab.CreativeTabs;
 import com.github.coolsquid.squidutils.handlers.AchievementHandler;
 import com.github.coolsquid.squidutils.handlers.AnvilHandler;
 import com.github.coolsquid.squidutils.handlers.BonemealHandler;
+import com.github.coolsquid.squidutils.handlers.BottleCauldronFix;
 import com.github.coolsquid.squidutils.handlers.CommandHandler;
 import com.github.coolsquid.squidutils.handlers.DebugHandler;
 import com.github.coolsquid.squidutils.handlers.DifficultyHandler;
@@ -79,43 +80,38 @@ public class SquidUtils {
 		PackIntegrityChecker.check();
 		
 		if (!ConfigHandler.forceDifficulty.equalsIgnoreCase("FALSE") && Data.isClient()) {
-			MinecraftForge.EVENT_BUS.register((Object)new DifficultyHandler());
+			MinecraftForge.EVENT_BUS.register(new DifficultyHandler());
 		}
 		if (!ConfigHandler.forceDifficulty.equalsIgnoreCase("FALSE") && !ConfigHandler.forceDifficulty.equalsIgnoreCase("PEACEFUL") && !ConfigHandler.forceDifficulty.equalsIgnoreCase("EASY") && !ConfigHandler.forceDifficulty.equalsIgnoreCase("NORMAL") && !ConfigHandler.forceDifficulty.equalsIgnoreCase("HARD")) {
 			throw new InvalidConfigValueException("ConfigHandler.forceDifficulty");
 		}
 		if (ConfigHandler.noTNT) {
-			MinecraftForge.EVENT_BUS.register((Object)new TNTHandler());
+			MinecraftForge.EVENT_BUS.register(new TNTHandler());
 		}
 		if (ConfigHandler.noAchievements) {
-			MinecraftForge.EVENT_BUS.register((Object)new AchievementHandler());
+			MinecraftForge.EVENT_BUS.register(new AchievementHandler());
 		}
 		if (ConfigHandler.noWitherBoss) {
-			MinecraftForge.EVENT_BUS.register((Object)new WitherHandler());
+			MinecraftForge.EVENT_BUS.register(new WitherHandler());
 		}
 		if (ConfigHandler.chainRecipes) {
 			RecipeHandler.chainRecipes();
 		}
 		if (ConfigHandler.noDebug && Data.isClient()) {
-			MinecraftForge.EVENT_BUS.register((Object)new DebugHandler());
+			MinecraftForge.EVENT_BUS.register(new DebugHandler());
 		}
 		if (ConfigHandler.maxRenderDistance != 16 && Data.isClient()) {
-			MinecraftForge.EVENT_BUS.register((Object)new RenderDistanceHandler());
+			MinecraftForge.EVENT_BUS.register(new RenderDistanceHandler());
 		}
 		if (ConfigHandler.villagerProtection) {
-			MinecraftForge.EVENT_BUS.register((Object)new VillagerHandler());
+			MinecraftForge.EVENT_BUS.register(new VillagerHandler());
 		}
-		if (ConfigHandler.logStuff) {
-			MinecraftForge.EVENT_BUS.register((Object)new EventLogger());
-		}
-		if (ConfigHandler.tabVanilla && Data.isClient()) {
+		if (ConfigHandler.tabVanilla) {
 			CreativeTabs.preInit();
 		}
-		/*
-		if (ConfigHandler.waterOnlyBottles) {
-			TODO
+		if (ConfigHandler.logStuff) {
+			MinecraftForge.EVENT_BUS.register(new EventLogger());
 		}
-		*/
 		if (ConfigHandler.disableAnvil) {
 			MinecraftForge.EVENT_BUS.register(new AnvilHandler());
 		}
@@ -132,9 +128,13 @@ public class SquidUtils {
 		if (ConfigHandler.disableHoes) {
 			MinecraftForge.EVENT_BUS.register(new ToolHandler());
 		}
+		if (ConfigHandler.bottleCauldronFix) {
+			MinecraftForge.EVENT_BUS.register(new BottleCauldronFix());
+		}
 		
 		NBTTagCompound nbttag = new NBTTagCompound();
 		nbttag.setString("curseProjectName", "226025-squidutils");
+		nbttag.setString("curseFilenameParser", Data.modid + "-[].jar");
 		FMLInterModComms.sendRuntimeMessage(Data.modid, "VersionChecker", "addCurseCheck", nbttag);
 		
 		LogHelper.info("Initialization finished.");

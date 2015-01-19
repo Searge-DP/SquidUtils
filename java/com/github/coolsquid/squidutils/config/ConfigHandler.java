@@ -6,6 +6,7 @@ import javax.swing.JOptionPane;
 
 import net.minecraftforge.common.config.Configuration;
 
+import com.github.coolsquid.squidutils.util.Data;
 import com.github.coolsquid.squidutils.util.exception.DO_NOT_REPORT_EXCEPTION;
 
 /**
@@ -206,16 +207,10 @@ public class ConfigHandler {
 	public static float hardnessMultiplier = 1;
 	
 	/**
-	 * Fixes a bug with glass bottles.
-	 */
-	
-	public static boolean waterOnlyBottles = false;
-	
-	/**
 	 * List of modids. All mods missing will be logged.
 	 */
 	
-	public static String[] modList = new String[] {};
+	public static String[] modList = new String[] {"mcp", "FML", "Forge", Data.modid};
 
 	/**
 	 * Disables the Vanilla anvil.
@@ -246,6 +241,12 @@ public class ConfigHandler {
 	 */
 	
 	public static boolean disableHoes = false;
+	
+	/**
+	 * 
+	 */
+	
+	public static boolean bottleCauldronFix = false;
 	
 	/**
 	 * Sets category comments.
@@ -284,13 +285,13 @@ public class ConfigHandler {
 		infiniteDurability = config.getBoolean("infiniteDurability", CATEGORY_PROPERTIES, false, "Makes all items have infinite durability. Overrides \"durabilityDivider\".");
 		tabVanilla = config.getBoolean("tabVanilla", CATEGORY_CREATIVETABS, true, "Enables the extra Vanilla stuff creative tab.");
 		hardnessMultiplier = config.getFloat("hardnessMultiplier", CATEGORY_PROPERTIES, 1, 1, 100, "Multiplies all blocks hardness by the specified number. Set to 1.0 to disable.");
-		//waterOnlyBottles = config.getBoolean("waterOnlyBottles", CATEGORY_GENERAL, false, "Makes water bottles only work with Vanilla water.");
-		modList = config.getStringList("modList", CATEGORY_GENERAL, new String[] {}, "If any of the mods listed are missing, a warning will be printed to the log.");
+		modList = config.getStringList("modList", CATEGORY_GENERAL, new String[] {"mcp", "FML", "Forge", Data.modid}, "If any of the mods listed are missing, a warning will be printed to the log.");
 		disableAnvil = config.getBoolean("disableAnvil", CATEGORY_GENERAL, false, "Disables the Vanilla anvil.");
 		commandsToDisable = config.getStringList("commandsToDisable", CATEGORY_GENERAL, new String[] {}, "List of commands to disable.");
 		disableTeleportation = config.getBoolean("disableTeleportation", CATEGORY_GENERAL, false, "Disables enderman and enderpearl teleportation.");
 		disableBonemeal = config.getBoolean("disableBonemeal", CATEGORY_GENERAL, false, "Disables bonemeal.");
 		disableHoes = config.getBoolean("disableHoes", CATEGORY_GENERAL, false, "Disables hoes.");
+		bottleCauldronFix = config.getBoolean("bottleCauldronFix", CATEGORY_GENERAL, false, "Disables bottles from working with cauldrons. *cough*karmarcharger*cough*");
 		
 		String password = config.getString("password", CATEGORY_GENERAL, "", "Sets a password required to launch Minecraft.");
 		if (!(password.isEmpty())) {

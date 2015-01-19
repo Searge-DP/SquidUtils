@@ -70,7 +70,7 @@ public class Data {
 	 * The mod name.
 	 */
 	
-	public static final String name = "§bSquidUtils";
+	public static final String name = "SquidUtils";
 	
 	/**
 	 * The version.

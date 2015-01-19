@@ -44,46 +44,41 @@ public class PackIntegrityChecker implements UncaughtExceptionHandler {
 	 */
 	
 	public static final void check() {
-		if (Loader.instance().getModList().toArray() != ConfigHandler.modList)
-			check2();
-	}
-	
-	public static final void check2() {
-		int a4 = 0;
-		while (a4 < ConfigHandler.modList.length) {
-			allModsRequired.add(ConfigHandler.modList[a4]);
-			a4++;
-		}
 		int a = 0;
 		while (a < ConfigHandler.modList.length) {
-			if (!Loader.isModLoaded(ConfigHandler.modList[a])) {
-				missingMods.add(ConfigHandler.modList[a]);
-			}
+			allModsRequired.add(ConfigHandler.modList[a]);
 			a++;
 		}
 		int b = 0;
-		while (b < allModsRequired.size()) {
-			if (!allModsRequired.contains(Loader.instance().getModList().get(b).getModId())) {
-				addedMods.add(Loader.instance().getModList().get(b).getModId());
+		while (b < ConfigHandler.modList.length) {
+			if (!Loader.isModLoaded(ConfigHandler.modList[b])) {
+				missingMods.add(ConfigHandler.modList[b]);
 			}
 			b++;
+		}
+		int c = 0;
+		while (c < Loader.instance().getModList().size()) {
+			if (!allModsRequired.contains(Loader.instance().getModList().get(c).getModId())) {
+				addedMods.add(Loader.instance().getModList().get(c).getModId());
+			}
+			c++;
 		}
 		if (!(missingMods.isEmpty() || addedMods.isEmpty())) {
 			LogHelper.bigWarning(Level.WARN, "The modpack has been modified. DO NOT REPORT ANY BUGS!!!");
 			if (!missingMods.isEmpty()) {
 				LogHelper.warn("Missing mods:");
-				int a2 = 0;
-				while (a2 < missingMods.size()) {
-					LogHelper.warn(missingMods.get(a2));
-					a2++;
+				int d = 0;
+				while (d < missingMods.size()) {
+					LogHelper.warn(missingMods.get(d));
+					d++;
 				}
 			}
 			if (!addedMods.isEmpty()) {
 				LogHelper.warn("Added mods:");
-				int a3 = 0;
-				while (a3 < addedMods.size()) {
-					LogHelper.warn(addedMods.get(a3));
-					a3++;
+				int e = 0;
+				while (e < addedMods.size()) {
+					LogHelper.warn(addedMods.get(e));
+					e++;
 				}
 			}
 		}
@@ -93,9 +88,24 @@ public class PackIntegrityChecker implements UncaughtExceptionHandler {
 	public void uncaughtException(Thread t, Throwable e) {
 		if (!missingMods.isEmpty()) {
 			LogHelper.bigWarning(Level.WARN, "The modpack has been modified. DO NOT REPORT ANY BUGS!!! Missing mods:");
-			int a = 0;
-			while (a < missingMods.size()) {
-				LogHelper.warn(missingMods.get(a));
+			if (!(missingMods.isEmpty() || addedMods.isEmpty())) {
+				LogHelper.bigWarning(Level.WARN, "The modpack has been modified. DO NOT REPORT ANY BUGS!!!");
+				if (!missingMods.isEmpty()) {
+					LogHelper.warn("Missing mods:");
+					int a = 0;
+					while (a < missingMods.size()) {
+						LogHelper.warn(missingMods.get(a));
+						a++;
+					}
+				}
+				if (!addedMods.isEmpty()) {
+					LogHelper.warn("Added mods:");
+					int b = 0;
+					while (b < addedMods.size()) {
+						LogHelper.warn(addedMods.get(b));
+						b++;
+					}
+				}
 			}
 		}
 	}

@@ -61,6 +61,8 @@ public class SquidUtils {
 		
 		ConfigHandler.preInit(event.getSuggestedConfigurationFile());
 		
+		PackIntegrityChecker.check();
+		
 		if (ConfigHandler.clearRecipes == 1) {
 			CraftingManager.getInstance().getRecipeList().clear();
 		}
@@ -76,8 +78,6 @@ public class SquidUtils {
 	@EventHandler
 	private void init(FMLInitializationEvent event) {
 		LogHelper.info("Initializing...");
-		
-		PackIntegrityChecker.check();
 		
 		if (!ConfigHandler.forceDifficulty.equalsIgnoreCase("FALSE") && Data.isClient()) {
 			MinecraftForge.EVENT_BUS.register(new DifficultyHandler());

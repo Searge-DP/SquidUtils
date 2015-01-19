@@ -45,7 +45,6 @@ public class PackIntegrityChecker implements UncaughtExceptionHandler {
 			}
 			a++;
 		}
-		missingMods.get(0);
 		if (!missingMods.isEmpty()) {
 			LogHelper.bigWarning(Level.WARN, "The modpack has been modified. DO NOT REPORT ANY BUGS!!!");
 			LogHelper.warn("Missing mods:");

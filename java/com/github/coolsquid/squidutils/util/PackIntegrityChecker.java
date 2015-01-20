@@ -28,6 +28,12 @@ public class PackIntegrityChecker implements UncaughtExceptionHandler {
 	private static final ArrayList<String> allModsRequired = new ArrayList<String>();
 	
 	/**
+	 * Optional mods.
+	 */
+	
+	private static final ArrayList<String> optionalMods = new ArrayList<String>();
+	
+	/**
 	 * List of removed mods.
 	 */
 	
@@ -53,6 +59,11 @@ public class PackIntegrityChecker implements UncaughtExceptionHandler {
 		allModsRequired.add("Forge");
 		allModsRequired.add("FML");
 		allModsRequired.add(Data.modid);
+		int d = 0;
+		while (d < ConfigHandler.optionalMods.length) {
+			optionalMods.add(ConfigHandler.optionalMods[d]);
+			d++;
+		}
 		int b = 0;
 		while (b < ConfigHandler.modList.length) {
 			if (!Loader.isModLoaded(allModsRequired.get(b))) {
@@ -63,7 +74,9 @@ public class PackIntegrityChecker implements UncaughtExceptionHandler {
 		int c = 0;
 		while (c < Loader.instance().getModList().size()) {
 			if (!allModsRequired.contains(Loader.instance().getModList().get(c).getModId())) {
-				addedMods.add(Loader.instance().getModList().get(c).getModId());
+				if (!optionalMods.contains(Loader.instance().getModList().get(c).getModId())) {
+					addedMods.add(Loader.instance().getModList().get(c).getModId());
+				}
 			}
 			c++;
 		}

@@ -100,5 +100,5 @@ public class Data {
 	 * List of dependencies.
 	 */
 	
-	public static final String dependencies = "";
+	public static final String dependencies = "after:AppleCore";
 }

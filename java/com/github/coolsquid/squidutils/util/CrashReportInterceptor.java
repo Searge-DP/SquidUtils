@@ -17,7 +17,7 @@ public class CrashReportInterceptor implements ICrashCallable {
 	public String call() throws Exception {
 		return (PackIntegrityChecker.areModsMissing() || PackIntegrityChecker.areModsAdded()) + ". Are mods missing: " + PackIntegrityChecker.areModsMissing() + ". Are mods added: " + PackIntegrityChecker.areModsAdded() + ".";
 	}
- 
+
 	@Override
 	public String getLabel() {
 		return "Modified";

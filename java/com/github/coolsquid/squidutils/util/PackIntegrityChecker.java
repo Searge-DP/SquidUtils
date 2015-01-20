@@ -49,9 +49,13 @@ public class PackIntegrityChecker implements UncaughtExceptionHandler {
 			allModsRequired.add(ConfigHandler.modList[a]);
 			a++;
 		}
+		allModsRequired.add("mcp");
+		allModsRequired.add("Forge");
+		allModsRequired.add("FML");
+		allModsRequired.add(Data.modid);
 		int b = 0;
 		while (b < ConfigHandler.modList.length) {
-			if (!Loader.isModLoaded(ConfigHandler.modList[b])) {
+			if (!Loader.isModLoaded(allModsRequired.get(b))) {
 				missingMods.add(ConfigHandler.modList[b]);
 			}
 			b++;
@@ -63,6 +67,10 @@ public class PackIntegrityChecker implements UncaughtExceptionHandler {
 			}
 			c++;
 		}
+		warn();
+	}
+	
+	public static final void warn() {
 		if (!(missingMods.isEmpty() || addedMods.isEmpty())) {
 			LogHelper.bigWarning(Level.WARN, "The modpack has been modified. DO NOT REPORT ANY BUGS!!!");
 			if (!missingMods.isEmpty()) {

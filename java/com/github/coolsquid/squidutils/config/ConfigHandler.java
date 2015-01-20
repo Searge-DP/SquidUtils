@@ -6,7 +6,6 @@ import javax.swing.JOptionPane;
 
 import net.minecraftforge.common.config.Configuration;
 
-import com.github.coolsquid.squidutils.util.Data;
 import com.github.coolsquid.squidutils.util.exception.DO_NOT_REPORT_EXCEPTION;
 
 /**
@@ -81,6 +80,18 @@ public class ConfigHandler {
 	 */
 	
 	private static final String CATEGORY_CREATIVETABS = "Creative tabs";
+	
+	/**
+	 * Modpack specific options.
+	 */
+	
+	private static final String CATEGORY_MODPACKS = "Modpack specific options";
+	
+	/**
+	 * Hunger options. REQUIRES APPLE CORE!
+	 */
+	
+	private static final String CATEGORY_HUNGER = "Hunger options";
 	
 	/*
 	 * Hardcoded options. Modify them as you want to.
@@ -210,7 +221,7 @@ public class ConfigHandler {
 	 * List of modids. All mods missing will be logged.
 	 */
 	
-	public static String[] modList = new String[] {"mcp", "FML", "Forge", Data.modid};
+	public static String[] modList = new String[] {};
 
 	/**
 	 * Disables the Vanilla anvil.
@@ -229,7 +240,7 @@ public class ConfigHandler {
 	 */
 	
 	public static boolean disableTeleportation = false;
-
+	
 	/**
 	 * Disables bonemeal.
 	 */
@@ -243,10 +254,40 @@ public class ConfigHandler {
 	public static boolean disableHoes = false;
 	
 	/**
-	 * 
+	 * Disables glass bottle interaction with liquids.
 	 */
 	
-	public static boolean bottleCauldronFix = false;
+	public static boolean disableBottleFluidInteraction = false;
+	
+	/**
+	 * Generates a list of modids in the working directory.
+	 */
+	
+	public static int generateModList = 0;
+	
+	/**
+	 * Extra mods to not warn about.
+	 */
+	
+	public static String[] optionalMods = new String[] {};
+	
+	/**
+	 * Replaces the starvation damage with the specified amount. Set to 0 to disable.
+	 */
+	
+	public static float starvationDamage = -1;
+	
+	/**
+	 * Disables plant growth.
+	 */
+	
+	public static boolean noPlantGrowth = false;
+	
+	/**
+	 * Disables hunger regen.
+	 */
+	
+	public static boolean noHungerRegen = false;
 	
 	/**
 	 * Sets category comments.
@@ -259,6 +300,7 @@ public class ConfigHandler {
 		config.setCategoryComment(CATEGORY_PROPERTIES, "Configure block and item properties.");
 		config.setCategoryComment(CATEGORY_GAMESETTINGS, "Force game options.");
 		config.setCategoryComment(CATEGORY_CREATIVETABS, "Disable or enable creative tabs.");
+		config.setCategoryComment(CATEGORY_HUNGER, "Modify hunger options. REQUIRES APPLE CORE!");
 	}
 	
 	/**
@@ -285,13 +327,18 @@ public class ConfigHandler {
 		infiniteDurability = config.getBoolean("infiniteDurability", CATEGORY_PROPERTIES, false, "Makes all items have infinite durability. Overrides \"durabilityDivider\".");
 		tabVanilla = config.getBoolean("tabVanilla", CATEGORY_CREATIVETABS, true, "Enables the extra Vanilla stuff creative tab.");
 		hardnessMultiplier = config.getFloat("hardnessMultiplier", CATEGORY_PROPERTIES, 1, 1, 100, "Multiplies all blocks hardness by the specified number. Set to 1.0 to disable.");
-		modList = config.getStringList("modList", CATEGORY_GENERAL, new String[] {"mcp", "FML", "Forge", Data.modid}, "If any of the mods listed are missing, a warning will be printed to the log.");
+		modList = config.getStringList("modList", CATEGORY_MODPACKS, new String[] {}, "If any of the mods listed are missing, a warning will be printed to the log.");
 		disableAnvil = config.getBoolean("disableAnvil", CATEGORY_GENERAL, false, "Disables the Vanilla anvil.");
 		commandsToDisable = config.getStringList("commandsToDisable", CATEGORY_GENERAL, new String[] {}, "List of commands to disable.");
 		disableTeleportation = config.getBoolean("disableTeleportation", CATEGORY_GENERAL, false, "Disables enderman and enderpearl teleportation.");
 		disableBonemeal = config.getBoolean("disableBonemeal", CATEGORY_GENERAL, false, "Disables bonemeal.");
 		disableHoes = config.getBoolean("disableHoes", CATEGORY_GENERAL, false, "Disables hoes.");
-		bottleCauldronFix = config.getBoolean("bottleCauldronFix", CATEGORY_GENERAL, false, "Disables bottles from working with cauldrons. *cough*karmarcharger*cough*");
+		disableBottleFluidInteraction = config.getBoolean("disableBottleFluidInteraction", CATEGORY_GENERAL, false, "Disables bottles from working with cauldrons. *cough*karmarcharger*cough*");
+		generateModList = config.getInt("generateModList", CATEGORY_MODPACKS, 0, 0, 2, "Generates a list of modids in the working directory. Set to 1 to generate only modids, or set to 2 to generate modids and versions.");
+		optionalMods = config.getStringList("optionalMods", CATEGORY_MODPACKS, new String[] {}, "Extra mods to not warn about if added or removed.");
+		starvationDamage = config.getFloat("starvationDamage", CATEGORY_HUNGER, -1, -1, 20, "Modifies the starvation damage.");
+		noPlantGrowth = config.getBoolean("noPlantGrowth", CATEGORY_HUNGER, false, "Disables plant growth.");
+		noHungerRegen = config.getBoolean("noHungerRegen", CATEGORY_HUNGER, false, "Disables hunger regen.");
 		
 		String password = config.getString("password", CATEGORY_GENERAL, "", "Sets a password required to launch Minecraft.");
 		if (!(password.isEmpty())) {

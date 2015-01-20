@@ -1,11 +1,7 @@
 package com.github.coolsquid.Testy.Registry;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import com.github.coolsquid.Testy.Utils.Exception.TestyRuntimeException;
 
 /**
  * 
@@ -14,17 +10,14 @@ import com.github.coolsquid.Testy.Utils.Exception.TestyRuntimeException;
  *
  */
 
-public class Registry {
+public class Registry extends SimpleRegistry {
 	
 	protected static Map<Object, Integer> m = new HashMap<Object, Integer>();
-	protected static List<Object> l = new ArrayList<Object>();
-	
-	public int maxSize = Integer.MAX_VALUE;
 	
 	private static int a = 0;
 	
 	public Registry(int i) {
-		maxSize = i;
+		super(i);
 	}
 	
 	public Registry() {}
@@ -34,6 +27,7 @@ public class Registry {
 	 * @param object
 	 */
 	
+	@Override
 	public void register(Object object) {
 		if (a < maxSize) {
 			if (m.get(object) == null) {
@@ -49,20 +43,5 @@ public class Registry {
 	
 	public int get(Object o) {
 		return m.get(o);
-	}
-	
-	public Object get(int i) {
-		return l.get(i);
-	}
-	
-	protected class RegistryException extends TestyRuntimeException {
-		private static final long serialVersionUID = 1879823L;
-		public RegistryException(String comment) {
-			super(comment);
-		}
-	}
-	
-	public int size() {
-		return l.size();
 	}
 }

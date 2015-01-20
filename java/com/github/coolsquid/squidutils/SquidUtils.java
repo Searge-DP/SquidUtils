@@ -14,7 +14,10 @@ import com.github.coolsquid.squidutils.handlers.CommandHandler;
 import com.github.coolsquid.squidutils.handlers.DebugHandler;
 import com.github.coolsquid.squidutils.handlers.DifficultyHandler;
 import com.github.coolsquid.squidutils.handlers.EventLogger;
+import com.github.coolsquid.squidutils.handlers.FoodHandler;
+import com.github.coolsquid.squidutils.handlers.PlantHandler;
 import com.github.coolsquid.squidutils.handlers.RecipeHandler;
+import com.github.coolsquid.squidutils.handlers.RegenHandler;
 import com.github.coolsquid.squidutils.handlers.RegistrySearcher;
 import com.github.coolsquid.squidutils.handlers.RenderDistanceHandler;
 import com.github.coolsquid.squidutils.handlers.StackSizeHandler;
@@ -25,6 +28,7 @@ import com.github.coolsquid.squidutils.handlers.VillagerHandler;
 import com.github.coolsquid.squidutils.handlers.WitherHandler;
 import com.github.coolsquid.squidutils.util.CommonHandler;
 import com.github.coolsquid.squidutils.util.Data;
+import com.github.coolsquid.squidutils.util.ModLister;
 import com.github.coolsquid.squidutils.util.PackIntegrityChecker;
 import com.github.coolsquid.squidutils.util.exception.InvalidConfigValueException;
 import com.github.coolsquid.squidutils.util.logging.LogHelper;
@@ -61,7 +65,9 @@ public class SquidUtils {
 		
 		ConfigHandler.preInit(event.getSuggestedConfigurationFile());
 		
-		PackIntegrityChecker.check();
+		if (ConfigHandler.modList.length != 0) {
+			PackIntegrityChecker.check();
+		}
 		
 		if (ConfigHandler.clearRecipes == 1) {
 			CraftingManager.getInstance().getRecipeList().clear();
@@ -128,8 +134,22 @@ public class SquidUtils {
 		if (ConfigHandler.disableHoes) {
 			MinecraftForge.EVENT_BUS.register(new ToolHandler());
 		}
-		if (ConfigHandler.bottleCauldronFix) {
+		if (ConfigHandler.disableBottleFluidInteraction) {
 			MinecraftForge.EVENT_BUS.register(new BottleCauldronFix());
+		}
+		if (ConfigHandler.generateModList != 0) {
+			ModLister.init();
+		}
+		if (Loader.isModLoaded("AppleCore")) {
+			if (ConfigHandler.starvationDamage < 0) {
+				MinecraftForge.EVENT_BUS.register(new FoodHandler());
+			}
+			if (ConfigHandler.noPlantGrowth) {
+				MinecraftForge.EVENT_BUS.register(new PlantHandler());
+			}
+			if (ConfigHandler.noHungerRegen) {
+				MinecraftForge.EVENT_BUS.register(new RegenHandler());
+			}
 		}
 		
 		NBTTagCompound nbttag = new NBTTagCompound();
@@ -159,6 +179,7 @@ public class SquidUtils {
 			StackSizeHandler.some(ConfigHandler.potionStacks, ConfigHandler.pearlStack);
 		}
 		RecipeHandler.removeRecipes();
+		
 		LogHelper.info("Postinitialization finished.");
 	}
 }

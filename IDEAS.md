@@ -1,3 +1,5 @@
+Unimplemented ideas
+===================
 - Hunger depletion rate (#9)
 - Locking sound settings (#6)
 - Bow disabling

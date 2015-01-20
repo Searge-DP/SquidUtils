@@ -3,7 +3,7 @@ package com.github.coolsquid.squidutils.util;
 import org.apache.logging.log4j.Level;
 
 import com.github.coolsquid.Testy.Registry.SimpleRegistry;
-import com.github.coolsquid.squidutils.util.logging.LogHelper;
+import com.github.coolsquid.squidutils.helpers.LogHelper;
 
 /**
  * 

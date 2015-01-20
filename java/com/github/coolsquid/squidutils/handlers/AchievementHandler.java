@@ -2,7 +2,7 @@ package com.github.coolsquid.squidutils.handlers;
 
 import net.minecraftforge.event.entity.player.AchievementEvent;
 
-import com.github.coolsquid.squidutils.util.logging.LogHelper;
+import com.github.coolsquid.squidutils.helpers.LogHelper;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 

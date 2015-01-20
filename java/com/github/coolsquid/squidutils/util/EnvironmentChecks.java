@@ -4,7 +4,7 @@ import org.apache.logging.log4j.Level;
 
 import com.github.coolsquid.squidutils.config.ConfigHandler;
 import com.github.coolsquid.squidutils.handlers.RecipeHandler;
-import com.github.coolsquid.squidutils.util.logging.LogHelper;
+import com.github.coolsquid.squidutils.helpers.LogHelper;
 
 /**
  * 

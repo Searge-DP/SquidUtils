@@ -9,7 +9,7 @@ import com.github.coolsquid.squidutils.creativetab.CreativeTabs;
 import com.github.coolsquid.squidutils.handlers.AchievementHandler;
 import com.github.coolsquid.squidutils.handlers.AnvilHandler;
 import com.github.coolsquid.squidutils.handlers.BonemealHandler;
-import com.github.coolsquid.squidutils.handlers.BottleCauldronFix;
+import com.github.coolsquid.squidutils.handlers.BottleHandler;
 import com.github.coolsquid.squidutils.handlers.CommandHandler;
 import com.github.coolsquid.squidutils.handlers.DebugHandler;
 import com.github.coolsquid.squidutils.handlers.DifficultyHandler;
@@ -26,12 +26,12 @@ import com.github.coolsquid.squidutils.handlers.TeleportationHandler;
 import com.github.coolsquid.squidutils.handlers.ToolHandler;
 import com.github.coolsquid.squidutils.handlers.VillagerHandler;
 import com.github.coolsquid.squidutils.handlers.WitherHandler;
-import com.github.coolsquid.squidutils.util.CommonHandler;
+import com.github.coolsquid.squidutils.helpers.CommonHelper;
+import com.github.coolsquid.squidutils.helpers.LogHelper;
 import com.github.coolsquid.squidutils.util.Data;
 import com.github.coolsquid.squidutils.util.ModLister;
 import com.github.coolsquid.squidutils.util.PackIntegrityChecker;
 import com.github.coolsquid.squidutils.util.exception.InvalidConfigValueException;
-import com.github.coolsquid.squidutils.util.logging.LogHelper;
 
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
@@ -61,7 +61,7 @@ public class SquidUtils {
 	private void preInit(FMLPreInitializationEvent event) {
 		LogHelper.info("Preinitializing...");
 		
-		CommonHandler.init();
+		CommonHelper.init();
 		
 		ConfigHandler.preInit(event.getSuggestedConfigurationFile());
 		
@@ -135,7 +135,7 @@ public class SquidUtils {
 			MinecraftForge.EVENT_BUS.register(new ToolHandler());
 		}
 		if (ConfigHandler.disableBottleFluidInteraction) {
-			MinecraftForge.EVENT_BUS.register(new BottleCauldronFix());
+			MinecraftForge.EVENT_BUS.register(new BottleHandler());
 		}
 		if (ConfigHandler.generateModList != 0) {
 			ModLister.init();

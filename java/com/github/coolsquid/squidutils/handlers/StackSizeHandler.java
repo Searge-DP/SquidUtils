@@ -2,7 +2,7 @@ package com.github.coolsquid.squidutils.handlers;
 
 import net.minecraft.init.Items;
 
-import com.github.coolsquid.squidutils.util.logging.LogHelper;
+import com.github.coolsquid.squidutils.helpers.LogHelper;
 
 /**
  * 

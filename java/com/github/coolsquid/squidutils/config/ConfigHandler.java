@@ -6,7 +6,7 @@ import javax.swing.JOptionPane;
 
 import net.minecraftforge.common.config.Configuration;
 
-import com.github.coolsquid.squidutils.util.exception.DO_NOT_REPORT_EXCEPTION;
+import com.github.coolsquid.squidlib.exception.DO_NOT_REPORT_EXCEPTION;
 
 /**
  * 

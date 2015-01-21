@@ -6,7 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 
-import com.github.coolsquid.Testy.Registry.Registry;
+import com.github.coolsquid.squidlib.registry.Registry;
 import com.github.coolsquid.squidutils.helpers.LogHelper;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -42,6 +42,7 @@ public class RecipeHandler {
 		int a = 0;
 		int b = 0;
 		if (recipesToRemove.size() != 0) {
+			LogHelper.info("Removing recipes...");
 			while (a < CraftingManager.getInstance().getRecipeList().size()) {
 				IRecipe r = (IRecipe) CraftingManager.getInstance().getRecipeList().get(a);
 				try {
@@ -56,6 +57,7 @@ public class RecipeHandler {
 				a++;
 				b = 0;
 			}
+			LogHelper.info("Finished recipe removal.");
 		}
 	}
 }

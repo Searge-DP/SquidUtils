@@ -4,6 +4,9 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
 
+import com.github.coolsquid.squidlib.exception.InvalidConfigValueException;
+import com.github.coolsquid.squidlib.util.Utils;
+import com.github.coolsquid.squidutils.compat.AppleCoreCompat;
 import com.github.coolsquid.squidutils.config.ConfigHandler;
 import com.github.coolsquid.squidutils.creativetab.CreativeTabs;
 import com.github.coolsquid.squidutils.handlers.AchievementHandler;
@@ -14,10 +17,7 @@ import com.github.coolsquid.squidutils.handlers.CommandHandler;
 import com.github.coolsquid.squidutils.handlers.DebugHandler;
 import com.github.coolsquid.squidutils.handlers.DifficultyHandler;
 import com.github.coolsquid.squidutils.handlers.EventLogger;
-import com.github.coolsquid.squidutils.handlers.FoodHandler;
-import com.github.coolsquid.squidutils.handlers.PlantHandler;
 import com.github.coolsquid.squidutils.handlers.RecipeHandler;
-import com.github.coolsquid.squidutils.handlers.RegenHandler;
 import com.github.coolsquid.squidutils.handlers.RegistrySearcher;
 import com.github.coolsquid.squidutils.handlers.RenderDistanceHandler;
 import com.github.coolsquid.squidutils.handlers.StackSizeHandler;
@@ -26,13 +26,13 @@ import com.github.coolsquid.squidutils.handlers.TeleportationHandler;
 import com.github.coolsquid.squidutils.handlers.ToolHandler;
 import com.github.coolsquid.squidutils.handlers.VillagerHandler;
 import com.github.coolsquid.squidutils.handlers.WitherHandler;
-import com.github.coolsquid.squidutils.helpers.CommonHelper;
 import com.github.coolsquid.squidutils.helpers.LogHelper;
+import com.github.coolsquid.squidutils.util.CrashReportInterceptor;
 import com.github.coolsquid.squidutils.util.Data;
 import com.github.coolsquid.squidutils.util.ModLister;
 import com.github.coolsquid.squidutils.util.PackIntegrityChecker;
-import com.github.coolsquid.squidutils.util.exception.InvalidConfigValueException;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -61,7 +61,7 @@ public class SquidUtils {
 	private void preInit(FMLPreInitializationEvent event) {
 		LogHelper.info("Preinitializing...");
 		
-		CommonHelper.init();
+		FMLCommonHandler.instance().registerCrashCallable(new CrashReportInterceptor());
 		
 		ConfigHandler.preInit(event.getSuggestedConfigurationFile());
 		
@@ -85,7 +85,7 @@ public class SquidUtils {
 	private void init(FMLInitializationEvent event) {
 		LogHelper.info("Initializing...");
 		
-		if (!ConfigHandler.forceDifficulty.equalsIgnoreCase("FALSE") && Data.isClient()) {
+		if (!ConfigHandler.forceDifficulty.equalsIgnoreCase("FALSE") && Utils.isClient()) {
 			MinecraftForge.EVENT_BUS.register(new DifficultyHandler());
 		}
 		if (!ConfigHandler.forceDifficulty.equalsIgnoreCase("FALSE") && !ConfigHandler.forceDifficulty.equalsIgnoreCase("PEACEFUL") && !ConfigHandler.forceDifficulty.equalsIgnoreCase("EASY") && !ConfigHandler.forceDifficulty.equalsIgnoreCase("NORMAL") && !ConfigHandler.forceDifficulty.equalsIgnoreCase("HARD")) {
@@ -103,10 +103,10 @@ public class SquidUtils {
 		if (ConfigHandler.chainRecipes) {
 			RecipeHandler.chainRecipes();
 		}
-		if (ConfigHandler.noDebug && Data.isClient()) {
+		if (ConfigHandler.noDebug && Utils.isClient()) {
 			MinecraftForge.EVENT_BUS.register(new DebugHandler());
 		}
-		if (ConfigHandler.maxRenderDistance != 16 && Data.isClient()) {
+		if (ConfigHandler.maxRenderDistance != 16 && Utils.isClient()) {
 			MinecraftForge.EVENT_BUS.register(new RenderDistanceHandler());
 		}
 		if (ConfigHandler.villagerProtection) {
@@ -141,15 +141,7 @@ public class SquidUtils {
 			ModLister.init();
 		}
 		if (Loader.isModLoaded("AppleCore")) {
-			if (ConfigHandler.starvationDamage < 0) {
-				MinecraftForge.EVENT_BUS.register(new FoodHandler());
-			}
-			if (ConfigHandler.noPlantGrowth) {
-				MinecraftForge.EVENT_BUS.register(new PlantHandler());
-			}
-			if (ConfigHandler.noHungerRegen) {
-				MinecraftForge.EVENT_BUS.register(new RegenHandler());
-			}
+			AppleCoreCompat.init();
 		}
 		
 		NBTTagCompound nbttag = new NBTTagCompound();

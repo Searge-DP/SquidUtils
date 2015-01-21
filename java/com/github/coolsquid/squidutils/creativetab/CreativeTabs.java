@@ -4,6 +4,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 
+import com.github.coolsquid.squidlib.creativetab.ITab;
+
 /**
  * 
  * @author CoolSquid

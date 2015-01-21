@@ -9,7 +9,7 @@ public class BottleHandler {
 	
 	@SubscribeEvent
 	public void event(PlayerInteractEvent event) {
-		if (event.action != Action.LEFT_CLICK_BLOCK && event.entityPlayer.getHeldItem().getItem() != null) {
+		if (event.action != Action.LEFT_CLICK_BLOCK && event.entityPlayer.getHeldItem() != null) {
 			if (event.entityPlayer.getHeldItem().getItem() == Items.glass_bottle) {
 				event.setCanceled(true);
 			}

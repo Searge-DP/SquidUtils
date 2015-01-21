@@ -6,8 +6,8 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import net.minecraftforge.event.world.WorldEvent;
 
-import com.github.coolsquid.Testy.Utils.Logging.Level;
-import com.github.coolsquid.Testy.Utils.Logging.Logger;
+import com.github.coolsquid.squidlib.logging.Level;
+import com.github.coolsquid.squidlib.logging.Logger;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
@@ -20,6 +20,8 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class EventLogger {
 	
+	private static final Logger logger = new Logger("logs/EventLogs/", "");
+	
 	/**
 	 * Logs all blocks broken.
 	 */
@@ -29,7 +31,7 @@ public class EventLogger {
 		String s = " ";
 		String pos = event.x + s + event.y + s + event.z;
 		String m = "\"";
-		Logger.log("BlockBroken", Level.INFO, m + event.block.getLocalizedName()+ m + " was broken by: " + m + event.getPlayer().getDisplayName() + m + " at: " + pos, false);
+		logger.log("BlockBroken", Level.INFO, m + event.block.getLocalizedName()+ m + " was broken by: " + m + event.getPlayer().getDisplayName() + m + " at: " + pos, false);
 	}
 	
 	/**
@@ -42,15 +44,15 @@ public class EventLogger {
 		String m = "\"";
 		if (source instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer) event.source.getEntity();
-			Logger.log("EntityDeath", Level.INFO, m + player.getDisplayName() + m + " killed " + event.entity, false);
+			logger.log("EntityDeath", Level.INFO, m + player.getDisplayName() + m + " killed " + event.entity, false);
 		}
 		
 		else if (!(source instanceof EntityPlayer) && source instanceof Entity) {
-			Logger.log("EntityDeath", Level.INFO, m + source + m + " killed " + event.entity, false);
+			logger.log("EntityDeath", Level.INFO, m + source + m + " killed " + event.entity, false);
 		}
 		
 		else if (!(event.source.getEntity() instanceof Entity) && !(event.source.damageType.equals("generic"))) {
-			Logger.log("EntityDeath", Level.INFO, m + event.source.getDamageType() + m + " killed " + event.entity, false);
+			logger.log("EntityDeath", Level.INFO, m + event.source.getDamageType() + m + " killed " + event.entity, false);
 		}
 	}
 	
@@ -61,6 +63,6 @@ public class EventLogger {
 	
 	@SubscribeEvent
 	public void tick(WorldEvent.Save event) {
-		Logger.save("logs/EventLogs/", "");
+		logger.save();
 	}
 }

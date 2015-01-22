@@ -62,7 +62,7 @@ public class EventLogger {
 	 */
 	
 	@SubscribeEvent
-	public void tick(WorldEvent.Save event) {
+	public void save(WorldEvent.Save event) {
 		logger.save();
 	}
 }

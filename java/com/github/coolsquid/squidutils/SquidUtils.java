@@ -85,6 +85,12 @@ public class SquidUtils {
 	private void init(FMLInitializationEvent event) {
 		LogHelper.info("Initializing...");
 		
+		if (Utils.developmentEnvironment) {
+			LogHelper.info("Running in a dev environment.");
+			RecipeHandler.removeRecipes();
+			ConfigHandler.debug = true;
+		}
+		
 		if (!ConfigHandler.forceDifficulty.equalsIgnoreCase("FALSE") && Utils.isClient()) {
 			MinecraftForge.EVENT_BUS.register(new DifficultyHandler());
 		}

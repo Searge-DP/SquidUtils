@@ -4,8 +4,10 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
 
+import com.github.coolsquid.squidlib.block.BaseBlock;
 import com.github.coolsquid.squidlib.exception.InvalidConfigValueException;
 import com.github.coolsquid.squidlib.handlers.RecipeRemover;
+import com.github.coolsquid.squidlib.item.BaseItem;
 import com.github.coolsquid.squidlib.util.Utils;
 import com.github.coolsquid.squidutils.compat.AppleCoreCompat;
 import com.github.coolsquid.squidutils.config.ConfigHandler;
@@ -28,7 +30,7 @@ import com.github.coolsquid.squidutils.handlers.VillagerHandler;
 import com.github.coolsquid.squidutils.handlers.WitherHandler;
 import com.github.coolsquid.squidutils.helpers.LogHelper;
 import com.github.coolsquid.squidutils.util.CrashReportInterceptor;
-import com.github.coolsquid.squidutils.util.Data;
+import com.github.coolsquid.squidutils.util.ModInfo;
 import com.github.coolsquid.squidutils.util.ModLister;
 import com.github.coolsquid.squidutils.util.PackIntegrityChecker;
 
@@ -49,7 +51,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
  * 
  */
 
-@Mod(modid = Data.modid, name = Data.name, version = Data.version, dependencies = Data.dependencies, acceptableRemoteVersions = "*")
+@Mod(modid = ModInfo.modid, name = ModInfo.name, version = ModInfo.version, dependencies = ModInfo.dependencies, acceptableRemoteVersions = "*")
 public class SquidUtils {
 	
 	/**
@@ -84,6 +86,13 @@ public class SquidUtils {
 	@EventHandler
 	private void init(FMLInitializationEvent event) {
 		LogHelper.info("Initializing...");
+		
+		new BaseItem("item22");
+		new BaseItem("item23");
+		new BaseItem("item24");
+		new BaseItem("item25");
+		new BaseItem("item26");
+		new BaseBlock("block22");
 		
 		if (Utils.developmentEnvironment) {
 			LogHelper.info("Running in a dev environment.");
@@ -152,8 +161,8 @@ public class SquidUtils {
 		
 		NBTTagCompound nbttag = new NBTTagCompound();
 		nbttag.setString("curseProjectName", "226025-squidutils");
-		nbttag.setString("curseFilenameParser", Data.modid + "-[].jar");
-		FMLInterModComms.sendRuntimeMessage(Data.modid, "VersionChecker", "addCurseCheck", nbttag);
+		nbttag.setString("curseFilenameParser", ModInfo.modid + "-[].jar");
+		FMLInterModComms.sendRuntimeMessage(ModInfo.modid, "VersionChecker", "addCurseCheck", nbttag);
 		
 		LogHelper.info("Initialization finished.");
 	}
@@ -176,8 +185,6 @@ public class SquidUtils {
 		if (ConfigHandler.potionStacks > 1 || ConfigHandler.pearlStack > 1) {
 			StackSizeHandler.some(ConfigHandler.potionStacks, ConfigHandler.pearlStack);
 		}
-		RecipeRemover.removeRecipes();
-		
 		LogHelper.info("Postinitialization finished.");
 	}
 }

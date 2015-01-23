@@ -50,56 +50,48 @@ public class PackIntegrityChecker implements UncaughtExceptionHandler {
 	 */
 	
 	public static final void check() {
-		int a = 0;
-		while (a < ConfigHandler.modList.length) {
+		for (int a = 0; a < ConfigHandler.modList.length; a++) {
 			allModsRequired.add(ConfigHandler.modList[a]);
-			a++;
 		}
-		allModsRequired.add("mcp");
-		allModsRequired.add("Forge");
-		allModsRequired.add("FML");
-		allModsRequired.add(Data.modid);
-		int d = 0;
-		while (d < ConfigHandler.optionalMods.length) {
-			optionalMods.add(ConfigHandler.optionalMods[d]);
-			d++;
+		if (!allModsRequired.contains("mcp")) {allModsRequired.add("mcp");}
+		if (!allModsRequired.contains("Forge")) {allModsRequired.add("Forge");}
+		if (!allModsRequired.contains("fml")) {allModsRequired.add("fml");}
+		if (!allModsRequired.contains("SquidLib")) {allModsRequired.add("SquidLib");}
+		if (!allModsRequired.contains(ModInfo.modid)) {allModsRequired.add(ModInfo.modid);}
+		for (int a = 0; a < ConfigHandler.optionalMods.length; a++) {
+			optionalMods.add(ConfigHandler.optionalMods[a]);
 		}
-		int b = 0;
-		while (b < ConfigHandler.modList.length) {
-			if (!Loader.isModLoaded(allModsRequired.get(b))) {
-				missingMods.add(ConfigHandler.modList[b]);
+		for (int a = 0; a < ConfigHandler.modList.length; a++) {
+			if (!Loader.isModLoaded(allModsRequired.get(a))) {
+				missingMods.add(ConfigHandler.modList[a]);
 			}
-			b++;
 		}
-		int c = 0;
-		while (c < Loader.instance().getModList().size()) {
-			if (!allModsRequired.contains(Loader.instance().getModList().get(c).getModId())) {
-				if (!optionalMods.contains(Loader.instance().getModList().get(c).getModId())) {
-					addedMods.add(Loader.instance().getModList().get(c).getModId());
+		for (int a = 0; a < Loader.instance().getModList().size(); a++) {
+			if (!allModsRequired.contains(Loader.instance().getModList().get(a).getModId())) {
+				if (!optionalMods.contains(Loader.instance().getModList().get(a).getModId())) {
+					addedMods.add(Loader.instance().getModList().get(a).getModId());
 				}
 			}
-			c++;
 		}
 		warn();
 	}
 	
 	public static final void warn() {
-		if (!(missingMods.isEmpty() || addedMods.isEmpty())) {
-			LogHelper.bigWarning(Level.WARN, "The modpack has been modified. DO NOT REPORT ANY BUGS!!!");
-			if (!missingMods.isEmpty()) {
-				LogHelper.warn("Missing mods:");
-				int d = 0;
-				while (d < missingMods.size()) {
-					LogHelper.warn(missingMods.get(d));
-					d++;
+		if (!missingMods.isEmpty()) {
+			LogHelper.bigWarning(Level.WARN, "The modpack has been modified. DO NOT REPORT ANY BUGS!!! Missing mods:");
+			if (!(missingMods.isEmpty() || addedMods.isEmpty())) {
+				LogHelper.bigWarning(Level.WARN, "The modpack has been modified. DO NOT REPORT ANY BUGS!!!");
+				if (!missingMods.isEmpty()) {
+					LogHelper.warn("Missing mods:");
+					for (int a = 0; a < missingMods.size(); a++) {
+						LogHelper.warn(missingMods.get(a));
+					}
 				}
-			}
-			if (!addedMods.isEmpty()) {
-				LogHelper.warn("Added mods:");
-				int e = 0;
-				while (e < addedMods.size()) {
-					LogHelper.warn(addedMods.get(e));
-					e++;
+				if (!addedMods.isEmpty()) {
+					LogHelper.warn("Added mods:");
+					for (int a = 0; a < addedMods.size(); a++) {
+						LogHelper.warn(addedMods.get(a));
+					}
 				}
 			}
 		}
@@ -107,28 +99,7 @@ public class PackIntegrityChecker implements UncaughtExceptionHandler {
 	
 	@Override
 	public void uncaughtException(Thread t, Throwable e) {
-		if (!missingMods.isEmpty()) {
-			LogHelper.bigWarning(Level.WARN, "The modpack has been modified. DO NOT REPORT ANY BUGS!!! Missing mods:");
-			if (!(missingMods.isEmpty() || addedMods.isEmpty())) {
-				LogHelper.bigWarning(Level.WARN, "The modpack has been modified. DO NOT REPORT ANY BUGS!!!");
-				if (!missingMods.isEmpty()) {
-					LogHelper.warn("Missing mods:");
-					int a = 0;
-					while (a < missingMods.size()) {
-						LogHelper.warn(missingMods.get(a));
-						a++;
-					}
-				}
-				if (!addedMods.isEmpty()) {
-					LogHelper.warn("Added mods:");
-					int b = 0;
-					while (b < addedMods.size()) {
-						LogHelper.warn(addedMods.get(b));
-						b++;
-					}
-				}
-			}
-		}
+		warn();
 	}
 	
 	public static final boolean areModsMissing() {

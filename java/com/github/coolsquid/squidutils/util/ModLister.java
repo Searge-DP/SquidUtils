@@ -31,11 +31,9 @@ public class ModLister {
 		try {
 			f.createNewFile();
 			BufferedWriter w = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f)));
-			int a = 0;
-			while (a < Loader.instance().getModList().size()) {
+			for (int a = 0; a < Loader.instance().getModList().size(); a++) {
 				w.write(Loader.instance().getModList().get(a).getModId());
 				w.write("\n");
-				a++;
 			}
 			w.close();
 			LogHelper.info("Generated modlist.");
@@ -50,13 +48,11 @@ public class ModLister {
 		try {
 			f.createNewFile();
 			BufferedWriter w = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f)));
-			int a = 0;
-			while (a < Loader.instance().getModList().size()) {
+			for (int a = 0; a < Loader.instance().getModList().size(); a++) {
 				w.write(Loader.instance().getModList().get(a).getModId());
 				w.write(" ");
 				w.write(Loader.instance().getModList().get(a).getVersion());
 				w.write("\n");
-				a++;
 			}
 			w.close();
 			LogHelper.info("Generated modlist.");

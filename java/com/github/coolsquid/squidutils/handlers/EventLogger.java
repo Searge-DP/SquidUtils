@@ -63,6 +63,6 @@ public class EventLogger {
 	
 	@SubscribeEvent
 	public void save(WorldEvent.Save event) {
-		logger.save();
+		logger.save(true);
 	}
 }

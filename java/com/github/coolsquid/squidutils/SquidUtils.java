@@ -5,6 +5,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
 
 import com.github.coolsquid.squidlib.exception.InvalidConfigValueException;
+import com.github.coolsquid.squidlib.handlers.RecipeRemover;
 import com.github.coolsquid.squidlib.util.Utils;
 import com.github.coolsquid.squidutils.compat.AppleCoreCompat;
 import com.github.coolsquid.squidutils.config.ConfigHandler;
@@ -17,7 +18,6 @@ import com.github.coolsquid.squidutils.handlers.CommandHandler;
 import com.github.coolsquid.squidutils.handlers.DebugHandler;
 import com.github.coolsquid.squidutils.handlers.DifficultyHandler;
 import com.github.coolsquid.squidutils.handlers.EventLogger;
-import com.github.coolsquid.squidutils.handlers.RecipeHandler;
 import com.github.coolsquid.squidutils.handlers.RegistrySearcher;
 import com.github.coolsquid.squidutils.handlers.RenderDistanceHandler;
 import com.github.coolsquid.squidutils.handlers.StackSizeHandler;
@@ -87,7 +87,7 @@ public class SquidUtils {
 		
 		if (Utils.developmentEnvironment) {
 			LogHelper.info("Running in a dev environment.");
-			RecipeHandler.removeRecipes();
+			RecipeRemover.removeRecipes();
 			ConfigHandler.debug = true;
 		}
 		
@@ -107,7 +107,7 @@ public class SquidUtils {
 			MinecraftForge.EVENT_BUS.register(new WitherHandler());
 		}
 		if (ConfigHandler.chainRecipes) {
-			RecipeHandler.chainRecipes();
+			ModRecipes.chain();
 		}
 		if (ConfigHandler.noDebug && Utils.isClient()) {
 			MinecraftForge.EVENT_BUS.register(new DebugHandler());
@@ -176,7 +176,7 @@ public class SquidUtils {
 		if (ConfigHandler.potionStacks > 1 || ConfigHandler.pearlStack > 1) {
 			StackSizeHandler.some(ConfigHandler.potionStacks, ConfigHandler.pearlStack);
 		}
-		RecipeHandler.removeRecipes();
+		RecipeRemover.removeRecipes();
 		
 		LogHelper.info("Postinitialization finished.");
 	}

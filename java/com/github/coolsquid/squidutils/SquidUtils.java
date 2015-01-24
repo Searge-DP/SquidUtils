@@ -4,11 +4,9 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
 
-import com.github.coolsquid.squidlib.block.BaseBlock;
-import com.github.coolsquid.squidlib.exception.InvalidConfigValueException;
-import com.github.coolsquid.squidlib.handlers.RecipeRemover;
-import com.github.coolsquid.squidlib.item.BaseItem;
-import com.github.coolsquid.squidlib.util.Utils;
+import com.github.coolsquid.squidapi.exception.InvalidConfigValueException;
+import com.github.coolsquid.squidapi.handlers.RecipeRemover;
+import com.github.coolsquid.squidapi.util.Utils;
 import com.github.coolsquid.squidutils.compat.AppleCoreCompat;
 import com.github.coolsquid.squidutils.config.ConfigHandler;
 import com.github.coolsquid.squidutils.creativetab.CreativeTabs;
@@ -86,13 +84,6 @@ public class SquidUtils {
 	@EventHandler
 	private void init(FMLInitializationEvent event) {
 		LogHelper.info("Initializing...");
-		
-		new BaseItem("item22");
-		new BaseItem("item23");
-		new BaseItem("item24");
-		new BaseItem("item25");
-		new BaseItem("item26");
-		new BaseBlock("block22");
 		
 		if (Utils.developmentEnvironment) {
 			LogHelper.info("Running in a dev environment.");

@@ -6,8 +6,8 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import net.minecraftforge.event.world.WorldEvent;
 
-import com.github.coolsquid.squidlib.logging.Level;
-import com.github.coolsquid.squidlib.logging.Logger;
+import com.github.coolsquid.squidapi.logging.Level;
+import com.github.coolsquid.squidapi.logging.Logger;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 

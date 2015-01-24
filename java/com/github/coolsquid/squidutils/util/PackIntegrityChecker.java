@@ -56,7 +56,7 @@ public class PackIntegrityChecker implements UncaughtExceptionHandler {
 		if (!allModsRequired.contains("mcp")) {allModsRequired.add("mcp");}
 		if (!allModsRequired.contains("Forge")) {allModsRequired.add("Forge");}
 		if (!allModsRequired.contains("fml")) {allModsRequired.add("fml");}
-		if (!allModsRequired.contains("SquidLib")) {allModsRequired.add("SquidLib");}
+		if (!allModsRequired.contains("SquidAPI")) {allModsRequired.add("SquidAPI");}
 		if (!allModsRequired.contains(ModInfo.modid)) {allModsRequired.add(ModInfo.modid);}
 		for (int a = 0; a < ConfigHandler.optionalMods.length; a++) {
 			optionalMods.add(ConfigHandler.optionalMods[a]);

@@ -34,6 +34,6 @@ public class CreativeTabs {
 				Blocks.red_mushroom_block,
 				Items.command_block_minecart,
 				};
-		ITab.add(o, vanillaTab);
+		vanillaTab.add(o);
 	}
 }

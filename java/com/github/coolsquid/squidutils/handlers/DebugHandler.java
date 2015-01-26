@@ -1,3 +1,7 @@
+/*******************************************************************************
+ * Copyright (c) 2015 CoolSquid.
+ * All rights reserved.
+ *******************************************************************************/
 package com.github.coolsquid.squidutils.handlers;
 
 import net.minecraft.client.Minecraft;
@@ -7,13 +11,6 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import com.github.coolsquid.squidutils.helpers.LogHelper;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-
-/**
- * 
- * @author CoolSquid
- * All rights reserved.
- *
- */
 
 public class DebugHandler {
 	

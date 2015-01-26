@@ -1,3 +1,7 @@
+/*******************************************************************************
+ * Copyright (c) 2015 CoolSquid.
+ * All rights reserved.
+ *******************************************************************************/
 package com.github.coolsquid.squidutils.handlers;
 
 import net.minecraft.entity.Entity;
@@ -10,13 +14,6 @@ import com.github.coolsquid.squidapi.logging.Level;
 import com.github.coolsquid.squidapi.logging.Logger;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-
-/**
- * 
- * @author CoolSquid
- * All rights reserved.
- *
- */
 
 public class EventLogger {
 	

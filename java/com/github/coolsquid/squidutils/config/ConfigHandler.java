@@ -1,3 +1,7 @@
+/*******************************************************************************
+ * Copyright (c) 2015 CoolSquid.
+ * All rights reserved.
+ *******************************************************************************/
 package com.github.coolsquid.squidutils.config;
 
 import java.io.File;
@@ -7,13 +11,6 @@ import javax.swing.JOptionPane;
 import net.minecraftforge.common.config.Configuration;
 
 import com.github.coolsquid.squidapi.exception.DO_NOT_REPORT_EXCEPTION;
-
-/**
- * 
- * @author CoolSquid
- * All rights reserved.
- *
- */
 
 public class ConfigHandler {
 	

@@ -1,3 +1,7 @@
+/*******************************************************************************
+ * Copyright (c) 2015 CoolSquid.
+ * All rights reserved.
+ *******************************************************************************/
 package com.github.coolsquid.squidutils.util;
 
 import java.lang.Thread.UncaughtExceptionHandler;
@@ -9,15 +13,6 @@ import com.github.coolsquid.squidutils.config.ConfigHandler;
 import com.github.coolsquid.squidutils.helpers.LogHelper;
 
 import cpw.mods.fml.common.Loader;
-
-/**
- * 
- * @author CoolSquid
- * All rights reserved.
- * Checks if any mods have been added/removed from the pack.
- * @since 1.1.4
- * 
- */
 
 public class PackIntegrityChecker implements UncaughtExceptionHandler {
 	

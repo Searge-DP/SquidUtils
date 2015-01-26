@@ -1,3 +1,7 @@
+/*******************************************************************************
+ * Copyright (c) 2015 CoolSquid.
+ * All rights reserved.
+ *******************************************************************************/
 package com.github.coolsquid.squidutils.compat;
 
 import net.minecraftforge.common.MinecraftForge;
@@ -6,7 +10,6 @@ import com.github.coolsquid.squidutils.config.ConfigHandler;
 import com.github.coolsquid.squidutils.handlers.FoodHandler;
 import com.github.coolsquid.squidutils.handlers.PlantHandler;
 import com.github.coolsquid.squidutils.handlers.RegenHandler;
-
 
 public class AppleCoreCompat {
 	

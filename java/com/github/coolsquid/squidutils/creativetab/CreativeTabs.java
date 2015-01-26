@@ -1,3 +1,7 @@
+/*******************************************************************************
+ * Copyright (c) 2015 CoolSquid.
+ * All rights reserved.
+ *******************************************************************************/
 package com.github.coolsquid.squidutils.creativetab;
 
 import net.minecraft.init.Blocks;
@@ -5,13 +9,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 
 import com.github.coolsquid.squidapi.creativetab.ITab;
-
-/**
- * 
- * @author CoolSquid
- * All rights reserved.
- *
- */
 
 public class CreativeTabs {
 	

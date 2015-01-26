@@ -1,15 +1,10 @@
+/*******************************************************************************
+ * Copyright (c) 2015 CoolSquid.
+ * All rights reserved.
+ *******************************************************************************/
 package com.github.coolsquid.squidutils.util;
 
 import cpw.mods.fml.common.ICrashCallable;
-
-/**
- * 
- * @author CoolSquid
- * All rights reserved.
- * Adds a message to crash reports.
- * @since 1.1.4
- * @see PackIntegrityChecker
- */
 
 public class CrashReportInterceptor implements ICrashCallable {
 	

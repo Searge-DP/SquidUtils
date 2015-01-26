@@ -1,3 +1,7 @@
+/*******************************************************************************
+ * Copyright (c) 2015 CoolSquid.
+ * All rights reserved.
+ *******************************************************************************/
 package com.github.coolsquid.squidutils.helpers;
 
 import org.apache.logging.log4j.Level;
@@ -5,13 +9,6 @@ import org.apache.logging.log4j.LogManager;
 
 import com.github.coolsquid.squidutils.config.ConfigHandler;
 import com.github.coolsquid.squidutils.util.ModInfo;
-
-/**
- * 
- * @author CoolSquid
- * All rights reserved.
- * @see Logger.class for more advanced logging.
- */
 
 public final class LogHelper {
 	

@@ -1,15 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2015 CoolSquid.
+ * All rights reserved.
+ *******************************************************************************/
 package com.github.coolsquid.squidutils.handlers;
 
 import net.minecraft.init.Items;
 
 import com.github.coolsquid.squidutils.helpers.LogHelper;
-
-/**
- * 
- * @author CoolSquid
- * All rights reserved.
- *
- */
 
 public class StackSizeHandler {
 

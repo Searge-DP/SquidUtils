@@ -8,8 +8,9 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
 
+import com.github.coolsquid.squidapi.SquidAPIAuthentificationHelper;
 import com.github.coolsquid.squidapi.exception.InvalidConfigValueException;
-import com.github.coolsquid.squidapi.handlers.RecipeRemover;
+import com.github.coolsquid.squidapi.util.RecipeRemover;
 import com.github.coolsquid.squidapi.util.Utils;
 import com.github.coolsquid.squidutils.compat.AppleCoreCompat;
 import com.github.coolsquid.squidutils.config.ConfigHandler;
@@ -24,6 +25,7 @@ import com.github.coolsquid.squidutils.handlers.DifficultyHandler;
 import com.github.coolsquid.squidutils.handlers.EventLogger;
 import com.github.coolsquid.squidutils.handlers.RegistrySearcher;
 import com.github.coolsquid.squidutils.handlers.RenderDistanceHandler;
+import com.github.coolsquid.squidutils.handlers.SpeedHandler;
 import com.github.coolsquid.squidutils.handlers.StackSizeHandler;
 import com.github.coolsquid.squidutils.handlers.TNTHandler;
 import com.github.coolsquid.squidutils.handlers.TeleportationHandler;
@@ -47,7 +49,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 @Mod(modid = ModInfo.modid, name = ModInfo.name, version = ModInfo.version, dependencies = ModInfo.dependencies, acceptableRemoteVersions = "*")
 public class SquidUtils {
-	
+		
 	/**
 	 * Preinit. Loads the config, clears Vanilla recipes (if toggled), and does environment checks.
 	 * @param event
@@ -55,6 +57,7 @@ public class SquidUtils {
 	
 	@EventHandler
 	private void preInit(FMLPreInitializationEvent event) {
+		SquidAPIAuthentificationHelper.auth(ModInfo.modid, ModInfo.version, "http://pastebin.com/raw.php?i=HRP6JJLv");
 		LogHelper.info("Preinitializing...");
 		
 		FMLCommonHandler.instance().registerCrashCallable(new CrashReportInterceptor());
@@ -80,7 +83,7 @@ public class SquidUtils {
 	@EventHandler
 	private void init(FMLInitializationEvent event) {
 		LogHelper.info("Initializing...");
-		
+				
 		if (Utils.developmentEnvironment) {
 			LogHelper.info("Running in a dev environment.");
 			RecipeRemover.removeRecipes();
@@ -141,6 +144,9 @@ public class SquidUtils {
 		}
 		if (ConfigHandler.generateModList != 0) {
 			ModLister.init();
+		}
+		if (ConfigHandler.walkSpeed != 0.1F || ConfigHandler.flySpeed != 0.05F) {
+			MinecraftForge.EVENT_BUS.register(new SpeedHandler());
 		}
 		if (Loader.isModLoaded("AppleCore")) {
 			AppleCoreCompat.init();

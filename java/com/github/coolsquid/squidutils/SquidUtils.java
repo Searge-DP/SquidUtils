@@ -8,7 +8,7 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
 
-import com.github.coolsquid.squidapi.auth.SquidAPIAuthentificationHelper;
+import com.github.coolsquid.squidapi.SquidAPIAuthentificationHelper;
 import com.github.coolsquid.squidapi.exception.InvalidConfigValueException;
 import com.github.coolsquid.squidapi.util.RecipeRemover;
 import com.github.coolsquid.squidapi.util.Utils;

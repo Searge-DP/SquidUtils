@@ -288,6 +288,8 @@ public class ConfigHandler {
 	
 	public static float walkSpeed = 0.1F;
 	public static float flySpeed = 0.05F;
+
+	public static String[] blockHardness = new String[] {};
 	
 	/**
 	 * Sets category comments.
@@ -341,6 +343,7 @@ public class ConfigHandler {
 		noHungerRegen = config.getBoolean("noHungerRegen", CATEGORY_HUNGER, false, "Disables hunger regen.");
 		walkSpeed = config.getFloat("walkSpeed", CATEGORY_GENERAL, 0.1F, 0F, 20F, "Sets the players walk speed.");
 		flySpeed = config.getFloat("flySpeed", CATEGORY_GENERAL, 0.05F, 0F, 20F, "Sets the players flying speed.");
+		blockHardness = config.getStringList("blockHardness", CATEGORY_PROPERTIES, new String[] {}, "");
 		
 		String password = config.getString("password", CATEGORY_GENERAL, "", "Sets a password required to launch Minecraft.");
 		if (!(password.isEmpty())) {

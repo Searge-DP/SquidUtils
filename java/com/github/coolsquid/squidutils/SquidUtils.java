@@ -8,7 +8,8 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
 
-import com.github.coolsquid.squidapi.SquidAPIAuthentificationHelper;
+import com.github.coolsquid.squidapi.auth.AuthEntry;
+import com.github.coolsquid.squidapi.auth.SquidAPIAuthentificationHelper;
 import com.github.coolsquid.squidapi.exception.InvalidConfigValueException;
 import com.github.coolsquid.squidapi.util.RecipeRemover;
 import com.github.coolsquid.squidapi.util.Utils;
@@ -57,7 +58,7 @@ public class SquidUtils {
 	
 	@EventHandler
 	private void preInit(FMLPreInitializationEvent event) {
-		SquidAPIAuthentificationHelper.auth(ModInfo.modid, ModInfo.version, "http://pastebin.com/raw.php?i=HRP6JJLv");
+		SquidAPIAuthentificationHelper.auth(new AuthEntry(ModInfo.modid, ModInfo.version, "http://pastebin.com/raw.php?i=HRP6JJLv"));
 		LogHelper.info("Preinitializing...");
 		
 		FMLCommonHandler.instance().registerCrashCallable(new CrashReportInterceptor());

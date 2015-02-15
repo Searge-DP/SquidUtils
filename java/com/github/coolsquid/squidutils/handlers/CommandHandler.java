@@ -4,29 +4,19 @@
  *******************************************************************************/
 package com.github.coolsquid.squidutils.handlers;
 
-import java.util.HashMap;
+import java.util.HashSet;
 
 import net.minecraftforge.event.CommandEvent;
-
-import com.github.coolsquid.squidutils.config.ConfigHandler;
-
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class CommandHandler {
 	
-	public static final HashMap<String, Integer> commandsToDisable = new HashMap<String, Integer>();
-	
-	public static final void init() {
-		int a = 0;
-		while (a < ConfigHandler.commandsToDisable.length) {
-			commandsToDisable.put(ConfigHandler.commandsToDisable[a], a);
-			a++;
-		}
-	}
+	public static final HashSet<String> commandsToDisable = new HashSet<String>();
 	
 	@SubscribeEvent
 	public void event(CommandEvent event) {
-		if (commandsToDisable.containsKey(event.command.getCommandName()))
+		if (commandsToDisable.contains(event.command.getCommandName())) {
 			event.setCanceled(true);
+		}
 	}
 }

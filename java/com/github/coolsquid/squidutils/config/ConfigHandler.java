@@ -227,12 +227,6 @@ public class ConfigHandler {
 	public static boolean disableAnvil = false;
 	
 	/**
-	 * List of commands to disable.
-	 */
-	
-	public static String[] commandsToDisable = new String[] {};
-	
-	/**
 	 * Disables enderman and enderpearl teleportation.
 	 */
 	
@@ -272,7 +266,7 @@ public class ConfigHandler {
 	 * Replaces the starvation damage with the specified amount. Set to 0 to disable.
 	 */
 	
-	public static float starvationDamage = -1;
+	public static float starvationDamage = 0;
 	
 	/**
 	 * Disables plant growth.
@@ -289,7 +283,7 @@ public class ConfigHandler {
 	public static float walkSpeed = 0.1F;
 	public static float flySpeed = 0.05F;
 
-	public static String[] blockHardness = new String[] {};
+	public static int minHardness = 0;
 	
 	/**
 	 * Sets category comments.
@@ -331,19 +325,18 @@ public class ConfigHandler {
 		hardnessMultiplier = config.getFloat("hardnessMultiplier", CATEGORY_PROPERTIES, 1, 1, 100, "Multiplies all blocks hardness by the specified number. Set to 1.0 to disable.");
 		modList = config.getStringList("modList", CATEGORY_MODPACKS, new String[] {}, "If any of the mods listed are missing, a warning will be printed to the log.");
 		disableAnvil = config.getBoolean("disableAnvil", CATEGORY_GENERAL, false, "Disables the Vanilla anvil.");
-		commandsToDisable = config.getStringList("commandsToDisable", CATEGORY_GENERAL, new String[] {}, "List of commands to disable.");
 		disableTeleportation = config.getBoolean("disableTeleportation", CATEGORY_GENERAL, false, "Disables enderman and enderpearl teleportation.");
 		disableBonemeal = config.getBoolean("disableBonemeal", CATEGORY_GENERAL, false, "Disables bonemeal.");
 		disableHoes = config.getBoolean("disableHoes", CATEGORY_GENERAL, false, "Disables hoes.");
 		disableBottleFluidInteraction = config.getBoolean("disableBottleFluidInteraction", CATEGORY_GENERAL, false, "Disables bottles from working with cauldrons.");
 		generateModList = config.getInt("generateModList", CATEGORY_MODPACKS, 0, 0, 2, "Generates a list of modids in the working directory. Set to 1 to generate only modids, or set to 2 to generate modids and versions.");
 		optionalMods = config.getStringList("optionalMods", CATEGORY_MODPACKS, new String[] {}, "Extra mods to not warn about if added or removed.");
-		starvationDamage = config.getFloat("starvationDamage", CATEGORY_HUNGER, -1, -1, 20, "Modifies the starvation damage.");
+		starvationDamage = config.getFloat("starvationDamage", CATEGORY_HUNGER, 1, 0, 20, "Modifies the starvation damage.");
 		noPlantGrowth = config.getBoolean("noPlantGrowth", CATEGORY_HUNGER, false, "Disables plant growth.");
 		noHungerRegen = config.getBoolean("noHungerRegen", CATEGORY_HUNGER, false, "Disables hunger regen.");
 		walkSpeed = config.getFloat("walkSpeed", CATEGORY_GENERAL, 0.1F, 0F, 20F, "Sets the players walk speed.");
 		flySpeed = config.getFloat("flySpeed", CATEGORY_GENERAL, 0.05F, 0F, 20F, "Sets the players flying speed.");
-		blockHardness = config.getStringList("blockHardness", CATEGORY_PROPERTIES, new String[] {}, "");
+		minHardness = config.getInt("minHardness", CATEGORY_PROPERTIES, 0, 0, 1080, "Sets the minimum block hardness.");
 		
 		String password = config.getString("password", CATEGORY_GENERAL, "", "Sets a password required to launch Minecraft.");
 		if (!(password.isEmpty())) {

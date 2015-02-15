@@ -16,32 +16,34 @@ public class RegistrySearcher {
 	 */
 	
 	public static final void start() {
-		if (ConfigHandler.allBlocksUnbreakable)
+		if (ConfigHandler.allBlocksUnbreakable || ConfigHandler.hardnessMultiplier > 1 || ConfigHandler.minHardness > 0)
 			blockSearch();
-		if (ConfigHandler.stackSizeDivider != 0 || ConfigHandler.durabilityDivider != 1 || ConfigHandler.infiniteDurability || ConfigHandler.hardnessMultiplier > 1)
+		if (ConfigHandler.stackSizeDivider != 0 || ConfigHandler.durabilityDivider != 1 || ConfigHandler.infiniteDurability)
 			itemSearch();
 	}
-	
-	private static final float hardnessMultiplier = ConfigHandler.hardnessMultiplier;
 	
 	/**
 	 * Searches blocks and modifies block properties.
 	 */
 	
-	private static final void blockSearch() {
-		int a = 0;
-		while (a != 4095) {
+	private static void blockSearch() {
+		for (int a = 0; a != 4095; a++) {
 			if (Block.blockRegistry.getObjectById(a) != null) {
 				Block block = (Block) Block.blockRegistry.getObjectById(a);
 				if (ConfigHandler.allBlocksUnbreakable) {
 					block.setBlockUnbreakable();
 				}
-				if (hardnessMultiplier > 1) {
+				if (ConfigHandler.hardnessMultiplier > 1) {
 					float f = block.getBlockHardness(null, 0, 0, 0);
-					block.setHardness(f * hardnessMultiplier);
+					block.setHardness(f * ConfigHandler.hardnessMultiplier);
+				}
+				if (ConfigHandler.minHardness > 0) {
+					float f = block.getBlockHardness(null, 0, 0, 0);
+					if (f < ConfigHandler.minHardness) {
+						f = ConfigHandler.minHardness;
+					}
 				}
 			}
-			a++;
 		}
 	}
 	
@@ -50,9 +52,8 @@ public class RegistrySearcher {
 	 */
 	
 	@SuppressWarnings("deprecation")
-	private static final void itemSearch() {
-		int a = 0;
-		while (a != 32000) {
+	private static void itemSearch() {
+		for (int a = 0; a != 32000; a++) {
 			if (Item.itemRegistry.getObjectById(a) != null) {
 				Item item = (Item) Item.itemRegistry.getObjectById(a);
 				if (ConfigHandler.stackSizeDivider != 0) {
@@ -71,7 +72,6 @@ public class RegistrySearcher {
 					item.setMaxDamage(0);
 				}
 			}
-			a++;
 		}
 	}
 }

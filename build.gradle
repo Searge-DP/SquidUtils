@@ -28,8 +28,8 @@ resources { srcDirs = ["$projectDir/resources"] }
 }
 }
 
-version = "1.1.5"
-group= "com.github.coolsquid.SquidUtils"
+version = "1.1.6"
+group= "com.github.coolsquid"
 archivesBaseName = "SquidUtils"
 minecraft.version = "1.7.10-10.13.2.1272"
 

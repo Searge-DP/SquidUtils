@@ -4,6 +4,8 @@
  *******************************************************************************/
 package com.github.coolsquid.squidutils;
 
+import java.io.File;
+
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
@@ -21,16 +23,23 @@ import com.github.coolsquid.squidutils.handlers.AnvilHandler;
 import com.github.coolsquid.squidutils.handlers.BonemealHandler;
 import com.github.coolsquid.squidutils.handlers.BottleHandler;
 import com.github.coolsquid.squidutils.handlers.CommandHandler;
+import com.github.coolsquid.squidutils.handlers.CraftingHandler;
+import com.github.coolsquid.squidutils.handlers.DamageHandler;
 import com.github.coolsquid.squidutils.handlers.DebugHandler;
 import com.github.coolsquid.squidutils.handlers.DifficultyHandler;
+import com.github.coolsquid.squidutils.handlers.EntityJoinHandler;
 import com.github.coolsquid.squidutils.handlers.EventLogger;
+import com.github.coolsquid.squidutils.handlers.HealingHandler;
 import com.github.coolsquid.squidutils.handlers.RegistrySearcher;
 import com.github.coolsquid.squidutils.handlers.RenderDistanceHandler;
+import com.github.coolsquid.squidutils.handlers.ScriptHandler;
+import com.github.coolsquid.squidutils.handlers.SmeltingHandler;
 import com.github.coolsquid.squidutils.handlers.SpeedHandler;
 import com.github.coolsquid.squidutils.handlers.StackSizeHandler;
 import com.github.coolsquid.squidutils.handlers.TNTHandler;
 import com.github.coolsquid.squidutils.handlers.TeleportationHandler;
 import com.github.coolsquid.squidutils.handlers.ToolHandler;
+import com.github.coolsquid.squidutils.handlers.TossHandler;
 import com.github.coolsquid.squidutils.handlers.VillagerHandler;
 import com.github.coolsquid.squidutils.handlers.WitherHandler;
 import com.github.coolsquid.squidutils.helpers.LogHelper;
@@ -52,21 +61,21 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 public class SquidUtils {
 		
 	/**
-	 * Preinit. Loads the config, clears Vanilla recipes (if toggled), and does environment checks.
+	 * Preinit. Loads the config, clears Vanilla recipes (if toggled).
 	 * @param event
 	 */
 	
 	@EventHandler
 	private void preInit(FMLPreInitializationEvent event) {
-		SquidAPIAuthentificationHelper.auth(new AuthEntry(ModInfo.modid, ModInfo.version, "http://pastebin.com/raw.php?i=HRP6JJLv"));
 		LogHelper.info("Preinitializing...");
+		SquidAPIAuthentificationHelper.auth(new AuthEntry(ModInfo.modid, ModInfo.version, "http://pastebin.com/raw.php?i=HRP6JJLv"));
 		
-		FMLCommonHandler.instance().registerCrashCallable(new CrashReportInterceptor());
-		
-		ConfigHandler.preInit(event.getSuggestedConfigurationFile());
+		new File("./config/SquidUtils").mkdirs();
+		ConfigHandler.preInit(new File("./config/SquidUtils/SquidUtils.cfg"));
 		
 		if (ConfigHandler.modList.length != 0) {
 			PackIntegrityChecker.check();
+			FMLCommonHandler.instance().registerCrashCallable(new CrashReportInterceptor());
 		}
 		
 		if (ConfigHandler.clearRecipes == 1) {
@@ -91,6 +100,8 @@ public class SquidUtils {
 			ConfigHandler.debug = true;
 		}
 		
+		ScriptHandler.init();
+		
 		if (!ConfigHandler.forceDifficulty.equalsIgnoreCase("FALSE") && Utils.isClient()) {
 			MinecraftForge.EVENT_BUS.register(new DifficultyHandler());
 		}
@@ -100,7 +111,7 @@ public class SquidUtils {
 		if (ConfigHandler.noTNT) {
 			MinecraftForge.EVENT_BUS.register(new TNTHandler());
 		}
-		if (ConfigHandler.noAchievements) {
+		if (ConfigHandler.noAchievements || ScriptHandler.onAchievement) {
 			MinecraftForge.EVENT_BUS.register(new AchievementHandler());
 		}
 		if (ConfigHandler.noWitherBoss) {
@@ -127,11 +138,10 @@ public class SquidUtils {
 		if (ConfigHandler.disableAnvil) {
 			MinecraftForge.EVENT_BUS.register(new AnvilHandler());
 		}
-		if (ConfigHandler.commandsToDisable.length != 0) {
-			CommandHandler.init();
+		if (!CommandHandler.commandsToDisable.isEmpty()) {
 			MinecraftForge.EVENT_BUS.register(new CommandHandler());
 		}
-		if (ConfigHandler.disableTeleportation) {
+		if (ConfigHandler.disableTeleportation || ScriptHandler.onTeleport) {
 			MinecraftForge.EVENT_BUS.register(new TeleportationHandler());
 		}
 		if (ConfigHandler.disableBonemeal) {
@@ -151,6 +161,24 @@ public class SquidUtils {
 		}
 		if (Loader.isModLoaded("AppleCore")) {
 			AppleCoreCompat.init();
+		}
+		if (ScriptHandler.onCraft) {
+			FMLCommonHandler.instance().bus().register(new CraftingHandler());
+		}
+		if (ScriptHandler.onSmelt) {
+			FMLCommonHandler.instance().bus().register(new SmeltingHandler());
+		}
+		if (ScriptHandler.onHurt) {
+			MinecraftForge.EVENT_BUS.register(new DamageHandler());
+		}
+		if (ScriptHandler.onHeal) {
+			MinecraftForge.EVENT_BUS.register(new HealingHandler());
+		}
+		if (ScriptHandler.onToss) {
+			MinecraftForge.EVENT_BUS.register(new TossHandler());
+		}
+		if (ScriptHandler.onEntityJoin) {
+			MinecraftForge.EVENT_BUS.register(new EntityJoinHandler());
 		}
 		
 		NBTTagCompound nbttag = new NBTTagCompound();

@@ -17,7 +17,7 @@ import com.github.coolsquid.squidutils.helpers.LogHelper;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class TNTHandler {
-	
+		
 	@SubscribeEvent
 	public final void event(EntityJoinWorldEvent event) {
 		if(event.entity instanceof EntityMinecartTNT) {

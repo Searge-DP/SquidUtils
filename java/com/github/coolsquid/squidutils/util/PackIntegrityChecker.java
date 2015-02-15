@@ -16,34 +16,19 @@ import cpw.mods.fml.common.Loader;
 
 public class PackIntegrityChecker implements UncaughtExceptionHandler {
 	
-	/**
-	 * List of original pack mods.
-	 */
-	
+	/** List of original pack mods. */
 	private static final ArrayList<String> allModsRequired = new ArrayList<String>();
 	
-	/**
-	 * Optional mods.
-	 */
-	
+	/** Optional mods. */
 	private static final ArrayList<String> optionalMods = new ArrayList<String>();
 	
-	/**
-	 * List of removed mods.
-	 */
-	
+	/** List of removed mods. */
 	private static final ArrayList<String> missingMods = new ArrayList<String>();
 	
-	/**
-	 * List of added mods.
-	 */
-	
+	/** List of added mods. */
 	private static final ArrayList<String> addedMods = new ArrayList<String>();
 	
-	/**
-	 * Checks if mods are removed/added.
-	 */
-	
+	/** Checks if mods are removed/added. */
 	public static final void check() {
 		for (int a = 0; a < ConfigHandler.modList.length; a++) {
 			allModsRequired.add(ConfigHandler.modList[a]);

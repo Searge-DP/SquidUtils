@@ -7,8 +7,8 @@ package com.github.coolsquid.squidutils.handlers;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 
-import com.github.coolsquid.squidutils.helpers.EventEffectHelper;
 import com.github.coolsquid.squidutils.util.EventInfo;
+import com.github.coolsquid.squidutils.util.script.EventEffectHelper;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 

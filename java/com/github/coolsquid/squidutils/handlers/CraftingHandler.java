@@ -4,8 +4,8 @@
  *******************************************************************************/
 package com.github.coolsquid.squidutils.handlers;
 
-import com.github.coolsquid.squidutils.helpers.EventEffectHelper;
 import com.github.coolsquid.squidutils.util.EventInfo;
+import com.github.coolsquid.squidutils.util.script.EventEffectHelper;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;

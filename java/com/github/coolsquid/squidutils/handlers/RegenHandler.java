@@ -5,8 +5,8 @@
 package com.github.coolsquid.squidutils.handlers;
 
 import com.github.coolsquid.squidutils.config.ConfigHandler;
-import com.github.coolsquid.squidutils.helpers.EventEffectHelper;
 import com.github.coolsquid.squidutils.util.EventInfo;
+import com.github.coolsquid.squidutils.util.script.EventEffectHelper;
 
 import squeek.applecore.api.hunger.HealthRegenEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;

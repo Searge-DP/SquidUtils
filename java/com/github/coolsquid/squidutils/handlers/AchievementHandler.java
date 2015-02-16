@@ -7,8 +7,8 @@ package com.github.coolsquid.squidutils.handlers;
 import net.minecraftforge.event.entity.player.AchievementEvent;
 
 import com.github.coolsquid.squidutils.config.ConfigHandler;
-import com.github.coolsquid.squidutils.helpers.EventEffectHelper;
 import com.github.coolsquid.squidutils.util.EventInfo;
+import com.github.coolsquid.squidutils.util.script.EventEffectHelper;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 

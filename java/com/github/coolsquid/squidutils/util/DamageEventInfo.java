@@ -9,10 +9,16 @@ public class DamageEventInfo {
 	private float minamount;
 	private float maxamount;
 	private String dmgtype;
-	
-	public DamageEventInfo(float minamount, float maxamount, String dmgtype) {
+
+	public void setMinamount(float minamount) {
 		this.minamount = minamount;
+	}
+
+	public void setMaxamount(float maxamount) {
 		this.maxamount = maxamount;
+	}
+
+	public void setDmgtype(String dmgtype) {
 		this.dmgtype = dmgtype;
 	}
 

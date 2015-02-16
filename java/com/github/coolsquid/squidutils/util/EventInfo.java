@@ -25,18 +25,38 @@ public class EventInfo {
 	private int minarmor = Integer.MIN_VALUE;
 	private int maxarmor = Integer.MAX_VALUE;
 	
+	private String entitytype = "";
+	
+	private String action = "";
+	
 	private final HashMap<Object, EventInfo> keytoinfo = new HashMap<Object, EventInfo>();
 	
 	public void addKey(Object key, EventInfo info) {
-		keytoinfo.put(key, info);
+		this.keytoinfo.put(key, info);
 	}
 
 	public HashMap<Object, EventInfo> getKeytoinfo() {
-		return keytoinfo;
+		return this.keytoinfo;
+	}
+
+	public String getAction() {
+		return this.action;
+	}
+
+	public void setAction(String action) {
+		this.action = action;
+	}
+
+	public String getEntitytype() {
+		return this.entitytype;
+	}
+
+	public void setEntitytype(String entitytype) {
+		this.entitytype = entitytype;
 	}
 
 	public int getMinarmor() {
-		return minarmor;
+		return this.minarmor;
 	}
 
 	public void setMinarmor(int minarmor) {
@@ -44,7 +64,7 @@ public class EventInfo {
 	}
 
 	public int getMaxarmor() {
-		return maxarmor;
+		return this.maxarmor;
 	}
 
 	public void setMaxarmor(int maxarmor) {
@@ -52,7 +72,7 @@ public class EventInfo {
 	}
 
 	public float getMinHealth() {
-		return minHealth;
+		return this.minHealth;
 	}
 
 	public void setMinHealth(float minHealth) {
@@ -60,7 +80,7 @@ public class EventInfo {
 	}
 
 	public float getMaxHealth() {
-		return maxHealth;
+		return this.maxHealth;
 	}
 
 	public void setMaxHealth(float maxHealth) {
@@ -68,11 +88,11 @@ public class EventInfo {
 	}
 
 	public boolean addEffect(EffectInfo info) {
-		return effects.add(info);
+		return this.effects.add(info);
 	}
 
 	public float getExplosionsize() {
-		return explosionsize;
+		return this.explosionsize;
 	}
 
 	public void setExplosionsize(float explosionsize) {
@@ -80,7 +100,7 @@ public class EventInfo {
 	}
 
 	public float getDamageamount() {
-		return damageamount;
+		return this.damageamount;
 	}
 
 	public void setDamageamount(float damageamount) {
@@ -88,7 +108,7 @@ public class EventInfo {
 	}
 
 	public int getExperienceamount() {
-		return experienceamount;
+		return this.experienceamount;
 	}
 
 	public void setExperienceamount(int experienceamount) {
@@ -96,7 +116,7 @@ public class EventInfo {
 	}
 
 	public int getMaxchance() {
-		return maxchance;
+		return this.maxchance;
 	}
 
 	public void setMaxchance(int maxchance) {
@@ -104,7 +124,7 @@ public class EventInfo {
 	}
 
 	public int getMinchance() {
-		return minchance;
+		return this.minchance;
 	}
 
 	public void setMinchance(int minchance) {
@@ -112,7 +132,7 @@ public class EventInfo {
 	}
 
 	public boolean shouldCancel() {
-		return cancel;
+		return this.cancel;
 	}
 
 	public void setCancel(boolean cancel) {
@@ -120,6 +140,6 @@ public class EventInfo {
 	}
 
 	public ArrayList<EffectInfo> getEffects() {
-		return effects;
+		return this.effects;
 	}
 }

@@ -4,8 +4,8 @@ import net.minecraft.item.Item;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 
-import com.github.coolsquid.squidutils.helpers.EventEffectHelper;
 import com.github.coolsquid.squidutils.util.EventInfo;
+import com.github.coolsquid.squidutils.util.script.EventEffectHelper;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 

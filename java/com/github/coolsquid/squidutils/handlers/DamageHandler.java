@@ -10,9 +10,9 @@ import java.util.Set;
 
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
-import com.github.coolsquid.squidutils.helpers.EventEffectHelper;
 import com.github.coolsquid.squidutils.util.DamageEventInfo;
 import com.github.coolsquid.squidutils.util.EventInfo;
+import com.github.coolsquid.squidutils.util.script.EventEffectHelper;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 

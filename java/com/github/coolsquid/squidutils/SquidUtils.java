@@ -29,6 +29,7 @@ import com.github.coolsquid.squidutils.handlers.DebugHandler;
 import com.github.coolsquid.squidutils.handlers.DifficultyHandler;
 import com.github.coolsquid.squidutils.handlers.EntityJoinHandler;
 import com.github.coolsquid.squidutils.handlers.EventLogger;
+import com.github.coolsquid.squidutils.handlers.ExplosionHandler;
 import com.github.coolsquid.squidutils.handlers.HealingHandler;
 import com.github.coolsquid.squidutils.handlers.RegistrySearcher;
 import com.github.coolsquid.squidutils.handlers.RenderDistanceHandler;
@@ -93,7 +94,7 @@ public class SquidUtils {
 	@EventHandler
 	private void init(FMLInitializationEvent event) {
 		LogHelper.info("Initializing...");
-				
+		
 		if (Utils.developmentEnvironment) {
 			LogHelper.info("Running in a dev environment.");
 			RecipeRemover.removeRecipes();
@@ -179,6 +180,9 @@ public class SquidUtils {
 		}
 		if (ScriptHandler.onEntityJoin) {
 			MinecraftForge.EVENT_BUS.register(new EntityJoinHandler());
+		}
+		if (ConfigHandler.disableExplosions || ConfigHandler.explosionSizeMultiplier > 1) {
+			MinecraftForge.EVENT_BUS.register(new ExplosionHandler());
 		}
 		
 		NBTTagCompound nbttag = new NBTTagCompound();

@@ -94,7 +94,7 @@ public class ConfigHandler {
 	 * Hardcoded options. Modify them as you want to.
 	 */
 	
-	public static boolean debug = false;
+	public static boolean debug;
 	
 	/*
 	 * All available config options. Modify them as you want to.
@@ -110,19 +110,19 @@ public class ConfigHandler {
 	 * Disables TNT.
 	 */
 	
-	public static boolean noTNT = false;
+	public static boolean noTNT;
 	
 	/**
 	 * Disables achievements.
 	 */
 	
-	public static boolean noAchievements = false;
+	public static boolean noAchievements;
 	
 	/**
 	 * Disables the wither.
 	 */
 	
-	public static boolean noWitherBoss = false;
+	public static boolean noWitherBoss;
 	
 	/**
 	 * Sets the max stack size for potions to the specified amount.
@@ -134,13 +134,13 @@ public class ConfigHandler {
 	 * Adds recipes for chain armor.
 	 */
 	
-	public static boolean chainRecipes = false;
+	public static boolean chainRecipes;
 	
 	/**
 	 * Disables the debug screen.
 	 */
 	
-	public static boolean noDebug = false;
+	public static boolean noDebug;
 	
 	/**
 	 * Sets the max stack size for ender pearls to the specified amount.
@@ -164,13 +164,13 @@ public class ConfigHandler {
 	 * Makes villagers unhurtable.
 	 */
 	
-	public static boolean villagerProtection = false;
+	public static boolean villagerProtection;
 	
 	/**
 	 * Logs all blocks broken and all entities killed.
 	 */
 	
-	public static boolean logStuff = false;
+	public static boolean logStuff;
 	
 	/**
 	 * Divides all stack sizes by the specified amount.
@@ -182,7 +182,7 @@ public class ConfigHandler {
 	 * Makes all blocks unbreakable.
 	 */
 	
-	public static boolean allBlocksUnbreakable = false;
+	public static boolean allBlocksUnbreakable;
 	
 	/**
 	 * Divides all items durability by the specified amount.
@@ -206,7 +206,7 @@ public class ConfigHandler {
 	 * Gives all items infinite durability.
 	 */
 	
-	public static boolean infiniteDurability = false;
+	public static boolean infiniteDurability;
 	
 	/**
 	 * Multiplies all blocks hardness by the specified amount.
@@ -224,31 +224,31 @@ public class ConfigHandler {
 	 * Disables the Vanilla anvil.
 	 */
 	
-	public static boolean disableAnvil = false;
+	public static boolean disableAnvil;
 	
 	/**
 	 * Disables enderman and enderpearl teleportation.
 	 */
 	
-	public static boolean disableTeleportation = false;
+	public static boolean disableTeleportation;
 	
 	/**
 	 * Disables bonemeal.
 	 */
 	
-	public static boolean disableBonemeal = false;
+	public static boolean disableBonemeal;
 	
 	/**
 	 * Disables hoes.
 	 */
 	
-	public static boolean disableHoes = false;
+	public static boolean disableHoes;
 	
 	/**
 	 * Disables glass bottle interaction with liquids.
 	 */
 	
-	public static boolean disableBottleFluidInteraction = false;
+	public static boolean disableBottleFluidInteraction;
 	
 	/**
 	 * Generates a list of modids in the working directory.
@@ -272,18 +272,22 @@ public class ConfigHandler {
 	 * Disables plant growth.
 	 */
 	
-	public static boolean noPlantGrowth = false;
+	public static boolean noPlantGrowth;
 	
 	/**
 	 * Disables hunger regen.
 	 */
 	
-	public static boolean noHungerRegen = false;
+	public static boolean noHungerRegen;
 	
 	public static float walkSpeed = 0.1F;
 	public static float flySpeed = 0.05F;
 
 	public static int minHardness = 0;
+	
+	public static boolean disableExplosions;
+
+	public static float explosionSizeMultiplier = 1;
 	
 	/**
 	 * Sets category comments.
@@ -321,7 +325,7 @@ public class ConfigHandler {
 		durabilityDivider = config.getInt("durabilityDivider", CATEGORY_PROPERTIES, 1, 1, 1080, "All tools and armors durability will be divided by this.");
 		clearRecipes = config.getInt("clearRecipes", CATEGORY_GENERAL, 0, 0, 2, "Clears Vanilla recipes if 1, clears all recipes if 2. Set to 0 to disable. Clearing all recipes will not work if any of Reika's mods are loaded.");
 		infiniteDurability = config.getBoolean("infiniteDurability", CATEGORY_PROPERTIES, false, "Makes all items have infinite durability. Overrides \"durabilityDivider\".");
-		tabVanilla = config.getBoolean("tabVanilla", CATEGORY_CREATIVETABS, true, "Enables the extra Vanilla stuff creative tab.");
+		tabVanilla = config.getBoolean("tabVanilla", CATEGORY_CREATIVETABS, false, "Enables the extra Vanilla stuff creative tab.");
 		hardnessMultiplier = config.getFloat("hardnessMultiplier", CATEGORY_PROPERTIES, 1, 1, 100, "Multiplies all blocks hardness by the specified number. Set to 1.0 to disable.");
 		modList = config.getStringList("modList", CATEGORY_MODPACKS, new String[] {}, "If any of the mods listed are missing, a warning will be printed to the log.");
 		disableAnvil = config.getBoolean("disableAnvil", CATEGORY_GENERAL, false, "Disables the Vanilla anvil.");
@@ -337,6 +341,8 @@ public class ConfigHandler {
 		walkSpeed = config.getFloat("walkSpeed", CATEGORY_GENERAL, 0.1F, 0F, 20F, "Sets the players walk speed.");
 		flySpeed = config.getFloat("flySpeed", CATEGORY_GENERAL, 0.05F, 0F, 20F, "Sets the players flying speed.");
 		minHardness = config.getInt("minHardness", CATEGORY_PROPERTIES, 0, 0, 1080, "Sets the minimum block hardness.");
+		disableExplosions = config.getBoolean("disableExplosions", CATEGORY_GENERAL, false, "Disables all explosions.");
+		explosionSizeMultiplier = config.getFloat("explosionSizeMultiplier", CATEGORY_GENERAL, 1, 1, 1080, "Multiplies the size of all explosions by the specified amount.");
 		
 		String password = config.getString("password", CATEGORY_GENERAL, "", "Sets a password required to launch Minecraft.");
 		if (!(password.isEmpty())) {

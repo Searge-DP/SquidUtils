@@ -20,6 +20,7 @@ import com.github.coolsquid.squidapi.creativetab.ITab;
 import com.github.coolsquid.squidapi.helpers.FileHelper;
 import com.github.coolsquid.squidapi.helpers.RegistryHelper;
 import com.github.coolsquid.squidapi.item.ItemBasic;
+import com.github.coolsquid.squidutils.api.ScriptingAPI;
 import com.github.coolsquid.squidutils.command.CommandInfo;
 import com.github.coolsquid.squidutils.command.CommandWeb;
 import com.github.coolsquid.squidutils.util.DamageEventInfo;
@@ -128,7 +129,7 @@ public class ScriptHandler {
 				else if (type.equals("recipe")) {
 					if (s2[1].equals("create")) {
 						if (s2[2].equals("explosive")) {
-							RegistryHelper.addExplosionRecipe((Item) Item.itemRegistry.getObject(s2[3]), new ItemStack((Item) Item.itemRegistry.getObject(s2[4])), Float.parseFloat(s2[5]));
+							RegistryHelper.addExplosionRecipe(Item.itemRegistry.getObject(s2[3]), new ItemStack((Item) Item.itemRegistry.getObject(s2[4])), Float.parseFloat(s2[5]));
 						}
 						else if (s2[2].equals("shapeless")) {
 							RegistryHelper.addShapelessRecipe(new ItemStack((Item) Item.itemRegistry.getObject(s2[4])), new Item[] {(Item) Item.itemRegistry.getObject(s2[3])});
@@ -149,81 +150,26 @@ public class ScriptHandler {
 					int g = 5;
 					
 					String[] if2 = s2[2].split(";");
-					float minamount = Float.MIN_VALUE;
-					float maxamount = Float.MAX_VALUE;
-					String damagetype = "*";
-					Item item = null;
-					for (int h = 0; h < if2.length; h++) {
-						String arg = if2[h];
-						if (arg.startsWith("minamount:")) {
-							String ss = arg.replace("minamount:", "");
-							if (!ss.equals("*")) minamount = Float.parseFloat(ss);
-						}
-						else if (arg.startsWith("maxamount:")) {
-							String ss = arg.replace("maxamount:", "");
-							if (!ss.equals("*")) maxamount = Float.parseFloat(ss);
-						}
-						else if (arg.startsWith("minhealth:")) {
-							String ss = arg.replace("minhealth:", "");
-							if (!ss.equals("*")) info.setMinHealth(Float.parseFloat(ss));
-						}
-						else if (arg.startsWith("maxhealth:")) {
-							String ss = arg.replace("maxhealth:", "");
-							if (!ss.equals("*")) info.setMaxHealth(Float.parseFloat(ss));
-						}
-						else if (arg.startsWith("item:")) {
-							String ss = arg.replace("item:", "");
-							if (!ss.equals("*")) item = (Item) Item.itemRegistry.getObject(ss);
-						}
-						else if (arg.startsWith("minarmor:")) {
-							String ss = arg.replace("minarmor:", "");
-							if (!ss.equals("*")) info.setMinarmor(Integer.parseInt(ss));
-						}
-						else if (arg.startsWith("maxarmor:")) {
-							String ss = arg.replace("maxarmor:", "");
-							if (!ss.equals("*")) info.setMaxarmor(Integer.parseInt(ss));
-						}
-						else if (arg.startsWith("damagetype:")) {
-							String ss = arg.replace("damagetype:", "");
-							damagetype = ss;
-						}
-						else if (arg.startsWith("minchance:")) {
-							String ss = arg.replace("minchance:", "");
-							if (!ss.equals("*")) info.setMinchance(Integer.parseInt(ss));
-						}
-						else if (arg.startsWith("maxchance:")) {
-							String ss = arg.replace("maxchance:", "");
-							if (!ss.equals("*")) info.setMaxchance(Integer.parseInt(ss));
-						}
-					}
 					
 					if (trigger.equals("hurt")) {
 						onHurt = true;
 						info = DamageHandler.info;
-						info.addKey(new DamageEventInfo(minamount, maxamount, damagetype), info);
 					}
 					else if (trigger.equals("smelt")) {
 						onSmelt = true;
 						info = SmeltingHandler.info;
-						if (if2[0].equals("*")) info.addKey(null, info);
-						else info.addKey(item, info);
 					}
 					else if (trigger.equals("craft")) {
 						onCraft = true;
 						info = CraftingHandler.info;
-						info.addKey(item, info);
 					}
 					else if (trigger.equals("toss")) {
 						onToss = true;
 						info = TossHandler.info;
-						if (if2[0].equals("*")) info.addKey(null, info);
-						else info.addKey(item, info);
 					}
 					else if (trigger.equals("heal")) {
 						onHeal = true;
 						info = HealingHandler.info;
-						if (if2[0].equals("*") || if2[1].equals("*")) info.addKey(new DamageEventInfo(-546314, -546314, ""), info);
-						else info.addKey(new DamageEventInfo(minamount, maxamount, ""), info);
 					}
 					else if (trigger.equals("teleport")) {
 						onTeleport = true;
@@ -245,12 +191,77 @@ public class ScriptHandler {
 						onHungerRegen = true;
 						info = RegenHandler.info;
 					}
+					else if (ScriptingAPI.triggers.containsKey(trigger)) {
+						info = ScriptingAPI.triggers.get(trigger).info();
+					}
+					
 					if (if2[0].contains(":")) {
 						action = s2[3];
 						e++;
 						f++;
 						g++;
 					}
+					
+					float minamount = Float.MIN_VALUE;
+					float maxamount = Float.MAX_VALUE;
+					String damagetype = "*";
+					Item item = null;
+					DamageEventInfo damageinfo = new DamageEventInfo();
+					for (int h = 0; h < if2.length; h++) {
+						String arg = if2[h];
+						if (arg.startsWith("minamount:")) {
+							String ss = arg.replace("minamount:", "");
+							if (!ss.equals("*")) minamount = Float.parseFloat(ss);
+						}
+						else if (arg.startsWith("maxamount:")) {
+							String ss = arg.replace("maxamount:", "");
+							if (!ss.equals("*")) maxamount = Float.parseFloat(ss);
+						}
+						else if (arg.startsWith("minhealth:")) {
+							String ss = arg.replace("minhealth:", "");
+							if (!ss.equals("*")) info.setMinHealth(Float.parseFloat(ss));
+						}
+						else if (arg.startsWith("maxhealth:")) {
+							String ss = arg.replace("maxhealth:", "");
+							if (!ss.equals("*")) info.setMaxHealth(Float.parseFloat(ss));
+						}
+						else if (arg.startsWith("item:")) {
+							String ss = arg.replace("item:", "");
+							if (!ss.equals("*")) item = (Item) Item.itemRegistry.getObject(ss);
+							info.addKey(item, info);
+						}
+						else if (arg.startsWith("minarmor:")) {
+							String ss = arg.replace("minarmor:", "");
+							if (!ss.equals("*")) info.setMinarmor(Integer.parseInt(ss));
+						}
+						else if (arg.startsWith("maxarmor:")) {
+							String ss = arg.replace("maxarmor:", "");
+							if (!ss.equals("*")) info.setMaxarmor(Integer.parseInt(ss));
+						}
+						else if (arg.startsWith("damagetype:")) {
+							String ss = arg.replace("damagetype:", "");
+							damagetype = ss;
+						}
+						else if (arg.startsWith("minchance:")) {
+							String ss = arg.replace("minchance:", "");
+							if (!ss.equals("*")) info.setMinchance(Integer.parseInt(ss));
+						}
+						else if (arg.startsWith("maxchance:")) {
+							String ss = arg.replace("maxchance:", "");
+							if (!ss.equals("*")) info.setMaxchance(Integer.parseInt(ss));
+						}
+						else if (arg.startsWith("entitytype:")) {
+							String ss = arg.replace("entitytype:", "");
+							info.setEntitytype(ss);
+						}
+						else if (ScriptingAPI.options.containsKey(arg.split(":")[0])) {
+							String key = arg.split(":")[0];
+							ScriptingAPI.options.get(key).run(arg.replace(key + ":", ""));
+						}
+					}
+					damageinfo.setDmgtype(damagetype);
+					damageinfo.setMinamount(minamount);
+					damageinfo.setMaxamount(maxamount);
 					
 					if (action.equals("explode")) {
 						info.setExplosionsize(Float.parseFloat(s2[e]));
@@ -266,6 +277,10 @@ public class ScriptHandler {
 					}
 					else if (action.equals("cancel")) {
 						info.setCancel(true);
+					}
+					else if (ScriptingAPI.actions.containsKey(action)) {
+						info.setAction(action);
+						ScriptingAPI.actions.get(action).init(info);
 					}
 				}
 			}

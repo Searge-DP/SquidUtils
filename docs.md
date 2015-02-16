@@ -2,34 +2,34 @@ ON
 ==
 **Available triggers:**
 
--hurt
+- hurt
 
--smelt
+- smelt
 
--craft
+- craft
 
--toss
+- toss
 
--heal
+- heal
 
--teleport
+- teleport
 
--starve
+- starve
 
--entityjoin
+- entityjoin
 
--achievement
+- achievement
 
--hungerregen (requires AppleCore)
+- hungerregen (requires AppleCore)
 
 **Available reactions:**
 
--explode
+- explode
 
--damage
+- damage
 
--applyeffect
+- applyeffect
 
--addexperience
+- addexperience
 
--cancel
+- cancel

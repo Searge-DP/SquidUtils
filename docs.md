@@ -11,6 +11,7 @@ COMMAND: ON
 - entityjoin
 - achievement
 - hungerregen (requires AppleCore)
+- item usage
 
 **Available reactions:**
 - explode
@@ -18,6 +19,8 @@ COMMAND: ON
 - applyeffect
 - addexperience
 - cancel
+- sprinting
+- invisibility
 
 **Available arguments:**
 - minamount (decimal)

@@ -33,3 +33,17 @@ COMMAND: ON
 - addexperience
 
 - cancel
+
+**Available arguments:**
+
+- minamount (decimal)
+- maxamount (decimal)
+- minhealth (decimal)
+- maxhealth (decimal)
+- item (item)
+- minarmor (integer)
+- maxarmor (integer)
+- damagetype (string)
+- minchance (integer)
+- maxchance (integer)
+- entitytype (string)

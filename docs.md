@@ -1,5 +1,5 @@
-ON
-==
+COMMAND: ON
+===========
 **Available triggers:**
 
 - hurt

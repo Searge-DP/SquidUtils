@@ -4,6 +4,8 @@
  *******************************************************************************/
 package com.github.coolsquid.squidutils.handlers;
 
+import java.util.ArrayList;
+
 import com.github.coolsquid.squidutils.util.EventInfo;
 import com.github.coolsquid.squidutils.util.script.EventEffectHelper;
 
@@ -12,10 +14,14 @@ import cpw.mods.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
 
 public class CraftingHandler {
 	
-	public static final EventInfo info = new EventInfo();
+	public static final ArrayList<EventInfo> info = new ArrayList<EventInfo>();
 
 	@SubscribeEvent
 	public void onCraft(ItemCraftedEvent event) {
-		EventEffectHelper.run(info.getKeytoinfo(), event.crafting.getItem(), event.player);
+		for (EventInfo a: info) {
+			if (a.getItem() == event.crafting.getItem()) {
+				EventEffectHelper.performEffects(a, event.player);
+			}
+		}
 	}
 }

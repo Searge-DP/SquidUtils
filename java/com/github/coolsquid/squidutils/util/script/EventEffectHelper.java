@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.boss.EntityDragon;
-import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -18,6 +16,7 @@ import net.minecraft.world.Explosion;
 
 import com.github.coolsquid.squidapi.util.Utils;
 import com.github.coolsquid.squidutils.api.ScriptingAPI;
+import com.github.coolsquid.squidutils.helpers.LogHelper;
 import com.github.coolsquid.squidutils.util.EffectInfo;
 import com.github.coolsquid.squidutils.util.EventInfo;
 
@@ -36,9 +35,12 @@ public class EventEffectHelper {
 		if (ScriptingAPI.actions.containsKey(info.getAction())) {
 			ScriptingAPI.actions.get(info.getAction()).run(entity, info);
 		}
+		LogHelper.info("debug1");
 		float size = info.getExplosionsize();
 		if (info.getExplosionsize() > 0) {
+			LogHelper.info("debug2");
 			if (Utils.getChance(info.getMinchance(), info.getMaxchance())) {
+				LogHelper.info("debug3");
 				Explosion e = new Explosion(entity.worldObj, entity, entity.posX, entity.posY, entity.posZ, size);
 				e.doExplosionA();
 				e.doExplosionB(true);
@@ -66,19 +68,22 @@ public class EventEffectHelper {
 				((EntityPlayer) entity).addExperience(exp);
 			}
 		}
+		if (info.sprint()) {
+			entity.setSprinting(true);
+		}
+		if (info.invisible()) {
+			entity.setInvisible(true);
+		}
 	}
 	
 	public static boolean isCorrectType(EntityLivingBase entity, String type) {
+		LogHelper.info(entity.getClass().getName().toLowerCase());
 		if (type.equals(""))
+			return true;
+		else if (type.equals("undead") && entity.isEntityUndead())
 			return true;
 		else if (type.equals("animal") && entity instanceof EntityAnimal)
 			return true;
-		else if (type.equals("player") && entity instanceof EntityPlayer)
-			return true;
-		else if (type.equals("enderman") && entity instanceof EntityEnderman)
-			return true;
-		else if (type.equals("dragon") && entity instanceof EntityDragon)
-			return true;
-		else return false;
+		else return entity.getClass().getName().toLowerCase().contains(type);
 	}
 }

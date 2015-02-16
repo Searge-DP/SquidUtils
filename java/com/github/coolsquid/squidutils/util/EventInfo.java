@@ -5,7 +5,8 @@
 package com.github.coolsquid.squidutils.util;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+
+import net.minecraft.item.Item;
 
 public class EventInfo {
 	
@@ -25,18 +26,67 @@ public class EventInfo {
 	private int minarmor = Integer.MIN_VALUE;
 	private int maxarmor = Integer.MAX_VALUE;
 	
+	private float minamount;
+	private float maxamount;
+	
+	private boolean sprint;
+	
+	private boolean invisible;
+	
 	private String entitytype = "";
 	
 	private String action = "";
 	
-	private final HashMap<Object, EventInfo> keytoinfo = new HashMap<Object, EventInfo>();
+	private String damagetype = "";
 	
-	public void addKey(Object key, EventInfo info) {
-		this.keytoinfo.put(key, info);
+	private Item item = null;
+
+	public Item getItem() {
+		return this.item;
 	}
 
-	public HashMap<Object, EventInfo> getKeytoinfo() {
-		return this.keytoinfo;
+	public void setItem(Item item) {
+		this.item = item;
+	}
+
+	public String getDamagetype() {
+		return this.damagetype;
+	}
+
+	public void setDamagetype(String damagetype) {
+		this.damagetype = damagetype;
+	}
+
+	public float getMinamount() {
+		return this.minamount;
+	}
+
+	public void setMinamount(float minamount) {
+		this.minamount = minamount;
+	}
+
+	public float getMaxamount() {
+		return this.maxamount;
+	}
+
+	public void setMaxamount(float maxamount) {
+		this.maxamount = maxamount;
+	}
+
+	public boolean invisible() {
+		return this.invisible;
+	}
+
+	public void setInvisible(boolean invisible) {
+		this.invisible = invisible;
+	}
+
+	public boolean sprint() {
+		return this.sprint;
+	}
+
+	public void setSprint(boolean sprint) {
+		this.sprint = sprint;
 	}
 
 	public String getAction() {

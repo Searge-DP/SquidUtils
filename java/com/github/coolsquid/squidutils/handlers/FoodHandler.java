@@ -4,6 +4,8 @@
  *******************************************************************************/
 package com.github.coolsquid.squidutils.handlers;
 
+import java.util.ArrayList;
+
 import squeek.applecore.api.hunger.StarvationEvent;
 
 import com.github.coolsquid.squidutils.config.ConfigHandler;
@@ -14,12 +16,11 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class FoodHandler {
 	
-	public static final EventInfo info = new EventInfo();
+	public static final ArrayList<EventInfo> info = new ArrayList<EventInfo>();
 	
 	@SubscribeEvent
 	public void event(StarvationEvent.Starve event) {
 		event.starveDamage = ConfigHandler.starvationDamage;
-		EventEffectHelper.performEffects(info, event.player);
-		if (info.shouldCancel()) event.setCanceled(true);
+		for (EventInfo a: info) EventEffectHelper.performEffects(a, event.player);
 	}
 }

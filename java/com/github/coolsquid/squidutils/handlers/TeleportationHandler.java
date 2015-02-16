@@ -4,6 +4,8 @@
  *******************************************************************************/
 package com.github.coolsquid.squidutils.handlers;
 
+import java.util.ArrayList;
+
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 
 import com.github.coolsquid.squidutils.config.ConfigHandler;
@@ -14,11 +16,15 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class TeleportationHandler {
 	
-	public static final EventInfo info = new EventInfo();
+	public static final ArrayList<EventInfo> info = new ArrayList<EventInfo>();
 
 	@SubscribeEvent
 	public void event(EnderTeleportEvent event) {
 		if (ConfigHandler.disableTeleportation) event.setCanceled(true);
-		EventEffectHelper.performEffects(info, event.entityLiving);
+		for (EventInfo a: info) {
+			if (EventEffectHelper.isCorrectType(event.entityLiving, a.getEntitytype())) {
+				EventEffectHelper.performEffects(a, event.entityLiving);
+			}
+		}
 	}
 }

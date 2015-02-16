@@ -23,7 +23,6 @@ import com.github.coolsquid.squidapi.item.ItemBasic;
 import com.github.coolsquid.squidutils.api.ScriptingAPI;
 import com.github.coolsquid.squidutils.command.CommandInfo;
 import com.github.coolsquid.squidutils.command.CommandWeb;
-import com.github.coolsquid.squidutils.util.DamageEventInfo;
 import com.github.coolsquid.squidutils.util.EffectInfo;
 import com.github.coolsquid.squidutils.util.EventInfo;
 import com.github.coolsquid.starstones.block.BlockMeteorBase;
@@ -42,6 +41,7 @@ public class ScriptHandler {
 	public static boolean onEntityJoin;
 	public static boolean onAchievement;
 	public static boolean onHungerRegen;
+	public static boolean onInteraction;
 	
 	public static void init() {
 		ArrayList<String> list = FileHelper.readFile("config/SquidUtils", ("script.txt"));
@@ -151,50 +151,6 @@ public class ScriptHandler {
 					
 					String[] if2 = s2[2].split(";");
 					
-					if (trigger.equals("hurt")) {
-						onHurt = true;
-						info = DamageHandler.info;
-					}
-					else if (trigger.equals("smelt")) {
-						onSmelt = true;
-						info = SmeltingHandler.info;
-					}
-					else if (trigger.equals("craft")) {
-						onCraft = true;
-						info = CraftingHandler.info;
-					}
-					else if (trigger.equals("toss")) {
-						onToss = true;
-						info = TossHandler.info;
-					}
-					else if (trigger.equals("heal")) {
-						onHeal = true;
-						info = HealingHandler.info;
-					}
-					else if (trigger.equals("teleport")) {
-						onTeleport = true;
-						info = TeleportationHandler.info;
-					}
-					else if (trigger.equals("starve")) {
-						onStarve = true;
-						info = FoodHandler.info;
-					}
-					else if (trigger.equals("entityjoin")) {
-						onEntityJoin = true;
-						info = EntityJoinHandler.info;
-					}
-					else if (trigger.equals("achievement")) {
-						onAchievement = true;
-						info = AchievementHandler.info;
-					}
-					else if (trigger.equals("hungerregen")) {
-						onHungerRegen = true;
-						info = RegenHandler.info;
-					}
-					else if (ScriptingAPI.triggers.containsKey(trigger)) {
-						info = ScriptingAPI.triggers.get(trigger).info();
-					}
-					
 					if (if2[0].contains(":")) {
 						action = s2[3];
 						e++;
@@ -204,9 +160,8 @@ public class ScriptHandler {
 					
 					float minamount = Float.MIN_VALUE;
 					float maxamount = Float.MAX_VALUE;
-					String damagetype = "*";
+					String damagetype = "";
 					Item item = null;
-					DamageEventInfo damageinfo = new DamageEventInfo();
 					for (int h = 0; h < if2.length; h++) {
 						String arg = if2[h];
 						if (arg.startsWith("minamount:")) {
@@ -228,7 +183,7 @@ public class ScriptHandler {
 						else if (arg.startsWith("item:")) {
 							String ss = arg.replace("item:", "");
 							if (!ss.equals("*")) item = (Item) Item.itemRegistry.getObject(ss);
-							info.addKey(item, info);
+							info.setItem(item);
 						}
 						else if (arg.startsWith("minarmor:")) {
 							String ss = arg.replace("minarmor:", "");
@@ -259,9 +214,9 @@ public class ScriptHandler {
 							ScriptingAPI.arguments.get(key).run(arg.replace(key + ":", ""));
 						}
 					}
-					damageinfo.setDmgtype(damagetype);
-					damageinfo.setMinamount(minamount);
-					damageinfo.setMaxamount(maxamount);
+					info.setDamagetype(damagetype);
+					info.setMinamount(minamount);
+					info.setMaxamount(maxamount);
 					
 					if (action.equals("explode")) {
 						info.setExplosionsize(Float.parseFloat(s2[e]));
@@ -278,9 +233,63 @@ public class ScriptHandler {
 					else if (action.equals("cancel")) {
 						info.setCancel(true);
 					}
+					else if (action.equals("sprint")) {
+						info.setSprint(true);
+					}
+					else if (action.equals("setinvisible")) {
+						info.setInvisible(true);
+					}
 					else if (ScriptingAPI.actions.containsKey(action)) {
 						info.setAction(action);
 						ScriptingAPI.actions.get(action).init(info);
+					}
+					
+					if (trigger.equals("entityjoin")) {
+						onEntityJoin = true;
+						EntityJoinHandler.info.add(info);
+					}
+					else if (trigger.equals("hurt")) {
+						onHurt = true;
+						DamageHandler.info.add(info);
+					}
+					else if (trigger.equals("smelt")) {
+						onSmelt = true;
+						SmeltingHandler.info.add(info);
+					}
+					else if (trigger.equals("craft")) {
+						onCraft = true;
+						CraftingHandler.info.add(info);
+					}
+					else if (trigger.equals("toss")) {
+						onToss = true;
+						TossHandler.info.add(info);
+					}
+					else if (trigger.equals("heal")) {
+						onHeal = true;
+						HealingHandler.info.add(info);
+					}
+					else if (trigger.equals("teleport")) {
+						onTeleport = true;
+						TeleportationHandler.info.add(info);
+					}
+					else if (trigger.equals("starve")) {
+						onStarve = true;
+						FoodHandler.info.add(info);
+					}
+					else if (trigger.equals("achievement")) {
+						onAchievement = true;
+						AchievementHandler.info.add(info);
+					}
+					else if (trigger.equals("hungerregen")) {
+						onHungerRegen = true;
+						RegenHandler.info.add(info);
+					}
+					else if (trigger.equals("interaction")) {
+						onInteraction = true;
+						InteractionHandler.info.add(info);
+					}
+					else if (ScriptingAPI.triggers.containsKey(trigger)) {
+						ScriptingAPI.triggers.get(trigger).info().add(info);
 					}
 				}
 			}

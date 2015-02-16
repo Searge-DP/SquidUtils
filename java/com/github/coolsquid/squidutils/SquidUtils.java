@@ -31,6 +31,7 @@ import com.github.coolsquid.squidutils.handlers.EntityJoinHandler;
 import com.github.coolsquid.squidutils.handlers.EventLogger;
 import com.github.coolsquid.squidutils.handlers.ExplosionHandler;
 import com.github.coolsquid.squidutils.handlers.HealingHandler;
+import com.github.coolsquid.squidutils.handlers.InteractionHandler;
 import com.github.coolsquid.squidutils.handlers.RegistrySearcher;
 import com.github.coolsquid.squidutils.handlers.RenderDistanceHandler;
 import com.github.coolsquid.squidutils.handlers.ScriptHandler;
@@ -183,6 +184,9 @@ public class SquidUtils {
 		}
 		if (ConfigHandler.disableExplosions || ConfigHandler.explosionSizeMultiplier > 1) {
 			MinecraftForge.EVENT_BUS.register(new ExplosionHandler());
+		}
+		if (ScriptHandler.onInteraction) {
+			MinecraftForge.EVENT_BUS.register(new InteractionHandler());
 		}
 		
 		NBTTagCompound nbttag = new NBTTagCompound();

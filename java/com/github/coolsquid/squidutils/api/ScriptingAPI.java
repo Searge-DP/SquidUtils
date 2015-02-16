@@ -1,5 +1,6 @@
 package com.github.coolsquid.squidutils.api;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import net.minecraft.entity.EntityLivingBase;
@@ -30,7 +31,7 @@ public class ScriptingAPI {
 	}
 	
 	public interface IEventTrigger {
-		public EventInfo info();
+		public ArrayList<EventInfo> info();
 	}
 	
 	public interface IEventOption {

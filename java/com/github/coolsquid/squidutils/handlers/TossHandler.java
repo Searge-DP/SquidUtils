@@ -4,6 +4,8 @@
  *******************************************************************************/
 package com.github.coolsquid.squidutils.handlers;
 
+import java.util.ArrayList;
+
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 
 import com.github.coolsquid.squidutils.util.EventInfo;
@@ -13,10 +15,14 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class TossHandler {
 	
-	public static final EventInfo info = new EventInfo();
+	public static final ArrayList<EventInfo> info = new ArrayList<EventInfo>();
 	
 	@SubscribeEvent
 	public void onToss(ItemTossEvent event) {
-		EventEffectHelper.run(info.getKeytoinfo(), event.entityItem.getEntityItem().getItem(), event.player);
+		for (EventInfo a: info) {
+			if (a.getItem() == event.entityItem.getEntityItem().getItem()) {
+				EventEffectHelper.performEffects(a, event.player);
+			}
+		}
 	}
 }

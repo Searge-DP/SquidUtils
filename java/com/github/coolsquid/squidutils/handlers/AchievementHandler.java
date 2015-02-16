@@ -4,6 +4,8 @@
  *******************************************************************************/
 package com.github.coolsquid.squidutils.handlers;
 
+import java.util.ArrayList;
+
 import net.minecraftforge.event.entity.player.AchievementEvent;
 
 import com.github.coolsquid.squidutils.config.ConfigHandler;
@@ -14,12 +16,14 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class AchievementHandler {
 	
-	public static final EventInfo info = new EventInfo();
+	public static final ArrayList<EventInfo> info = new ArrayList<EventInfo>();
 
 	@SubscribeEvent
 	public final void event(AchievementEvent event) {
 		if (ConfigHandler.noAchievements) event.setCanceled(true);
-		EventEffectHelper.performEffects(info, event.entityLiving);
-		if (info.shouldCancel()) event.setCanceled(true);
+		for (EventInfo a: info) {
+			EventEffectHelper.performEffects(a, event.entityLiving);
+			if (a.shouldCancel()) event.setCanceled(true);
+		}
 	}
 }

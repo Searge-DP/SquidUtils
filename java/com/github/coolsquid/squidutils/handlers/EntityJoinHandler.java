@@ -4,6 +4,8 @@
  *******************************************************************************/
 package com.github.coolsquid.squidutils.handlers;
 
+import java.util.ArrayList;
+
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 
@@ -14,12 +16,16 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class EntityJoinHandler {
 	
-	public static final EventInfo info = new EventInfo();
+	public static final ArrayList<EventInfo> info = new ArrayList<EventInfo>();
 
 	@SubscribeEvent
 	public void onJoin(EntityJoinWorldEvent event) {
 		if (event.entity instanceof EntityLivingBase) {
-			EventEffectHelper.performEffects(info, (EntityLivingBase) event.entity);
+			for (EventInfo a: info) {
+				if (EventEffectHelper.isCorrectType((EntityLivingBase) event.entity, a.getEntitytype())) {
+					EventEffectHelper.performEffects(a, (EntityLivingBase) event.entity);
+				}
+			}
 		}
 	}
 }

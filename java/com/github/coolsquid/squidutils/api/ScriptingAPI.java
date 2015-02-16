@@ -10,18 +10,18 @@ public class ScriptingAPI {
 	
 	public static final HashMap<String, IEventAction> actions = new HashMap<String, IEventAction>();
 	public static final HashMap<String, IEventTrigger> triggers = new HashMap<String, IEventTrigger>();
-	public static final HashMap<String, IEventOption> options = new HashMap<String, IEventOption>();
+	public static final HashMap<String, IEventOption> arguments = new HashMap<String, IEventOption>();
 	
-	public static void addAction(String name, IEventAction action) {
+	public static void add(String name, IEventAction action) {
 		actions.put(name, action);
 	}
 	
-	public static void addTrigger(String name, IEventTrigger trigger) {
+	public static void add(String name, IEventTrigger trigger) {
 		triggers.put(name, trigger);
 	}
 	
-	public static void addOption(String name, IEventOption option) {
-		options.put(name, option);
+	public static void add(String name, IEventOption argument) {
+		arguments.put(name, argument);
 	}
 	
 	public interface IEventAction {

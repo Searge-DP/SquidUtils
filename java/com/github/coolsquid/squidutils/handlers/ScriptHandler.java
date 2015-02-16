@@ -254,9 +254,9 @@ public class ScriptHandler {
 							String ss = arg.replace("entitytype:", "");
 							info.setEntitytype(ss);
 						}
-						else if (ScriptingAPI.options.containsKey(arg.split(":")[0])) {
+						else if (ScriptingAPI.arguments.containsKey(arg.split(":")[0])) {
 							String key = arg.split(":")[0];
-							ScriptingAPI.options.get(key).run(arg.replace(key + ":", ""));
+							ScriptingAPI.arguments.get(key).run(arg.replace(key + ":", ""));
 						}
 					}
 					damageinfo.setDmgtype(damagetype);

@@ -1,6 +1,7 @@
 ON
 ==
 **Available triggers:**
+
 hurt
 smelt
 craft
@@ -12,6 +13,7 @@ entityjoin
 achievement
 hungerregen (requires AppleCore)
 **Available reactions:**
+
 explode
 damage
 applyeffect

@@ -11,14 +11,15 @@ COMMAND: ON
 - entityjoin
 - achievement
 - hungerregen (requires AppleCore)
+
 **Available reactions:**
 - explode
 - damage
 - applyeffect
 - addexperience
 - cancel
-**Available arguments:**
 
+**Available arguments:**
 - minamount (decimal)
 - maxamount (decimal)
 - minhealth (decimal)

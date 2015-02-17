@@ -1,4 +1,4 @@
-/*******************************************************************************
+./*******************************************************************************
  * Copyright (c) 2015 CoolSquid.
  * All rights reserved.
  *******************************************************************************/
@@ -98,14 +98,14 @@ public class SquidUtils {
 		
 		if (Utils.developmentEnvironment) {
 			LogHelper.info("Running in a dev environment.");
-			RecipeRemover.removeRecipes();
 			ConfigHandler.debug = true;
 		}
 		
 		ScriptHandler.init();
-		
+
+		MinecraftForge.EVENT_BUS.register(new DifficultyHandler());
 		if (!ConfigHandler.forceDifficulty.equalsIgnoreCase("FALSE") && Utils.isClient()) {
-			MinecraftForge.EVENT_BUS.register(new DifficultyHandler());
+			DifficultyHandler.difficulty = ConfigHandler.forceDifficulty;
 		}
 		if (!ConfigHandler.forceDifficulty.equalsIgnoreCase("FALSE") && !ConfigHandler.forceDifficulty.equalsIgnoreCase("PEACEFUL") && !ConfigHandler.forceDifficulty.equalsIgnoreCase("EASY") && !ConfigHandler.forceDifficulty.equalsIgnoreCase("NORMAL") && !ConfigHandler.forceDifficulty.equalsIgnoreCase("HARD")) {
 			throw new InvalidConfigValueException("ConfigHandler.forceDifficulty");

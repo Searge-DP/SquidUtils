@@ -16,7 +16,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class DifficultyHandler {
 	
-	private static final String difficulty = ConfigHandler.forceDifficulty;
+	public static String difficulty = null;
 	
 	/**
 	 * Changes the difficulty setting.
@@ -24,7 +24,7 @@ public class DifficultyHandler {
 	
 	@SubscribeEvent
 	public final void event(LivingUpdateEvent event) {
-		if (event.entity instanceof EntityPlayer) {
+		if (difficulty != null && event.entity instanceof EntityPlayer) {
 			if (Minecraft.getMinecraft().gameSettings.difficulty != EnumDifficulty.HARD && difficulty.equalsIgnoreCase("HARD")) {
 				Minecraft.getMinecraft().gameSettings.difficulty = EnumDifficulty.HARD;
 				Minecraft.getMinecraft().gameSettings.saveOptions();

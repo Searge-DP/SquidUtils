@@ -12,6 +12,9 @@ COMMAND: ON
 - achievement
 - hungerregen (requires AppleCore)
 - item usage
+- explosion
+- command
+- chat
 
 **Available reactions:**
 - explode
@@ -22,8 +25,12 @@ COMMAND: ON
 - sprinting
 - invisibility
 - forcing difficulty
+- cleareffects
+- placeblock
+- burn
+- sethunger
 
-**Available arguments:**
+**Available arguments/conditions:**
 - minamount (decimal)
 - maxamount (decimal)
 - minhealth (decimal)
@@ -35,3 +42,7 @@ COMMAND: ON
 - minchance (integer)
 - maxchance (integer)
 - entitytype (string)
+- hasperm (string)
+- missingperm (string)
+- commandname (string)
+- chattrigger (string)

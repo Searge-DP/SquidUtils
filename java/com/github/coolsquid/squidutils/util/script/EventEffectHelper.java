@@ -16,6 +16,7 @@ import net.minecraft.world.Explosion;
 
 import com.github.coolsquid.squidapi.util.Utils;
 import com.github.coolsquid.squidutils.api.ScriptingAPI;
+import com.github.coolsquid.squidutils.handlers.DifficultyHandler;
 import com.github.coolsquid.squidutils.helpers.LogHelper;
 import com.github.coolsquid.squidutils.util.EffectInfo;
 import com.github.coolsquid.squidutils.util.EventInfo;

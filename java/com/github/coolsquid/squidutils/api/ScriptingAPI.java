@@ -11,7 +11,7 @@ public class ScriptingAPI {
 	
 	public static final HashMap<String, IEventAction> actions = new HashMap<String, IEventAction>();
 	public static final HashMap<String, IEventTrigger> triggers = new HashMap<String, IEventTrigger>();
-	public static final HashMap<String, IEventOption> arguments = new HashMap<String, IEventOption>();
+	public static final HashMap<String, IEventArgument> arguments = new HashMap<String, IEventOption>();
 	
 	public static void add(String name, IEventAction action) {
 		actions.put(name, action);
@@ -34,7 +34,7 @@ public class ScriptingAPI {
 		public ArrayList<EventInfo> info();
 	}
 	
-	public interface IEventOption {
+	public interface IEventArgument {
 		public void run(String option);
 	}
 }

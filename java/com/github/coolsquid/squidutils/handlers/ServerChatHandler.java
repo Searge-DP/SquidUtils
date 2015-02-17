@@ -1,26 +1,22 @@
-/*******************************************************************************
- * Copyright (c) 2015 CoolSquid.
- * All rights reserved.
- *******************************************************************************/
 package com.github.coolsquid.squidutils.handlers;
 
 import java.util.ArrayList;
 
-import net.minecraftforge.event.entity.item.ItemTossEvent;
+import net.minecraftforge.event.ServerChatEvent;
 
 import com.github.coolsquid.squidutils.util.script.EventEffectHelper;
 import com.github.coolsquid.squidutils.util.script.EventInfo;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
-public class TossHandler {
+public class ServerChatHandler {
 	
 	public static final ArrayList<EventInfo> info = new ArrayList<EventInfo>();
 	
 	@SubscribeEvent
-	public void onToss(ItemTossEvent event) {
+	public void onChat(ServerChatEvent event) {
 		for (EventInfo a: info) {
-			if (a.getItem() == event.entityItem.getEntityItem().getItem()) {
+			if (event.message.contains(a.getChattrigger())) {
 				EventEffectHelper.performEffects(a, event.player);
 			}
 		}

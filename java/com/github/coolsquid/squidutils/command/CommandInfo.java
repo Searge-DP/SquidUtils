@@ -20,6 +20,6 @@ public class CommandInfo extends CommandBase {
 	
 	@Override
 	public void processCommand(ICommandSender sender, String[] args) {
-		sender.addChatMessage(new ChatComponentText(text));
+		sender.addChatMessage(new ChatComponentText(this.text));
 	}
 }

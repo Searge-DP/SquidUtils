@@ -245,7 +245,7 @@ public class ConfigHandler {
 	public static boolean disableHoes;
 	
 	/**
-	 * Disables glass bottle interaction with liquids.
+	 * Disables glass bottle interaction.
 	 */
 	
 	public static boolean disableBottleFluidInteraction;

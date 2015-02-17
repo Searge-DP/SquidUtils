@@ -8,8 +8,8 @@ import java.util.ArrayList;
 
 import net.minecraftforge.event.entity.living.LivingHealEvent;
 
-import com.github.coolsquid.squidutils.util.EventInfo;
 import com.github.coolsquid.squidutils.util.script.EventEffectHelper;
+import com.github.coolsquid.squidutils.util.script.EventInfo;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 

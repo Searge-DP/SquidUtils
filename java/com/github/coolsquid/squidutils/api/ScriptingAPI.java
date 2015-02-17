@@ -1,3 +1,7 @@
+/*******************************************************************************
+ * Copyright (c) 2015 CoolSquid.
+ * All rights reserved.
+ *******************************************************************************/
 package com.github.coolsquid.squidutils.api;
 
 import java.util.ArrayList;
@@ -5,7 +9,7 @@ import java.util.HashMap;
 
 import net.minecraft.entity.EntityLivingBase;
 
-import com.github.coolsquid.squidutils.util.EventInfo;
+import com.github.coolsquid.squidutils.util.script.EventInfo;
 
 public class ScriptingAPI {
 	

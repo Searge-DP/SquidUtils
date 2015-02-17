@@ -20,6 +20,6 @@ public class CommandWeb extends CommandBase {
 	
 	@Override
 	public void processCommand(ICommandSender sender, String[] args) {
-		new WebHandler(sender, url).start();
+		new WebHandler(sender, this.url).start();
 	}
 }

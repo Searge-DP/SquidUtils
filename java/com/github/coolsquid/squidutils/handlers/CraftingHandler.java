@@ -6,8 +6,8 @@ package com.github.coolsquid.squidutils.handlers;
 
 import java.util.ArrayList;
 
-import com.github.coolsquid.squidutils.util.EventInfo;
 import com.github.coolsquid.squidutils.util.script.EventEffectHelper;
+import com.github.coolsquid.squidutils.util.script.EventInfo;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;

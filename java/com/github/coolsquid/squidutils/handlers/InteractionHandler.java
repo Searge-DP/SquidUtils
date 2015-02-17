@@ -1,3 +1,7 @@
+/*******************************************************************************
+ * Copyright (c) 2015 CoolSquid.
+ * All rights reserved.
+ *******************************************************************************/
 package com.github.coolsquid.squidutils.handlers;
 
 import java.util.ArrayList;
@@ -6,8 +10,8 @@ import net.minecraft.item.Item;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 
-import com.github.coolsquid.squidutils.util.EventInfo;
 import com.github.coolsquid.squidutils.util.script.EventEffectHelper;
+import com.github.coolsquid.squidutils.util.script.EventInfo;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 

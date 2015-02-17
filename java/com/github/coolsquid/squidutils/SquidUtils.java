@@ -1,4 +1,4 @@
-./*******************************************************************************
+/*******************************************************************************
  * Copyright (c) 2015 CoolSquid.
  * All rights reserved.
  *******************************************************************************/
@@ -13,7 +13,6 @@ import net.minecraftforge.common.MinecraftForge;
 import com.github.coolsquid.squidapi.auth.AuthEntry;
 import com.github.coolsquid.squidapi.auth.SquidAPIAuthentificationHelper;
 import com.github.coolsquid.squidapi.exception.InvalidConfigValueException;
-import com.github.coolsquid.squidapi.util.RecipeRemover;
 import com.github.coolsquid.squidapi.util.Utils;
 import com.github.coolsquid.squidutils.compat.AppleCoreCompat;
 import com.github.coolsquid.squidutils.config.ConfigHandler;
@@ -35,6 +34,7 @@ import com.github.coolsquid.squidutils.handlers.InteractionHandler;
 import com.github.coolsquid.squidutils.handlers.RegistrySearcher;
 import com.github.coolsquid.squidutils.handlers.RenderDistanceHandler;
 import com.github.coolsquid.squidutils.handlers.ScriptHandler;
+import com.github.coolsquid.squidutils.handlers.ServerChatHandler;
 import com.github.coolsquid.squidutils.handlers.SmeltingHandler;
 import com.github.coolsquid.squidutils.handlers.SpeedHandler;
 import com.github.coolsquid.squidutils.handlers.StackSizeHandler;
@@ -45,6 +45,7 @@ import com.github.coolsquid.squidutils.handlers.TossHandler;
 import com.github.coolsquid.squidutils.handlers.VillagerHandler;
 import com.github.coolsquid.squidutils.handlers.WitherHandler;
 import com.github.coolsquid.squidutils.helpers.LogHelper;
+import com.github.coolsquid.squidutils.helpers.PermissionHelper;
 import com.github.coolsquid.squidutils.util.CrashReportInterceptor;
 import com.github.coolsquid.squidutils.util.ModInfo;
 import com.github.coolsquid.squidutils.util.ModLister;
@@ -74,7 +75,7 @@ public class SquidUtils {
 		
 		new File("./config/SquidUtils").mkdirs();
 		ConfigHandler.preInit(new File("./config/SquidUtils/SquidUtils.cfg"));
-		RecipeRemover.addItem("minecraft:diamond_sword");
+		
 		if (ConfigHandler.modList.length != 0) {
 			PackIntegrityChecker.check();
 			FMLCommonHandler.instance().registerCrashCallable(new CrashReportInterceptor());
@@ -142,7 +143,7 @@ public class SquidUtils {
 		if (ConfigHandler.disableAnvil) {
 			MinecraftForge.EVENT_BUS.register(new AnvilHandler());
 		}
-		if (!CommandHandler.commandsToDisable.isEmpty()) {
+		if (!CommandHandler.commandsToDisable.isEmpty() || ScriptHandler.onCommand) {
 			MinecraftForge.EVENT_BUS.register(new CommandHandler());
 		}
 		if (ConfigHandler.disableTeleportation || ScriptHandler.onTeleport) {
@@ -190,6 +191,13 @@ public class SquidUtils {
 		if (ScriptHandler.onInteraction) {
 			MinecraftForge.EVENT_BUS.register(new InteractionHandler());
 		}
+		if (ScriptHandler.onChat) {
+			MinecraftForge.EVENT_BUS.register(new ServerChatHandler());
+		}
+		if (ScriptHandler.permissions) {
+			PermissionHelper.init();
+			MinecraftForge.EVENT_BUS.register(new PermissionHelper());
+		}
 		
 		NBTTagCompound nbttag = new NBTTagCompound();
 		nbttag.setString("curseProjectName", "226025-squidutils");
@@ -207,11 +215,9 @@ public class SquidUtils {
 	@EventHandler
 	private void postInit(FMLPostInitializationEvent event) {
 		LogHelper.info("Postinitializing...");
-		if (ConfigHandler.stackSizeDivider != 0 || ConfigHandler.durabilityDivider != 1 || ConfigHandler.infiniteDurability || ConfigHandler.allBlocksUnbreakable || ConfigHandler.hardnessMultiplier > 1) {
-			RegistrySearcher.start();
-		}
+		RegistrySearcher.start();
 		if (ConfigHandler.clearRecipes == 2) {
-			if (!Loader.isModLoaded("DragonAPI")) {
+			if (!Utils.doNotClearRecipes()) {
 				CraftingManager.getInstance().getRecipeList().clear();
 			}
 		}

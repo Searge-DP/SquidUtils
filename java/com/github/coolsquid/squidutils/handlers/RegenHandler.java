@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import squeek.applecore.api.hunger.HealthRegenEvent;
 
 import com.github.coolsquid.squidutils.config.ConfigHandler;
-import com.github.coolsquid.squidutils.util.EventInfo;
 import com.github.coolsquid.squidutils.util.script.EventEffectHelper;
+import com.github.coolsquid.squidutils.util.script.EventInfo;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 

@@ -13,18 +13,23 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
 
 import com.github.coolsquid.squidapi.SquidAPI;
 import com.github.coolsquid.squidapi.block.BlockBasic;
+import com.github.coolsquid.squidapi.command.CommandBase;
 import com.github.coolsquid.squidapi.creativetab.ITab;
 import com.github.coolsquid.squidapi.helpers.FileHelper;
 import com.github.coolsquid.squidapi.helpers.RegistryHelper;
 import com.github.coolsquid.squidapi.item.ItemBasic;
+import com.github.coolsquid.squidapi.util.RecipeRemover;
+import com.github.coolsquid.squidapi.util.Utils;
 import com.github.coolsquid.squidutils.api.ScriptingAPI;
+import com.github.coolsquid.squidutils.command.CommandCustom;
 import com.github.coolsquid.squidutils.command.CommandInfo;
 import com.github.coolsquid.squidutils.command.CommandWeb;
-import com.github.coolsquid.squidutils.util.EffectInfo;
-import com.github.coolsquid.squidutils.util.EventInfo;
+import com.github.coolsquid.squidutils.util.script.EffectInfo;
+import com.github.coolsquid.squidutils.util.script.EventInfo;
 import com.github.coolsquid.starstones.block.BlockMeteorBase;
 import com.github.coolsquid.starstones.block.MeteorType;
 import com.github.coolsquid.starstones.creativetab.ModCreativeTabs;
@@ -42,6 +47,11 @@ public class ScriptHandler {
 	public static boolean onAchievement;
 	public static boolean onHungerRegen;
 	public static boolean onInteraction;
+	public static boolean onExplosion;
+	public static boolean onCommand;
+	public static boolean onChat;
+	
+	public static boolean permissions;
 	
 	public static void init() {
 		ArrayList<String> list = FileHelper.readFile("config/SquidUtils", ("script.txt"));
@@ -82,12 +92,20 @@ public class ScriptHandler {
 					Item item = (Item) Item.itemRegistry.getObject(s2[2]);
 					if (s2[1].equals("stacksize")) item.setMaxStackSize(Integer.parseInt(s2[3]));
 					else if (s2[1].equals("maxdamage")) item.setMaxDamage(Integer.parseInt(s2[3]));
-					else if (s2[1].equals("create")) {
+					if (s2[1].equals("create")) {
 						if (s2[2].equals("food")) {
-							RegistryHelper.registerItem(new ItemFood(Integer.parseInt(s2[3]), Float.parseFloat(s2[4]), Boolean.parseBoolean(s2[5])).setTextureName(s2[6]).setCreativeTab(CreativeTabs.tabFood).setUnlocalizedName(s2[6]), s2[6]);
+							ItemFood food = new ItemFood(Integer.parseInt(s2[4]), Float.parseFloat(s2[5]), Boolean.parseBoolean(s2[6]));
+							if (Boolean.parseBoolean(s2[7])) {
+								food.setAlwaysEdible();
+							}
+							food.setTextureName(s2[3]);
+							if (s2.length > 8) {
+								food.setPotionEffect(Integer.parseInt(s2[8]), Integer.parseInt(s2[9]), Integer.parseInt(s2[10]), Float.parseFloat(s2[11]));
+							}
+							RegistryHelper.registerItem(food, s2[4]);
 						}
 						else if (s2[2].equals("basic")) {
-							new ItemBasic(s2[3]).setCreativeTab(CreativeTabs.tabMaterials);
+							new ItemBasic(s2[3]).setCreativeTab(CreativeTabs.tabMaterials).setTextureName("SquidUtils:" + s2[3]);
 						}
 					}
 				}
@@ -104,6 +122,14 @@ public class ScriptHandler {
 							String s7 = s2[4];
 							String s8 = s2[5];
 							CommandWeb command = new CommandWeb(s2[3], s7.replace("_", " "), s8);
+							SquidAPI.commands.add(command);
+						}
+						else if (s2[2].equals("basic")) {
+							CommandBase command = new CommandBase(s2[3], s2[4].replace("_", " "), Boolean.parseBoolean(s2[5]));
+							SquidAPI.commands.add(command);
+						}
+						else if (s2[2].equals("user")) {
+							CommandCustom command = new CommandCustom(s2[3], s2[4].replace("_", " "), Boolean.parseBoolean(s2[5]));
 							SquidAPI.commands.add(command);
 						}
 					}
@@ -136,6 +162,14 @@ public class ScriptHandler {
 						}
 						else if (s2[2].equals("furnace")) {
 							RegistryHelper.addSmelting((Item) Item.itemRegistry.getObject(s2[3]), new ItemStack((Item) Item.itemRegistry.getObject(s2[4])));
+						}
+					}
+					else if (s2[1].equals("remove")) {
+						if (s2[2].equals("all") && !Utils.doNotClearRecipes()) {
+							CraftingManager.getInstance().getRecipeList().clear();
+						}
+						else if (s2[2].equals("specific")) {
+							RecipeRemover.addItem(s2[3]);
 						}
 					}
 				}
@@ -209,6 +243,24 @@ public class ScriptHandler {
 							String ss = arg.replace("entitytype:", "");
 							info.setEntitytype(ss);
 						}
+						else if (arg.startsWith("chattrigger:")) {
+							String ss = arg.replace("chattrigger:", "");
+							info.setChattrigger(ss);
+						}
+						else if (arg.startsWith("commandname:")) {
+							String ss = arg.replace("commandname:", "");
+							info.setCommandname(ss);
+						}
+						else if (arg.startsWith("hasperm:")) {
+							String ss = arg.replace("hasperm:", "");
+							info.addRequiredperm(ss);
+							permissions = true;
+						}
+						else if (arg.startsWith("missingperm:")) {
+							String ss = arg.replace("missingperm:", "");
+							info.addOppositeperm(ss);
+							permissions = true;
+						}
 						else if (ScriptingAPI.arguments.containsKey(arg.split(":")[0])) {
 							String key = arg.split(":")[0];
 							ScriptingAPI.arguments.get(key).run(arg.replace(key + ":", ""));
@@ -225,7 +277,7 @@ public class ScriptHandler {
 						info.setDamageamount(Float.parseFloat(s2[e]));
 					}
 					else if (action.equals("applyeffect")) {
-						info.addEffect(new EffectInfo(Integer.parseInt(s2[e]), Integer.parseInt(s2[f]), Integer.parseInt(s2[g])));
+						info.setEffect(new EffectInfo(Integer.parseInt(s2[e]), Integer.parseInt(s2[f]), Integer.parseInt(s2[g])));
 					}
 					else if (action.equals("addexperience")) {
 						info.setExperienceamount(Integer.parseInt(s2[e]));
@@ -241,6 +293,18 @@ public class ScriptHandler {
 					}
 					else if (action.equals("difficulty")) {
 						info.setDifficulty(s2[e]);
+					}
+					else if (action.equals("cleareffects")) {
+						info.setClearActiveEffects(true);
+					}
+					else if (action.equals("placeblock")) {
+						info.setBlocktoplace((Block) Block.blockRegistry.getObject(s2[e]));
+					}
+					else if (action.equals("burn")) {
+						info.setFireamount(Integer.parseInt(s2[e]));
+					}
+					else if (action.equals("sethunger")) {
+						info.setFoodlevel(Integer.parseInt(s2[e]));
 					}
 					else if (ScriptingAPI.actions.containsKey(action)) {
 						info.setAction(action);
@@ -290,6 +354,18 @@ public class ScriptHandler {
 					else if (trigger.equals("interaction")) {
 						onInteraction = true;
 						InteractionHandler.info.add(info);
+					}
+					else if (trigger.equals("explosion")) {
+						onExplosion = true;
+						ExplosionHandler.info.add(info);
+					}
+					else if (trigger.equals("command")) {
+						onCommand = true;
+						CommandHandler.info.add(info);
+					}
+					else if (trigger.equals("chat")) {
+						onChat = true;
+						ServerChatHandler.info.add(info);
 					}
 					else if (ScriptingAPI.triggers.containsKey(trigger)) {
 						ScriptingAPI.triggers.get(trigger).info().add(info);

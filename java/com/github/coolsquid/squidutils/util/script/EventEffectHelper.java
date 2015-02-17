@@ -89,7 +89,7 @@ public class EventEffectHelper {
 	}
 
 	public static void performEffects(EventInfo info) {
-		if (info.getDifficulty() != null && Utils.isClient()) {
+		if (!info.getDifficulty().equals("") && Utils.isClient()) {
 			DifficultyHandler.difficulty = info.getDifficulty();
 		}
 	}

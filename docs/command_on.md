@@ -21,6 +21,7 @@ COMMAND: ON
 - cancel
 - sprinting
 - invisibility
+- forcing difficulty
 
 **Available arguments:**
 - minamount (decimal)

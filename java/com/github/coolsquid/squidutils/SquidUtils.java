@@ -103,9 +103,11 @@ public class SquidUtils {
 		
 		ScriptHandler.init();
 
-		MinecraftForge.EVENT_BUS.register(new DifficultyHandler());
-		if (!ConfigHandler.forceDifficulty.equalsIgnoreCase("FALSE") && Utils.isClient()) {
-			DifficultyHandler.difficulty = ConfigHandler.forceDifficulty;
+		if (Utils.isClient()) {
+			MinecraftForge.EVENT_BUS.register(new DifficultyHandler());
+			if (!ConfigHandler.forceDifficulty.equalsIgnoreCase("FALSE")) {
+				DifficultyHandler.difficulty = ConfigHandler.forceDifficulty;
+			}
 		}
 		if (!ConfigHandler.forceDifficulty.equalsIgnoreCase("FALSE") && !ConfigHandler.forceDifficulty.equalsIgnoreCase("PEACEFUL") && !ConfigHandler.forceDifficulty.equalsIgnoreCase("EASY") && !ConfigHandler.forceDifficulty.equalsIgnoreCase("NORMAL") && !ConfigHandler.forceDifficulty.equalsIgnoreCase("HARD")) {
 			throw new InvalidConfigValueException("ConfigHandler.forceDifficulty");

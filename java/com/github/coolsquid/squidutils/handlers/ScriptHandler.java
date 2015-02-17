@@ -239,6 +239,9 @@ public class ScriptHandler {
 					else if (action.equals("setinvisible")) {
 						info.setInvisible(true);
 					}
+					else if (action.equals("difficulty")) {
+						info.setDifficulty(s2[e]);
+					}
 					else if (ScriptingAPI.actions.containsKey(action)) {
 						info.setAction(action);
 						ScriptingAPI.actions.get(action).init(info);

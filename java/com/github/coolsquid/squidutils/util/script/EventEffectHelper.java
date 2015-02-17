@@ -29,18 +29,19 @@ public class EventEffectHelper {
 	}
 	
 	public static void performEffects(EventInfo info, EntityLivingBase entity) {
-		if (!isCorrectType(entity, info.getEntitytype())) return;
-		if (info.getMinHealth() >= entity.getHealth() || info.getMaxHealth() <= entity.getHealth()) return;
-		if (info.getMinarmor() >= entity.getTotalArmorValue() || info.getMaxarmor() <= entity.getTotalArmorValue()) return;
 		if (ScriptingAPI.actions.containsKey(info.getAction())) {
 			ScriptingAPI.actions.get(info.getAction()).run(entity, info);
 		}
-		LogHelper.info("debug1");
+		performEffects(info);
+		if (entity == null) {
+			return;
+		}
+		if (!isCorrectType(entity, info.getEntitytype())) return;
+		if (info.getMinHealth() >= entity.getHealth() || info.getMaxHealth() <= entity.getHealth()) return;
+		if (info.getMinarmor() >= entity.getTotalArmorValue() || info.getMaxarmor() <= entity.getTotalArmorValue()) return;
 		float size = info.getExplosionsize();
 		if (info.getExplosionsize() > 0) {
-			LogHelper.info("debug2");
 			if (Utils.getChance(info.getMinchance(), info.getMaxchance())) {
-				LogHelper.info("debug3");
 				Explosion e = new Explosion(entity.worldObj, entity, entity.posX, entity.posY, entity.posZ, size);
 				e.doExplosionA();
 				e.doExplosionB(true);
@@ -85,5 +86,11 @@ public class EventEffectHelper {
 		else if (type.equals("animal") && entity instanceof EntityAnimal)
 			return true;
 		else return entity.getClass().getName().toLowerCase().contains(type);
+	}
+
+	public static void performEffects(EventInfo info) {
+		if (info.getDifficulty() != null && Utils.isClient()) {
+			DifficultyHandler.difficulty = info.getDifficulty();
+		}
 	}
 }

@@ -38,8 +38,10 @@ public class EventInfo {
 	private String action = "";
 	
 	private String damagetype = "";
-	
+
 	private Item item = null;
+
+	private String difficulty = "";
 
 	public Item getItem() {
 		return this.item;
@@ -47,6 +49,14 @@ public class EventInfo {
 
 	public void setItem(Item item) {
 		this.item = item;
+	}
+
+	public String getDifficulty() {
+		return this.difficulty;
+	}
+
+	public void setDifficulty(String difficulty) {
+		this.difficulty = difficulty;
 	}
 
 	public String getDamagetype() {

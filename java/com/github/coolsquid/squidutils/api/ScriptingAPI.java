@@ -21,7 +21,7 @@ public class ScriptingAPI {
 		triggers.put(name, trigger);
 	}
 	
-	public static void add(String name, IEventOption argument) {
+	public static void add(String name, IEventArgument argument) {
 		arguments.put(name, argument);
 	}
 	

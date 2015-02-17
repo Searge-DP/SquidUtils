@@ -74,7 +74,7 @@ public class SquidUtils {
 		
 		new File("./config/SquidUtils").mkdirs();
 		ConfigHandler.preInit(new File("./config/SquidUtils/SquidUtils.cfg"));
-		
+		RecipeRemover.addItem("minecraft:diamond_sword");
 		if (ConfigHandler.modList.length != 0) {
 			PackIntegrityChecker.check();
 			FMLCommonHandler.instance().registerCrashCallable(new CrashReportInterceptor());
@@ -211,8 +211,9 @@ public class SquidUtils {
 			RegistrySearcher.start();
 		}
 		if (ConfigHandler.clearRecipes == 2) {
-			if (!Loader.isModLoaded("DragonAPI"))
+			if (!Loader.isModLoaded("DragonAPI")) {
 				CraftingManager.getInstance().getRecipeList().clear();
+			}
 		}
 		if (ConfigHandler.potionStacks > 1 || ConfigHandler.pearlStack > 1) {
 			StackSizeHandler.some(ConfigHandler.potionStacks, ConfigHandler.pearlStack);

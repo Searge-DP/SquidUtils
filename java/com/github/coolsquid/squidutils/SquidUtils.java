@@ -10,8 +10,6 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
 
-import com.github.coolsquid.squidapi.auth.AuthEntry;
-import com.github.coolsquid.squidapi.auth.SquidAPIAuthentificationHelper;
 import com.github.coolsquid.squidapi.exception.InvalidConfigValueException;
 import com.github.coolsquid.squidapi.util.Utils;
 import com.github.coolsquid.squidutils.compat.AppleCoreCompat;
@@ -71,7 +69,6 @@ public class SquidUtils {
 	@EventHandler
 	private void preInit(FMLPreInitializationEvent event) {
 		LogHelper.info("Preinitializing...");
-		SquidAPIAuthentificationHelper.auth(new AuthEntry(ModInfo.modid, ModInfo.version, "http://pastebin.com/raw.php?i=HRP6JJLv"));
 		
 		new File("./config/SquidUtils").mkdirs();
 		ConfigHandler.preInit(new File("./config/SquidUtils/SquidUtils.cfg"));
@@ -215,6 +212,7 @@ public class SquidUtils {
 	@EventHandler
 	private void postInit(FMLPostInitializationEvent event) {
 		LogHelper.info("Postinitializing...");
+		
 		RegistrySearcher.start();
 		if (ConfigHandler.clearRecipes == 2) {
 			if (!Utils.doNotClearRecipes()) {
@@ -224,6 +222,7 @@ public class SquidUtils {
 		if (ConfigHandler.potionStacks > 1 || ConfigHandler.pearlStack > 1) {
 			StackSizeHandler.some(ConfigHandler.potionStacks, ConfigHandler.pearlStack);
 		}
+		
 		LogHelper.info("Postinitialization finished.");
 	}
 }

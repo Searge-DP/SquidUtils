@@ -185,85 +185,85 @@ public class ScriptHandler {
 					
 					String[] if2 = s2[2].split(";");
 					
+					float minamount = Float.MIN_VALUE;
+					float maxamount = Float.MAX_VALUE;
+					String damagetype = "";
+					Item item = null;
+					
 					if (if2[0].contains(":")) {
 						action = s2[3];
 						e++;
 						f++;
 						g++;
-					}
-					
-					float minamount = Float.MIN_VALUE;
-					float maxamount = Float.MAX_VALUE;
-					String damagetype = "";
-					Item item = null;
-					for (int h = 0; h < if2.length; h++) {
-						String arg = if2[h];
-						if (arg.startsWith("minamount:")) {
-							String ss = arg.replace("minamount:", "");
-							if (!ss.equals("*")) minamount = Float.parseFloat(ss);
-						}
-						else if (arg.startsWith("maxamount:")) {
-							String ss = arg.replace("maxamount:", "");
-							if (!ss.equals("*")) maxamount = Float.parseFloat(ss);
-						}
-						else if (arg.startsWith("minhealth:")) {
-							String ss = arg.replace("minhealth:", "");
-							if (!ss.equals("*")) info.setMinHealth(Float.parseFloat(ss));
-						}
-						else if (arg.startsWith("maxhealth:")) {
-							String ss = arg.replace("maxhealth:", "");
-							if (!ss.equals("*")) info.setMaxHealth(Float.parseFloat(ss));
-						}
-						else if (arg.startsWith("item:")) {
-							String ss = arg.replace("item:", "");
-							if (!ss.equals("*")) item = (Item) Item.itemRegistry.getObject(ss);
-							info.setItem(item);
-						}
-						else if (arg.startsWith("minarmor:")) {
-							String ss = arg.replace("minarmor:", "");
-							if (!ss.equals("*")) info.setMinarmor(Integer.parseInt(ss));
-						}
-						else if (arg.startsWith("maxarmor:")) {
-							String ss = arg.replace("maxarmor:", "");
-							if (!ss.equals("*")) info.setMaxarmor(Integer.parseInt(ss));
-						}
-						else if (arg.startsWith("damagetype:")) {
-							String ss = arg.replace("damagetype:", "");
-							damagetype = ss;
-						}
-						else if (arg.startsWith("minchance:")) {
-							String ss = arg.replace("minchance:", "");
-							if (!ss.equals("*")) info.setMinchance(Integer.parseInt(ss));
-						}
-						else if (arg.startsWith("maxchance:")) {
-							String ss = arg.replace("maxchance:", "");
-							if (!ss.equals("*")) info.setMaxchance(Integer.parseInt(ss));
-						}
-						else if (arg.startsWith("entitytype:")) {
-							String ss = arg.replace("entitytype:", "");
-							info.setEntitytype(ss);
-						}
-						else if (arg.startsWith("chattrigger:")) {
-							String ss = arg.replace("chattrigger:", "");
-							info.setChattrigger(ss);
-						}
-						else if (arg.startsWith("commandname:")) {
-							String ss = arg.replace("commandname:", "");
-							info.setCommandname(ss);
-						}
-						else if (arg.startsWith("hasperm:")) {
-							String ss = arg.replace("hasperm:", "");
-							info.addRequiredperm(ss);
-							permissions = true;
-						}
-						else if (arg.startsWith("missingperm:")) {
-							String ss = arg.replace("missingperm:", "");
-							info.addOppositeperm(ss);
-							permissions = true;
-						}
-						else if (ScriptingAPI.arguments.containsKey(arg.split(":")[0])) {
-							String key = arg.split(":")[0];
-							ScriptingAPI.arguments.get(key).run(arg.replace(key + ":", ""));
+						for (int h = 0; h < if2.length; h++) {
+							String arg = if2[h];
+							if (arg.startsWith("minamount:")) {
+								String ss = arg.replace("minamount:", "");
+								if (!ss.equals("*")) minamount = Float.parseFloat(ss);
+							}
+							else if (arg.startsWith("maxamount:")) {
+								String ss = arg.replace("maxamount:", "");
+								if (!ss.equals("*")) maxamount = Float.parseFloat(ss);
+							}
+							else if (arg.startsWith("minhealth:")) {
+								String ss = arg.replace("minhealth:", "");
+								if (!ss.equals("*")) info.setMinHealth(Float.parseFloat(ss));
+							}
+							else if (arg.startsWith("maxhealth:")) {
+								String ss = arg.replace("maxhealth:", "");
+								if (!ss.equals("*")) info.setMaxHealth(Float.parseFloat(ss));
+							}
+							else if (arg.startsWith("item:")) {
+								String ss = arg.replace("item:", "");
+								if (!ss.equals("*")) item = (Item) Item.itemRegistry.getObject(ss);
+								info.setItem(item);
+							}
+							else if (arg.startsWith("minarmor:")) {
+								String ss = arg.replace("minarmor:", "");
+								if (!ss.equals("*")) info.setMinarmor(Integer.parseInt(ss));
+							}
+							else if (arg.startsWith("maxarmor:")) {
+								String ss = arg.replace("maxarmor:", "");
+								if (!ss.equals("*")) info.setMaxarmor(Integer.parseInt(ss));
+							}
+							else if (arg.startsWith("damagetype:")) {
+								String ss = arg.replace("damagetype:", "");
+								damagetype = ss;
+							}
+							else if (arg.startsWith("minchance:")) {
+								String ss = arg.replace("minchance:", "");
+								if (!ss.equals("*")) info.setMinchance(Integer.parseInt(ss));
+							}
+							else if (arg.startsWith("maxchance:")) {
+								String ss = arg.replace("maxchance:", "");
+								if (!ss.equals("*")) info.setMaxchance(Integer.parseInt(ss));
+							}
+							else if (arg.startsWith("entitytype:")) {
+								String ss = arg.replace("entitytype:", "");
+								info.setEntitytype(ss);
+							}
+							else if (arg.startsWith("chattrigger:")) {
+								String ss = arg.replace("chattrigger:", "");
+								info.setChattrigger(ss);
+							}
+							else if (arg.startsWith("commandname:")) {
+								String ss = arg.replace("commandname:", "");
+								info.setCommandname(ss);
+							}
+							else if (arg.startsWith("hasperm:")) {
+								String ss = arg.replace("hasperm:", "");
+								info.setRequiredperm(ss);
+								permissions = true;
+							}
+							else if (arg.startsWith("missingperm:")) {
+								String ss = arg.replace("missingperm:", "");
+								info.setOppositeperm(ss);
+								permissions = true;
+							}
+							else if (ScriptingAPI.arguments.containsKey(arg.split(":")[0])) {
+								String key = arg.split(":")[0];
+								ScriptingAPI.arguments.get(key).run(arg.replace(key + ":", ""));
+							}
 						}
 					}
 					info.setDamagetype(damagetype);

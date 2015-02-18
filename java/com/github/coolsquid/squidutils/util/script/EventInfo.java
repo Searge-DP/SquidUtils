@@ -35,11 +35,8 @@ public class EventInfo {
 	private Block blocktoplace = null;
 	private int fireamount = 0;
 	private int foodlevel = -1;
-	
-	private String[] requiredperms = new String[Integer.MAX_VALUE];
-	private int a = 0;
-	private String[] oppositeperms = new String[Integer.MAX_VALUE];
-	private int b = 0;
+	private String requiredperm = "";
+	private String oppositeperm = "";
 
 	public Item getItem() {
 		return this.item;
@@ -249,19 +246,19 @@ public class EventInfo {
 		this.foodlevel = foodlevel;
 	}
 
-	public String[] getRequiredperms() {
-		return this.requiredperms;
+	public String getRequiredperm() {
+		return this.requiredperm;
 	}
 
-	public void addRequiredperm(String perm) {
-		this.requiredperms[this.a++] = perm;
+	public void setRequiredperm(String perm) {
+		this.requiredperm = perm;
 	}
 
-	public String[] getOppositeperms() {
-		return this.oppositeperms;
+	public String getOppositeperm() {
+		return this.oppositeperm;
 	}
 
-	public void addOppositeperm(String oppositeperm) {
-		this.oppositeperms[this.b++] = oppositeperm;
+	public void setOppositeperm(String oppositeperm) {
+		this.oppositeperm = oppositeperm;
 	}
 }

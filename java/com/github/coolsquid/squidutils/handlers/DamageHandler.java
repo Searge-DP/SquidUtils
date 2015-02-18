@@ -20,8 +20,7 @@ public class DamageHandler {
 	@SubscribeEvent
 	public void onHurt(LivingHurtEvent event) {
 		for (EventInfo a: info) {
-			if (EventEffectHelper.isCorrectType(event.entityLiving, a.getEntitytype()) &&
-				event.ammount < a.getMaxamount() && event.ammount > a.getMinamount()) {
+			if (event.ammount < a.getMaxamount() && event.ammount > a.getMinamount()) {
 				EventEffectHelper.performEffects(a, event.entityLiving);
 			}
 		}

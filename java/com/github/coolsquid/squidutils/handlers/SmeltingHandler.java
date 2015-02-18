@@ -19,7 +19,7 @@ public class SmeltingHandler {
 	@SubscribeEvent
 	public void onSmelt(ItemSmeltedEvent event) {
 		for (EventInfo a: info) {
-			if (a.getItem() == event.smelting.getItem()) {
+			if (a.getItem() == event.smelting.getItem() || a.getItem() == null) {
 				EventEffectHelper.performEffects(a, event.player);
 			}
 		}

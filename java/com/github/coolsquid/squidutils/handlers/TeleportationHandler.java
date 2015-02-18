@@ -22,9 +22,7 @@ public class TeleportationHandler {
 	public void event(EnderTeleportEvent event) {
 		if (ConfigHandler.disableTeleportation) event.setCanceled(true);
 		for (EventInfo a: info) {
-			if (EventEffectHelper.isCorrectType(event.entityLiving, a.getEntitytype())) {
-				EventEffectHelper.performEffects(a, event.entityLiving);
-			}
+			EventEffectHelper.performEffects(a, event.entityLiving);
 		}
 	}
 }

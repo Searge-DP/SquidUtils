@@ -69,6 +69,10 @@ public class SquidUtils {
 	@EventHandler
 	private void preInit(FMLPreInitializationEvent event) {
 		LogHelper.info("Preinitializing...");
+<<<<<<< HEAD
+=======
+		SquidAPIAuthentificationHelper.auth(new AuthEntry(ModInfo.modid, ModInfo.version, "http://pastebin.com/raw.php?i=F4c7R7AW"));
+>>>>>>> origin/master
 		
 		new File("./config/SquidUtils").mkdirs();
 		ConfigHandler.preInit(new File("./config/SquidUtils/SquidUtils.cfg"));

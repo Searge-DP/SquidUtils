@@ -75,16 +75,16 @@ public class ScriptHandler {
 							else if (s2[4].equals("OBSIDIAN")) t = MeteorType.OBSIDIAN;
 							else if (s2[4].equals("HELL")) t = MeteorType.HELL;
 							else t = null;
-							new BlockMeteorBase(s2[3], t).setCreativeTab(ModCreativeTabs.tab);
+							new BlockMeteorBase(s2[3], t).setCreativeTab(ModCreativeTabs.tab).setBlockTextureName("SquidUtils:" + s2[3]);
 						}
 						else if (s2[2].equals("glass")) {
 							BlockGlass b = new BlockGlass(Material.glass, false);
-							b.setCreativeTab(CreativeTabs.tabBlock).setBlockTextureName(s2[3]).setBlockName(s2[3]);
+							b.setCreativeTab(CreativeTabs.tabBlock).setBlockName(s2[3]);
 							RegistryHelper.registerBlock(b, s2[3]);
 						}
 						else if (s2[2].equals("basic")) {
 							BlockBasic b = new BlockBasic(s2[3]);
-							b.setCreativeTab(CreativeTabs.tabBlock).setBlockTextureName(s2[3]);
+							b.setCreativeTab(CreativeTabs.tabBlock).setBlockTextureName("SquidUtils:" + s2[3]);
 						}
 					}
 				}
@@ -98,7 +98,6 @@ public class ScriptHandler {
 							if (Boolean.parseBoolean(s2[7])) {
 								food.setAlwaysEdible();
 							}
-							food.setTextureName(s2[3]);
 							if (s2.length > 8) {
 								food.setPotionEffect(Integer.parseInt(s2[8]), Integer.parseInt(s2[9]), Integer.parseInt(s2[10]), Float.parseFloat(s2[11]));
 							}

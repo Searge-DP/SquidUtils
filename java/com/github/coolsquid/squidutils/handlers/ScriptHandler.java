@@ -5,6 +5,7 @@
 package com.github.coolsquid.squidutils.handlers;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockGlass;
@@ -14,25 +15,37 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
+import net.minecraftforge.common.BiomeManager;
+import net.minecraftforge.common.BiomeManager.BiomeEntry;
+import net.minecraftforge.common.BiomeManager.BiomeType;
+import Reika.RotaryCraft.API.CompactorAPI;
+import Reika.RotaryCraft.API.GrinderAPI;
+import Reika.RotaryCraft.API.WorktableAPI;
 
 import com.github.coolsquid.squidapi.SquidAPI;
 import com.github.coolsquid.squidapi.block.BlockBasic;
 import com.github.coolsquid.squidapi.command.CommandBase;
 import com.github.coolsquid.squidapi.creativetab.ITab;
+import com.github.coolsquid.squidapi.helpers.BiomeHelper;
 import com.github.coolsquid.squidapi.helpers.FileHelper;
 import com.github.coolsquid.squidapi.helpers.RegistryHelper;
 import com.github.coolsquid.squidapi.item.ItemBasic;
-import com.github.coolsquid.squidapi.util.RecipeRemover;
+import com.github.coolsquid.squidapi.util.ContentRemover;
+import com.github.coolsquid.squidapi.util.ContentRemover.ContentType;
 import com.github.coolsquid.squidapi.util.Utils;
 import com.github.coolsquid.squidutils.api.ScriptingAPI;
 import com.github.coolsquid.squidutils.command.CommandCustom;
 import com.github.coolsquid.squidutils.command.CommandInfo;
 import com.github.coolsquid.squidutils.command.CommandWeb;
+import com.github.coolsquid.squidutils.handlers.DropHandler.Chance;
+import com.github.coolsquid.squidutils.handlers.DropHandler.Drop;
 import com.github.coolsquid.squidutils.util.script.EffectInfo;
 import com.github.coolsquid.squidutils.util.script.EventInfo;
 import com.github.coolsquid.starstones.block.BlockMeteorBase;
 import com.github.coolsquid.starstones.block.MeteorType;
 import com.github.coolsquid.starstones.creativetab.ModCreativeTabs;
+
+import cpw.mods.fml.common.Loader;
 
 public class ScriptHandler {
 	
@@ -85,6 +98,43 @@ public class ScriptHandler {
 						else if (s2[2].equals("basic")) {
 							BlockBasic b = new BlockBasic(s2[3]);
 							b.setCreativeTab(CreativeTabs.tabBlock).setBlockTextureName("SquidUtils:" + s2[3]);
+						}
+					}
+					else if (s2[1].equals("drop")) {
+						Block block2 = (Block) Block.blockRegistry.getObject(s2[3]);
+						if (s2[2].equals("remove")) {
+							HashSet<Item> drops;
+							if (DropHandler.dropstoremove.containsKey(block2)) {
+								drops = DropHandler.dropstoremove.get(block2);
+								for (int i = 4; i < s2.length; i++) {
+									drops.add((Item) Item.itemRegistry.getObject(s2[i]));
+								}
+							}
+							else {
+								drops = new HashSet<Item>();
+								for (int i = 4; i < s2.length; i++) {
+									drops.add((Item) Item.itemRegistry.getObject(s2[i]));
+								}
+								DropHandler.dropstoremove.put(block2, drops);
+							}
+						}
+						else if (s2[2].equals("add")) {
+							ArrayList<Drop> drops;
+							if (DropHandler.drops.containsKey(block2)) {
+								drops = DropHandler.drops.get(block2);
+								for (int i = 4; i < s2.length; i++) {
+									String[] s4 = s2[i].split(";");
+									drops.add(new Drop((Item) Item.itemRegistry.getObject(s4[0]), Integer.parseInt(s4[1]), Integer.parseInt(s4[2]), new Chance(Integer.parseInt(s4[3]), Integer.parseInt(s4[4]))));
+								}
+							}
+							else {
+								drops = new ArrayList<Drop>();
+								for (int i = 4; i < s2.length; i++) {
+									String[] s4 = s2[i].split(";");
+									drops.add(new Drop((Item) Item.itemRegistry.getObject(s4[0]), Integer.parseInt(s4[1]), Integer.parseInt(s4[2]), new Chance(Integer.parseInt(s4[3]), Integer.parseInt(s4[4]))));
+								}
+								DropHandler.drops.put(block2, drops);
+							}
 						}
 					}
 				}
@@ -168,7 +218,45 @@ public class ScriptHandler {
 							CraftingManager.getInstance().getRecipeList().clear();
 						}
 						else if (s2[2].equals("specific")) {
-							RecipeRemover.addItem(s2[3]);
+							ContentRemover.remove(s2[3], ContentType.CRAFTING);
+						}
+					}
+				}
+				else if (type.equals("potion")) {
+					if (s2[1].equals("remove")) {
+						ContentRemover.remove(s2[2], ContentType.POTION);
+					}
+				}
+				else if (type.equals("enchantment")) {
+					if (s2[1].equals("remove")) {
+						ContentRemover.remove(s2[2], ContentType.ENCHANTMENT);
+					}
+				}
+				else if (type.equals("biome")) {
+					if (s2[1].equals("remove")) {
+						for (BiomeType b: BiomeType.values()) {
+							for (BiomeEntry entry: BiomeManager.getBiomes(b)) {
+								if (entry.biome.biomeID == Integer.parseInt(s2[2])) {
+									BiomeHelper.removeBiome(entry.biome);
+								}
+							}
+						}
+					}
+				}
+				else if (type.equals("compat")) {
+					if (s2[1].equals("rotarycraft") && Loader.isModLoaded("RotaryCraft")) {
+						if (s2[2].equals("add")) {
+							if (s2[3].equals("grinding")) {
+								GrinderAPI.addRecipe(new ItemStack((Item) Item.itemRegistry.getObject(s2[4])), new ItemStack((Item) Item.itemRegistry.getObject(s2[5])));
+							}
+							else if (s2[3].equals("worktable")) {
+								if (s2[4].equals("shapeless")) {
+									WorktableAPI.addshapelessRecipe(new ItemStack((Item) Item.itemRegistry.getObject(s2[5])), new ItemStack((Item) Item.itemRegistry.getObject(s2[6])));
+								}
+							}
+							else if (s2[3].equals("compactor")) {
+								CompactorAPI.addCompactorRecipe(new ItemStack((Item) Item.itemRegistry.getObject(s2[4])), new ItemStack((Item) Item.itemRegistry.getObject(s2[5])), Integer.parseInt(s2[6]), Integer.parseInt(s2[7]));
+							}
 						}
 					}
 				}
@@ -259,9 +347,9 @@ public class ScriptHandler {
 								info.setOppositeperm(ss);
 								permissions = true;
 							}
-							else if (ScriptingAPI.arguments.containsKey(arg.split(":")[0])) {
+							else if (ScriptingAPI.getConditions().containsKey(arg.split(":")[0])) {
 								String key = arg.split(":")[0];
-								ScriptingAPI.arguments.get(key).run(arg.replace(key + ":", ""));
+								ScriptingAPI.getConditions().get(key).run(arg.replace(key + ":", ""));
 							}
 						}
 					}
@@ -305,9 +393,9 @@ public class ScriptHandler {
 					else if (action.equals("sethunger")) {
 						info.setFoodlevel(Integer.parseInt(s2[e]));
 					}
-					else if (ScriptingAPI.actions.containsKey(action)) {
+					else if (ScriptingAPI.getActions().containsKey(action)) {
 						info.setAction(action);
-						ScriptingAPI.actions.get(action).init(info);
+						ScriptingAPI.getActions().get(action).init(info);
 					}
 					
 					if (trigger.equals("entityjoin")) {
@@ -366,8 +454,14 @@ public class ScriptHandler {
 						onChat = true;
 						ServerChatHandler.info.add(info);
 					}
-					else if (ScriptingAPI.triggers.containsKey(trigger)) {
-						ScriptingAPI.triggers.get(trigger).info().add(info);
+					else if (ScriptingAPI.getTriggers().containsKey(trigger)) {
+						if (s2.length >= e) {
+							for (int gg = e; gg < s2.length; gg++) {
+								String[] s3 = s2[gg].split(":");
+								info.addCustomvalue(s3[0], s3[1]);
+							}
+						}
+						ScriptingAPI.getTriggers().get(trigger).info().add(info);
 					}
 				}
 			}

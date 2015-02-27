@@ -285,9 +285,11 @@ public class ConfigHandler {
 
 	public static int minHardness = 0;
 	
-	public static boolean disableExplosions;
-
 	public static float explosionSizeMultiplier = 1;
+	
+	public static int worldSize = 0;
+
+	public static boolean explodeTNTMinecartsOnCollide;
 	
 	/**
 	 * Sets category comments.
@@ -341,8 +343,9 @@ public class ConfigHandler {
 		walkSpeed = config.getFloat("walkSpeed", CATEGORY_GENERAL, 0.1F, 0F, 20F, "Sets the players walk speed.");
 		flySpeed = config.getFloat("flySpeed", CATEGORY_GENERAL, 0.05F, 0F, 20F, "Sets the players flying speed.");
 		minHardness = config.getInt("minHardness", CATEGORY_PROPERTIES, 0, 0, 1080, "Sets the minimum block hardness.");
-		disableExplosions = config.getBoolean("disableExplosions", CATEGORY_GENERAL, false, "Disables all explosions.");
-		explosionSizeMultiplier = config.getFloat("explosionSizeMultiplier", CATEGORY_GENERAL, 1, 1, 1080, "Multiplies the size of all explosions by the specified amount.");
+		explosionSizeMultiplier = config.getFloat("explosionSizeMultiplier", CATEGORY_GENERAL, 1, 0, 1080, "Multiplies the size of all explosions by the specified amount.");
+		worldSize = config.getInt("worldSize", CATEGORY_GENERAL, 0, 0, Integer.MAX_VALUE, "Sets the size of the world. Set to 0 to disable.");
+		explodeTNTMinecartsOnCollide = config.getBoolean("explodeTNTMinecartsOnCollide", CATEGORY_GENERAL, false, "Explodes minecarts with TNT whenever they collide with an entity.");
 		
 		String password = config.getString("password", CATEGORY_GENERAL, "", "Sets a password required to launch Minecraft.");
 		if (!(password.isEmpty())) {

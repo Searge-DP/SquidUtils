@@ -1,3 +1,7 @@
+/*******************************************************************************
+ * Copyright (c) 2015 CoolSquid.
+ * All rights reserved.
+ *******************************************************************************/
 package com.github.coolsquid.squidutils.command;
 
 import java.util.List;

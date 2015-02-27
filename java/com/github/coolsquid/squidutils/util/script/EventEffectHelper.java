@@ -42,8 +42,8 @@ public class EventEffectHelper {
 				return;
 			}
 		}
-		if (ScriptingAPI.actions.containsKey(info.getAction())) {
-			ScriptingAPI.actions.get(info.getAction()).run(entity, info);
+		if (ScriptingAPI.getActions().containsKey(info.getAction())) {
+			ScriptingAPI.getActions().get(info.getAction()).run(entity, info);
 		}
 		performEffects(info);
 		float size = info.getExplosionsize();

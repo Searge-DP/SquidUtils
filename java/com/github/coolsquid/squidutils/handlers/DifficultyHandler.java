@@ -8,9 +8,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
-
-import com.github.coolsquid.squidutils.helpers.LogHelper;
-
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class DifficultyHandler {
@@ -27,22 +24,18 @@ public class DifficultyHandler {
 			if (Minecraft.getMinecraft().gameSettings.difficulty != EnumDifficulty.HARD && difficulty.equalsIgnoreCase("HARD")) {
 				Minecraft.getMinecraft().gameSettings.difficulty = EnumDifficulty.HARD;
 				Minecraft.getMinecraft().gameSettings.saveOptions();
-				LogHelper.debug("Difficulty forced.");
 			}
 			else if (Minecraft.getMinecraft().gameSettings.difficulty != EnumDifficulty.NORMAL && difficulty.equalsIgnoreCase("NORMAL")) {
 				Minecraft.getMinecraft().gameSettings.difficulty = EnumDifficulty.NORMAL;
 				Minecraft.getMinecraft().gameSettings.saveOptions();
-				LogHelper.debug("Difficulty forced.");
 			}
 			else if (Minecraft.getMinecraft().gameSettings.difficulty != EnumDifficulty.EASY && difficulty.equalsIgnoreCase("EASY")) {
 				Minecraft.getMinecraft().gameSettings.difficulty = EnumDifficulty.EASY;
 				Minecraft.getMinecraft().gameSettings.saveOptions();
-				LogHelper.debug("Difficulty forced.");
 			}
 			else if (Minecraft.getMinecraft().gameSettings.difficulty != EnumDifficulty.PEACEFUL && difficulty.equalsIgnoreCase("PEACEFUL")) {
 				Minecraft.getMinecraft().gameSettings.difficulty = EnumDifficulty.PEACEFUL;
 				Minecraft.getMinecraft().gameSettings.saveOptions();
-				LogHelper.debug("Difficulty forced.");
 			}
 		}
 	}

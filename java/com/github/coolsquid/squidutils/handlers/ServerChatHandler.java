@@ -1,3 +1,7 @@
+/*******************************************************************************
+ * Copyright (c) 2015 CoolSquid.
+ * All rights reserved.
+ *******************************************************************************/
 package com.github.coolsquid.squidutils.handlers;
 
 import java.util.ArrayList;
@@ -18,6 +22,9 @@ public class ServerChatHandler {
 		for (EventInfo a: info) {
 			if (event.message.contains(a.getChattrigger())) {
 				EventEffectHelper.performEffects(a, event.player);
+				if (a.shouldCancel()) {
+					event.setCanceled(true);
+				}
 			}
 		}
 	}

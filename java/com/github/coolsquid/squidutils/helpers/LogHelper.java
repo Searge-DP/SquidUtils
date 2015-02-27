@@ -7,49 +7,45 @@ package com.github.coolsquid.squidutils.helpers;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 
-import com.github.coolsquid.squidutils.config.ConfigHandler;
+import com.github.coolsquid.squidapi.SquidAPI;
 import com.github.coolsquid.squidutils.util.ModInfo;
 
 public final class LogHelper {
 	
 	public static final org.apache.logging.log4j.Logger logger = LogManager.getLogger(ModInfo.modid);
 	
+	private static void log(Level level, String msg) {
+		logger.log(level, msg);
+		SquidAPI.logger.log("SquidUtils", com.github.coolsquid.squidapi.logging.Level.getLevel(level.toString()), msg, false);
+	}
+	
 	public static void info(String msg) {
-		logger.log(Level.INFO, msg);
-		}
+		log(Level.INFO, msg);
+	}
 	
 	public static void info(int i) {
-		logger.log(Level.INFO, i + "");
-		}
-	
-	public static void debug(String msg) {
-		if (ConfigHandler.debug)
-			logger.log(Level.INFO, msg);
+		log(Level.INFO, i + "");
 	}
 	
 	public static void warn(String msg) {
-		logger.log(Level.WARN, msg);
-		}
+		log(Level.WARN, msg);
+	}
 	
 	public static void error(String msg) {
-		logger.log(Level.ERROR, msg);
-		}
+		log(Level.ERROR, msg);
+	}
 	
 	public static void error(Throwable t) {
-		logger.log(Level.ERROR, t + "");
-		}
+		log(Level.ERROR, t + "");
+	}
 	
 	public static void fatal(String msg) {
-		logger.log(Level.FATAL, msg);
-		}
+		log(Level.FATAL, msg);
+	}
 	
 	public static void bigWarning(Level level, String msg) {
-		logger.log(level, "-------------------------------------------------------------------------------------");
-		logger.log(level, msg);
-		logger.log(level, "-------------------------------------------------------------------------------------");
-		}
-	
-	public static void log(Level level, String msg) {
-		logger.log(level, msg);
+		log(level, "-------------------------------------------------------------------------------------");
+		log(level, msg);
+		log(level, "-------------------------------------------------------------------------------------");
 	}
 }

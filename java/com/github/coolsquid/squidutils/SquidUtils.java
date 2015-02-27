@@ -10,11 +10,12 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
 
+import com.github.coolsquid.squidapi.SquidAPIMod;
 import com.github.coolsquid.squidapi.exception.InvalidConfigValueException;
 import com.github.coolsquid.squidapi.util.Utils;
 import com.github.coolsquid.squidutils.compat.AppleCoreCompat;
 import com.github.coolsquid.squidutils.config.ConfigHandler;
-import com.github.coolsquid.squidutils.creativetab.CreativeTabs;
+import com.github.coolsquid.squidutils.creativetab.ModCreativeTabs;
 import com.github.coolsquid.squidutils.handlers.AchievementHandler;
 import com.github.coolsquid.squidutils.handlers.AnvilHandler;
 import com.github.coolsquid.squidutils.handlers.BonemealHandler;
@@ -24,11 +25,14 @@ import com.github.coolsquid.squidutils.handlers.CraftingHandler;
 import com.github.coolsquid.squidutils.handlers.DamageHandler;
 import com.github.coolsquid.squidutils.handlers.DebugHandler;
 import com.github.coolsquid.squidutils.handlers.DifficultyHandler;
+import com.github.coolsquid.squidutils.handlers.DropHandler;
 import com.github.coolsquid.squidutils.handlers.EntityJoinHandler;
 import com.github.coolsquid.squidutils.handlers.EventLogger;
 import com.github.coolsquid.squidutils.handlers.ExplosionHandler;
 import com.github.coolsquid.squidutils.handlers.HealingHandler;
 import com.github.coolsquid.squidutils.handlers.InteractionHandler;
+import com.github.coolsquid.squidutils.handlers.LivingUpdateHandler;
+import com.github.coolsquid.squidutils.handlers.MinecartCollisionHandler;
 import com.github.coolsquid.squidutils.handlers.RegistrySearcher;
 import com.github.coolsquid.squidutils.handlers.RenderDistanceHandler;
 import com.github.coolsquid.squidutils.handlers.ScriptHandler;
@@ -59,8 +63,12 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 @Mod(modid = ModInfo.modid, name = ModInfo.name, version = ModInfo.version, dependencies = ModInfo.dependencies, acceptableRemoteVersions = "*")
-public class SquidUtils {
-		
+public class SquidUtils extends SquidAPIMod {
+	
+	public SquidUtils() {
+		super("Customization to the max!");
+	}
+
 	/**
 	 * Preinit. Loads the config, clears Vanilla recipes (if toggled).
 	 * @param event
@@ -77,7 +85,6 @@ public class SquidUtils {
 			PackIntegrityChecker.check();
 			FMLCommonHandler.instance().registerCrashCallable(new CrashReportInterceptor());
 		}
-		
 		if (ConfigHandler.clearRecipes == 1) {
 			CraftingManager.getInstance().getRecipeList().clear();
 		}
@@ -132,7 +139,7 @@ public class SquidUtils {
 			MinecraftForge.EVENT_BUS.register(new VillagerHandler());
 		}
 		if (ConfigHandler.tabVanilla) {
-			CreativeTabs.preInit();
+			ModCreativeTabs.preInit();
 		}
 		if (ConfigHandler.logStuff) {
 			MinecraftForge.EVENT_BUS.register(new EventLogger());
@@ -182,7 +189,7 @@ public class SquidUtils {
 		if (ScriptHandler.onEntityJoin) {
 			MinecraftForge.EVENT_BUS.register(new EntityJoinHandler());
 		}
-		if (ConfigHandler.disableExplosions || ConfigHandler.explosionSizeMultiplier > 1) {
+		if (ConfigHandler.explosionSizeMultiplier != 1) {
 			MinecraftForge.EVENT_BUS.register(new ExplosionHandler());
 		}
 		if (ScriptHandler.onInteraction) {
@@ -194,6 +201,15 @@ public class SquidUtils {
 		if (ScriptHandler.permissions) {
 			PermissionHelper.init();
 			MinecraftForge.EVENT_BUS.register(new PermissionHelper());
+		}
+		if (ConfigHandler.worldSize > 0) {
+			MinecraftForge.EVENT_BUS.register(new LivingUpdateHandler());
+		}
+		if (!DropHandler.shouldclear.isEmpty() || !DropHandler.dropstoremove.isEmpty() || !DropHandler.drops.isEmpty()) {
+			MinecraftForge.EVENT_BUS.register(new DropHandler());
+		}
+		if (ConfigHandler.explodeTNTMinecartsOnCollide) {
+			MinecraftForge.EVENT_BUS.register(new MinecartCollisionHandler());
 		}
 		
 		NBTTagCompound nbttag = new NBTTagCompound();

@@ -1,3 +1,7 @@
+/*******************************************************************************
+ * Copyright (c) 2015 CoolSquid.
+ * All rights reserved.
+ *******************************************************************************/
 package com.github.coolsquid.squidutils.helpers;
 
 import java.util.ArrayList;

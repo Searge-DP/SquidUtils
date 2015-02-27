@@ -10,12 +10,28 @@ import java.util.HashMap;
 import net.minecraft.entity.EntityLivingBase;
 
 import com.github.coolsquid.squidutils.util.script.EventInfo;
+import com.google.common.collect.ImmutableMap;
 
 public class ScriptingAPI {
 	
-	public static final HashMap<String, IEventAction> actions = new HashMap<String, IEventAction>();
-	public static final HashMap<String, IEventTrigger> triggers = new HashMap<String, IEventTrigger>();
-	public static final HashMap<String, IEventArgument> arguments = new HashMap<String, IEventArgument>();
+	@Deprecated
+	private static final HashMap<String, IEventAction> actions = new HashMap<String, IEventAction>();
+	@Deprecated
+	private static final HashMap<String, IEventTrigger> triggers = new HashMap<String, IEventTrigger>();
+	@Deprecated
+	private static final HashMap<String, IEventCondition> conditions = new HashMap<String, IEventCondition>();
+	
+	public static ImmutableMap<String, IEventAction> getActions() {
+		return ImmutableMap.copyOf(actions);
+	}
+	
+	public static ImmutableMap<String, IEventTrigger> getTriggers() {
+		return ImmutableMap.copyOf(triggers);
+	}
+	
+	public static ImmutableMap<String, IEventCondition> getConditions() {
+		return ImmutableMap.copyOf(conditions);
+	}
 	
 	public static void add(String name, IEventAction action) {
 		actions.put(name, action);
@@ -25,8 +41,8 @@ public class ScriptingAPI {
 		triggers.put(name, trigger);
 	}
 	
-	public static void add(String name, IEventArgument argument) {
-		arguments.put(name, argument);
+	public static void add(String name, IEventCondition argument) {
+		conditions.put(name, argument);
 	}
 	
 	public interface IEventAction {
@@ -38,7 +54,7 @@ public class ScriptingAPI {
 		public ArrayList<EventInfo> info();
 	}
 	
-	public interface IEventArgument {
+	public interface IEventCondition {
 		public void run(String option);
 	}
 }

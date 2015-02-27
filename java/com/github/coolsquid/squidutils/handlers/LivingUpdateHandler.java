@@ -4,7 +4,7 @@
  *******************************************************************************/
 package com.github.coolsquid.squidutils.handlers;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 
@@ -12,17 +12,26 @@ import com.github.coolsquid.squidutils.config.ConfigHandler;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
-public class RenderDistanceHandler {
+public class LivingUpdateHandler {
 	
-	/**
-	 * Forces the render distance setting.
-	 */
+	private static final int size = ConfigHandler.worldSize;
 	
 	@SubscribeEvent
-	public final void event(LivingUpdateEvent event) {
-		if (Minecraft.getMinecraft().gameSettings.renderDistanceChunks > ConfigHandler.maxRenderDistance && event.entity instanceof EntityPlayer) {
-			Minecraft.getMinecraft().gameSettings.renderDistanceChunks = ConfigHandler.maxRenderDistance;
-			Minecraft.getMinecraft().gameSettings.saveOptions();
+	public void onUpdate(LivingUpdateEvent event) {
+		Entity e = event.entity;
+		if (e instanceof EntityPlayer) {
+			if (e.posX > size) {
+				e.setPosition(size, e.posY, e.posZ);
+			}
+			else if (e.posX < -size) {
+				e.setPosition(-size, e.posY, e.posZ);
+			}
+			if (e.posZ > size) {
+				e.setPosition(e.posX, e.posY, size);
+			}
+			else if (e.posZ < -size) {
+				e.setPosition(e.posX, e.posY, -size);
+			}
 		}
 	}
 }

@@ -20,7 +20,6 @@ public class ExplosionHandler {
 	
 	@SubscribeEvent
 	public void onExplosionStart(ExplosionEvent.Start event) {
-		if (ConfigHandler.disableExplosions) event.setCanceled(true);
 		event.explosion.explosionSize = event.explosion.explosionSize * ConfigHandler.explosionSizeMultiplier;
 		for (EventInfo a: info) {
 			EventEffectHelper.performEffects(a);

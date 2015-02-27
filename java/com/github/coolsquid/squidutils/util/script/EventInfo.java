@@ -4,6 +4,8 @@
  *******************************************************************************/
 package com.github.coolsquid.squidutils.util.script;
 
+import java.util.HashMap;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 
@@ -37,6 +39,7 @@ public class EventInfo {
 	private int foodlevel = -1;
 	private String requiredperm = "";
 	private String oppositeperm = "";
+	private HashMap<String, String> customvalues = new HashMap<String, String>();
 
 	public Item getItem() {
 		return this.item;
@@ -260,5 +263,13 @@ public class EventInfo {
 
 	public void setOppositeperm(String oppositeperm) {
 		this.oppositeperm = oppositeperm;
+	}
+
+	public HashMap<String, String> getCustomvalues() {
+		return this.customvalues;
+	}
+
+	public void addCustomvalue(String key, String value) {
+		this.customvalues.put(key, value);
 	}
 }

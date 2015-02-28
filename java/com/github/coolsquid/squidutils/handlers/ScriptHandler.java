@@ -481,7 +481,7 @@ public class ScriptHandler {
 					else if (s2[1].equals("thermalexpansion") && Loader.isModLoaded("ThermalExpansion")) {
 						if (s2[2].equals("add")) {
 							if (s2[3].equals("pulverizer")) {
-								ThermalExpansionCompat.addPulverizerRecipe(new ItemStack(StringParser.parseItem(s2[4])), new ItemStack(StringParser.parseItem(s2[5])), new ItemStack(StringParser.parseItem(s2[6])), Integer.parseInt(s2[7]), Integer.parseInt(s2[8]));
+								ThermalExpansionCompat.addPulverizerRecipe(StringParser.parseItemStack(s2[4]), StringParser.parseItemStack(s2[5]), StringParser.parseItemStack(s2[6]), Integer.parseInt(s2[7]), Integer.parseInt(s2[8]));
 							}
 						}
 					}

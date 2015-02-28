@@ -14,47 +14,122 @@ import com.google.common.collect.ImmutableMap;
 
 public class ScriptingAPI {
 	
+	/** The actions. */
 	@Deprecated
 	private static final HashMap<String, IEventAction> actions = new HashMap<String, IEventAction>();
+	
+	/** The triggers. */
 	@Deprecated
 	private static final HashMap<String, IEventTrigger> triggers = new HashMap<String, IEventTrigger>();
+	
+	/** The conditions. */
 	@Deprecated
 	private static final HashMap<String, IEventCondition> conditions = new HashMap<String, IEventCondition>();
 	
+	/**
+	 * Gets the actions.
+	 * Cannot be modified.
+	 * 
+	 * @return the actions
+	 */
 	public static ImmutableMap<String, IEventAction> getActions() {
 		return ImmutableMap.copyOf(actions);
 	}
 	
+	/**
+	 * Gets the triggers.
+	 * Cannot be modified.
+	 * 
+	 * @return the triggers
+	 */
 	public static ImmutableMap<String, IEventTrigger> getTriggers() {
 		return ImmutableMap.copyOf(triggers);
 	}
 	
+	/**
+	 * Gets the conditions.
+	 * Cannot be modified.
+	 *
+	 * @return the conditions
+	 */
 	public static ImmutableMap<String, IEventCondition> getConditions() {
 		return ImmutableMap.copyOf(conditions);
 	}
 	
-	public static void add(String name, IEventAction action) {
+	/**
+	 * Adds an action.
+	 *
+	 * @param name the name
+	 * @param action the action
+	 */
+	public static void addAction(String name, IEventAction action) {
 		actions.put(name, action);
 	}
 	
-	public static void add(String name, IEventTrigger trigger) {
+	/**
+	 * Adds a trigger.
+	 *
+	 * @param name the name
+	 * @param trigger the trigger
+	 */
+	public static void addTrigger(String name, IEventTrigger trigger) {
 		triggers.put(name, trigger);
 	}
 	
-	public static void add(String name, IEventCondition argument) {
+	/**
+	 * Adds a condition.
+	 *
+	 * @param name the name
+	 * @param argument the argument
+	 */
+	public static void addCondition(String name, IEventCondition argument) {
 		conditions.put(name, argument);
 	}
 	
+	/**
+	 * The Interface IEventAction.
+	 */
 	public interface IEventAction {
+		
+		/**
+		 * Run.
+		 *
+		 * @param entity the entity
+		 * @param info the info
+		 */
 		public void run(EntityLivingBase entity, EventInfo info);
+		
+		/**
+		 * Inits the.
+		 *
+		 * @param info the info
+		 */
 		public void init(EventInfo info);
 	}
 	
+	/**
+	 * The Interface IEventTrigger.
+	 */
 	public interface IEventTrigger {
+		
+		/**
+		 * Info.
+		 *
+		 * @return the array list
+		 */
 		public ArrayList<EventInfo> info();
 	}
 	
+	/**
+	 * The Interface IEventCondition.
+	 */
 	public interface IEventCondition {
-		public void run(String option);
+		
+		/**
+		 * Run.
+		 *
+		 * @param condition the condition
+		 */
+		public void run(String condition);
 	}
 }

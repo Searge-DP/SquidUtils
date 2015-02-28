@@ -22,7 +22,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 public class PermissionHelper {
 	
 	private static final HashMap<UUID, HashSet<String>> permissions = new HashMap<UUID, HashSet<String>>();
-	private static final Logger filewriter = new Logger("config/SquidUtils", "permissions.txt", "Permissions:");
+	private static final Logger filewriter = new Logger("config/SquidUtils", "permissions.txt");
 	
 	public static void init() {
 		SquidAPI.commands.add(new CommandPermissions());

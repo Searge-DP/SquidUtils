@@ -18,9 +18,6 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraftforge.common.BiomeManager;
 import net.minecraftforge.common.BiomeManager.BiomeEntry;
 import net.minecraftforge.common.BiomeManager.BiomeType;
-import Reika.RotaryCraft.API.CompactorAPI;
-import Reika.RotaryCraft.API.GrinderAPI;
-import Reika.RotaryCraft.API.WorktableAPI;
 
 import com.github.coolsquid.squidapi.SquidAPI;
 import com.github.coolsquid.squidapi.block.BlockBasic;
@@ -32,11 +29,14 @@ import com.github.coolsquid.squidapi.helpers.RegistryHelper;
 import com.github.coolsquid.squidapi.item.ItemBasic;
 import com.github.coolsquid.squidapi.util.ContentRemover;
 import com.github.coolsquid.squidapi.util.ContentRemover.ContentType;
+import com.github.coolsquid.squidapi.util.StringParser;
 import com.github.coolsquid.squidapi.util.Utils;
 import com.github.coolsquid.squidutils.api.ScriptingAPI;
 import com.github.coolsquid.squidutils.command.CommandCustom;
 import com.github.coolsquid.squidutils.command.CommandInfo;
 import com.github.coolsquid.squidutils.command.CommandWeb;
+import com.github.coolsquid.squidutils.compat.RotaryCraftCompat;
+import com.github.coolsquid.squidutils.compat.ThermalExpansionCompat;
 import com.github.coolsquid.squidutils.handlers.DropHandler.Chance;
 import com.github.coolsquid.squidutils.handlers.DropHandler.Drop;
 import com.github.coolsquid.squidutils.util.script.EffectInfo;
@@ -66,20 +66,16 @@ public class ScriptHandler {
 	
 	public static boolean permissions;
 	
+	private static final ArrayList<String> list = FileHelper.readFile("config/SquidUtils", ("script.txt"));
+	
 	public static void init() {
-		ArrayList<String> list = FileHelper.readFile("config/SquidUtils", ("script.txt"));
 		for (int a = 0; a < list.size(); a++) {
 			String s = list.get(a);
 			if (!s.startsWith("#")) {
 				String[] s2 = s.split(" ");
 				String type = s2[0];
 				if (type.equals("block")) {
-					Block block = (Block) Block.blockRegistry.getObject(s2[2]);
-					if (s2[1].equals("hardness")) block.setHardness(Float.parseFloat(s2[3]));
-					else if (s2[1].equals("slipperiness")) block.slipperiness = Float.parseFloat(s2[3]);
-					else if (s2[1].equals("resistance")) block.setResistance(Float.parseFloat(s2[3]));
-					else if (s2[1].equals("texture")) block.setBlockTextureName(s2[3]);
-					else if (s2[1].equals("create")) {
+					if (s2[1].equals("create")) {
 						if (s2[2].equals("meteor")) {
 							MeteorType t;
 							if (s2[4].equals("STONE")) t = MeteorType.STONE;
@@ -100,48 +96,8 @@ public class ScriptHandler {
 							b.setCreativeTab(CreativeTabs.tabBlock).setBlockTextureName("SquidUtils:" + s2[3]);
 						}
 					}
-					else if (s2[1].equals("drop")) {
-						Block block2 = (Block) Block.blockRegistry.getObject(s2[3]);
-						if (s2[2].equals("remove")) {
-							HashSet<Item> drops;
-							if (DropHandler.dropstoremove.containsKey(block2)) {
-								drops = DropHandler.dropstoremove.get(block2);
-								for (int i = 4; i < s2.length; i++) {
-									drops.add((Item) Item.itemRegistry.getObject(s2[i]));
-								}
-							}
-							else {
-								drops = new HashSet<Item>();
-								for (int i = 4; i < s2.length; i++) {
-									drops.add((Item) Item.itemRegistry.getObject(s2[i]));
-								}
-								DropHandler.dropstoremove.put(block2, drops);
-							}
-						}
-						else if (s2[2].equals("add")) {
-							ArrayList<Drop> drops;
-							if (DropHandler.drops.containsKey(block2)) {
-								drops = DropHandler.drops.get(block2);
-								for (int i = 4; i < s2.length; i++) {
-									String[] s4 = s2[i].split(";");
-									drops.add(new Drop((Item) Item.itemRegistry.getObject(s4[0]), Integer.parseInt(s4[1]), Integer.parseInt(s4[2]), new Chance(Integer.parseInt(s4[3]), Integer.parseInt(s4[4]))));
-								}
-							}
-							else {
-								drops = new ArrayList<Drop>();
-								for (int i = 4; i < s2.length; i++) {
-									String[] s4 = s2[i].split(";");
-									drops.add(new Drop((Item) Item.itemRegistry.getObject(s4[0]), Integer.parseInt(s4[1]), Integer.parseInt(s4[2]), new Chance(Integer.parseInt(s4[3]), Integer.parseInt(s4[4]))));
-								}
-								DropHandler.drops.put(block2, drops);
-							}
-						}
-					}
 				}
 				else if (type.equals("item")) {
-					Item item = (Item) Item.itemRegistry.getObject(s2[2]);
-					if (s2[1].equals("stacksize")) item.setMaxStackSize(Integer.parseInt(s2[3]));
-					else if (s2[1].equals("maxdamage")) item.setMaxDamage(Integer.parseInt(s2[3]));
 					if (s2[1].equals("create")) {
 						if (s2[2].equals("food")) {
 							ItemFood food = new ItemFood(Integer.parseInt(s2[4]), Float.parseFloat(s2[5]), Boolean.parseBoolean(s2[6]));
@@ -187,30 +143,30 @@ public class ScriptHandler {
 					if (s2[1].equals("create")) {
 						ITab tab;
 						if (Block.blockRegistry.containsKey(s2[3])) {
-							tab = new ITab(s2[2], Item.getItemFromBlock((Block) Block.blockRegistry.getObject(s2[3])));
+							tab = new ITab(s2[2], Item.getItemFromBlock(StringParser.parseBlock(s2[3])));
 						}
 						else if (Item.itemRegistry.containsKey(s2[3])) {
-							tab = new ITab(s2[2], (Item) Item.itemRegistry.getObject(s2[3]));
+							tab = new ITab(s2[2], StringParser.parseItem(s2[3]));
 						}
 						else {
 							tab = null;
 						}
 						for (int b = 4; b < s2.length; b++) {
-							if (Block.blockRegistry.containsKey(s2[b])) ((Block) Block.blockRegistry.getObject(s2[b])).setCreativeTab(tab);
-							else if (Item.itemRegistry.containsKey(s2[b])) ((Item) Item.itemRegistry.getObject(s2[b])).setCreativeTab(tab);
+							if (Block.blockRegistry.containsKey(s2[b])) (StringParser.parseBlock(s2[b])).setCreativeTab(tab);
+							else if (Item.itemRegistry.containsKey(s2[b])) (StringParser.parseItem(s2[b])).setCreativeTab(tab);
 						}
 					}
 				}
 				else if (type.equals("recipe")) {
 					if (s2[1].equals("create")) {
 						if (s2[2].equals("explosive")) {
-							RegistryHelper.addExplosionRecipe(Item.itemRegistry.getObject(s2[3]), new ItemStack((Item) Item.itemRegistry.getObject(s2[4])), Float.parseFloat(s2[5]));
+							RegistryHelper.addExplosionRecipe(Item.itemRegistry.getObject(s2[3]), new ItemStack(StringParser.parseItem(s2[4])), Float.parseFloat(s2[5]));
 						}
 						else if (s2[2].equals("shapeless")) {
-							RegistryHelper.addShapelessRecipe(new ItemStack((Item) Item.itemRegistry.getObject(s2[4])), new Item[] {(Item) Item.itemRegistry.getObject(s2[3])});
+							RegistryHelper.addShapelessRecipe(new ItemStack(StringParser.parseItem(s2[4])), new Item[] {StringParser.parseItem(s2[3])});
 						}
 						else if (s2[2].equals("furnace")) {
-							RegistryHelper.addSmelting((Item) Item.itemRegistry.getObject(s2[3]), new ItemStack((Item) Item.itemRegistry.getObject(s2[4])));
+							RegistryHelper.addSmelting(StringParser.parseItem(s2[3]), new ItemStack(StringParser.parseItem(s2[4])));
 						}
 					}
 					else if (s2[1].equals("remove")) {
@@ -218,7 +174,7 @@ public class ScriptHandler {
 							CraftingManager.getInstance().getRecipeList().clear();
 						}
 						else if (s2[2].equals("specific")) {
-							ContentRemover.remove(s2[3], ContentType.CRAFTING);
+							ContentRemover.remove(s2[3], ContentType.RECIPE);
 						}
 					}
 				}
@@ -239,23 +195,6 @@ public class ScriptHandler {
 								if (entry.biome.biomeID == Integer.parseInt(s2[2])) {
 									BiomeHelper.removeBiome(entry.biome);
 								}
-							}
-						}
-					}
-				}
-				else if (type.equals("compat")) {
-					if (s2[1].equals("rotarycraft") && Loader.isModLoaded("RotaryCraft")) {
-						if (s2[2].equals("add")) {
-							if (s2[3].equals("grinding")) {
-								GrinderAPI.addRecipe(new ItemStack((Item) Item.itemRegistry.getObject(s2[4])), new ItemStack((Item) Item.itemRegistry.getObject(s2[5])));
-							}
-							else if (s2[3].equals("worktable")) {
-								if (s2[4].equals("shapeless")) {
-									WorktableAPI.addshapelessRecipe(new ItemStack((Item) Item.itemRegistry.getObject(s2[5])), new ItemStack((Item) Item.itemRegistry.getObject(s2[6])));
-								}
-							}
-							else if (s2[3].equals("compactor")) {
-								CompactorAPI.addCompactorRecipe(new ItemStack((Item) Item.itemRegistry.getObject(s2[4])), new ItemStack((Item) Item.itemRegistry.getObject(s2[5])), Integer.parseInt(s2[6]), Integer.parseInt(s2[7]));
 							}
 						}
 					}
@@ -302,7 +241,7 @@ public class ScriptHandler {
 							}
 							else if (arg.startsWith("item:")) {
 								String ss = arg.replace("item:", "");
-								if (!ss.equals("*")) item = (Item) Item.itemRegistry.getObject(ss);
+								if (!ss.equals("*")) item = StringParser.parseItem(ss);
 								info.setItem(item);
 							}
 							else if (arg.startsWith("minarmor:")) {
@@ -385,7 +324,7 @@ public class ScriptHandler {
 						info.setClearActiveEffects(true);
 					}
 					else if (action.equals("placeblock")) {
-						info.setBlocktoplace((Block) Block.blockRegistry.getObject(s2[e]));
+						info.setBlocktoplace(StringParser.parseBlock(s2[e]));
 					}
 					else if (action.equals("burn")) {
 						info.setFireamount(Integer.parseInt(s2[e]));
@@ -462,6 +401,89 @@ public class ScriptHandler {
 							}
 						}
 						ScriptingAPI.getTriggers().get(trigger).info().add(info);
+					}
+				}
+			}
+		}
+	}
+	
+	public static void postInit() {
+		for (int a = 0; a < list.size(); a++) {
+			String s = list.get(a);
+			if (!s.startsWith("#")) {
+				String[] s2 = s.split(" ");
+				String type = s2[0];
+				if (type.equals("block")) {
+					Block block = StringParser.parseBlock(s2[2]);
+					if (s2[1].equals("hardness")) block.setHardness(Float.parseFloat(s2[3]));
+					else if (s2[1].equals("slipperiness")) block.slipperiness = Float.parseFloat(s2[3]);
+					else if (s2[1].equals("resistance")) block.setResistance(Float.parseFloat(s2[3]));
+					else if (s2[1].equals("texture")) block.setBlockTextureName(s2[3]);
+					else if (s2[1].equals("drop")) {
+						Block block2 = StringParser.parseBlock(s2[3]);
+						if (s2[2].equals("remove")) {
+							HashSet<Item> drops;
+							if (DropHandler.dropstoremove.containsKey(block2)) {
+								drops = DropHandler.dropstoremove.get(block2);
+								for (int i = 4; i < s2.length; i++) {
+									drops.add(StringParser.parseItem(s2[i]));
+								}
+							}
+							else {
+								drops = new HashSet<Item>();
+								for (int i = 4; i < s2.length; i++) {
+									drops.add(StringParser.parseItem(s2[i]));
+								}
+								DropHandler.dropstoremove.put(block2, drops);
+							}
+						}
+						else if (s2[2].equals("add")) {
+							ArrayList<Drop> drops;
+							if (DropHandler.drops.containsKey(block2)) {
+								drops = DropHandler.drops.get(block2);
+								for (int i = 4; i < s2.length; i++) {
+									String[] s4 = s2[i].split(";");
+									drops.add(new Drop(StringParser.parseItem(s4[0]), Integer.parseInt(s4[1]), Integer.parseInt(s4[2]), new Chance(Integer.parseInt(s4[3]), Integer.parseInt(s4[4]))));
+								}
+							}
+							else {
+								drops = new ArrayList<Drop>();
+								for (int i = 4; i < s2.length; i++) {
+									String[] s4 = s2[i].split(";");
+									drops.add(new Drop(StringParser.parseItem(s4[0]), Integer.parseInt(s4[1]), Integer.parseInt(s4[2]), new Chance(Integer.parseInt(s4[3]), Integer.parseInt(s4[4]))));
+								}
+								DropHandler.drops.put(block2, drops);
+							}
+						}
+					}
+				}
+				else if (type.equals("item")) {
+					Item item = StringParser.parseItem(s2[2]);
+					if (s2[1].equals("stacksize")) item.setMaxStackSize(Integer.parseInt(s2[3]));
+					else if (s2[1].equals("maxdamage")) item.setMaxDamage(Integer.parseInt(s2[3]));
+				}
+				else if (type.equals("compat")) {
+					if (s2[1].equals("rotarycraft") && Loader.isModLoaded("RotaryCraft")) {
+						if (s2[2].equals("add")) {
+							if (s2[3].equals("grinding")) {
+								RotaryCraftCompat.addGrindingRecipe(new ItemStack(StringParser.parseItem(s2[4])), new ItemStack(StringParser.parseItem(s2[5])));
+							}
+							else if (s2[3].equals("worktable")) {
+								if (s2[4].equals("shapeless")) {
+									RotaryCraftCompat.addShapelessWorktableRecipe(new ItemStack(StringParser.parseItem(s2[5])), new ItemStack(StringParser.parseItem(s2[6])));
+								}
+							}
+							else if (s2[3].equals("compactor")) {
+								RotaryCraftCompat.addCompactorRecipe(new ItemStack(StringParser.parseItem(s2[4])), new ItemStack(StringParser.parseItem(s2[5])), Integer.parseInt(s2[6]), Integer.parseInt(s2[7]));
+							}
+						}
+					}
+					else if (s2[1].equals("thermalexpansion") && Loader.isModLoaded("ThermalExpansion")) {
+						if (s2[2].equals("add")) {
+							if (s2[3].equals("pulverizer")) {
+								ThermalExpansionCompat.addPulverizerRecipe(new ItemStack(StringParser.parseItem(s2[4])), new ItemStack(StringParser.parseItem(s2[5])), new ItemStack(StringParser.parseItem(s2[6])), Integer.parseInt(s2[7]), Integer.parseInt(s2[8]));
+							}
+						}
 					}
 				}
 			}

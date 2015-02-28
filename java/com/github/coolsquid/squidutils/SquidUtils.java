@@ -76,7 +76,7 @@ public class SquidUtils extends SquidAPIMod {
 	
 	@EventHandler
 	private void preInit(FMLPreInitializationEvent event) {
-		LogHelper.info("Preinitializing...");
+		LogHelper.info("Preinitializing.");
 		
 		new File("./config/SquidUtils").mkdirs();
 		ConfigHandler.preInit(new File("./config/SquidUtils/SquidUtils.cfg"));
@@ -99,7 +99,7 @@ public class SquidUtils extends SquidAPIMod {
 	
 	@EventHandler
 	private void init(FMLInitializationEvent event) {
-		LogHelper.info("Initializing...");
+		LogHelper.info("Initializing.");
 		
 		if (Utils.developmentEnvironment) {
 			LogHelper.info("Running in a dev environment.");
@@ -205,9 +205,6 @@ public class SquidUtils extends SquidAPIMod {
 		if (ConfigHandler.worldSize > 0) {
 			MinecraftForge.EVENT_BUS.register(new LivingUpdateHandler());
 		}
-		if (!DropHandler.shouldclear.isEmpty() || !DropHandler.dropstoremove.isEmpty() || !DropHandler.drops.isEmpty()) {
-			MinecraftForge.EVENT_BUS.register(new DropHandler());
-		}
 		if (ConfigHandler.explodeTNTMinecartsOnCollide) {
 			MinecraftForge.EVENT_BUS.register(new MinecartCollisionHandler());
 		}
@@ -227,7 +224,7 @@ public class SquidUtils extends SquidAPIMod {
 	
 	@EventHandler
 	private void postInit(FMLPostInitializationEvent event) {
-		LogHelper.info("Postinitializing...");
+		LogHelper.info("Postinitializing.");
 		
 		RegistrySearcher.start();
 		if (ConfigHandler.clearRecipes == 2) {
@@ -235,8 +232,15 @@ public class SquidUtils extends SquidAPIMod {
 				CraftingManager.getInstance().getRecipeList().clear();
 			}
 		}
+		
 		if (ConfigHandler.potionStacks > 1 || ConfigHandler.pearlStack > 1) {
 			StackSizeHandler.some(ConfigHandler.potionStacks, ConfigHandler.pearlStack);
+		}
+		
+		ScriptHandler.postInit();
+		
+		if (!DropHandler.shouldclear.isEmpty() || !DropHandler.dropstoremove.isEmpty() || !DropHandler.drops.isEmpty()) {
+			MinecraftForge.EVENT_BUS.register(new DropHandler());
 		}
 		
 		LogHelper.info("Postinitialization finished.");

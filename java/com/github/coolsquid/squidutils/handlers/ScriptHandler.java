@@ -30,7 +30,6 @@ import com.github.coolsquid.squidapi.item.ItemBasic;
 import com.github.coolsquid.squidapi.util.ContentRemover;
 import com.github.coolsquid.squidapi.util.ContentRemover.ContentType;
 import com.github.coolsquid.squidapi.util.StringParser;
-import com.github.coolsquid.squidapi.util.Utils;
 import com.github.coolsquid.squidutils.api.ScriptingAPI;
 import com.github.coolsquid.squidutils.command.CommandCustom;
 import com.github.coolsquid.squidutils.command.CommandInfo;
@@ -170,7 +169,7 @@ public class ScriptHandler {
 						}
 					}
 					else if (s2[1].equals("remove")) {
-						if (s2[2].equals("all") && !Utils.doNotClearRecipes()) {
+						if (s2[2].equals("all") && !ContentRemover.isBlacklistedModLoaded()) {
 							CraftingManager.getInstance().getRecipeList().clear();
 						}
 						else if (s2[2].equals("specific")) {
@@ -470,7 +469,7 @@ public class ScriptHandler {
 							}
 							else if (s2[3].equals("worktable")) {
 								if (s2[4].equals("shapeless")) {
-									RotaryCraftCompat.addShapelessWorktableRecipe(new ItemStack(StringParser.parseItem(s2[5])), new ItemStack(StringParser.parseItem(s2[6])));
+									RotaryCraftCompat.addWorktableRecipe(new ItemStack(StringParser.parseItem(s2[5])), new ItemStack(StringParser.parseItem(s2[6])));
 								}
 							}
 							else if (s2[3].equals("compactor")) {

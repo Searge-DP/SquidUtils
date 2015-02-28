@@ -12,6 +12,7 @@ import net.minecraftforge.common.MinecraftForge;
 
 import com.github.coolsquid.squidapi.SquidAPIMod;
 import com.github.coolsquid.squidapi.exception.InvalidConfigValueException;
+import com.github.coolsquid.squidapi.util.ContentRemover;
 import com.github.coolsquid.squidapi.util.Utils;
 import com.github.coolsquid.squidutils.compat.AppleCoreCompat;
 import com.github.coolsquid.squidutils.config.ConfigHandler;
@@ -59,6 +60,7 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLInterModComms;
+import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
@@ -227,11 +229,6 @@ public class SquidUtils extends SquidAPIMod {
 		LogHelper.info("Postinitializing.");
 		
 		RegistrySearcher.start();
-		if (ConfigHandler.clearRecipes == 2) {
-			if (!Utils.doNotClearRecipes()) {
-				CraftingManager.getInstance().getRecipeList().clear();
-			}
-		}
 		
 		if (ConfigHandler.potionStacks > 1 || ConfigHandler.pearlStack > 1) {
 			StackSizeHandler.some(ConfigHandler.potionStacks, ConfigHandler.pearlStack);
@@ -244,5 +241,14 @@ public class SquidUtils extends SquidAPIMod {
 		}
 		
 		LogHelper.info("Postinitialization finished.");
+	}
+	
+	@EventHandler
+	private void finishedLoading(FMLLoadCompleteEvent event) {
+		if (ConfigHandler.clearRecipes == 2) {
+			if (!ContentRemover.isBlacklistedModLoaded()) {
+				CraftingManager.getInstance().getRecipeList().clear();
+			}
+		}
 	}
 }

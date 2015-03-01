@@ -26,9 +26,4 @@ public class CommandCustom extends CommandBase {
 	public List<?> addTabCompletionOptions(ICommandSender sender, String[] args) {
 		return ServerHelper.getAllDisplayNames();
 	}
-
-	@Override
-	public void processCommand(ICommandSender p_71515_1_, String[] p_71515_2_) {
-		
-	}
 }

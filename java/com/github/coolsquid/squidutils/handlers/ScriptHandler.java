@@ -15,13 +15,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
-import net.minecraftforge.common.BiomeManager;
-import net.minecraftforge.common.BiomeManager.BiomeEntry;
-import net.minecraftforge.common.BiomeManager.BiomeType;
+import net.minecraft.world.biome.BiomeGenBase;
 
 import com.github.coolsquid.squidapi.SquidAPI;
 import com.github.coolsquid.squidapi.block.BlockBasic;
-import com.github.coolsquid.squidapi.command.CommandBase;
 import com.github.coolsquid.squidapi.creativetab.ITab;
 import com.github.coolsquid.squidapi.helpers.BiomeHelper;
 import com.github.coolsquid.squidapi.helpers.FileHelper;
@@ -129,10 +126,6 @@ public class ScriptHandler {
 							SquidAPI.commands.add(command);
 						}
 						else if (s2[2].equals("basic")) {
-							CommandBase command = new CommandBase(s2[3], s2[4].replace("_", " "), Boolean.parseBoolean(s2[5]));
-							SquidAPI.commands.add(command);
-						}
-						else if (s2[2].equals("user")) {
 							CommandCustom command = new CommandCustom(s2[3], s2[4].replace("_", " "), Boolean.parseBoolean(s2[5]));
 							SquidAPI.commands.add(command);
 						}
@@ -189,13 +182,37 @@ public class ScriptHandler {
 				}
 				else if (type.equals("biome")) {
 					if (s2[1].equals("remove")) {
-						for (BiomeType b: BiomeType.values()) {
-							for (BiomeEntry entry: BiomeManager.getBiomes(b)) {
-								if (entry.biome.biomeID == Integer.parseInt(s2[2])) {
-									BiomeHelper.removeBiome(entry.biome);
-								}
-							}
-						}
+						BiomeHelper.removeBiome(BiomeGenBase.getBiome(Integer.parseInt(s2[2])));
+					}
+				}
+				else if (type.equals("fish")) {
+					if (s2[1].equals("remove")) {
+						ContentRemover.remove(s2[2], ContentType.FISH);
+					}
+				}
+				else if (type.equals("junk")) {
+					if (s2[1].equals("remove")) {
+						ContentRemover.remove(s2[2], ContentType.JUNK);
+					}
+				}
+				else if (type.equals("treasure")) {
+					if (s2[1].equals("remove")) {
+						ContentRemover.remove(s2[2], ContentType.TREASURE);
+					}
+				}
+				else if (type.equals("dungeonmob")) {
+					if (s2[1].equals("remove")) {
+						ContentRemover.remove(s2[2], ContentType.DUNGEONMOB);
+					}
+				}
+				else if (type.equals("chestgen")) {
+					if (s2[1].equals("remove")) {
+						ContentRemover.remove(s2[2], ContentType.CHESTGEN);
+					}
+				}
+				else if (type.equals("villager")) {
+					if (s2[1].equals("remove")) {
+						ContentRemover.remove(s2[2], ContentType.PROFESSION);
 					}
 				}
 				else if (type.equals("on")) {

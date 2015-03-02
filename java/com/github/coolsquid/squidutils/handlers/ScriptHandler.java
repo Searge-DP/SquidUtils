@@ -6,18 +6,28 @@ package com.github.coolsquid.squidutils.handlers;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockGlass;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.BiomeGenBase.Height;
+import net.minecraft.world.biome.BiomeGenBase.SpawnListEntry;
+import net.minecraftforge.common.BiomeManager;
+import net.minecraftforge.common.BiomeManager.BiomeEntry;
+import net.minecraftforge.common.BiomeManager.BiomeType;
 
 import com.github.coolsquid.squidapi.SquidAPI;
+import com.github.coolsquid.squidapi.biome.BiomeBase;
 import com.github.coolsquid.squidapi.block.BlockBasic;
 import com.github.coolsquid.squidapi.creativetab.ITab;
 import com.github.coolsquid.squidapi.helpers.BiomeHelper;
@@ -64,6 +74,7 @@ public class ScriptHandler {
 	
 	private static final ArrayList<String> list = FileHelper.readFile("config/SquidUtils", ("script.txt"));
 	
+	@SuppressWarnings("unchecked")
 	public static void init() {
 		for (int a = 0; a < list.size(); a++) {
 			String s = list.get(a);
@@ -183,6 +194,51 @@ public class ScriptHandler {
 				else if (type.equals("biome")) {
 					if (s2[1].equals("remove")) {
 						BiomeHelper.removeBiome(BiomeGenBase.getBiome(Integer.parseInt(s2[2])));
+					}
+					else if (s2[1].equals("create")) {
+						BiomeBase biome = new BiomeBase();
+						biome.setBiomeName(s2[2]);
+						biome.topBlock = Block.getBlockFromName(s2[3]);
+						biome.fillerBlock = Block.getBlockFromName(s2[4]);
+						BiomeManager.addBiome(BiomeType.getType(s2[5]), new BiomeEntry(biome, Integer.parseInt(s2[6])));
+					}
+					else if (s2[1].equals("topblock")) {
+						BiomeGenBase.getBiome(Integer.parseInt(s2[2])).topBlock = Block.getBlockFromName(s2[3]);
+					}
+					else if (s2[1].equals("fillerblock")) {
+						BiomeGenBase.getBiome(Integer.parseInt(s2[2])).fillerBlock = Block.getBlockFromName(s2[3]);
+					}
+					else if (s2[1].equals("disablerain")) {
+						BiomeGenBase.getBiome(Integer.parseInt(s2[2])).setDisableRain();
+					}
+					else if (s2[1].equals("enablesnow")) {
+						BiomeGenBase.getBiome(Integer.parseInt(s2[2])).setEnableSnow();
+					}
+					else if (s2[1].equals("height")) {
+						BiomeGenBase.getBiome(Integer.parseInt(s2[2])).setHeight(new Height(Float.parseFloat(s2[3]), Float.parseFloat(s2[4])));
+					}
+					else if (s2[1].equals("addflower")) {
+						int weight = Integer.parseInt(s2[4]);
+						int metadata = 0;
+						if (s2.length == 6) {
+							metadata = Integer.parseInt(s2[5]);
+						}
+						BiomeGenBase.getBiome(Integer.parseInt(s2[2])).addFlower(Block.getBlockFromName(s2[3]), metadata, weight);
+					}
+					//TODO
+					else if (s2[1].equals("addmob")) {
+						BiomeGenBase.getBiome(Integer.parseInt(s2[2])).getSpawnableList(EnumCreatureType.valueOf(s2[3])).add(EntityList.stringToClassMapping.get(s2[4]));
+					}
+					//TODO
+					else if (s2[1].equals("removemob")) {
+						List<SpawnListEntry> list = BiomeGenBase.getBiome(Integer.parseInt(s2[2])).getSpawnableList(EnumCreatureType.valueOf(s2[3]));
+						Class<Entity> entityclass = (Class<Entity>) EntityList.stringToClassMapping.get(s2[4]);
+						for (SpawnListEntry entry: list) {
+							if (entry.entityClass == entityclass) {
+								list.remove(entry);
+								return;
+							}
+						}
 					}
 				}
 				else if (type.equals("fish")) {

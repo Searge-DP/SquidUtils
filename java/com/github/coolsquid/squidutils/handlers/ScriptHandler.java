@@ -6,25 +6,24 @@ package com.github.coolsquid.squidutils.handlers;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockGlass;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.BiomeGenBase.Height;
-import net.minecraft.world.biome.BiomeGenBase.SpawnListEntry;
 import net.minecraftforge.common.BiomeManager;
 import net.minecraftforge.common.BiomeManager.BiomeEntry;
 import net.minecraftforge.common.BiomeManager.BiomeType;
+import net.minecraftforge.common.ChestGenHooks;
+import net.minecraftforge.common.DungeonHooks;
 
 import com.github.coolsquid.squidapi.SquidAPI;
 import com.github.coolsquid.squidapi.biome.BiomeBase;
@@ -32,6 +31,7 @@ import com.github.coolsquid.squidapi.block.BlockBasic;
 import com.github.coolsquid.squidapi.creativetab.ITab;
 import com.github.coolsquid.squidapi.helpers.BiomeHelper;
 import com.github.coolsquid.squidapi.helpers.FileHelper;
+import com.github.coolsquid.squidapi.helpers.FishingHelper;
 import com.github.coolsquid.squidapi.helpers.RegistryHelper;
 import com.github.coolsquid.squidapi.item.ItemBasic;
 import com.github.coolsquid.squidapi.util.ContentRemover;
@@ -41,6 +41,7 @@ import com.github.coolsquid.squidutils.api.ScriptingAPI;
 import com.github.coolsquid.squidutils.command.CommandCustom;
 import com.github.coolsquid.squidutils.command.CommandInfo;
 import com.github.coolsquid.squidutils.command.CommandWeb;
+import com.github.coolsquid.squidutils.compat.BotaniaCompat;
 import com.github.coolsquid.squidutils.compat.RotaryCraftCompat;
 import com.github.coolsquid.squidutils.compat.ThermalExpansionCompat;
 import com.github.coolsquid.squidutils.handlers.DropHandler.Chance;
@@ -51,7 +52,7 @@ import com.github.coolsquid.starstones.block.BlockMeteorBase;
 import com.github.coolsquid.starstones.block.MeteorType;
 import com.github.coolsquid.starstones.creativetab.ModCreativeTabs;
 
-import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.registry.VillagerRegistry;
 
 public class ScriptHandler {
 	
@@ -74,7 +75,6 @@ public class ScriptHandler {
 	
 	private static final ArrayList<String> list = FileHelper.readFile("config/SquidUtils", ("script.txt"));
 	
-	@SuppressWarnings("unchecked")
 	public static void init() {
 		for (int a = 0; a < list.size(); a++) {
 			String s = list.get(a);
@@ -225,50 +225,58 @@ public class ScriptHandler {
 						}
 						BiomeGenBase.getBiome(Integer.parseInt(s2[2])).addFlower(Block.getBlockFromName(s2[3]), metadata, weight);
 					}
-					//TODO
-					else if (s2[1].equals("addmob")) {
-						BiomeGenBase.getBiome(Integer.parseInt(s2[2])).getSpawnableList(EnumCreatureType.valueOf(s2[3])).add(EntityList.stringToClassMapping.get(s2[4]));
-					}
-					//TODO
-					else if (s2[1].equals("removemob")) {
-						List<SpawnListEntry> list = BiomeGenBase.getBiome(Integer.parseInt(s2[2])).getSpawnableList(EnumCreatureType.valueOf(s2[3]));
-						Class<Entity> entityclass = (Class<Entity>) EntityList.stringToClassMapping.get(s2[4]);
-						for (SpawnListEntry entry: list) {
-							if (entry.entityClass == entityclass) {
-								list.remove(entry);
-								return;
-							}
-						}
-					}
 				}
 				else if (type.equals("fish")) {
 					if (s2[1].equals("remove")) {
 						ContentRemover.remove(s2[2], ContentType.FISH);
+					}
+					else if (s2[1].equals("add")) {
+						FishingHelper.addFish(StringParser.parseItemStack(s2[2]), Integer.parseInt(s2[3]));
 					}
 				}
 				else if (type.equals("junk")) {
 					if (s2[1].equals("remove")) {
 						ContentRemover.remove(s2[2], ContentType.JUNK);
 					}
+					else if (s2[1].equals("add")) {
+						FishingHelper.addJunk(StringParser.parseItemStack(s2[2]), Integer.parseInt(s2[3]));
+					}
 				}
 				else if (type.equals("treasure")) {
 					if (s2[1].equals("remove")) {
 						ContentRemover.remove(s2[2], ContentType.TREASURE);
+					}
+					else if (s2[1].equals("add")) {
+						FishingHelper.addTreasure(StringParser.parseItemStack(s2[2]), Integer.parseInt(s2[3]));
 					}
 				}
 				else if (type.equals("dungeonmob")) {
 					if (s2[1].equals("remove")) {
 						ContentRemover.remove(s2[2], ContentType.DUNGEONMOB);
 					}
+					else if (s2[1].equals("add")) {
+						DungeonHooks.addDungeonMob(s2[2], Integer.parseInt(s2[3]));
+					}
 				}
 				else if (type.equals("chestgen")) {
 					if (s2[1].equals("remove")) {
-						ContentRemover.remove(s2[2], ContentType.CHESTGEN);
+						StringBuilder builder = new StringBuilder();
+						builder.append(s2[2]).append(";").append(s2[3]);
+						ContentRemover.remove(builder.toString(), ContentType.CHESTGEN);
+					}
+					else if (s2[1].equals("add")) {
+						ChestGenHooks.addItem(s2[2], new WeightedRandomChestContent(StringParser.parseItemStack(s2[3]), Integer.parseInt(s2[4]), Integer.parseInt(s2[5]), Integer.parseInt(s2[6])));
 					}
 				}
 				else if (type.equals("villager")) {
 					if (s2[1].equals("remove")) {
 						ContentRemover.remove(s2[2], ContentType.PROFESSION);
+					}
+					else if (s2[1].equals("add")) {
+						StringBuilder builder = new StringBuilder();
+						builder.append("textures/entity/villager/").append(s2[3]).append(".png");
+						VillagerRegistry.instance().registerVillagerId(Integer.parseInt(s2[2]));
+						VillagerRegistry.instance().registerVillagerSkin(Integer.parseInt(s2[2]), new ResourceLocation("SquidUtils", builder.toString()));
 					}
 				}
 				else if (type.equals("on")) {
@@ -535,25 +543,32 @@ public class ScriptHandler {
 					else if (s2[1].equals("maxdamage")) item.setMaxDamage(Integer.parseInt(s2[3]));
 				}
 				else if (type.equals("compat")) {
-					if (s2[1].equals("rotarycraft") && Loader.isModLoaded("RotaryCraft")) {
+					if (s2[1].equals("rotarycraft")) {
 						if (s2[2].equals("add")) {
 							if (s2[3].equals("grinding")) {
 								RotaryCraftCompat.addGrindingRecipe(new ItemStack(StringParser.parseItem(s2[4])), new ItemStack(StringParser.parseItem(s2[5])));
 							}
 							else if (s2[3].equals("worktable")) {
 								if (s2[4].equals("shapeless")) {
-									RotaryCraftCompat.addWorktableRecipe(new ItemStack(StringParser.parseItem(s2[5])), new ItemStack(StringParser.parseItem(s2[6])));
+									RotaryCraftCompat.addWorktableRecipe(new ItemStack(StringParser.parseItem(s2[5])), StringParser.parseItemStack(s2[6]));
 								}
 							}
 							else if (s2[3].equals("compactor")) {
-								RotaryCraftCompat.addCompactorRecipe(new ItemStack(StringParser.parseItem(s2[4])), new ItemStack(StringParser.parseItem(s2[5])), Integer.parseInt(s2[6]), Integer.parseInt(s2[7]));
+								RotaryCraftCompat.addCompactorRecipe(new ItemStack(StringParser.parseItem(s2[4])), StringParser.parseItemStack(s2[5]), Integer.parseInt(s2[6]), Integer.parseInt(s2[7]));
 							}
 						}
 					}
-					else if (s2[1].equals("thermalexpansion") && Loader.isModLoaded("ThermalExpansion")) {
+					else if (s2[1].equals("thermalexpansion")) {
 						if (s2[2].equals("add")) {
 							if (s2[3].equals("pulverizer")) {
 								ThermalExpansionCompat.addPulverizerRecipe(StringParser.parseItemStack(s2[4]), StringParser.parseItemStack(s2[5]), StringParser.parseItemStack(s2[6]), Integer.parseInt(s2[7]), Integer.parseInt(s2[8]));
+							}
+						}
+					}
+					else if (s2[1].equals("botania")) {
+						if (s2[2].equals("add")) {
+							if (s2[3].equals("manainfusion")) {
+								BotaniaCompat.registerManaInfusionRecipe(StringParser.parseItemStack(s2[5]), StringParser.parseInput(s2[4]), Integer.parseInt(s2[6]));
 							}
 						}
 					}

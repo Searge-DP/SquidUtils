@@ -4,6 +4,7 @@
  *******************************************************************************/
 package com.github.coolsquid.squidutils.util;
 
+import com.github.coolsquid.squidapi.logging.ILogger;
 import com.github.coolsquid.squidapi.logging.Logger;
 import com.github.coolsquid.squidutils.config.ConfigHandler;
 import com.github.coolsquid.squidutils.helpers.LogHelper;
@@ -12,7 +13,7 @@ import cpw.mods.fml.common.Loader;
 
 public class ModLister {
 	
-	private static final Logger logger = new Logger("", "modlist.txt");
+	private static final ILogger logger = new Logger("", "modlist.txt");
 	
 	public static final void init() {
 		if (ConfigHandler.generateModList == 0) {

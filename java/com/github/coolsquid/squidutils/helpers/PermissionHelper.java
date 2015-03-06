@@ -4,9 +4,9 @@
  *******************************************************************************/
 package com.github.coolsquid.squidutils.helpers;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.UUID;
 
@@ -14,6 +14,7 @@ import net.minecraftforge.event.world.WorldEvent.Save;
 
 import com.github.coolsquid.squidapi.SquidAPI;
 import com.github.coolsquid.squidapi.helpers.FileHelper;
+import com.github.coolsquid.squidapi.logging.ILogger;
 import com.github.coolsquid.squidapi.logging.Logger;
 import com.github.coolsquid.squidutils.command.CommandPermissions;
 
@@ -22,11 +23,11 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 public class PermissionHelper {
 	
 	private static final HashMap<UUID, HashSet<String>> permissions = new HashMap<UUID, HashSet<String>>();
-	private static final Logger filewriter = new Logger("config/SquidUtils", "permissions.txt");
+	private static final ILogger filewriter = new Logger("config/SquidUtils", "permissions.txt");
 	
 	public static void init() {
 		SquidAPI.commands.add(new CommandPermissions());
-		ArrayList<String> permissions = FileHelper.readFile("config/SquidUtils", "permissions.txt");
+		List<String> permissions = FileHelper.readFile("config/SquidUtils", "permissions.txt");
 		for (String a: permissions) {
 			HashSet<String> set = new HashSet<String>();
 			String[] s = a.split(" ");

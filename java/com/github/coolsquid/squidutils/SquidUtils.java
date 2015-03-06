@@ -7,9 +7,9 @@ package com.github.coolsquid.squidutils;
 import java.io.File;
 
 import net.minecraft.item.crafting.CraftingManager;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
 
+import com.github.coolsquid.squidapi.SquidAPI;
 import com.github.coolsquid.squidapi.SquidAPIMod;
 import com.github.coolsquid.squidapi.exception.InvalidConfigValueException;
 import com.github.coolsquid.squidapi.util.ContentRemover;
@@ -59,7 +59,6 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -103,12 +102,18 @@ public class SquidUtils extends SquidAPIMod {
 	private void init(FMLInitializationEvent event) {
 		LogHelper.info("Initializing.");
 		
-		if (Utils.developmentEnvironment) {
+		if (Utils.developmentEnvironment()) {
 			LogHelper.info("Running in a dev environment.");
 			ConfigHandler.debug = true;
 		}
 		
-		ScriptHandler.init();
+		try {
+			ScriptHandler.init();
+		} catch (Exception e) {
+			e.printStackTrace();
+			SquidAPI.logger.log(e.getStackTrace());
+			SquidAPI.messages.add(Utils.newString(e.getClass().getName(), ". See SquidAPI.log for more information."));
+		}
 
 		if (Utils.isClient()) {
 			MinecraftForge.EVENT_BUS.register(new DifficultyHandler());
@@ -211,10 +216,7 @@ public class SquidUtils extends SquidAPIMod {
 			MinecraftForge.EVENT_BUS.register(new MinecartCollisionHandler());
 		}
 		
-		NBTTagCompound nbttag = new NBTTagCompound();
-		nbttag.setString("curseProjectName", "226025-squidutils");
-		nbttag.setString("curseFilenameParser", ModInfo.modid + "-[].jar");
-		FMLInterModComms.sendRuntimeMessage(ModInfo.modid, "VersionChecker", "addCurseCheck", nbttag);
+		Utils.runVersionCheckerCompat("226025");
 		
 		LogHelper.info("Initialization finished.");
 	}
@@ -234,7 +236,13 @@ public class SquidUtils extends SquidAPIMod {
 			StackSizeHandler.some(ConfigHandler.potionStacks, ConfigHandler.pearlStack);
 		}
 		
-		ScriptHandler.postInit();
+		try {
+			ScriptHandler.postInit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			SquidAPI.logger.log(e.getStackTrace());
+			SquidAPI.messages.add(e.getClass().getName());
+		}
 		
 		if (!DropHandler.shouldclear.isEmpty() || !DropHandler.dropstoremove.isEmpty() || !DropHandler.drops.isEmpty()) {
 			MinecraftForge.EVENT_BUS.register(new DropHandler());

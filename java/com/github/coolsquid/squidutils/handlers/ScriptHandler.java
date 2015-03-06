@@ -4,8 +4,14 @@
  *******************************************************************************/
 package com.github.coolsquid.squidutils.handlers;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockGlass;
@@ -26,8 +32,11 @@ import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.DungeonHooks;
 
 import com.github.coolsquid.squidapi.SquidAPI;
-import com.github.coolsquid.squidapi.biome.BiomeBase;
 import com.github.coolsquid.squidapi.block.BlockBasic;
+import com.github.coolsquid.squidapi.compat.BotaniaCompat;
+import com.github.coolsquid.squidapi.compat.Compat;
+import com.github.coolsquid.squidapi.compat.RotaryCraftCompat;
+import com.github.coolsquid.squidapi.compat.ThermalExpansionCompat;
 import com.github.coolsquid.squidapi.creativetab.ITab;
 import com.github.coolsquid.squidapi.helpers.BiomeHelper;
 import com.github.coolsquid.squidapi.helpers.FileHelper;
@@ -36,16 +45,16 @@ import com.github.coolsquid.squidapi.helpers.RegistryHelper;
 import com.github.coolsquid.squidapi.item.ItemBasic;
 import com.github.coolsquid.squidapi.util.ContentRemover;
 import com.github.coolsquid.squidapi.util.ContentRemover.ContentType;
+import com.github.coolsquid.squidapi.util.Integers;
 import com.github.coolsquid.squidapi.util.StringParser;
+import com.github.coolsquid.squidapi.world.biome.BiomeBase;
 import com.github.coolsquid.squidutils.api.ScriptingAPI;
 import com.github.coolsquid.squidutils.command.CommandCustom;
 import com.github.coolsquid.squidutils.command.CommandInfo;
 import com.github.coolsquid.squidutils.command.CommandWeb;
-import com.github.coolsquid.squidutils.compat.BotaniaCompat;
-import com.github.coolsquid.squidutils.compat.RotaryCraftCompat;
-import com.github.coolsquid.squidutils.compat.ThermalExpansionCompat;
 import com.github.coolsquid.squidutils.handlers.DropHandler.Chance;
 import com.github.coolsquid.squidutils.handlers.DropHandler.Drop;
+import com.github.coolsquid.squidutils.helpers.LogHelper;
 import com.github.coolsquid.squidutils.util.script.EffectInfo;
 import com.github.coolsquid.squidutils.util.script.EventInfo;
 import com.github.coolsquid.starstones.block.BlockMeteorBase;
@@ -73,11 +82,38 @@ public class ScriptHandler {
 	
 	public static boolean permissions;
 	
-	private static final ArrayList<String> list = FileHelper.readFile("config/SquidUtils", ("script.txt"));
+	private static List<String> list;
 	
-	public static void init() {
-		for (int a = 0; a < list.size(); a++) {
-			String s = list.get(a);
+	private static List<String> getScripts() {
+		if (list == null) {
+			list = new ArrayList<String>();
+			for (File file: FileHelper.getFilesInDir("./config/SquidUtils")) {
+				if (!file.getName().endsWith(".script")) {
+					continue;
+				}
+				LogHelper.info("Found scripting file!");
+				LogHelper.info(file.getName());
+				try {
+					BufferedReader r = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+					while (true) {
+						String s = r.readLine();
+						if (s == null) {
+							break;
+						}
+						list.add(s);
+					}
+					r.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return list;
+	}
+	
+	public static void init() throws Exception {
+		for (int a = 0; a < getScripts().size(); a++) {
+			String s = getScripts().get(a);
 			if (!s.startsWith("#")) {
 				String[] s2 = s.split(" ");
 				String type = s2[0];
@@ -107,12 +143,12 @@ public class ScriptHandler {
 				else if (type.equals("item")) {
 					if (s2[1].equals("create")) {
 						if (s2[2].equals("food")) {
-							ItemFood food = new ItemFood(Integer.parseInt(s2[4]), Float.parseFloat(s2[5]), Boolean.parseBoolean(s2[6]));
+							ItemFood food = new ItemFood(Integers.parseInt(s2[4]), Float.parseFloat(s2[5]), Boolean.parseBoolean(s2[6]));
 							if (Boolean.parseBoolean(s2[7])) {
 								food.setAlwaysEdible();
 							}
 							if (s2.length > 8) {
-								food.setPotionEffect(Integer.parseInt(s2[8]), Integer.parseInt(s2[9]), Integer.parseInt(s2[10]), Float.parseFloat(s2[11]));
+								food.setPotionEffect(Integers.parseInt(s2[8]), Integers.parseInt(s2[9]), Integers.parseInt(s2[10]), Float.parseFloat(s2[11]));
 							}
 							RegistryHelper.registerItem(food, s2[4]);
 						}
@@ -193,37 +229,36 @@ public class ScriptHandler {
 				}
 				else if (type.equals("biome")) {
 					if (s2[1].equals("remove")) {
-						BiomeHelper.removeBiome(BiomeGenBase.getBiome(Integer.parseInt(s2[2])));
+						BiomeHelper.removeBiome(BiomeGenBase.getBiome(Integers.parseInt(s2[2])));
 					}
 					else if (s2[1].equals("create")) {
-						BiomeBase biome = new BiomeBase();
-						biome.setBiomeName(s2[2]);
+						BiomeBase biome = new BiomeBase(s2[2]);
 						biome.topBlock = Block.getBlockFromName(s2[3]);
 						biome.fillerBlock = Block.getBlockFromName(s2[4]);
-						BiomeManager.addBiome(BiomeType.getType(s2[5]), new BiomeEntry(biome, Integer.parseInt(s2[6])));
+						BiomeManager.addBiome(BiomeType.getType(s2[5]), new BiomeEntry(biome, Integers.parseInt(s2[6])));
 					}
 					else if (s2[1].equals("topblock")) {
-						BiomeGenBase.getBiome(Integer.parseInt(s2[2])).topBlock = Block.getBlockFromName(s2[3]);
+						BiomeGenBase.getBiome(Integers.parseInt(s2[2])).topBlock = Block.getBlockFromName(s2[3]);
 					}
 					else if (s2[1].equals("fillerblock")) {
-						BiomeGenBase.getBiome(Integer.parseInt(s2[2])).fillerBlock = Block.getBlockFromName(s2[3]);
+						BiomeGenBase.getBiome(Integers.parseInt(s2[2])).fillerBlock = Block.getBlockFromName(s2[3]);
 					}
 					else if (s2[1].equals("disablerain")) {
-						BiomeGenBase.getBiome(Integer.parseInt(s2[2])).setDisableRain();
+						BiomeGenBase.getBiome(Integers.parseInt(s2[2])).setDisableRain();
 					}
 					else if (s2[1].equals("enablesnow")) {
-						BiomeGenBase.getBiome(Integer.parseInt(s2[2])).setEnableSnow();
+						BiomeGenBase.getBiome(Integers.parseInt(s2[2])).setEnableSnow();
 					}
 					else if (s2[1].equals("height")) {
-						BiomeGenBase.getBiome(Integer.parseInt(s2[2])).setHeight(new Height(Float.parseFloat(s2[3]), Float.parseFloat(s2[4])));
+						BiomeGenBase.getBiome(Integers.parseInt(s2[2])).setHeight(new Height(Float.parseFloat(s2[3]), Float.parseFloat(s2[4])));
 					}
 					else if (s2[1].equals("addflower")) {
-						int weight = Integer.parseInt(s2[4]);
+						int weight = Integers.parseInt(s2[4]);
 						int metadata = 0;
 						if (s2.length == 6) {
-							metadata = Integer.parseInt(s2[5]);
+							metadata = Integers.parseInt(s2[5]);
 						}
-						BiomeGenBase.getBiome(Integer.parseInt(s2[2])).addFlower(Block.getBlockFromName(s2[3]), metadata, weight);
+						BiomeGenBase.getBiome(Integers.parseInt(s2[2])).addFlower(Block.getBlockFromName(s2[3]), metadata, weight);
 					}
 				}
 				else if (type.equals("fish")) {
@@ -231,7 +266,7 @@ public class ScriptHandler {
 						ContentRemover.remove(s2[2], ContentType.FISH);
 					}
 					else if (s2[1].equals("add")) {
-						FishingHelper.addFish(StringParser.parseItemStack(s2[2]), Integer.parseInt(s2[3]));
+						FishingHelper.addFish(StringParser.parseItemStack(s2[2]), Integers.parseInt(s2[3]));
 					}
 				}
 				else if (type.equals("junk")) {
@@ -239,7 +274,7 @@ public class ScriptHandler {
 						ContentRemover.remove(s2[2], ContentType.JUNK);
 					}
 					else if (s2[1].equals("add")) {
-						FishingHelper.addJunk(StringParser.parseItemStack(s2[2]), Integer.parseInt(s2[3]));
+						FishingHelper.addJunk(StringParser.parseItemStack(s2[2]), Integers.parseInt(s2[3]));
 					}
 				}
 				else if (type.equals("treasure")) {
@@ -247,7 +282,7 @@ public class ScriptHandler {
 						ContentRemover.remove(s2[2], ContentType.TREASURE);
 					}
 					else if (s2[1].equals("add")) {
-						FishingHelper.addTreasure(StringParser.parseItemStack(s2[2]), Integer.parseInt(s2[3]));
+						FishingHelper.addTreasure(StringParser.parseItemStack(s2[2]), Integers.parseInt(s2[3]));
 					}
 				}
 				else if (type.equals("dungeonmob")) {
@@ -255,7 +290,7 @@ public class ScriptHandler {
 						ContentRemover.remove(s2[2], ContentType.DUNGEONMOB);
 					}
 					else if (s2[1].equals("add")) {
-						DungeonHooks.addDungeonMob(s2[2], Integer.parseInt(s2[3]));
+						DungeonHooks.addDungeonMob(s2[2], Integers.parseInt(s2[3]));
 					}
 				}
 				else if (type.equals("chestgen")) {
@@ -265,7 +300,7 @@ public class ScriptHandler {
 						ContentRemover.remove(builder.toString(), ContentType.CHESTGEN);
 					}
 					else if (s2[1].equals("add")) {
-						ChestGenHooks.addItem(s2[2], new WeightedRandomChestContent(StringParser.parseItemStack(s2[3]), Integer.parseInt(s2[4]), Integer.parseInt(s2[5]), Integer.parseInt(s2[6])));
+						ChestGenHooks.addItem(s2[2], new WeightedRandomChestContent(StringParser.parseItemStack(s2[3]), Integers.parseInt(s2[4]), Integers.parseInt(s2[5]), Integers.parseInt(s2[6])));
 					}
 				}
 				else if (type.equals("villager")) {
@@ -275,8 +310,15 @@ public class ScriptHandler {
 					else if (s2[1].equals("add")) {
 						StringBuilder builder = new StringBuilder();
 						builder.append("textures/entity/villager/").append(s2[3]).append(".png");
-						VillagerRegistry.instance().registerVillagerId(Integer.parseInt(s2[2]));
-						VillagerRegistry.instance().registerVillagerSkin(Integer.parseInt(s2[2]), new ResourceLocation("SquidUtils", builder.toString()));
+						VillagerRegistry.instance().registerVillagerId(Integers.parseInt(s2[2]));
+						VillagerRegistry.instance().registerVillagerSkin(Integers.parseInt(s2[2]), new ResourceLocation("SquidUtils", builder.toString()));
+					}
+				}
+				else if (type.equals("village")) {
+					if (s2[1].equals("part")) {
+						if (s2[2].equals("remove")) {
+							
+						}
 					}
 				}
 				else if (type.equals("on")) {
@@ -326,11 +368,11 @@ public class ScriptHandler {
 							}
 							else if (arg.startsWith("minarmor:")) {
 								String ss = arg.replace("minarmor:", "");
-								if (!ss.equals("*")) info.setMinarmor(Integer.parseInt(ss));
+								if (!ss.equals("*")) info.setMinarmor(Integers.parseInt(ss));
 							}
 							else if (arg.startsWith("maxarmor:")) {
 								String ss = arg.replace("maxarmor:", "");
-								if (!ss.equals("*")) info.setMaxarmor(Integer.parseInt(ss));
+								if (!ss.equals("*")) info.setMaxarmor(Integers.parseInt(ss));
 							}
 							else if (arg.startsWith("damagetype:")) {
 								String ss = arg.replace("damagetype:", "");
@@ -338,11 +380,11 @@ public class ScriptHandler {
 							}
 							else if (arg.startsWith("minchance:")) {
 								String ss = arg.replace("minchance:", "");
-								if (!ss.equals("*")) info.setMinchance(Integer.parseInt(ss));
+								if (!ss.equals("*")) info.setMinchance(Integers.parseInt(ss));
 							}
 							else if (arg.startsWith("maxchance:")) {
 								String ss = arg.replace("maxchance:", "");
-								if (!ss.equals("*")) info.setMaxchance(Integer.parseInt(ss));
+								if (!ss.equals("*")) info.setMaxchance(Integers.parseInt(ss));
 							}
 							else if (arg.startsWith("entitytype:")) {
 								String ss = arg.replace("entitytype:", "");
@@ -383,10 +425,10 @@ public class ScriptHandler {
 						info.setDamageamount(Float.parseFloat(s2[e]));
 					}
 					else if (action.equals("applyeffect")) {
-						info.setEffect(new EffectInfo(Integer.parseInt(s2[e]), Integer.parseInt(s2[f]), Integer.parseInt(s2[g])));
+						info.setEffect(new EffectInfo(Integers.parseInt(s2[e]), Integers.parseInt(s2[f]), Integers.parseInt(s2[g])));
 					}
 					else if (action.equals("addexperience")) {
-						info.setExperienceamount(Integer.parseInt(s2[e]));
+						info.setExperienceamount(Integers.parseInt(s2[e]));
 					}
 					else if (action.equals("cancel")) {
 						info.setCancel(true);
@@ -407,10 +449,10 @@ public class ScriptHandler {
 						info.setBlocktoplace(StringParser.parseBlock(s2[e]));
 					}
 					else if (action.equals("burn")) {
-						info.setFireamount(Integer.parseInt(s2[e]));
+						info.setFireamount(Integers.parseInt(s2[e]));
 					}
 					else if (action.equals("sethunger")) {
-						info.setFoodlevel(Integer.parseInt(s2[e]));
+						info.setFoodlevel(Integers.parseInt(s2[e]));
 					}
 					else if (ScriptingAPI.getActions().containsKey(action)) {
 						info.setAction(action);
@@ -487,9 +529,9 @@ public class ScriptHandler {
 		}
 	}
 	
-	public static void postInit() {
-		for (int a = 0; a < list.size(); a++) {
-			String s = list.get(a);
+	public static void postInit() throws Exception {
+		for (int a = 0; a < getScripts().size(); a++) {
+			String s = getScripts().get(a);
 			if (!s.startsWith("#")) {
 				String[] s2 = s.split(" ");
 				String type = s2[0];
@@ -523,14 +565,14 @@ public class ScriptHandler {
 								drops = DropHandler.drops.get(block2);
 								for (int i = 4; i < s2.length; i++) {
 									String[] s4 = s2[i].split(";");
-									drops.add(new Drop(StringParser.parseItem(s4[0]), Integer.parseInt(s4[1]), Integer.parseInt(s4[2]), new Chance(Integer.parseInt(s4[3]), Integer.parseInt(s4[4]))));
+									drops.add(new Drop(StringParser.parseItem(s4[0]), Integers.parseInt(s4[1]), Integers.parseInt(s4[2]), new Chance(Integers.parseInt(s4[3]), Integers.parseInt(s4[4]))));
 								}
 							}
 							else {
 								drops = new ArrayList<Drop>();
 								for (int i = 4; i < s2.length; i++) {
 									String[] s4 = s2[i].split(";");
-									drops.add(new Drop(StringParser.parseItem(s4[0]), Integer.parseInt(s4[1]), Integer.parseInt(s4[2]), new Chance(Integer.parseInt(s4[3]), Integer.parseInt(s4[4]))));
+									drops.add(new Drop(StringParser.parseItem(s4[0]), Integers.parseInt(s4[1]), Integers.parseInt(s4[2]), new Chance(Integers.parseInt(s4[3]), Integers.parseInt(s4[4]))));
 								}
 								DropHandler.drops.put(block2, drops);
 							}
@@ -539,11 +581,11 @@ public class ScriptHandler {
 				}
 				else if (type.equals("item")) {
 					Item item = StringParser.parseItem(s2[2]);
-					if (s2[1].equals("stacksize")) item.setMaxStackSize(Integer.parseInt(s2[3]));
-					else if (s2[1].equals("maxdamage")) item.setMaxDamage(Integer.parseInt(s2[3]));
+					if (s2[1].equals("stacksize")) item.setMaxStackSize(Integers.parseInt(s2[3]));
+					else if (s2[1].equals("maxdamage")) item.setMaxDamage(Integers.parseInt(s2[3]));
 				}
 				else if (type.equals("compat")) {
-					if (s2[1].equals("rotarycraft")) {
+					if (s2[1].equals("rotarycraft") && Compat.RotaryCraft.loadCompat()) {
 						if (s2[2].equals("add")) {
 							if (s2[3].equals("grinding")) {
 								RotaryCraftCompat.addGrindingRecipe(new ItemStack(StringParser.parseItem(s2[4])), new ItemStack(StringParser.parseItem(s2[5])));
@@ -554,21 +596,41 @@ public class ScriptHandler {
 								}
 							}
 							else if (s2[3].equals("compactor")) {
-								RotaryCraftCompat.addCompactorRecipe(new ItemStack(StringParser.parseItem(s2[4])), StringParser.parseItemStack(s2[5]), Integer.parseInt(s2[6]), Integer.parseInt(s2[7]));
+								RotaryCraftCompat.addCompactorRecipe(new ItemStack(StringParser.parseItem(s2[4])), StringParser.parseItemStack(s2[5]), Integers.parseInt(s2[6]), Integers.parseInt(s2[7]));
 							}
 						}
 					}
-					else if (s2[1].equals("thermalexpansion")) {
+					else if (s2[1].equals("thermalexpansion") && Compat.ThermalExpansion.loadCompat()) {
 						if (s2[2].equals("add")) {
 							if (s2[3].equals("pulverizer")) {
-								ThermalExpansionCompat.addPulverizerRecipe(StringParser.parseItemStack(s2[4]), StringParser.parseItemStack(s2[5]), StringParser.parseItemStack(s2[6]), Integer.parseInt(s2[7]), Integer.parseInt(s2[8]));
+								ThermalExpansionCompat.addPulverizerRecipe(StringParser.parseItemStack(s2[4]), StringParser.parseItemStack(s2[5]), StringParser.parseItemStack(s2[6]), Integers.parseInt(s2[7]), Integers.parseInt(s2[8]));
 							}
 						}
 					}
-					else if (s2[1].equals("botania")) {
+					else if (s2[1].equals("botania") && Compat.Botania.loadCompat()) {
 						if (s2[2].equals("add")) {
 							if (s2[3].equals("manainfusion")) {
-								BotaniaCompat.registerManaInfusionRecipe(StringParser.parseItemStack(s2[5]), StringParser.parseInput(s2[4]), Integer.parseInt(s2[6]));
+								BotaniaCompat.registerManaInfusionRecipe(StringParser.parseItemStack(s2[5]), StringParser.parseInput(s2[4]), Integers.parseInt(s2[6]));
+							}
+							else if (s2[3].equals("manaalchemy")) {
+								BotaniaCompat.registerManaAlchemyRecipe(StringParser.parseItemStack(s2[5]), StringParser.parseInput(s2[4]), Integers.parseInt(s2[6]));
+							}
+							else if (s2[3].equals("manaconjuration")) {
+								BotaniaCompat.registerManaConjurationRecipe(StringParser.parseItemStack(s2[5]), StringParser.parseInput(s2[4]), Integers.parseInt(s2[6]));
+							}
+							else if (s2[3].equals("petal")) {
+								Object[] inputs = new Object[9];
+								for (int aa = 5; aa < s2.length; aa++) {
+									inputs[aa - 5] = StringParser.parseInput(s2[aa]);
+								}
+								BotaniaCompat.registerPetalRecipe(StringParser.parseItemStack(s2[4]), inputs);
+							}
+							else if (s2[3].equals("elventrade")) {
+								Object[] inputs = new Object[9];
+								for (int aa = 5; aa < s2.length; aa++) {
+									inputs[aa - 5] = StringParser.parseInput(s2[aa]);
+								}
+								BotaniaCompat.registerElvenTradeRecipe(StringParser.parseItemStack(s2[4]), inputs);
 							}
 						}
 					}

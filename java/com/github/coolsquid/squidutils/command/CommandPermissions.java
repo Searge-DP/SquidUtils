@@ -9,9 +9,9 @@ import java.util.List;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.EnumChatFormatting;
 
-import com.github.coolsquid.squidapi.chat.ChatMessage;
 import com.github.coolsquid.squidapi.command.CommandBase;
 import com.github.coolsquid.squidapi.helpers.server.ServerHelper;
+import com.github.coolsquid.squidapi.helpers.server.chat.ChatMessage;
 import com.github.coolsquid.squidutils.helpers.PermissionHelper;
 
 public class CommandPermissions extends CommandBase {

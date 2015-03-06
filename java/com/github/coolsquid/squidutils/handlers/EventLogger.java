@@ -9,6 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 
+import com.github.coolsquid.squidapi.logging.ILogger;
 import com.github.coolsquid.squidapi.logging.Level;
 import com.github.coolsquid.squidapi.logging.Logger;
 
@@ -16,7 +17,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class EventLogger {
 	
-	private static final Logger logger = new Logger("logs/EventLogs/", "eventlog");
+	private static final ILogger logger = new Logger("logs/EventLogs/", "eventlog");
 	
 	/**
 	 * Logs all blocks broken.

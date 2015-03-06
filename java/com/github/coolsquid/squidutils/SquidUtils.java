@@ -5,12 +5,15 @@
 package com.github.coolsquid.squidutils;
 
 import java.io.File;
+import java.util.Set;
 
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraftforge.common.MinecraftForge;
 
+import com.github.coolsquid.squidapi.Disableable;
 import com.github.coolsquid.squidapi.SquidAPI;
 import com.github.coolsquid.squidapi.SquidAPIMod;
+import com.github.coolsquid.squidapi.command.CommandDisable;
 import com.github.coolsquid.squidapi.exception.InvalidConfigValueException;
 import com.github.coolsquid.squidapi.util.ContentRemover;
 import com.github.coolsquid.squidapi.util.Utils;
@@ -53,23 +56,67 @@ import com.github.coolsquid.squidutils.util.CrashReportInterceptor;
 import com.github.coolsquid.squidutils.util.ModInfo;
 import com.github.coolsquid.squidutils.util.ModLister;
 import com.github.coolsquid.squidutils.util.PackIntegrityChecker;
+import com.google.common.collect.Sets;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
-@Mod(modid = ModInfo.modid, name = ModInfo.name, version = ModInfo.version, dependencies = ModInfo.dependencies, acceptableRemoteVersions = "*")
-public class SquidUtils extends SquidAPIMod {
+@Mod(modid = ModInfo.modid, name = ModInfo.name, version = ModInfo.version, dependencies = ModInfo.dependencies, canBeDeactivated = true, acceptableRemoteVersions = "*")
+public class SquidUtils extends SquidAPIMod implements Disableable {
+	
+	public static ModContainer mod;
 	
 	public SquidUtils() {
 		super("Customization to the max!");
 	}
+	
+	public static final Object a = new TNTHandler();
+	public static final Object b = new AchievementHandler();
+	public static final Object c = new WitherHandler();
+	public static final Object d = new DebugHandler();
+	public static final Object e = new RenderDistanceHandler();
+	public static final Object f = new VillagerHandler();
+	public static final Object g = new EventLogger();
+	public static final Object h = new AnvilHandler();
+	public static final Object i = new CommandHandler();
+	public static final Object j = new TeleportationHandler();
+	public static final Object k = new BonemealHandler();
+	public static final Object l = new ToolHandler();
+	public static final Object m = new BottleHandler();
+	public static final Object n = new SpeedHandler();
+	public static final Object o = new CraftingHandler();
+	public static final Object p = new SmeltingHandler();
+	public static final Object q = new DamageHandler();
+	public static final Object r = new HealingHandler();
+	public static final Object s = new TossHandler();
+	public static final Object t = new EntityJoinHandler();
+	public static final Object u = new ExplosionHandler();
+	public static final Object v = new InteractionHandler();
+	public static final Object w = new ServerChatHandler();
+	public static final Object x = new PermissionHelper();
+	public static final Object y = new LivingUpdateHandler();
+	public static final Object z = new MinecartCollisionHandler();
+	
+	public static final Set<Object> handlers = Sets.newHashSet();
+	public static final Set<Object> handlers2 = Sets.newHashSet();
 
+	public static void registerHandler(Object object) {
+		MinecraftForge.EVENT_BUS.register(object);
+		handlers.add(object);
+	}
+	
+	public static void unregisterHandler(Object object) {
+		MinecraftForge.EVENT_BUS.unregister(object);
+		handlers.remove(object);
+	}
+	
 	/**
 	 * Preinit. Loads the config, clears Vanilla recipes (if toggled).
 	 * @param event
@@ -78,6 +125,10 @@ public class SquidUtils extends SquidAPIMod {
 	@EventHandler
 	private void preInit(FMLPreInitializationEvent event) {
 		LogHelper.info("Preinitializing.");
+		
+		mod = Loader.instance().activeModContainer();
+		
+		CommandDisable.disableables.put("SquidUtils", this);
 		
 		new File("./config/SquidUtils").mkdirs();
 		ConfigHandler.preInit(new File("./config/SquidUtils/SquidUtils.cfg"));
@@ -116,7 +167,7 @@ public class SquidUtils extends SquidAPIMod {
 		}
 
 		if (Utils.isClient()) {
-			MinecraftForge.EVENT_BUS.register(new DifficultyHandler());
+			registerHandler(new DifficultyHandler());
 			if (!ConfigHandler.forceDifficulty.equalsIgnoreCase("FALSE")) {
 				DifficultyHandler.difficulty = ConfigHandler.forceDifficulty;
 			}
@@ -125,95 +176,97 @@ public class SquidUtils extends SquidAPIMod {
 			throw new InvalidConfigValueException("ConfigHandler.forceDifficulty");
 		}
 		if (ConfigHandler.noTNT) {
-			MinecraftForge.EVENT_BUS.register(new TNTHandler());
+			registerHandler(a);
 		}
 		if (ConfigHandler.noAchievements || ScriptHandler.onAchievement) {
-			MinecraftForge.EVENT_BUS.register(new AchievementHandler());
+			registerHandler(b);
 		}
 		if (ConfigHandler.noWitherBoss) {
-			MinecraftForge.EVENT_BUS.register(new WitherHandler());
+			registerHandler(c);
 		}
 		if (ConfigHandler.chainRecipes) {
 			ModRecipes.chain();
 		}
 		if (ConfigHandler.noDebug && Utils.isClient()) {
-			MinecraftForge.EVENT_BUS.register(new DebugHandler());
+			registerHandler(d);
 		}
 		if (ConfigHandler.maxRenderDistance != 16 && Utils.isClient()) {
-			MinecraftForge.EVENT_BUS.register(new RenderDistanceHandler());
+			registerHandler(e);
 		}
 		if (ConfigHandler.villagerProtection) {
-			MinecraftForge.EVENT_BUS.register(new VillagerHandler());
+			registerHandler(f);
 		}
 		if (ConfigHandler.tabVanilla) {
 			ModCreativeTabs.preInit();
 		}
 		if (ConfigHandler.logStuff) {
-			MinecraftForge.EVENT_BUS.register(new EventLogger());
+			registerHandler(g);
 		}
 		if (ConfigHandler.disableAnvil) {
-			MinecraftForge.EVENT_BUS.register(new AnvilHandler());
+			registerHandler(h);
 		}
 		if (!CommandHandler.commandsToDisable.isEmpty() || ScriptHandler.onCommand) {
-			MinecraftForge.EVENT_BUS.register(new CommandHandler());
+			registerHandler(i);
 		}
 		if (ConfigHandler.disableTeleportation || ScriptHandler.onTeleport) {
-			MinecraftForge.EVENT_BUS.register(new TeleportationHandler());
+			registerHandler(j);
 		}
 		if (ConfigHandler.disableBonemeal) {
-			MinecraftForge.EVENT_BUS.register(new BonemealHandler());
+			registerHandler(k);
 		}
 		if (ConfigHandler.disableHoes) {
-			MinecraftForge.EVENT_BUS.register(new ToolHandler());
+			registerHandler(l);
 		}
 		if (ConfigHandler.disableBottleFluidInteraction) {
-			MinecraftForge.EVENT_BUS.register(new BottleHandler());
+			registerHandler(m);
 		}
 		if (ConfigHandler.generateModList != 0) {
 			ModLister.init();
 		}
 		if (ConfigHandler.walkSpeed != 0.1F || ConfigHandler.flySpeed != 0.05F) {
-			MinecraftForge.EVENT_BUS.register(new SpeedHandler());
+			registerHandler(n);
 		}
 		if (Loader.isModLoaded("AppleCore")) {
 			AppleCoreCompat.init();
 		}
 		if (ScriptHandler.onCraft) {
-			FMLCommonHandler.instance().bus().register(new CraftingHandler());
+			FMLCommonHandler.instance().bus().register(o);
+			handlers2.add(o);
 		}
 		if (ScriptHandler.onSmelt) {
-			FMLCommonHandler.instance().bus().register(new SmeltingHandler());
+			FMLCommonHandler.instance().bus().register(p);
+			handlers2.add(p);
 		}
 		if (ScriptHandler.onHurt) {
-			MinecraftForge.EVENT_BUS.register(new DamageHandler());
+			registerHandler(q);
 		}
 		if (ScriptHandler.onHeal) {
-			MinecraftForge.EVENT_BUS.register(new HealingHandler());
+			registerHandler(r);
 		}
 		if (ScriptHandler.onToss) {
-			MinecraftForge.EVENT_BUS.register(new TossHandler());
+			registerHandler(s);
 		}
 		if (ScriptHandler.onEntityJoin) {
-			MinecraftForge.EVENT_BUS.register(new EntityJoinHandler());
+			registerHandler(t);
 		}
 		if (ConfigHandler.explosionSizeMultiplier != 1) {
-			MinecraftForge.EVENT_BUS.register(new ExplosionHandler());
+			registerHandler(u);
 		}
 		if (ScriptHandler.onInteraction) {
-			MinecraftForge.EVENT_BUS.register(new InteractionHandler());
+			registerHandler(v);
 		}
 		if (ScriptHandler.onChat) {
-			MinecraftForge.EVENT_BUS.register(new ServerChatHandler());
+			registerHandler(w);
 		}
 		if (ScriptHandler.permissions) {
 			PermissionHelper.init();
-			MinecraftForge.EVENT_BUS.register(new PermissionHelper());
+			registerHandler(x);
 		}
 		if (ConfigHandler.worldSize > 0) {
-			MinecraftForge.EVENT_BUS.register(new LivingUpdateHandler());
+			registerHandler(y);
 		}
 		if (ConfigHandler.explodeTNTMinecartsOnCollide) {
-			MinecraftForge.EVENT_BUS.register(new MinecartCollisionHandler());
+			registerHandler(z);
 		}
 		
 		Utils.runVersionCheckerCompat("226025");
@@ -245,7 +298,7 @@ public class SquidUtils extends SquidAPIMod {
 		}
 		
 		if (!DropHandler.shouldclear.isEmpty() || !DropHandler.dropstoremove.isEmpty() || !DropHandler.drops.isEmpty()) {
-			MinecraftForge.EVENT_BUS.register(new DropHandler());
+			registerHandler(new DropHandler());
 		}
 		
 		LogHelper.info("Postinitialization finished.");
@@ -258,5 +311,17 @@ public class SquidUtils extends SquidAPIMod {
 				CraftingManager.getInstance().getRecipeList().clear();
 			}
 		}
+	}
+	
+	@Override
+	public void disable() {
+		for (Object object: handlers) {
+			MinecraftForge.EVENT_BUS.unregister(object);
+		}
+		for (Object object: handlers2) {
+			FMLCommonHandler.instance().bus().unregister(object);
+		}
+		mod.setEnabledState(false);
+		LogHelper.info("SquidUtils has been disabled.");
 	}
 }

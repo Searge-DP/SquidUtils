@@ -4,9 +4,11 @@
  *******************************************************************************/
 package com.github.coolsquid.squidutils.handlers;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -21,20 +23,22 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class DropHandler {
 	
-	public static final HashMap<Block, ArrayList<Drop>> drops = new HashMap<Block, ArrayList<Drop>>();
-	public static final HashMap<Block, HashSet<Item>> dropstoremove = new HashMap<Block, HashSet<Item>>();
-	public static final HashSet<Block> shouldclear = new HashSet<Block>();
+	public static final Map<Block, List<Drop>> drops = new HashMap<Block, List<Drop>>();
+	public static final Map<Block, Set<Item>> dropstoremove = new HashMap<Block, Set<Item>>();
+	public static final Set<Block> shouldclear = new HashSet<Block>();
 	
 	public static void removeDrop(Block block, Item item) {
 		if (!dropstoremove.containsKey(block)) {
-			dropstoremove.put(block, Sets.newHashSet());
+			Set<Item> set = Sets.newHashSet();
+			dropstoremove.put(block, set);
 		}
 		dropstoremove.get(block).add(item);
 	}
 	
 	public static void addDrop(Block block, Drop drop) {
 		if (!drops.containsKey(block)) {
-			drops.put(block, Lists.newArrayList());
+			List<Drop> list = Lists.newArrayList();
+			drops.put(block, list);
 		}
 		drops.get(block).add(drop);
 	}

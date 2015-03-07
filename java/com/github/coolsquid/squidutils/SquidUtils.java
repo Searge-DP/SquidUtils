@@ -17,6 +17,8 @@ import com.github.coolsquid.squidapi.command.CommandDisable;
 import com.github.coolsquid.squidapi.exception.InvalidConfigValueException;
 import com.github.coolsquid.squidapi.util.ContentRemover;
 import com.github.coolsquid.squidapi.util.Utils;
+import com.github.coolsquid.squidutils.api.ScriptingAPI;
+import com.github.coolsquid.squidutils.api.ScriptingAPI.IEventTrigger;
 import com.github.coolsquid.squidutils.compat.AppleCoreCompat;
 import com.github.coolsquid.squidutils.config.ConfigHandler;
 import com.github.coolsquid.squidutils.creativetab.ModCreativeTabs;
@@ -39,7 +41,6 @@ import com.github.coolsquid.squidutils.handlers.LivingUpdateHandler;
 import com.github.coolsquid.squidutils.handlers.MinecartCollisionHandler;
 import com.github.coolsquid.squidutils.handlers.RegistrySearcher;
 import com.github.coolsquid.squidutils.handlers.RenderDistanceHandler;
-import com.github.coolsquid.squidutils.handlers.ScriptHandler;
 import com.github.coolsquid.squidutils.handlers.ServerChatHandler;
 import com.github.coolsquid.squidutils.handlers.SmeltingHandler;
 import com.github.coolsquid.squidutils.handlers.SpeedHandler;
@@ -52,6 +53,8 @@ import com.github.coolsquid.squidutils.handlers.VillagerHandler;
 import com.github.coolsquid.squidutils.handlers.WitherHandler;
 import com.github.coolsquid.squidutils.helpers.LogHelper;
 import com.github.coolsquid.squidutils.helpers.PermissionHelper;
+import com.github.coolsquid.squidutils.scripting.ScriptHandler;
+import com.github.coolsquid.squidutils.scripting.components.Components;
 import com.github.coolsquid.squidutils.util.CrashReportInterceptor;
 import com.github.coolsquid.squidutils.util.ModInfo;
 import com.github.coolsquid.squidutils.util.ModLister;
@@ -152,11 +155,24 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 	@EventHandler
 	private void init(FMLInitializationEvent event) {
 		LogHelper.info("Initializing.");
-		
+		Components.init();
 		if (Utils.developmentEnvironment()) {
 			LogHelper.info("Running in a dev environment.");
 			ConfigHandler.debug = true;
 		}
+		
+		ScriptingAPI.addTrigger("achievement", (IEventTrigger) b);
+		ScriptingAPI.addTrigger("command", (IEventTrigger) i);
+		ScriptingAPI.addTrigger("teleport", (IEventTrigger) j);
+		ScriptingAPI.addTrigger("craft", (IEventTrigger) o);
+		ScriptingAPI.addTrigger("smelt", (IEventTrigger) p);
+		ScriptingAPI.addTrigger("hurt", (IEventTrigger) q);
+		ScriptingAPI.addTrigger("heal", (IEventTrigger) r);
+		ScriptingAPI.addTrigger("toss", (IEventTrigger) s);
+		ScriptingAPI.addTrigger("entityjoin", (IEventTrigger) t);
+		ScriptingAPI.addTrigger("explosion", (IEventTrigger) u);
+		ScriptingAPI.addTrigger("interact", (IEventTrigger) v);
+		ScriptingAPI.addTrigger("chat", (IEventTrigger) w);
 		
 		try {
 			ScriptHandler.init();
@@ -290,7 +306,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 		}
 		
 		try {
-			ScriptHandler.postInit();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			SquidAPI.logger.log(e.getStackTrace());
@@ -314,7 +330,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 	}
 	
 	@Override
-	public void disable() {
+	public boolean disable() {
 		for (Object object: handlers) {
 			MinecraftForge.EVENT_BUS.unregister(object);
 		}
@@ -323,5 +339,6 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 		}
 		mod.setEnabledState(false);
 		LogHelper.info("SquidUtils has been disabled.");
+		return true;
 	}
 }

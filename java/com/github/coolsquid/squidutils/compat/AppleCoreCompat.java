@@ -10,7 +10,7 @@ import com.github.coolsquid.squidutils.config.ConfigHandler;
 import com.github.coolsquid.squidutils.handlers.FoodHandler;
 import com.github.coolsquid.squidutils.handlers.PlantHandler;
 import com.github.coolsquid.squidutils.handlers.RegenHandler;
-import com.github.coolsquid.squidutils.handlers.ScriptHandler;
+import com.github.coolsquid.squidutils.scripting.ScriptHandler;
 
 public class AppleCoreCompat {
 	

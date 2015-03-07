@@ -14,6 +14,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 
 import com.github.coolsquid.squidapi.util.Utils;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
@@ -22,6 +24,20 @@ public class DropHandler {
 	public static final HashMap<Block, ArrayList<Drop>> drops = new HashMap<Block, ArrayList<Drop>>();
 	public static final HashMap<Block, HashSet<Item>> dropstoremove = new HashMap<Block, HashSet<Item>>();
 	public static final HashSet<Block> shouldclear = new HashSet<Block>();
+	
+	public static void removeDrop(Block block, Item item) {
+		if (!dropstoremove.containsKey(block)) {
+			dropstoremove.put(block, Sets.newHashSet());
+		}
+		dropstoremove.get(block).add(item);
+	}
+	
+	public static void addDrop(Block block, Drop drop) {
+		if (!drops.containsKey(block)) {
+			drops.put(block, Lists.newArrayList());
+		}
+		drops.get(block).add(drop);
+	}
 	
 	@SubscribeEvent
 	public void onDrop(HarvestDropsEvent event) {

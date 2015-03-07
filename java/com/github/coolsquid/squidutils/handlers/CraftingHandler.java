@@ -5,21 +5,28 @@
 package com.github.coolsquid.squidutils.handlers;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import com.github.coolsquid.squidutils.api.ScriptingAPI.IEventTrigger;
 import com.github.coolsquid.squidutils.util.script.EventEffectHelper;
 import com.github.coolsquid.squidutils.util.script.EventInfo;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
 
-public class CraftingHandler {
+public class CraftingHandler implements IEventTrigger {
 	
-	public static final ArrayList<EventInfo> info = new ArrayList<EventInfo>();
+	public static final List<EventInfo> info = new ArrayList<EventInfo>();
+	
+	@Override
+	public List<EventInfo> info() {
+		return info;
+	}
 
 	@SubscribeEvent
 	public void onCraft(ItemCraftedEvent event) {
 		for (EventInfo a: info) {
-			if (a.getItem() == event.crafting.getItem()) {
+			if (!a.values.containsKey("item") || a.values.get("item") == event.crafting.getItem()) {
 				EventEffectHelper.performEffects(a, event.player);
 			}
 		}

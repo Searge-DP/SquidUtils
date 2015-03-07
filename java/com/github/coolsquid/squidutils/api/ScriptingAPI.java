@@ -4,8 +4,9 @@
  *******************************************************************************/
 package com.github.coolsquid.squidutils.api;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import net.minecraft.entity.EntityLivingBase;
 
@@ -13,6 +14,10 @@ import com.github.coolsquid.squidutils.util.script.EventInfo;
 import com.google.common.collect.ImmutableMap;
 
 public class ScriptingAPI {
+	
+	/** The commands */
+	@Deprecated
+	private static final HashMap<String, ScriptCommand> commands = new HashMap<String, ScriptCommand>();
 	
 	/** The actions. */
 	@Deprecated
@@ -25,6 +30,16 @@ public class ScriptingAPI {
 	/** The conditions. */
 	@Deprecated
 	private static final HashMap<String, IEventCondition> conditions = new HashMap<String, IEventCondition>();
+	
+	/**
+	 * Gets the commands.
+	 * Cannot be modified.
+	 *
+	 * @return the commands
+	 */
+	public static ImmutableMap<String, ScriptCommand> getCommands() {
+		return ImmutableMap.copyOf(commands);
+	}
 	
 	/**
 	 * Gets the actions.
@@ -54,6 +69,10 @@ public class ScriptingAPI {
 	 */
 	public static ImmutableMap<String, IEventCondition> getConditions() {
 		return ImmutableMap.copyOf(conditions);
+	}
+	
+	public static void addCommand(String name, ScriptCommand command) {
+		commands.put(name, command);
 	}
 	
 	/**
@@ -86,6 +105,22 @@ public class ScriptingAPI {
 		conditions.put(name, argument);
 	}
 	
+	public static class ScriptCommand {
+		private final Map<String, IScriptSubcommand> subcommands;
+		
+		public ScriptCommand(Map<String, IScriptSubcommand> subcommands) {
+			this.subcommands = subcommands;
+		}
+
+		public Map<String, IScriptSubcommand> getSubcommands() {
+			return this.subcommands;
+		}
+	}
+
+	public interface IScriptSubcommand {
+		void run(Map<String, String> args);
+	}
+	
 	/**
 	 * The Interface IEventAction.
 	 */
@@ -97,14 +132,14 @@ public class ScriptingAPI {
 		 * @param entity the entity
 		 * @param info the info
 		 */
-		public void run(EntityLivingBase entity, EventInfo info);
+		void run(EntityLivingBase entity, EventInfo info);
 		
 		/**
 		 * Inits the.
 		 *
 		 * @param info the info
 		 */
-		public void init(EventInfo info);
+		void init(EventInfo info);
 	}
 	
 	/**
@@ -117,7 +152,7 @@ public class ScriptingAPI {
 		 *
 		 * @return the array list
 		 */
-		public ArrayList<EventInfo> info();
+		List<EventInfo> info();
 	}
 	
 	/**
@@ -130,6 +165,6 @@ public class ScriptingAPI {
 		 *
 		 * @param condition the condition
 		 */
-		public void run(String condition);
+		void run(String condition);
 	}
 }

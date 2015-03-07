@@ -332,10 +332,11 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 	@Override
 	public boolean disable() {
 		for (Object object: handlers) {
-			MinecraftForge.EVENT_BUS.unregister(object);
+			unregisterHandler(object);
 		}
 		for (Object object: handlers2) {
 			FMLCommonHandler.instance().bus().unregister(object);
+			handlers2.remove(object);
 		}
 		mod.setEnabledState(false);
 		LogHelper.info("SquidUtils has been disabled.");

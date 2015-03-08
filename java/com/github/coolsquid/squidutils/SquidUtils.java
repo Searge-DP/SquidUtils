@@ -175,7 +175,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 			ScriptHandler.init();
 		} catch (Exception e) {
 			e.printStackTrace();
-			SquidAPI.logger.log(e.getStackTrace());
+			SquidAPI.logger.log(e);
 			SquidAPI.messages.add(Utils.newString(e.getClass().getName(), ". See SquidAPI.log for more information."));
 		}
 
@@ -300,14 +300,6 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 		
 		if (ConfigHandler.potionStacks > 1 || ConfigHandler.pearlStack > 1) {
 			StackSizeHandler.some(ConfigHandler.potionStacks, ConfigHandler.pearlStack);
-		}
-		
-		try {
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			SquidAPI.logger.log(e.getStackTrace());
-			SquidAPI.messages.add(e.getClass().getName());
 		}
 		
 		if (!DropHandler.shouldclear.isEmpty() || !DropHandler.dropstoremove.isEmpty() || !DropHandler.drops.isEmpty()) {

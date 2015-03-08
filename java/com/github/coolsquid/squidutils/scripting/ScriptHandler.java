@@ -80,7 +80,12 @@ public class ScriptHandler {
 					Builder<String, String> builder = ImmutableMap.builder();
 					for (int b = 2; b < s2.length; b++) {
 						String[] aa = s2[b].split("=");
-						builder.put(aa[0], aa[1]);
+						if (aa.length == 1) {
+							builder.put(aa[0], "");
+						}
+						else if (aa.length == 2) {
+							builder.put(aa[0], aa[1]);
+						}
 					}
 					ScriptingAPI.getCommands().get(type).getSubcommands().get(s2[1]).run(builder.build());
 				}

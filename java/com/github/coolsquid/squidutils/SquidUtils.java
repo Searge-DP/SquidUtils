@@ -115,10 +115,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 		handlers.add(object);
 	}
 	
-	public static void unregisterHandler(Object object) {
-		MinecraftForge.EVENT_BUS.unregister(object);
-		handlers.remove(object);
-	}
+	public static boolean isDisabled;
 	
 	/**
 	 * Preinit. Loads the config, clears Vanilla recipes (if toggled).
@@ -332,14 +329,28 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 	@Override
 	public boolean disable() {
 		for (Object object: handlers) {
-			unregisterHandler(object);
+			MinecraftForge.EVENT_BUS.unregister(object);
 		}
 		for (Object object: handlers2) {
 			FMLCommonHandler.instance().bus().unregister(object);
-			handlers2.remove(object);
 		}
+		isDisabled = true;
 		mod.setEnabledState(false);
 		LogHelper.info("SquidUtils has been disabled.");
+		return true;
+	}
+
+	@Override
+	public boolean enable() {
+		for (Object object: handlers) {
+			MinecraftForge.EVENT_BUS.register(object);
+		}
+		for (Object object: handlers2) {
+			FMLCommonHandler.instance().bus().register(object);
+		}
+		isDisabled = false;
+		mod.setEnabledState(true);
+		LogHelper.info("SquidUtils has been enabled.");
 		return true;
 	}
 }

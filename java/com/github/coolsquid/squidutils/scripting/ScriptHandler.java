@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.github.coolsquid.squidapi.helpers.FileHelper;
-import com.github.coolsquid.squidapi.util.Integers;
+import com.github.coolsquid.squidapi.util.IntUtils;
 import com.github.coolsquid.squidapi.util.StringParser;
 import com.github.coolsquid.squidutils.api.ScriptingAPI;
 import com.github.coolsquid.squidutils.helpers.LogHelper;
@@ -134,8 +134,8 @@ public class ScriptHandler {
 					
 					builder.put("minchance", 1);
 					builder.put("maxchance", 1);
-					builder.put("minhealth", -1);
-					builder.put("maxhealth", Integer.MAX_VALUE);
+					builder.put("minhealth", -1F);
+					builder.put("maxhealth", Float.MAX_VALUE);
 					builder.put("minarmor", -1);
 					builder.put("maxarmor", Integer.MAX_VALUE);
 					
@@ -157,11 +157,11 @@ public class ScriptHandler {
 								value = Float.parseFloat((String) value);
 							}
 							else if (key.matches("(minchance|maxchance|minarmor|maxarmor|fireduration|foodlevel|experience)")) {
-								value = Integers.parseInt((String) value);
+								value = IntUtils.parseInt((String) value);
 							}
 							else if (key.equals("effect")) {
 								String[] args = ((String) value).split(":");
-								value = new EffectInfo(Integers.parseInt(args[0]), Integers.parseInt(args[1]), Integers.parseInt(args[2]));
+								value = new EffectInfo(IntUtils.parseInt(args[0]), IntUtils.parseInt(args[1]), IntUtils.parseInt(args[2]));
 							}
 							else if (key.equals("blocktoplace")) {
 								value = StringParser.parseBlock((String) value);

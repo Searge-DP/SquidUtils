@@ -15,6 +15,7 @@ import com.github.coolsquid.squidapi.SquidAPI;
 import com.github.coolsquid.squidapi.SquidAPIMod;
 import com.github.coolsquid.squidapi.command.CommandDisable;
 import com.github.coolsquid.squidapi.exception.InvalidConfigValueException;
+import com.github.coolsquid.squidapi.reflection.ReflectionHelper;
 import com.github.coolsquid.squidapi.util.ContentRemover;
 import com.github.coolsquid.squidapi.util.Utils;
 import com.github.coolsquid.squidutils.api.ScriptingAPI;
@@ -61,10 +62,12 @@ import com.github.coolsquid.squidutils.util.ModLister;
 import com.github.coolsquid.squidutils.util.PackIntegrityChecker;
 import com.google.common.collect.Maps;
 
+import cpw.mods.fml.common.API;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
@@ -74,10 +77,29 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 @Mod(modid = ModInfo.modid, name = ModInfo.name, version = ModInfo.version, dependencies = ModInfo.dependencies, canBeDeactivated = true, acceptableRemoteVersions = "*")
 public class SquidUtils extends SquidAPIMod implements Disableable {
 	
-	public static ModContainer mod;
+	@Instance
+	private static SquidUtils instance;
+	private static ModContainer mod;
+	@Deprecated
+	private static API api;
 	
 	public SquidUtils() {
 		super("Customization to the max!");
+	}
+	
+	public static SquidUtils instance() {
+		return instance;
+	}
+	
+	public static API getAPI() {
+		if (api == null) {
+			api = ReflectionHelper.in(Package.getPackage("com.github.coolsquid.squidutils.api")).getAnnotation(API.class);
+		}
+		return api;
+	}
+	
+	public static ModContainer getMod() {
+		return mod;
 	}
 	
 	public static final Map<String, Object> handlers = Maps.newHashMap();
@@ -107,7 +129,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 		mod = Loader.instance().activeModContainer();
 		
 		CommandDisable.disableables.put("SquidUtils", this);
-		
+
 		new File("./config/SquidUtils").mkdirs();
 		ConfigHandler.preInit(new File("./config/SquidUtils/SquidUtils.cfg"));
 		

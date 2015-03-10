@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 CoolSquid.
+ * Copyright (new WitherHandler()) 2015 CoolSquid.
  * All rights reserved.
  *******************************************************************************/
 package com.github.coolsquid.squidutils;
@@ -18,7 +18,6 @@ import com.github.coolsquid.squidapi.exception.InvalidConfigValueException;
 import com.github.coolsquid.squidapi.util.ContentRemover;
 import com.github.coolsquid.squidapi.util.Utils;
 import com.github.coolsquid.squidutils.api.ScriptingAPI;
-import com.github.coolsquid.squidutils.api.ScriptingAPI.IEventTrigger;
 import com.github.coolsquid.squidutils.command.CommandSquidUtils;
 import com.github.coolsquid.squidutils.compat.AppleCoreCompat;
 import com.github.coolsquid.squidutils.config.ConfigHandler;
@@ -81,33 +80,6 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 		super("Customization to the max!");
 	}
 	
-	public static final Object a = new TNTHandler();
-	public static final Object b = new AchievementHandler();
-	public static final Object c = new WitherHandler();
-	public static final Object d = new DebugHandler();
-	public static final Object e = new RenderDistanceHandler();
-	public static final Object f = new VillagerHandler();
-	public static final Object g = new EventLogger();
-	public static final Object h = new AnvilHandler();
-	public static final Object i = new CommandHandler();
-	public static final Object j = new TeleportationHandler();
-	public static final Object k = new BonemealHandler();
-	public static final Object l = new ToolHandler();
-	public static final Object m = new BottleHandler();
-	public static final Object n = new SpeedHandler();
-	public static final Object o = new CraftingHandler();
-	public static final Object p = new SmeltingHandler();
-	public static final Object q = new DamageHandler();
-	public static final Object r = new HealingHandler();
-	public static final Object s = new TossHandler();
-	public static final Object t = new EntityJoinHandler();
-	public static final Object u = new ExplosionHandler();
-	public static final Object v = new InteractionHandler();
-	public static final Object w = new ServerChatHandler();
-	public static final Object x = new PermissionHelper();
-	public static final Object y = new LivingUpdateHandler();
-	public static final Object z = new MinecartCollisionHandler();
-	
 	public static final Map<String, Object> handlers = Maps.newHashMap();
 	public static final Map<String, Object> handlers2 = Maps.newHashMap();
 
@@ -160,22 +132,22 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 		LogHelper.info("Initializing.");
 		Components.init();
 		if (Utils.developmentEnvironment()) {
-			LogHelper.info("Running in a dev environment.");
+			LogHelper.info("Running in new TNTHandler() dev environment.");
 			ConfigHandler.debug = true;
 		}
 		
-		ScriptingAPI.addTrigger("achievement", (IEventTrigger) b);
-		ScriptingAPI.addTrigger("command", (IEventTrigger) i);
-		ScriptingAPI.addTrigger("teleport", (IEventTrigger) j);
-		ScriptingAPI.addTrigger("craft", (IEventTrigger) o);
-		ScriptingAPI.addTrigger("smelt", (IEventTrigger) p);
-		ScriptingAPI.addTrigger("hurt", (IEventTrigger) q);
-		ScriptingAPI.addTrigger("heal", (IEventTrigger) r);
-		ScriptingAPI.addTrigger("toss", (IEventTrigger) s);
-		ScriptingAPI.addTrigger("entityjoin", (IEventTrigger) t);
-		ScriptingAPI.addTrigger("explosion", (IEventTrigger) u);
-		ScriptingAPI.addTrigger("interact", (IEventTrigger) v);
-		ScriptingAPI.addTrigger("chat", (IEventTrigger) w);
+		ScriptingAPI.addTrigger("achievement", new AchievementHandler());
+		ScriptingAPI.addTrigger("command", new CommandHandler());
+		ScriptingAPI.addTrigger("teleport", new TeleportationHandler());
+		ScriptingAPI.addTrigger("craft", new CraftingHandler());
+		ScriptingAPI.addTrigger("smelt", new SmeltingHandler());
+		ScriptingAPI.addTrigger("hurt", new DamageHandler());
+		ScriptingAPI.addTrigger("heal", new HealingHandler());
+		ScriptingAPI.addTrigger("toss", new TossHandler());
+		ScriptingAPI.addTrigger("entityjoin", new EntityJoinHandler());
+		ScriptingAPI.addTrigger("explosion", new ExplosionHandler());
+		ScriptingAPI.addTrigger("interact", new InteractionHandler());
+		ScriptingAPI.addTrigger("chat", new ServerChatHandler());
 		
 		try {
 			ScriptHandler.init();
@@ -195,95 +167,95 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 			throw new InvalidConfigValueException("ConfigHandler.forceDifficulty");
 		}
 		if (ConfigHandler.noTNT) {
-			registerHandler(a);
+			registerHandler(new TNTHandler());
 		}
 		if (ConfigHandler.noAchievements || ScriptHandler.onAchievement) {
-			registerHandler(b);
+			registerHandler(new AchievementHandler());
 		}
 		if (ConfigHandler.noWitherBoss) {
-			registerHandler(c);
+			registerHandler(new WitherHandler());
 		}
 		if (ConfigHandler.chainRecipes) {
 			ModRecipes.chain();
 		}
 		if (ConfigHandler.noDebug && Utils.isClient()) {
-			registerHandler(d);
+			registerHandler(new DebugHandler());
 		}
 		if (ConfigHandler.maxRenderDistance != 16 && Utils.isClient()) {
-			registerHandler(e);
+			registerHandler(new RenderDistanceHandler());
 		}
 		if (ConfigHandler.villagerProtection) {
-			registerHandler(f);
+			registerHandler(new VillagerHandler());
 		}
 		if (ConfigHandler.tabVanilla) {
 			ModCreativeTabs.preInit();
 		}
 		if (ConfigHandler.logStuff) {
-			registerHandler(g);
+			registerHandler(new EventLogger());
 		}
 		if (ConfigHandler.disableAnvil) {
-			registerHandler(h);
+			registerHandler(new AnvilHandler());
 		}
 		if (!CommandHandler.commandsToDisable.isEmpty() || ScriptHandler.onCommand) {
-			registerHandler(i);
+			registerHandler(new CommandHandler());
 		}
 		if (ConfigHandler.disableTeleportation || ScriptHandler.onTeleport) {
-			registerHandler(j);
+			registerHandler(new TeleportationHandler());
 		}
 		if (ConfigHandler.disableBonemeal) {
-			registerHandler(k);
+			registerHandler(new BonemealHandler());
 		}
 		if (ConfigHandler.disableHoes) {
-			registerHandler(l);
+			registerHandler(new ToolHandler());
 		}
 		if (ConfigHandler.disableBottleFluidInteraction) {
-			registerHandler(m);
+			registerHandler(new BottleHandler());
 		}
 		if (ConfigHandler.generateModList != 0) {
 			ModLister.init();
 		}
 		if (ConfigHandler.walkSpeed != 0.1F || ConfigHandler.flySpeed != 0.05F) {
-			registerHandler(n);
+			registerHandler(new SpeedHandler());
 		}
 		if (Loader.isModLoaded("AppleCore")) {
 			AppleCoreCompat.init();
 		}
 		if (ScriptHandler.onCraft) {
-			registerHandler2(o);
+			registerHandler2(new CraftingHandler());
 		}
 		if (ScriptHandler.onSmelt) {
-			registerHandler2(p);
+			registerHandler2(new SmeltingHandler());
 		}
 		if (ScriptHandler.onHurt) {
-			registerHandler(q);
+			registerHandler(new DamageHandler());
 		}
 		if (ScriptHandler.onHeal) {
-			registerHandler(r);
+			registerHandler(new HealingHandler());
 		}
 		if (ScriptHandler.onToss) {
-			registerHandler(s);
+			registerHandler(new TossHandler());
 		}
 		if (ScriptHandler.onEntityJoin) {
-			registerHandler(t);
+			registerHandler(new EntityJoinHandler());
 		}
 		if (ConfigHandler.explosionSizeMultiplier != 1) {
-			registerHandler(u);
+			registerHandler(new ExplosionHandler());
 		}
 		if (ScriptHandler.onInteraction) {
-			registerHandler(v);
+			registerHandler(new InteractionHandler());
 		}
 		if (ScriptHandler.onChat) {
-			registerHandler(w);
+			registerHandler(new ServerChatHandler());
 		}
 		if (ScriptHandler.permissions) {
 			PermissionHelper.init();
-			registerHandler(x);
+			registerHandler(new PermissionHelper());
 		}
 		if (ConfigHandler.worldSize > 0) {
-			registerHandler(y);
+			registerHandler(new LivingUpdateHandler());
 		}
 		if (ConfigHandler.explodeTNTMinecartsOnCollide) {
-			registerHandler(z);
+			registerHandler(new MinecartCollisionHandler());
 		}
 		SquidAPI.commands.add(new CommandSquidUtils());
 		

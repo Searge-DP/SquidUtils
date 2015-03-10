@@ -11,15 +11,17 @@ import net.minecraftforge.common.MinecraftForge;
 
 import com.github.coolsquid.squidapi.command.CommandBase;
 import com.github.coolsquid.squidapi.command.ISubCommand;
+import com.github.coolsquid.squidapi.helpers.server.chat.ChatMessage;
+import com.github.coolsquid.squidapi.helpers.server.chat.ChatMessage.Color;
 import com.github.coolsquid.squidutils.SquidUtils;
 
 public class CommandSquidUtils extends CommandBase {
 
 	public CommandSquidUtils() {
-		super("SquidUtils", "");
+		super("SquidUtils", "", new SubcommandUnregister());
 	}
 	
-	public static class Unregister implements ISubCommand {
+	private static class SubcommandUnregister implements ISubCommand {
 
 		@Override
 		public String getName() {
@@ -28,7 +30,17 @@ public class CommandSquidUtils extends CommandBase {
 
 		@Override
 		public void execute(ICommandSender sender, List<String> args) {
-			MinecraftForge.EVENT_BUS.unregister(SquidUtils.handlers.get(args.get(0)));
+			if (args.size() < 1) {
+				sender.addChatMessage(new ChatMessage("Not enough arguments."));
+				return;
+			}
+			try {
+				MinecraftForge.EVENT_BUS.unregister(SquidUtils.handlers.get(args.get(0)));
+				sender.addChatMessage(new ChatMessage("<SquidUtils> Handler successfully unregistered!"));
+			} catch (Exception e) {
+				sender.addChatMessage(new ChatMessage("<SquidUtils> ", e.getClass().getName()).setColor(Color.RED));
+				e.printStackTrace();
+			}
 		}
 	}
 }

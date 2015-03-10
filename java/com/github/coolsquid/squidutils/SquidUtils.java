@@ -93,7 +93,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 	
 	public static API getAPI() {
 		if (api == null) {
-			api = ReflectionHelper.in(Package.getPackage("com.github.coolsquid.squidutils.api")).getAnnotation(API.class);
+			api = ReflectionHelper.in("com.github.coolsquid.squidutils.api").getAnnotation(API.class);
 		}
 		return api;
 	}

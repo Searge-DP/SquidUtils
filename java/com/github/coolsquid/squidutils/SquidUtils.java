@@ -5,7 +5,7 @@
 package com.github.coolsquid.squidutils;
 
 import java.io.File;
-import java.util.Set;
+import java.util.Map;
 
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraftforge.common.MinecraftForge;
@@ -19,6 +19,7 @@ import com.github.coolsquid.squidapi.util.ContentRemover;
 import com.github.coolsquid.squidapi.util.Utils;
 import com.github.coolsquid.squidutils.api.ScriptingAPI;
 import com.github.coolsquid.squidutils.api.ScriptingAPI.IEventTrigger;
+import com.github.coolsquid.squidutils.command.CommandSquidUtils;
 import com.github.coolsquid.squidutils.compat.AppleCoreCompat;
 import com.github.coolsquid.squidutils.config.ConfigHandler;
 import com.github.coolsquid.squidutils.creativetab.ModCreativeTabs;
@@ -59,7 +60,7 @@ import com.github.coolsquid.squidutils.util.CrashReportInterceptor;
 import com.github.coolsquid.squidutils.util.ModInfo;
 import com.github.coolsquid.squidutils.util.ModLister;
 import com.github.coolsquid.squidutils.util.PackIntegrityChecker;
-import com.google.common.collect.Sets;
+import com.google.common.collect.Maps;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
@@ -107,12 +108,17 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 	public static final Object y = new LivingUpdateHandler();
 	public static final Object z = new MinecartCollisionHandler();
 	
-	public static final Set<Object> handlers = Sets.newHashSet();
-	public static final Set<Object> handlers2 = Sets.newHashSet();
+	public static final Map<String, Object> handlers = Maps.newHashMap();
+	public static final Map<String, Object> handlers2 = Maps.newHashMap();
 
 	public static void registerHandler(Object object) {
 		MinecraftForge.EVENT_BUS.register(object);
-		handlers.add(object);
+		handlers.put(object.getClass().getSimpleName(), object);
+	}
+	
+	public static void registerHandler2(Object object) {
+		FMLCommonHandler.instance().bus().register(object);
+		handlers2.put(object.getClass().getSimpleName(), object);
 	}
 	
 	public static boolean isDisabled;
@@ -243,12 +249,10 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 			AppleCoreCompat.init();
 		}
 		if (ScriptHandler.onCraft) {
-			FMLCommonHandler.instance().bus().register(o);
-			handlers2.add(o);
+			registerHandler2(o);
 		}
 		if (ScriptHandler.onSmelt) {
-			FMLCommonHandler.instance().bus().register(p);
-			handlers2.add(p);
+			registerHandler2(p);
 		}
 		if (ScriptHandler.onHurt) {
 			registerHandler(q);
@@ -281,6 +285,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 		if (ConfigHandler.explodeTNTMinecartsOnCollide) {
 			registerHandler(z);
 		}
+		SquidAPI.commands.add(new CommandSquidUtils());
 		
 		Utils.runVersionCheckerCompat("226025");
 		
@@ -320,10 +325,10 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 	
 	@Override
 	public boolean disable() {
-		for (Object object: handlers) {
+		for (Object object: handlers.values()) {
 			MinecraftForge.EVENT_BUS.unregister(object);
 		}
-		for (Object object: handlers2) {
+		for (Object object: handlers2.values()) {
 			FMLCommonHandler.instance().bus().unregister(object);
 		}
 		isDisabled = true;
@@ -334,10 +339,10 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 
 	@Override
 	public boolean enable() {
-		for (Object object: handlers) {
+		for (Object object: handlers.values()) {
 			MinecraftForge.EVENT_BUS.register(object);
 		}
-		for (Object object: handlers2) {
+		for (Object object: handlers2.values()) {
 			FMLCommonHandler.instance().bus().register(object);
 		}
 		isDisabled = false;

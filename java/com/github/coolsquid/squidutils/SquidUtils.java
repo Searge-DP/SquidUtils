@@ -60,7 +60,9 @@ import com.github.coolsquid.squidutils.util.CrashReportInterceptor;
 import com.github.coolsquid.squidutils.util.ModInfo;
 import com.github.coolsquid.squidutils.util.ModLister;
 import com.github.coolsquid.squidutils.util.PackIntegrityChecker;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+import com.google.common.collect.ImmutableMap.Builder;
 
 import cpw.mods.fml.common.API;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -73,6 +75,8 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLInterModComms.IMCEvent;
+import cpw.mods.fml.common.event.FMLInterModComms.IMCMessage;
 
 @Mod(modid = ModInfo.modid, name = ModInfo.name, version = ModInfo.version, dependencies = ModInfo.dependencies, canBeDeactivated = true, acceptableRemoteVersions = "*")
 public class SquidUtils extends SquidAPIMod implements Disableable {
@@ -152,11 +156,8 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 	@EventHandler
 	private void init(FMLInitializationEvent event) {
 		LogHelper.info("Initializing.");
+		
 		Components.init();
-		if (Utils.developmentEnvironment()) {
-			LogHelper.info("Running in new TNTHandler() dev environment.");
-			ConfigHandler.debug = true;
-		}
 		
 		ScriptingAPI.addTrigger("achievement", new AchievementHandler());
 		ScriptingAPI.addTrigger("command", new CommandHandler());
@@ -279,7 +280,8 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 		if (ConfigHandler.explodeTNTMinecartsOnCollide) {
 			registerHandler(new MinecartCollisionHandler());
 		}
-		SquidAPI.commands.add(new CommandSquidUtils());
+		
+		SquidAPI.registerCommands(new CommandSquidUtils());
 		
 		Utils.runVersionCheckerCompat("226025");
 		
@@ -318,7 +320,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 	}
 	
 	@Override
-	public boolean disable() {
+	public void disable() {
 		for (Object object: handlers.values()) {
 			MinecraftForge.EVENT_BUS.unregister(object);
 		}
@@ -328,11 +330,10 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 		isDisabled = true;
 		mod.setEnabledState(false);
 		LogHelper.info("SquidUtils has been disabled.");
-		return true;
 	}
 
 	@Override
-	public boolean enable() {
+	public void enable() {
 		for (Object object: handlers.values()) {
 			MinecraftForge.EVENT_BUS.register(object);
 		}
@@ -342,6 +343,25 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 		isDisabled = false;
 		mod.setEnabledState(true);
 		LogHelper.info("SquidUtils has been enabled.");
-		return true;
+	}
+	
+	@EventHandler
+	public void onIMC(IMCEvent event) {
+		for (IMCMessage msg: event.getMessages()) {
+			if (msg.getMessageType() == String.class && msg.key.equals("script")) {
+				String[] args = msg.getStringValue().split(" ");
+				Builder<String, String> builder = ImmutableMap.builder();
+				for (int b = 2; b < args.length; b++) {
+					String[] aa = args[b].split("=");
+					if (aa.length == 1) {
+						builder.put(aa[0], "");
+					}
+					else if (aa.length == 2) {
+						builder.put(aa[0], aa[1]);
+					}
+				}
+				ScriptingAPI.getCommands().get(args[0]).getSubcommands().get(args[1]).run(builder.build());
+			}
+		}
 	}
 }

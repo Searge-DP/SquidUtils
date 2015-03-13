@@ -10,6 +10,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockGlass;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
@@ -184,6 +185,9 @@ public class Components {
 					Drop drop = new Drop(item, IntUtils.parseInt(args.get("minamount")), IntUtils.parseInt(args.get("maxamount")), chance);
 					DropHandler.addDrop(block, drop);
 				}
+			}
+			else if (prop.equals("flammability")) {
+				Blocks.fire.setFireInfo(StringParser.parseBlock(args.get("block")), Integer.parseInt(args.get("encouragement")), Integer.parseInt(args.get("flammibility")));
 			}
 		}
 	}

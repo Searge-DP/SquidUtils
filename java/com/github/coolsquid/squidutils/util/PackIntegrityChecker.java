@@ -82,11 +82,11 @@ public class PackIntegrityChecker implements UncaughtExceptionHandler {
 		warn();
 	}
 	
-	public static final boolean areModsMissing() {
+	public static final boolean haveModsBeenRemoved() {
 		return !missingMods.isEmpty();
 	}
 	
-	public static final boolean areModsAdded() {
+	public static final boolean haveModsBeenAdded() {
 		return !addedMods.isEmpty();
 	}
 }

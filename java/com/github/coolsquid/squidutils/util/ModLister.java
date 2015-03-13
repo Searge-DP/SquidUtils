@@ -4,10 +4,14 @@
  *******************************************************************************/
 package com.github.coolsquid.squidutils.util;
 
+import java.util.List;
+
+import com.github.coolsquid.squidapi.helpers.FileHelper;
 import com.github.coolsquid.squidapi.logging.ILogger;
 import com.github.coolsquid.squidapi.logging.Logger;
 import com.github.coolsquid.squidutils.config.ConfigHandler;
 import com.github.coolsquid.squidutils.helpers.LogHelper;
+import com.google.common.collect.Lists;
 
 import cpw.mods.fml.common.Loader;
 
@@ -15,7 +19,7 @@ public class ModLister {
 	
 	private static final ILogger logger = new Logger("", "modlist.txt");
 	
-	public static final void init() {
+	public static void init() {
 		if (ConfigHandler.generateModList == 0) {
 			return;
 		}
@@ -27,16 +31,13 @@ public class ModLister {
 		}
 	}
 	
-	public static final void generateListOfModids() {
+	public static void generateListOfModids() {
 		LogHelper.info("Generating modlist...");
-		for (int a = 0; a < Loader.instance().getModList().size(); a++) {
-			logger.log(Loader.instance().getModList().get(a).getModId());
-			logger.log("\n");
-		}
+		FileHelper.writeFile("", "modlist.txt", getModids());
 		LogHelper.info("Generated modlist.");
 	}
 	
-	public static final void generateListOfModidsAndVersions() {
+	public static void generateListOfModidsAndVersions() {
 		LogHelper.info("Generating modlist...");
 		for (int a = 0; a < Loader.instance().getModList().size(); a++) {
 			logger.log(Loader.instance().getModList().get(a).getModId());
@@ -45,5 +46,9 @@ public class ModLister {
 			logger.log("\n");
 		}
 		LogHelper.info("Generated modlist.");
+	}
+	
+	public static List<String> getModids() {
+		return Lists.newArrayList(Loader.instance().getIndexedModList().keySet());
 	}
 }

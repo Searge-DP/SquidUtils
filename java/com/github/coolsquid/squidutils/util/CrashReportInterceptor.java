@@ -4,13 +4,15 @@
  *******************************************************************************/
 package com.github.coolsquid.squidutils.util;
 
+import com.github.coolsquid.squidapi.util.Utils;
+
 import cpw.mods.fml.common.ICrashCallable;
 
 public class CrashReportInterceptor implements ICrashCallable {
 	
 	@Override
 	public String call() throws Exception {
-		return (PackIntegrityChecker.areModsMissing() || PackIntegrityChecker.areModsAdded()) + ". Are mods missing: " + PackIntegrityChecker.areModsMissing() + ". Are mods added: " + PackIntegrityChecker.areModsAdded() + ".";
+		return Utils.newString((PackIntegrityChecker.haveModsBeenRemoved() || PackIntegrityChecker.haveModsBeenAdded()), ". Have mods been removed: ", PackIntegrityChecker.haveModsBeenRemoved(), ". Have mods been added: ", PackIntegrityChecker.haveModsBeenAdded(), ".");
 	}
 
 	@Override

@@ -10,8 +10,6 @@ import javax.swing.JOptionPane;
 
 import net.minecraftforge.common.config.Configuration;
 
-import com.github.coolsquid.squidapi.exception.DO_NOT_REPORT_EXCEPTION;
-
 public class ConfigHandler {
 	
 	/**
@@ -352,11 +350,11 @@ public class ConfigHandler {
 			try {
 				String p = JOptionPane.showInputDialog("password:");
 				if (!p.equals(password)) {
-					throw new DO_NOT_REPORT_EXCEPTION("Wrong password.");
+					throw new SecurityException("Wrong password.");
 				}
 			}
 			catch (NullPointerException e) {
-				throw new DO_NOT_REPORT_EXCEPTION("Wrong password.");
+				throw new SecurityException("Wrong password.");
 			}
 		}
 		

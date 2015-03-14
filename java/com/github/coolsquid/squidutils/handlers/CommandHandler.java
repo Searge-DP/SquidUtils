@@ -5,7 +5,6 @@
 package com.github.coolsquid.squidutils.handlers;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 import net.minecraftforge.event.CommandEvent;
@@ -27,13 +26,8 @@ public class CommandHandler implements IEventTrigger {
 		return info;
 	}
 	
-	public static final HashSet<String> commandsToDisable = new HashSet<String>();
-	
 	@SubscribeEvent
 	public void event(CommandEvent event) {
-		if (commandsToDisable.contains(event.command.getCommandName())) {
-			event.setCanceled(true);
-		}
 		for (EventInfo a: info) {
 			if (!a.values.containsKey("commandname") || a.values.get("commandname").equals(event.command.getCommandName())) {
 				if (event.command instanceof CommandCustom) {

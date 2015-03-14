@@ -15,6 +15,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.stats.Achievement;
+import net.minecraft.stats.AchievementList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -35,22 +37,25 @@ import com.github.coolsquid.squidapi.compat.RailCraftCompat;
 import com.github.coolsquid.squidapi.compat.RotaryCraftCompat;
 import com.github.coolsquid.squidapi.compat.ThermalExpansionCompat;
 import com.github.coolsquid.squidapi.creativetab.ITab;
+import com.github.coolsquid.squidapi.helpers.AchievementHelper;
 import com.github.coolsquid.squidapi.helpers.FishingHelper;
+import com.github.coolsquid.squidapi.helpers.LogHelper;
 import com.github.coolsquid.squidapi.helpers.RegistryHelper;
 import com.github.coolsquid.squidapi.item.ItemBasic;
+import com.github.coolsquid.squidapi.reflection.ReflectionHelper;
 import com.github.coolsquid.squidapi.util.ContentRemover;
 import com.github.coolsquid.squidapi.util.ContentRemover.ContentType;
 import com.github.coolsquid.squidapi.util.IntUtils;
 import com.github.coolsquid.squidapi.util.StringParser;
 import com.github.coolsquid.squidapi.util.Utils;
 import com.github.coolsquid.squidapi.world.biome.BiomeBase;
+import com.github.coolsquid.squidutils.SquidUtils;
 import com.github.coolsquid.squidutils.api.ScriptingAPI;
 import com.github.coolsquid.squidutils.api.ScriptingAPI.IScriptSubcommand;
 import com.github.coolsquid.squidutils.api.ScriptingAPI.ScriptCommand;
 import com.github.coolsquid.squidutils.command.CommandCustom;
 import com.github.coolsquid.squidutils.command.CommandInfo;
 import com.github.coolsquid.squidutils.command.CommandWeb;
-import com.github.coolsquid.squidutils.handlers.CommandHandler;
 import com.github.coolsquid.squidutils.handlers.DropHandler;
 import com.github.coolsquid.squidutils.handlers.DropHandler.Chance;
 import com.github.coolsquid.squidutils.handlers.DropHandler.Drop;
@@ -76,7 +81,7 @@ public class Components {
 		
 		Map<String, IScriptSubcommand> commandsubcommands = Maps.newHashMap();
 		commandsubcommands.put("create", new ScriptSubcommandCommandCreate());
-		commandsubcommands.put("modify", new ScriptSubcommandCommandDisable());
+		commandsubcommands.put("disable", new ScriptSubcommandCommandDisable());
 		ScriptingAPI.addCommand("command", new ScriptCommand(commandsubcommands));
 		
 		Map<String, IScriptSubcommand> tabsubcommands = Maps.newHashMap();
@@ -129,6 +134,16 @@ public class Components {
 		modsubcommands.put("BloodMagic", new ScriptSubcommandModsBloodMagic());
 		modsubcommands.put("ThermalExpansion", new ScriptSubcommandModsRailCraft());
 		ScriptingAPI.addCommand("mods", new ScriptCommand(modsubcommands));
+		
+		Map<String, IScriptSubcommand> achievementsubcommands = Maps.newHashMap();
+		achievementsubcommands.put("create", new ScriptSubcommandAchievementCreate());
+		achievementsubcommands.put("remove", new ScriptSubcommandAchievementRemove());
+		ScriptingAPI.addCommand("achievement", new ScriptCommand(achievementsubcommands));
+		
+		Map<String, IScriptSubcommand> smeltingsubcommands = Maps.newHashMap();
+		smeltingsubcommands.put("create", new ScriptSubcommandSmeltingCreate());
+		smeltingsubcommands.put("remove", new ScriptSubcommandSmeltingRemove());
+		ScriptingAPI.addCommand("smelting", new ScriptCommand(smeltingsubcommands));
 	}
 	
 	public static class ScriptSubcommandBlockCreate implements IScriptSubcommand {
@@ -187,7 +202,7 @@ public class Components {
 				}
 			}
 			else if (prop.equals("flammability")) {
-				Blocks.fire.setFireInfo(StringParser.parseBlock(args.get("block")), Integer.parseInt(args.get("encouragement")), Integer.parseInt(args.get("flammibility")));
+				Blocks.fire.setFireInfo(StringParser.parseBlock(args.get("block")), Integer.parseInt(args.get("encouragement")), Integer.parseInt(value));
 			}
 		}
 	}
@@ -218,6 +233,12 @@ public class Components {
 		@Override
 		public void run(Map<String, String> args) {
 			Item item = StringParser.parseItem(args.get("item"));
+			for (String modid: ContentRemover.getBlacklist()) {
+				if (item.getClass().getName().startsWith(modid)) {
+					LogHelper.warn(Utils.newString(modid, " has requested to be blacklisted from modification. ", args.get("item"), " will not be modified."));
+					return;
+				}
+			}
 			if (args.get("property").equals("stacksize")) {
 				item.setMaxStackSize(IntUtils.parseInt(args.get("value")));
 			}
@@ -256,7 +277,7 @@ public class Components {
 
 		@Override
 		public void run(Map<String, String> args) {
-			CommandHandler.commandsToDisable.add(args.get("name"));
+			SquidUtils.commandsToDisable.add(args.get("name"));
 		}
 	}
 	
@@ -278,14 +299,21 @@ public class Components {
 		@Override
 		public void run(Map<String, String> args) {
 			String type = args.get("type");
+			ItemStack output = StringParser.parseItemStack(args.get("output"));
+			for (String modid: ContentRemover.getBlacklist()) {
+				if (output.getItem().getClass().getName().startsWith(modid)) {
+					LogHelper.warn(Utils.newString(modid, " has requested to be blacklisted from modification. ", args.get("item"), " will not be modified."));
+					return;
+				}
+			}
 			if (type.equals("explosive")) {
-				RegistryHelper.addExplosionRecipe(StringParser.parseItem(args.get("input")), StringParser.parseItemStack(args.get("output")), Float.parseFloat(args.get("size")));
+				RegistryHelper.addExplosionRecipe(StringParser.parseItem(args.get("input")), output, Float.parseFloat(args.get("size")));
 			}
 			else if (type.equals("shapeless")) {
-				RegistryHelper.addShapelessRecipe(StringParser.parseItemStack(args.get("output")), new Item[] {StringParser.parseItem(args.get("input"))});
+				RegistryHelper.addShapelessRecipe(output, new ItemStack[] {StringParser.parseItemStack(args.get("input"))});
 			}
 			else if (type.equals("furnace")) {
-				RegistryHelper.addSmelting(StringParser.parseItem(args.get("input")), StringParser.parseItemStack("output"));
+				RegistryHelper.addSmelting(StringParser.parseItem(args.get("input")), output);
 			}
 		}
 	}
@@ -336,6 +364,13 @@ public class Components {
 		public void run(Map<String, String> args) {
 			String key = args.get("property");
 			int id = IntUtils.parseInt(args.get("id"));
+			BiomeGenBase biome = BiomeGenBase.getBiome(id);
+			for (String modid: ContentRemover.getBlacklist()) {
+				if (biome.getClass().getName().startsWith(modid)) {
+					LogHelper.warn(Utils.newString(modid, " has requested to be blacklisted from modification. The biome (", id, ") will not be modified."));
+					return;
+				}
+			}
 			if (key.equals("topblock")) {
 				BiomeGenBase.getBiome(id).topBlock = Block.getBlockFromName(args.get("block"));
 			}
@@ -593,6 +628,52 @@ public class Components {
 					}
 				}
 			}
+		}
+	}
+	
+	public static class ScriptSubcommandAchievementCreate implements IScriptSubcommand {
+
+		@Override
+		public void run(Map<String, String> args) {
+			if (args.containsKey("parent")) {
+				AchievementHelper.addAchievement(args.get("name"), Integer.parseInt(args.get("x")), Integer.parseInt(args.get("y")), StringParser.parseItem(args.get("icon")), AchievementHelper.getAchievement(args.get("parent")));
+			}
+			else {
+				AchievementHelper.addAchievement(args.get("name"), Integer.parseInt(args.get("x")), Integer.parseInt(args.get("y")), StringParser.parseItem(args.get("icon")));
+			}
+		}
+	}
+	
+	public static class ScriptSubcommandAchievementRemove implements IScriptSubcommand {
+
+		@Override
+		public void run(Map<String, String> args) {
+			Achievement target = AchievementHelper.getAchievement(args.get("name"));
+			for (int a = 0; a < AchievementList.achievementList.size(); a++) {
+				Achievement b = (Achievement) AchievementList.achievementList.get(a);
+				if (b == target) {
+					AchievementList.achievementList.remove(a);
+				}
+				else if (b.parentAchievement == target) {
+					ReflectionHelper.in(b).finalField("parentAchievement", "field_75992_c").set(AchievementHelper.getAchievement(args.get("replacement")));
+				}
+			}
+		}
+	}
+	
+	public static class ScriptSubcommandSmeltingCreate implements IScriptSubcommand {
+
+		@Override
+		public void run(Map<String, String> args) {
+			RegistryHelper.addSmelting(StringParser.parseItem(args.get("input")), StringParser.parseItemStack(args.get("output")));
+		}
+	}
+	
+	public static class ScriptSubcommandSmeltingRemove implements IScriptSubcommand {
+
+		@Override
+		public void run(Map<String, String> args) {
+			ContentRemover.remove(args.get("output"), ContentType.SMELTING);
 		}
 	}
 }

@@ -5,6 +5,7 @@
 package com.github.coolsquid.squidutils;
 
 import java.io.File;
+import java.util.HashSet;
 import java.util.Map;
 
 import net.minecraft.item.crafting.CraftingManager;
@@ -15,6 +16,7 @@ import com.github.coolsquid.squidapi.SquidAPI;
 import com.github.coolsquid.squidapi.SquidAPIMod;
 import com.github.coolsquid.squidapi.command.CommandDisable;
 import com.github.coolsquid.squidapi.exception.InvalidConfigValueException;
+import com.github.coolsquid.squidapi.helpers.server.ServerHelper;
 import com.github.coolsquid.squidapi.reflection.ReflectionHelper;
 import com.github.coolsquid.squidapi.util.ContentRemover;
 import com.github.coolsquid.squidapi.util.Utils;
@@ -61,8 +63,8 @@ import com.github.coolsquid.squidutils.util.ModInfo;
 import com.github.coolsquid.squidutils.util.ModLister;
 import com.github.coolsquid.squidutils.util.PackIntegrityChecker;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 import com.google.common.collect.ImmutableMap.Builder;
+import com.google.common.collect.Maps;
 
 import cpw.mods.fml.common.API;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -72,11 +74,12 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLInterModComms.IMCEvent;
+import cpw.mods.fml.common.event.FMLInterModComms.IMCMessage;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLInterModComms.IMCEvent;
-import cpw.mods.fml.common.event.FMLInterModComms.IMCMessage;
+import cpw.mods.fml.common.event.FMLServerStartedEvent;
 
 @Mod(modid = ModInfo.modid, name = ModInfo.name, version = ModInfo.version, dependencies = ModInfo.dependencies, canBeDeactivated = true, acceptableRemoteVersions = "*")
 public class SquidUtils extends SquidAPIMod implements Disableable {
@@ -172,13 +175,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 		ScriptingAPI.addTrigger("interact", new InteractionHandler());
 		ScriptingAPI.addTrigger("chat", new ServerChatHandler());
 		
-		try {
-			ScriptHandler.init();
-		} catch (Exception e) {
-			e.printStackTrace();
-			SquidAPI.logger.log(e);
-			SquidAPI.messages.add(Utils.newString(e.getClass().getName(), ". See SquidAPI.log for more information."));
-		}
+		ScriptHandler.init();
 
 		if (Utils.isClient()) {
 			registerHandler(new DifficultyHandler());
@@ -219,7 +216,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 		if (ConfigHandler.disableAnvil) {
 			registerHandler(new AnvilHandler());
 		}
-		if (!CommandHandler.commandsToDisable.isEmpty() || ScriptHandler.onCommand) {
+		if (ScriptHandler.onCommand) {
 			registerHandler(new CommandHandler());
 		}
 		if (ConfigHandler.disableTeleportation || ScriptHandler.onTeleport) {
@@ -362,6 +359,15 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 				}
 				ScriptingAPI.getCommands().get(args[0]).getSubcommands().get(args[1]).run(builder.build());
 			}
+		}
+	}
+	
+	public static final HashSet<String> commandsToDisable = new HashSet<String>();
+	
+	@EventHandler
+	public void onServerStarted(FMLServerStartedEvent event) {
+		for (String command: commandsToDisable) {
+			ServerHelper.removeCommand(command);
 		}
 	}
 }

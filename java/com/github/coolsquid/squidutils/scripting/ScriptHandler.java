@@ -12,9 +12,11 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.github.coolsquid.squidapi.SquidAPI;
 import com.github.coolsquid.squidapi.helpers.FileHelper;
 import com.github.coolsquid.squidapi.util.IntUtils;
 import com.github.coolsquid.squidapi.util.StringParser;
+import com.github.coolsquid.squidapi.util.Utils;
 import com.github.coolsquid.squidutils.api.ScriptingAPI;
 import com.github.coolsquid.squidutils.helpers.LogHelper;
 import com.github.coolsquid.squidutils.util.script.EffectInfo;
@@ -70,112 +72,118 @@ public class ScriptHandler {
 		return list;
 	}
 	
-	public static void init() throws Exception {
+	public static void init() {
 		for (int a = 0; a < getScripts().size(); a++) {
-			String s = getScripts().get(a);
-			if (!s.startsWith("#")) {
-				String[] s2 = s.split(" ");
-				String type = s2[0];
-				if (!type.equals("on")) {
-					Builder<String, String> builder = ImmutableMap.builder();
-					for (int b = 2; b < s2.length; b++) {
-						String[] aa = s2[b].split("=");
-						if (aa.length == 1) {
-							builder.put(aa[0], "");
+			try {
+				String s = getScripts().get(a);
+				if (!s.startsWith("#")) {
+					String[] s2 = s.split(" ");
+					String type = s2[0];
+					if (!type.equals("on")) {
+						Builder<String, String> builder = ImmutableMap.builder();
+						for (int b = 2; b < s2.length; b++) {
+							String[] aa = s2[b].split("=");
+							if (aa.length == 1) {
+								builder.put(aa[0], "");
+							}
+							else if (aa.length == 2) {
+								builder.put(aa[0], aa[1]);
+							}
 						}
-						else if (aa.length == 2) {
-							builder.put(aa[0], aa[1]);
-						}
+						ScriptingAPI.getCommands().get(type).getSubcommands().get(s2[1]).run(builder.build());
 					}
-					ScriptingAPI.getCommands().get(type).getSubcommands().get(s2[1]).run(builder.build());
+					else {
+						Builder<String, Object> builder = ImmutableMap.builder();
+						String trigger = s2[1];
+						if (trigger.equals("craft")) {
+							onCraft = true;
+						}
+						else if (trigger.equals("smelt")) {
+							onSmelt = true;
+						}
+						else if (trigger.equals("hurt")) {
+							onHurt = true;
+						}
+						else if (trigger.equals("toss")) {
+							onToss = true;
+						}
+						else if (trigger.equals("teleport")) {
+							onTeleport = true;
+						}
+						else if (trigger.equals("heal")) {
+							onHeal = true;
+						}
+						else if (trigger.equals("entityjoin")) {
+							onEntityJoin = true;
+						}
+						else if (trigger.equals("achievement")) {
+							onAchievement = true;
+						}
+						else if (trigger.equals("hungerregen")) {
+							onHungerRegen = true;
+						}
+						else if (trigger.equals("interaction")) {
+							onInteraction = true;
+						}
+						else if (trigger.equals("explosion")) {
+							onExplosion = true;
+						}
+						else if (trigger.equals("command")) {
+							onCommand = true;
+						}
+						else if (trigger.equals("chat")) {
+							onChat = true;
+						}
+						
+						builder.put("minchance", 1);
+						builder.put("maxchance", 1);
+						builder.put("minhealth", -1F);
+						builder.put("maxhealth", Float.MAX_VALUE);
+						builder.put("minarmor", -1);
+						builder.put("maxarmor", Integer.MAX_VALUE);
+						
+						for (int b = 2; b < s2.length; b++) {
+							String[] aa = s2[b].split("=");
+							String key = aa[0];
+							if (key.matches("(requiredperm|oppositeperm)")) {
+								permissions = true;
+							}
+							if (aa.length == 1) {
+								builder.put(key, new Object());
+							}
+							else if (aa.length == 2) {
+								Object value = aa[1];
+								if (key.equals("item")) {
+									value = StringParser.parseItem((String) value);
+								}
+								else if (key.matches("(size|minhealth|maxhealth|damageamount)")) {
+									value = Float.parseFloat((String) value);
+								}
+								else if (key.matches("(minchance|maxchance|minarmor|maxarmor|fireduration|foodlevel|experience)")) {
+									value = IntUtils.parseInt((String) value);
+								}
+								else if (key.equals("effect")) {
+									String[] args = ((String) value).split(":");
+									value = new EffectInfo(IntUtils.parseInt(args[0]), IntUtils.parseInt(args[1]), IntUtils.parseInt(args[2]));
+								}
+								else if (key.equals("blocktoplace")) {
+									value = StringParser.parseBlock((String) value);
+								}
+								else if (key.equals("item")) {
+									value = StringParser.parseItem((String) value);
+								}
+								builder.put(key, value);
+							}
+						}
+						EventInfo info = new EventInfo();
+						info.values = builder.build();
+						ScriptingAPI.getTriggers().get(trigger).info().add(info);
+					}
 				}
-				else {
-					Builder<String, Object> builder = ImmutableMap.builder();
-					String trigger = s2[1];
-					if (trigger.equals("craft")) {
-						onCraft = true;
-					}
-					else if (trigger.equals("smelt")) {
-						onSmelt = true;
-					}
-					else if (trigger.equals("hurt")) {
-						onHurt = true;
-					}
-					else if (trigger.equals("toss")) {
-						onToss = true;
-					}
-					else if (trigger.equals("teleport")) {
-						onTeleport = true;
-					}
-					else if (trigger.equals("heal")) {
-						onHeal = true;
-					}
-					else if (trigger.equals("entityjoin")) {
-						onEntityJoin = true;
-					}
-					else if (trigger.equals("achievement")) {
-						onAchievement = true;
-					}
-					else if (trigger.equals("hungerregen")) {
-						onHungerRegen = true;
-					}
-					else if (trigger.equals("interaction")) {
-						onInteraction = true;
-					}
-					else if (trigger.equals("explosion")) {
-						onExplosion = true;
-					}
-					else if (trigger.equals("command")) {
-						onCommand = true;
-					}
-					else if (trigger.equals("chat")) {
-						onChat = true;
-					}
-					
-					builder.put("minchance", 1);
-					builder.put("maxchance", 1);
-					builder.put("minhealth", -1F);
-					builder.put("maxhealth", Float.MAX_VALUE);
-					builder.put("minarmor", -1);
-					builder.put("maxarmor", Integer.MAX_VALUE);
-					
-					for (int b = 2; b < s2.length; b++) {
-						String[] aa = s2[b].split("=");
-						String key = aa[0];
-						if (key.matches("(requiredperm|oppositeperm)")) {
-							permissions = true;
-						}
-						if (aa.length == 1) {
-							builder.put(key, new Object());
-						}
-						else if (aa.length == 2) {
-							Object value = aa[1];
-							if (key.equals("item")) {
-								value = StringParser.parseItem((String) value);
-							}
-							else if (key.matches("(size|minhealth|maxhealth|damageamount)")) {
-								value = Float.parseFloat((String) value);
-							}
-							else if (key.matches("(minchance|maxchance|minarmor|maxarmor|fireduration|foodlevel|experience)")) {
-								value = IntUtils.parseInt((String) value);
-							}
-							else if (key.equals("effect")) {
-								String[] args = ((String) value).split(":");
-								value = new EffectInfo(IntUtils.parseInt(args[0]), IntUtils.parseInt(args[1]), IntUtils.parseInt(args[2]));
-							}
-							else if (key.equals("blocktoplace")) {
-								value = StringParser.parseBlock((String) value);
-							}
-							else if (key.equals("item")) {
-								value = StringParser.parseItem((String) value);
-							}
-							builder.put(key, value);
-						}
-					}
-					EventInfo info = new EventInfo();
-					info.values = builder.build();
-					ScriptingAPI.getTriggers().get(trigger).info().add(info);
-				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				SquidAPI.logger.log(e);
+				SquidAPI.messages.add(Utils.newString(e.getClass().getName(), ". See SquidAPI.log for more information."));
 			}
 		}
 	}

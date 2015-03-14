@@ -214,7 +214,7 @@ public class Components {
 			String name = args.get("name");
 			if (args.get("type").equals("food")) {
 				ItemFood food = new ItemFood(IntUtils.parseInt(args.get("bars")), Float.parseFloat(args.get("saturation")), Boolean.parseBoolean(args.get("wolfs")));
-				if (Boolean.parseBoolean("alwaysedible")) {
+				if (Boolean.parseBoolean(args.get("alwaysedible"))) {
 					food.setAlwaysEdible();
 				}
 				if (args.containsKey("potionid")) {

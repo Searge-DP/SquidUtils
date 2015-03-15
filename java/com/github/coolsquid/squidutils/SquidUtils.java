@@ -366,8 +366,19 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 	
 	@EventHandler
 	public void onServerStarted(FMLServerStartedEvent event) {
-		for (String command: commandsToDisable) {
-			ServerHelper.removeCommand(command);
+		if (ConfigHandler.removeAllCommands) {
+			for (String command: ServerHelper.getCommands().keySet()) {
+				if (!ContentRemover.getBlacklist().isBlacklisted(ServerHelper.getCommands().get(command))) {
+					ServerHelper.removeCommand(command);
+				}
+			}
+		}
+		else {
+			for (String command: commandsToDisable) {
+				if (!ContentRemover.getBlacklist().isBlacklisted(ServerHelper.getCommands().get(command))) {
+					ServerHelper.removeCommand(command);
+				}
+			}
 		}
 	}
 }

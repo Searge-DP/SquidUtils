@@ -288,6 +288,8 @@ public class ConfigHandler {
 	public static int worldSize = 0;
 
 	public static boolean explodeTNTMinecartsOnCollide;
+
+	public static boolean removeAllCommands;
 	
 	/**
 	 * Sets category comments.
@@ -344,6 +346,7 @@ public class ConfigHandler {
 		explosionSizeMultiplier = config.getFloat("explosionSizeMultiplier", CATEGORY_GENERAL, 1, 0, 1080, "Multiplies the size of all explosions by the specified amount.");
 		worldSize = config.getInt("worldSize", CATEGORY_GENERAL, 0, 0, Integer.MAX_VALUE, "Sets the size of the world. Set to 0 to disable.");
 		explodeTNTMinecartsOnCollide = config.getBoolean("explodeTNTMinecartsOnCollide", CATEGORY_GENERAL, false, "Explodes minecarts with TNT whenever they collide with an entity.");
+		removeAllCommands = config.getBoolean("removeAllCommands", CATEGORY_GENERAL, false, "Removes all commands, except commands made with SquidUtils' scripting system. Other mods can blacklist their commands from removal.");
 		
 		String password = config.getString("password", CATEGORY_GENERAL, "", "Sets a password required to launch Minecraft.");
 		if (!(password.isEmpty())) {

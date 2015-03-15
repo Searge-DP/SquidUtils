@@ -308,7 +308,7 @@ public class ConfigHandler {
 	 */
 	
 	private static final void readConfig() {
-		forceDifficulty = config.getString("forceDifficulty", CATEGORY_GAMESETTINGS, "FALSE", "Forces the specified difficulty. Allows for HARD, NORMAL, EASY, PEACEFUL or FALSE. Set to FALSE to disable.");
+		forceDifficulty = config.getString("forceDifficulty", CATEGORY_GAMESETTINGS, "FALSE", "Forces the specified difficulty. Allows for HARDCORE, HARD, NORMAL, EASY, PEACEFUL or FALSE. Set to FALSE to disable.");
 		noTNT = config.getBoolean("noTNT", CATEGORY_GENERAL, false, "Stops TNT from exploding.");
 		noAchievements = config.getBoolean("noAchievements", CATEGORY_GENERAL, false, "Disables achievements.");
 		noWitherBoss = config.getBoolean("noWitherBoss", CATEGORY_GENERAL, false, "Disables the witherboss.");

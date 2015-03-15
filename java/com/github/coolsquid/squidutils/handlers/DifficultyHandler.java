@@ -4,6 +4,8 @@
  *******************************************************************************/
 package com.github.coolsquid.squidutils.handlers;
 
+import com.github.coolsquid.squidapi.world.WorldHelper;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.EnumDifficulty;
@@ -36,6 +38,9 @@ public class DifficultyHandler {
 			else if (Minecraft.getMinecraft().gameSettings.difficulty != EnumDifficulty.PEACEFUL && difficulty.equalsIgnoreCase("PEACEFUL")) {
 				Minecraft.getMinecraft().gameSettings.difficulty = EnumDifficulty.PEACEFUL;
 				Minecraft.getMinecraft().gameSettings.saveOptions();
+			}
+			else if (difficulty.equalsIgnoreCase("HARDCORE") && !WorldHelper.isHardcore(Minecraft.getMinecraft().theWorld)) {
+				WorldHelper.setHardcore(Minecraft.getMinecraft().theWorld);
 			}
 		}
 	}

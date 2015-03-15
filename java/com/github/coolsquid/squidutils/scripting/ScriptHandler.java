@@ -159,7 +159,7 @@ public class ScriptHandler {
 								else if (key.matches("(size|minhealth|maxhealth|damageamount)")) {
 									value = Float.parseFloat((String) value);
 								}
-								else if (key.matches("(minchance|maxchance|minarmor|maxarmor|fireduration|foodlevel|experience)")) {
+								else if (key.matches("(minchance|maxchance|minarmor|maxarmor|duration|foodlevel|experience)")) {
 									value = IntUtils.parseInt((String) value);
 								}
 								else if (key.equals("effect")) {

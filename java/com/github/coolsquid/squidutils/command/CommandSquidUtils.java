@@ -13,6 +13,7 @@ import com.github.coolsquid.squidapi.command.CommandBase;
 import com.github.coolsquid.squidapi.command.ISubCommand;
 import com.github.coolsquid.squidapi.helpers.server.chat.ChatMessage;
 import com.github.coolsquid.squidapi.helpers.server.chat.ChatMessage.Color;
+import com.github.coolsquid.squidapi.util.Utils;
 import com.github.coolsquid.squidutils.SquidUtils;
 
 public class CommandSquidUtils extends CommandBase {
@@ -42,5 +43,10 @@ public class CommandSquidUtils extends CommandBase {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	@Override
+	public boolean canCommandSenderUseCommand(ICommandSender sender) {
+		return Utils.isClient();
 	}
 }

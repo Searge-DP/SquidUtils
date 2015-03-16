@@ -35,7 +35,7 @@ public class CommandSquidUtils extends CommandBase {
 				return;
 			}
 			try {
-				MinecraftForge.EVENT_BUS.unregister(SquidUtils.handlers.get(args.get(0)));
+				MinecraftForge.EVENT_BUS.unregister(SquidUtils.instance().handlers.get(args.get(0)));
 				sender.addChatMessage(new ChatMessage("<SquidUtils> Handler successfully unregistered!"));
 			} catch (Exception e) {
 				sender.addChatMessage(new ChatMessage("<SquidUtils> ", e.getClass().getName()).setColor(Color.RED));

@@ -4,12 +4,13 @@
  *******************************************************************************/
 package com.github.coolsquid.squidutils.handlers;
 
-import com.github.coolsquid.squidapi.world.WorldHelper;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+
+import com.github.coolsquid.squidapi.world.WorldHelper;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class DifficultyHandler {
@@ -39,8 +40,8 @@ public class DifficultyHandler {
 				Minecraft.getMinecraft().gameSettings.difficulty = EnumDifficulty.PEACEFUL;
 				Minecraft.getMinecraft().gameSettings.saveOptions();
 			}
-			else if (difficulty.equalsIgnoreCase("HARDCORE") && !WorldHelper.isHardcore(Minecraft.getMinecraft().theWorld)) {
-				WorldHelper.setHardcore(Minecraft.getMinecraft().theWorld);
+			else if (difficulty.equalsIgnoreCase("HARDCORE") && !WorldHelper.instance().isHardcore()) {
+				WorldHelper.instance().setHardcore();
 			}
 		}
 	}

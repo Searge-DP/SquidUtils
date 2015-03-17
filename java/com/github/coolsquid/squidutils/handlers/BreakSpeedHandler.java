@@ -4,24 +4,26 @@
  *******************************************************************************/
 package com.github.coolsquid.squidutils.handlers;
 
+import java.util.HashMap;
+
 import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
+
+import com.google.common.collect.Maps;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class BreakSpeedHandler {
 	
+	public static final HashMap<Integer, Float> layers = Maps.newHashMap();
+	
 	@SubscribeEvent
 	public void breakSpeed(BreakSpeed event) {
-		if (event.y < 10) {
-			event.newSpeed = event.originalSpeed / 8;
-		}
-		else if (event.y < 30) {
-			event.newSpeed = event.originalSpeed / 6;
-		}
-		else if (event.y < 50) {
-			event.newSpeed = event.originalSpeed / 4;
-		}
-		else if (event.y < 63) {
-			event.newSpeed = event.originalSpeed / 2;
+		for (int a = event.y;; a++) {
+			Float b = layers.get(a);
+			if (b != null && b != 1F) {
+				event.newSpeed = event.originalSpeed / layers.get(a);
+				return;
+			}
 		}
 	}
 }

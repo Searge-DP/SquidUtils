@@ -47,12 +47,6 @@ public class ConfigHandler {
 	private static final String CATEGORY_GENERAL = "General";
 	
 	/**
-	 * For intermod compatibility.
-	 */
-	
-	private static final String CATEGORY_COMPAT = "Compatibility";
-	
-	/**
 	 * Options regarding mobs.
 	 */
 	
@@ -83,10 +77,12 @@ public class ConfigHandler {
 	private static final String CATEGORY_MODPACKS = "Modpack specific options";
 	
 	/**
-	 * Hunger options. REQUIRES APPLE CORE!
+	 * Hunger options. REQUIRES APPLECORE!
 	 */
 	
 	private static final String CATEGORY_HUNGER = "Hunger options";
+
+	private static final String CATEGORY_DISABLING = "Disabling";
 	
 	/*
 	 * Hardcoded options. Modify them as you want to.
@@ -297,12 +293,12 @@ public class ConfigHandler {
 	
 	private static void initCategories() {
 		config.setCategoryComment(CATEGORY_GENERAL, "General options.");
-		config.setCategoryComment(CATEGORY_COMPAT, "Compatibility options.");
 		config.setCategoryComment(CATEGORY_MOBS, "Mob options.");
 		config.setCategoryComment(CATEGORY_PROPERTIES, "Configure block and item properties.");
 		config.setCategoryComment(CATEGORY_GAMESETTINGS, "Force game options.");
 		config.setCategoryComment(CATEGORY_CREATIVETABS, "Disable or enable creative tabs.");
 		config.setCategoryComment(CATEGORY_HUNGER, "Modify hunger options. REQUIRES APPLE CORE!");
+		config.setCategoryComment(CATEGORY_DISABLING, "Disabling of various things.");
 	}
 	
 	/**

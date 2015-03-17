@@ -26,6 +26,7 @@ import com.github.coolsquid.squidapi.helpers.server.ServerHelper;
 import com.github.coolsquid.squidapi.reflection.ReflectionHelper;
 import com.github.coolsquid.squidapi.util.ContentRemover;
 import com.github.coolsquid.squidapi.util.ContentRemover.ContentType;
+import com.github.coolsquid.squidapi.util.IterableMap;
 import com.github.coolsquid.squidapi.util.Utils;
 import com.github.coolsquid.squidutils.api.ScriptingAPI;
 import com.github.coolsquid.squidutils.command.CommandSquidUtils;
@@ -36,6 +37,7 @@ import com.github.coolsquid.squidutils.handlers.AchievementHandler;
 import com.github.coolsquid.squidutils.handlers.AnvilHandler;
 import com.github.coolsquid.squidutils.handlers.BonemealHandler;
 import com.github.coolsquid.squidutils.handlers.BottleHandler;
+import com.github.coolsquid.squidutils.handlers.BreakSpeedHandler;
 import com.github.coolsquid.squidutils.handlers.CommandHandler;
 import com.github.coolsquid.squidutils.handlers.CraftingHandler;
 import com.github.coolsquid.squidutils.handlers.DamageHandler;
@@ -66,7 +68,8 @@ import com.github.coolsquid.squidutils.helpers.LogHelper;
 import com.github.coolsquid.squidutils.helpers.PermissionHelper;
 import com.github.coolsquid.squidutils.scripting.ScriptHandler;
 import com.github.coolsquid.squidutils.scripting.components.Components;
-import com.github.coolsquid.squidutils.util.CrashReportInterceptor;
+import com.github.coolsquid.squidutils.util.CrashReportInterceptor.CrashMessage;
+import com.github.coolsquid.squidutils.util.CrashReportInterceptor.Modified;
 import com.github.coolsquid.squidutils.util.ModInfo;
 import com.github.coolsquid.squidutils.util.ModLister;
 import com.github.coolsquid.squidutils.util.PackIntegrityChecker;
@@ -136,6 +139,8 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 	private final SquidAPIConfig bannedItems = new SquidAPIConfig(new File("./config/SquidUtils/BannedItems.cfg"));
 	private final SquidAPIConfig bannedPotions = new SquidAPIConfig(new File("./config/SquidUtils/BannedPotions.cfg"));
 	private final SquidAPIConfig bannedEnchantments = new SquidAPIConfig(new File("./config/SquidUtils/BannedEnchantments.cfg"));
+	private final SquidAPIConfig layeredHardness = new SquidAPIConfig(new File("./config/SquidUtils/LayeredHardness.cfg"));
+	private final SquidAPIConfig crashMessages = new SquidAPIConfig(new File("./config/SquidUtils/CrashMessages.cfg"));
 	
 	/**
 	 * Preinit. Loads the config, clears Vanilla recipes (if toggled).
@@ -155,7 +160,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 		
 		if (ConfigHandler.modList.length != 0) {
 			PackIntegrityChecker.check();
-			FMLCommonHandler.instance().registerCrashCallable(new CrashReportInterceptor());
+			FMLCommonHandler.instance().registerCrashCallable(new Modified());
 		}
 		if (ConfigHandler.clearRecipes == 1) {
 			CraftingManager.getInstance().getRecipeList().clear();
@@ -225,6 +230,23 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 			if (b != null && this.bannedEnchantments.get(b.getName(), false)) {
 				Enchantment.enchantmentsList[a] = null;
 			}
+		}
+		
+		this.layeredHardness.addHeader("//Layered hardness");
+		for (int a = 1; a < 27; a++) {
+			BreakSpeedHandler.layers.put(a * 10, this.layeredHardness.get(Utils.newString("layer", a), 1F));
+		}
+		
+		for (Float a: BreakSpeedHandler.layers.values()) {
+			if (a != 1F) {
+				this.registerHandler(new BreakSpeedHandler());
+				break;
+			}
+		}
+
+		IterableMap<String, Object> crashMessages = this.crashMessages.getEntries();
+		for (String label: crashMessages) {
+			FMLCommonHandler.instance().registerCrashCallable(new CrashMessage(label, crashMessages.get(label).toString()));
 		}
 
 		if (!ItemBanHandler.bannedItems.isEmpty()) {
@@ -331,7 +353,9 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 			this.registerHandler(new MinecartCollisionHandler());
 		}
 		
-		SquidAPI.registerCommands(new CommandSquidUtils());
+		if (Utils.isClient()) {
+			SquidAPI.registerCommands(new CommandSquidUtils());
+		}
 		
 		Utils.runVersionCheckerCompat("226025");
 		
@@ -420,17 +444,11 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 	@EventHandler
 	public void onServerStarted(FMLServerStartedEvent event) {
 		if (ConfigHandler.removeAllCommands) {
-			for (String command: ServerHelper.getCommands().keySet()) {
-				if (!ContentRemover.getBlacklist().isBlacklisted(ServerHelper.getCommands().get(command))) {
-					ServerHelper.removeCommand(command);
-				}
-			}
+			ServerHelper.getCommands().clear();
 		}
 		else {
 			for (String command: this.commandsToDisable) {
-				if (!ContentRemover.getBlacklist().isBlacklisted(ServerHelper.getCommands().get(command))) {
-					ServerHelper.removeCommand(command);
-				}
+				ServerHelper.removeCommand(command);
 			}
 		}
 	}

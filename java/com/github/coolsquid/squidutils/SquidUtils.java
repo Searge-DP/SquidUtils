@@ -244,6 +244,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 			}
 		}
 
+		this.crashMessages.addHeader("//Crash messages");
 		IterableMap<String, Object> crashMessages = this.crashMessages.getEntries();
 		for (String label: crashMessages) {
 			FMLCommonHandler.instance().registerCrashCallable(new CrashMessage(label, crashMessages.get(label).toString()));

@@ -4,6 +4,7 @@
  *******************************************************************************/
 package com.github.coolsquid.squidutils.util;
 
+import java.io.File;
 import java.util.List;
 
 import com.github.coolsquid.squidapi.helpers.FileHelper;
@@ -33,10 +34,10 @@ public class ModLister {
 	
 	public static void generateListOfModids() {
 		LogHelper.info("Generating modlist...");
-		FileHelper.writeFile("", "modlist.txt", getModids());
+		FileHelper.writeLines(new File("modlist.txt"), getModids());
 		LogHelper.info("Generated modlist.");
 	}
-	
+
 	public static void generateListOfModidsAndVersions() {
 		LogHelper.info("Generating modlist...");
 		for (int a = 0; a < Loader.instance().getModList().size(); a++) {

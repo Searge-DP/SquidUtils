@@ -286,6 +286,8 @@ public class ConfigHandler {
 	public static boolean explodeTNTMinecartsOnCollide;
 
 	public static boolean removeAllCommands;
+
+	public static boolean keepTTCoreBug;
 	
 	/**
 	 * Sets category comments.
@@ -343,6 +345,7 @@ public class ConfigHandler {
 		worldSize = config.getInt("worldSize", CATEGORY_GENERAL, 0, 0, Integer.MAX_VALUE, "Sets the size of the world. Set to 0 to disable.");
 		explodeTNTMinecartsOnCollide = config.getBoolean("explodeTNTMinecartsOnCollide", CATEGORY_GENERAL, false, "Explodes minecarts with TNT whenever they collide with an entity.");
 		removeAllCommands = config.getBoolean("removeAllCommands", CATEGORY_GENERAL, false, "Removes all commands, except commands made with SquidUtils' scripting system. Other mods can blacklist their commands from removal.");
+		keepTTCoreBug = config.getBoolean("keepTTCoreBug", CATEGORY_GENERAL, false, "Keeps a ttCore/SquidUtils interaction bug launching fireworks whenever the player opens his inventory.");
 		
 		String password = config.getString("password", CATEGORY_GENERAL, "", "Sets a password required to launch Minecraft.");
 		if (!(password.isEmpty())) {

@@ -14,6 +14,7 @@ import com.github.coolsquid.squidutils.config.ConfigHandler;
 import com.github.coolsquid.squidutils.util.script.EventEffectHelper;
 import com.github.coolsquid.squidutils.util.script.EventInfo;
 
+import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class AchievementHandler implements IEventTrigger {
@@ -25,8 +26,8 @@ public class AchievementHandler implements IEventTrigger {
 		return info;
 	}
 
-	@SubscribeEvent
-	public final void event(AchievementEvent event) {
+	@SubscribeEvent(priority = EventPriority.HIGHEST)
+	public void onAchievement(AchievementEvent event) {
 		if (ConfigHandler.noAchievements) event.setCanceled(true);
 		for (EventInfo a: info) {
 			EventEffectHelper.performEffects(a, event.entityLiving);

@@ -46,5 +46,5 @@ public class ModInfo {
 	 * List of dependencies.
 	 */
 	
-	public static final String dependencies = "after:AppleCore;required-after:SquidAPI;after:RotaryCraft;after:ThermalExpansion";
+	public static final String dependencies = "required-after:SquidAPI;after:AppleCore";
 }

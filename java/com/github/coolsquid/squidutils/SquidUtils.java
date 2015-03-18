@@ -14,7 +14,10 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.item.Item;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.potion.Potion;
+import net.minecraft.util.DamageSource;
+import net.minecraft.world.WorldType;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.AchievementEvent;
 
 import com.github.coolsquid.squidapi.Disableable;
 import com.github.coolsquid.squidapi.SquidAPI;
@@ -24,9 +27,13 @@ import com.github.coolsquid.squidapi.config.SquidAPIConfig;
 import com.github.coolsquid.squidapi.exception.InvalidConfigValueException;
 import com.github.coolsquid.squidapi.helpers.server.ServerHelper;
 import com.github.coolsquid.squidapi.reflection.ReflectionHelper;
+import com.github.coolsquid.squidapi.registry.DamageSourceRegistry;
 import com.github.coolsquid.squidapi.util.ContentRemover;
 import com.github.coolsquid.squidapi.util.ContentRemover.ContentType;
+import com.github.coolsquid.squidapi.util.EmptyEnchantment;
+import com.github.coolsquid.squidapi.util.EmptyPotion;
 import com.github.coolsquid.squidapi.util.IterableMap;
+import com.github.coolsquid.squidapi.util.StringParser;
 import com.github.coolsquid.squidapi.util.Utils;
 import com.github.coolsquid.squidutils.api.ScriptingAPI;
 import com.github.coolsquid.squidutils.command.CommandSquidUtils;
@@ -73,6 +80,8 @@ import com.github.coolsquid.squidutils.util.CrashReportInterceptor.Modified;
 import com.github.coolsquid.squidutils.util.ModInfo;
 import com.github.coolsquid.squidutils.util.ModLister;
 import com.github.coolsquid.squidutils.util.PackIntegrityChecker;
+import com.github.coolsquid.squidutils.util.script.EventEffectHelper;
+import com.github.coolsquid.squidutils.util.script.EventInfo;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
 import com.google.common.collect.Maps;
@@ -83,7 +92,6 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLInterModComms.IMCEvent;
 import cpw.mods.fml.common.event.FMLInterModComms.IMCMessage;
@@ -91,13 +99,13 @@ import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
-@Mod(modid = ModInfo.modid, name = ModInfo.name, version = ModInfo.version, dependencies = ModInfo.dependencies, canBeDeactivated = true, acceptableRemoteVersions = "*")
+@Mod(modid = ModInfo.modid, name = ModInfo.name, version = ModInfo.version, dependencies = ModInfo.dependencies, acceptableRemoteVersions = "*")
 public class SquidUtils extends SquidAPIMod implements Disableable {
 	
 	@Instance
 	private static SquidUtils instance;
-	private ModContainer mod;
 	@Deprecated
 	private API api;
 	
@@ -116,31 +124,33 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 		return this.api;
 	}
 	
-	public ModContainer getMod() {
-		return this.mod;
-	}
-	
 	public final Map<String, Object> handlers = Maps.newHashMap();
 	public final Map<String, Object> handlers2 = Maps.newHashMap();
 
 	public void registerHandler(Object object) {
+		String name = object.getClass().getSimpleName();
+		LogHelper.info("Registering handler ", name, ".");
 		MinecraftForge.EVENT_BUS.register(object);
-		this.handlers.put(object.getClass().getSimpleName(), object);
+		this.handlers.put(name, object);
 	}
 	
 	public void registerHandler2(Object object) {
+		String name = object.getClass().getSimpleName();
+		LogHelper.info("Registering handler ", name, ".");
 		FMLCommonHandler.instance().bus().register(object);
-		this.handlers2.put(object.getClass().getSimpleName(), object);
+		this.handlers2.put(name, object);
 	}
 	
 	public boolean isDisabled;
 	
-	private final SquidAPIConfig bannedMobs = new SquidAPIConfig(new File("./config/SquidUtils/BannedMobs.cfg"));
-	private final SquidAPIConfig bannedItems = new SquidAPIConfig(new File("./config/SquidUtils/BannedItems.cfg"));
-	private final SquidAPIConfig bannedPotions = new SquidAPIConfig(new File("./config/SquidUtils/BannedPotions.cfg"));
-	private final SquidAPIConfig bannedEnchantments = new SquidAPIConfig(new File("./config/SquidUtils/BannedEnchantments.cfg"));
+	private final SquidAPIConfig mobs = new SquidAPIConfig(new File("./config/SquidUtils/Mobs.cfg"));
+	private final SquidAPIConfig items = new SquidAPIConfig(new File("./config/SquidUtils/Items.cfg"));
+	private final SquidAPIConfig potions = new SquidAPIConfig(new File("./config/SquidUtils/Potions.cfg"));
+	private final SquidAPIConfig enchantments = new SquidAPIConfig(new File("./config/SquidUtils/Enchantments.cfg"));
 	private final SquidAPIConfig layeredHardness = new SquidAPIConfig(new File("./config/SquidUtils/LayeredHardness.cfg"));
 	private final SquidAPIConfig crashMessages = new SquidAPIConfig(new File("./config/SquidUtils/CrashMessages.cfg"));
+	private final SquidAPIConfig worldTypes = new SquidAPIConfig(new File("./config/SquidUtils/WorldTypes.cfg"));
+	private final SquidAPIConfig damageSources = new SquidAPIConfig(new File("./config/SquidUtils/DamageSources.cfg"));
 	
 	/**
 	 * Preinit. Loads the config, clears Vanilla recipes (if toggled).
@@ -150,8 +160,6 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 	@EventHandler
 	private void preInit(FMLPreInitializationEvent event) {
 		LogHelper.info("Preinitializing.");
-		
-		this.mod = Loader.instance().activeModContainer();
 		
 		CommandDisable.disableables.put("SquidUtils", this);
 
@@ -174,7 +182,6 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 	 * @param event
 	 */
 	
-	@SuppressWarnings("unchecked")
 	@EventHandler
 	private void init(FMLInitializationEvent event) {
 		LogHelper.info("Initializing.");
@@ -196,63 +203,6 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 
 		ScriptHandler.init();
 
-		this.bannedMobs.addHeader("//Mobs to disable:");
-		for (Object name: EntityList.stringToClassMapping.keySet()) {
-			if (this.bannedMobs.get((String) name, false)) {
-				Class<? extends Entity> entityclass = (Class<? extends Entity>) EntityList.stringToClassMapping.get(name);
-				EntityJoinHandler.disable.add(entityclass);
-			}
-		}
-		
-		this.bannedItems.addHeader("//Banned items");
-		for (Object item: Item.itemRegistry) {
-			if (item instanceof Item) {
-				String name = Item.itemRegistry.getNameForObject(item);
-				if (this.bannedItems.get(name, false)) {
-					ContentRemover.remove(name, ContentType.RECIPE);
-					ContentRemover.remove(name, ContentType.SMELTING);
-					ItemBanHandler.bannedItems.add(name);
-				}
-			}
-		}
-		
-		this.bannedPotions.addHeader("//Banned potions");
-		for (int a = 0; a < Potion.potionTypes.length; a++) {
-			Potion b = Potion.potionTypes[a];
-			if (b != null && this.bannedPotions.get(b.getName(), false)) {
-				Potion.potionTypes[a] = null;
-			}
-		}
-		
-		this.bannedEnchantments.addHeader("//Banned potions");
-		for (int a = 0; a < Enchantment.enchantmentsList.length; a++) {
-			Enchantment b = Enchantment.enchantmentsList[a];
-			if (b != null && this.bannedEnchantments.get(b.getName(), false)) {
-				Enchantment.enchantmentsList[a] = null;
-			}
-		}
-		
-		this.layeredHardness.addHeader("//Layered hardness");
-		for (int a = 1; a < 27; a++) {
-			BreakSpeedHandler.layers.put(a * 10, this.layeredHardness.get(Utils.newString("layer", a), 1F));
-		}
-		
-		for (Float a: BreakSpeedHandler.layers.values()) {
-			if (a != 1F) {
-				this.registerHandler(new BreakSpeedHandler());
-				break;
-			}
-		}
-
-		this.crashMessages.addHeader("//Crash messages");
-		IterableMap<String, Object> crashMessages = this.crashMessages.getEntries();
-		for (String label: crashMessages) {
-			FMLCommonHandler.instance().registerCrashCallable(new CrashMessage(label, crashMessages.get(label).toString()));
-		}
-
-		if (!ItemBanHandler.bannedItems.isEmpty()) {
-			this.registerHandler(new ItemBanHandler());
-		}
 		if (Utils.isClient()) {
 			this.registerHandler(new DifficultyHandler());
 			if (!ConfigHandler.forceDifficulty.equalsIgnoreCase("FALSE")) {
@@ -266,7 +216,22 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 			this.registerHandler(new TNTHandler());
 		}
 		if (ConfigHandler.noAchievements || ScriptHandler.onAchievement) {
-			this.registerHandler(new AchievementHandler());
+			if (ConfigHandler.keepTTCoreBug) {
+				this.registerHandler(new AchievementHandler() {
+					@Override
+					@SubscribeEvent
+					public final void onAchievement(AchievementEvent event) {
+						if (ConfigHandler.noAchievements) event.setCanceled(true);
+						for (EventInfo a: info) {
+							EventEffectHelper.performEffects(a, event.entityLiving);
+							if (a.values.containsKey("cancel")) event.setCanceled(true);
+						}
+					}
+				});
+			}
+			else {
+				this.registerHandler(new AchievementHandler());
+			}
 		}
 		if (ConfigHandler.noWitherBoss) {
 			this.registerHandler(new WitherHandler());
@@ -331,9 +296,6 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 		if (ScriptHandler.onToss) {
 			this.registerHandler(new TossHandler());
 		}
-		if (ScriptHandler.onEntityJoin || !EntityJoinHandler.disable.isEmpty()) {
-			this.registerHandler(new EntityJoinHandler());
-		}
 		if (ConfigHandler.explosionSizeMultiplier != 1) {
 			this.registerHandler(new ExplosionHandler());
 		}
@@ -372,6 +334,107 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 	private void postInit(FMLPostInitializationEvent event) {
 		LogHelper.info("Postinitializing.");
 		
+		this.mobs.addHeader("//Mobs to disable:");
+		for (Object name: EntityList.stringToClassMapping.keySet()) {
+			if (this.mobs.get((String) name, false)) {
+				@SuppressWarnings("unchecked")
+				Class<? extends Entity> entityclass = (Class<? extends Entity>) EntityList.stringToClassMapping.get(name);
+				EntityJoinHandler.disable.add(entityclass);
+			}
+		}
+		
+		this.items.addHeader("//Items to disable");
+		for (Object item: Item.itemRegistry) {
+			if (item instanceof Item) {
+				String name = Item.itemRegistry.getNameForObject(item);
+				if (this.items.get(name, false)) {
+					if (ContentRemover.getBlacklist().isBlacklisted(item)) {
+						LogHelper.warn(Utils.newString(name.split(":")[0], " has requested to be blacklisted from content removal. ", name, " will not be removed."));
+						return;
+					}
+					ContentRemover.remove(name, ContentType.RECIPE);
+					ContentRemover.remove(name, ContentType.SMELTING);
+					ItemBanHandler.bannedItems.add(name);
+				}
+			}
+		}
+		
+		this.potions.addHeader("//Potions to disable");
+		for (int a = 0; a < Potion.potionTypes.length; a++) {
+			Potion b = Potion.potionTypes[a];
+			if (b != null) {
+				String c = this.potions.get(b.getName(), b.getName());
+				if (!c.equals(b.getName())) {
+					if (c.isEmpty()) {
+						EmptyPotion.replacePotion(a);
+					}
+					else {
+						Potion.potionTypes[a] = StringParser.parsePotion(c);
+					}
+				}
+			}
+		}
+		
+		this.enchantments.addHeader("//Enchantments to replace");
+		for (int a = 0; a < Enchantment.enchantmentsList.length; a++) {
+			Enchantment b = Enchantment.enchantmentsList[a];
+			if (b != null) {
+				String c = this.enchantments.get(b.getName(), b.getName());
+				if (!c.equals(b.getName())) {
+					if (c.isEmpty()) {
+						Enchantment.enchantmentsList[a] = null;
+						new EmptyEnchantment(a);
+					}
+					else {
+						Enchantment.enchantmentsList[a] = StringParser.parseEnchantment(c);
+					}
+				}
+			}
+		}
+		
+		this.layeredHardness.addHeader("//Layered hardness");
+		for (int a = 1; a < 27; a++) {
+			BreakSpeedHandler.layers.put(a * 10, this.layeredHardness.get(Utils.newString("layer", a), 1F));
+		}
+		
+		for (Float a: BreakSpeedHandler.layers.values()) {
+			if (a != 1F) {
+				this.registerHandler(new BreakSpeedHandler());
+				break;
+			}
+		}
+
+		this.crashMessages.addHeader("//Crash messages");
+		IterableMap<String, Object> crashMessages = this.crashMessages.getEntries();
+		for (String label: crashMessages) {
+			FMLCommonHandler.instance().registerCrashCallable(new CrashMessage(label, crashMessages.get(label).toString()));
+		}
+
+		this.worldTypes.addHeader("//Worldtypes to replace");
+		for (int a = 0; a < WorldType.worldTypes.length; a++) {
+			WorldType worldtype = WorldType.worldTypes[a];
+			if (worldtype != null) {
+				WorldType replacement = StringParser.parseWorldType(this.worldTypes.get(worldtype.getWorldTypeName(), worldtype.getWorldTypeName()));
+				if (worldtype != replacement) {
+					WorldType.worldTypes[a] = replacement;
+				}
+			}
+		}
+		
+		this.damageSources.addHeader("//Damagesources to disable");
+		for (DamageSource dmg: DamageSourceRegistry.getDamageSources()) {
+			if (this.damageSources.get(dmg.damageType, false)) {
+				DamageHandler.bannedDamageSources.add(dmg);
+			}
+		}
+
+		if (!ItemBanHandler.bannedItems.isEmpty()) {
+			this.registerHandler(new ItemBanHandler());
+		}
+		if (ScriptHandler.onEntityJoin || !EntityJoinHandler.disable.isEmpty()) {
+			this.registerHandler(new EntityJoinHandler());
+		}
+		
 		RegistrySearcher.start();
 		
 		if (ConfigHandler.potionStacks > 1 || ConfigHandler.pearlStack > 1) {
@@ -403,7 +466,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 			FMLCommonHandler.instance().bus().unregister(object);
 		}
 		this.isDisabled = true;
-		this.mod.setEnabledState(false);
+		this.getMod().setEnabledState(false);
 		LogHelper.info("SquidUtils has been disabled.");
 	}
 
@@ -416,7 +479,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 			FMLCommonHandler.instance().bus().register(object);
 		}
 		this.isDisabled = false;
-		this.mod.setEnabledState(true);
+		this.getMod().setEnabledState(true);
 		LogHelper.info("SquidUtils has been enabled.");
 	}
 	

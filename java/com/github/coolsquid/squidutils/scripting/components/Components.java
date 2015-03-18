@@ -487,7 +487,7 @@ public class Components {
 
 		@Override
 		public void run(Map<String, String> args) {
-			if (Compat.Botania.loadCompat()) {
+			if (Compat.Botania.isEnabled()) {
 				String action = args.get("action");
 				String type = args.get("type");
 				if (action.equals("add")) {
@@ -525,7 +525,7 @@ public class Components {
 
 		@Override
 		public void run(Map<String, String> args) {
-			if (Compat.RotaryCraft.loadCompat()) {
+			if (Compat.RotaryCraft.isEnabled()) {
 				String action = args.get("action");
 				String type = args.get("type");
 				if (action.equals("add")) {
@@ -557,7 +557,7 @@ public class Components {
 
 		@Override
 		public void run(Map<String, String> args) {
-			if (Compat.ThermalExpansion.loadCompat()) {
+			if (Compat.ThermalExpansion.isEnabled()) {
 				String action = args.get("action");
 				String type = args.get("type");
 				if (action.equals("add")) {
@@ -576,7 +576,7 @@ public class Components {
 
 		@Override
 		public void run(Map<String, String> args) {
-			if (Compat.RailCraft.loadCompat()) {
+			if (Compat.RailCraft.isEnabled()) {
 				String action = args.get("action");
 				String type = args.get("type");
 				if (action.equals("add")) {
@@ -612,7 +612,7 @@ public class Components {
 
 		@Override
 		public void run(Map<String, String> args) {
-			if (Compat.BloodMagic.loadCompat()) {
+			if (Compat.BloodMagic.isEnabled()) {
 				String action = args.get("action");
 				String type = args.get("type");
 				if (action.equals("add")) {

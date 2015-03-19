@@ -422,7 +422,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 		}
 		
 		this.damageSources.addHeader("//Damagesources to disable");
-		for (DamageSource dmg: DamageSourceRegistry.getDamageSources()) {
+		for (DamageSource dmg: DamageSourceRegistry.instance()) {
 			if (this.damageSources.get(dmg.damageType, false)) {
 				DamageHandler.bannedDamageSources.add(dmg);
 			}

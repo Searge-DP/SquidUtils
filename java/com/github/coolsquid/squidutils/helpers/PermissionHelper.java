@@ -4,6 +4,7 @@
  *******************************************************************************/
 package com.github.coolsquid.squidutils.helpers;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -23,7 +24,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 public class PermissionHelper {
 	
 	private static final HashMap<UUID, HashSet<String>> permissions = new HashMap<UUID, HashSet<String>>();
-	private static final ILogger filewriter = new Logger("config/SquidUtils", "permissions.txt");
+	private static final ILogger filewriter = new Logger(new File("./config/SquidUtils/permissions.txt"));
 	
 	public static void init() {
 		SquidAPI.commands.add(new CommandPermissions());
@@ -41,6 +42,7 @@ public class PermissionHelper {
 	
 	@SubscribeEvent
 	public void save(Save event) {
+		//TODO optimize
 		for (Entry<UUID, HashSet<String>> a: permissions.entrySet()) {
 			UUID id = a.getKey();
 			String s = id.toString() + " ";
@@ -49,7 +51,6 @@ public class PermissionHelper {
 			}
 			filewriter.log(s);
 		}
-		filewriter.save();
 	}
 	
 	public static HashSet<String> getPermissions(UUID id) {

@@ -10,6 +10,7 @@ import java.util.List;
 import com.github.coolsquid.squidapi.helpers.FileHelper;
 import com.github.coolsquid.squidapi.logging.ILogger;
 import com.github.coolsquid.squidapi.logging.Logger;
+import com.github.coolsquid.squidapi.util.Utils;
 import com.github.coolsquid.squidutils.config.ConfigHandler;
 import com.github.coolsquid.squidutils.helpers.LogHelper;
 import com.google.common.collect.Lists;
@@ -18,7 +19,7 @@ import cpw.mods.fml.common.Loader;
 
 public class ModLister {
 	
-	private static final ILogger logger = new Logger("", "modlist.txt");
+	private static final ILogger logger = new Logger(new File("modlist.txt"));
 	
 	public static void init() {
 		if (ConfigHandler.generateModList == 0) {
@@ -41,10 +42,7 @@ public class ModLister {
 	public static void generateListOfModidsAndVersions() {
 		LogHelper.info("Generating modlist...");
 		for (int a = 0; a < Loader.instance().getModList().size(); a++) {
-			logger.log(Loader.instance().getModList().get(a).getModId());
-			logger.log(" ");
-			logger.log(Loader.instance().getModList().get(a).getVersion());
-			logger.log("\n");
+			logger.log(Utils.newString(Loader.instance().getModList().get(a).getModId(), " ", Loader.instance().getModList().get(a).getVersion()));
 		}
 		LogHelper.info("Generated modlist.");
 	}

@@ -4,6 +4,8 @@
  *******************************************************************************/
 package com.github.coolsquid.squidutils.handlers;
 
+import java.io.File;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -17,7 +19,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class EventLogger {
 	
-	private static final ILogger logger = new Logger("logs/EventLogs/", "eventlog");
+	private static final ILogger logger = new Logger(new File("./logs/EventLogs/events.log"));
 	
 	/**
 	 * Logs all blocks broken.

@@ -160,12 +160,12 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 	@EventHandler
 	private void preInit(FMLPreInitializationEvent event) {
 		LogHelper.info("Preinitializing.");
-		
+
 		CommandDisable.disableables.put("SquidUtils", this);
 
 		new File("./config/SquidUtils").mkdirs();
 		ConfigHandler.preInit(new File("./config/SquidUtils/SquidUtils.cfg"));
-		
+
 		if (ConfigHandler.modList.length != 0) {
 			PackIntegrityChecker.check();
 			FMLCommonHandler.instance().registerCrashCallable(new Modified());
@@ -173,7 +173,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 		if (ConfigHandler.clearRecipes == 1) {
 			CraftingManager.getInstance().getRecipeList().clear();
 		}
-		
+
 		LogHelper.info("Preinitialization finished.");
 	}
 	

@@ -22,7 +22,6 @@ import net.minecraftforge.event.entity.player.AchievementEvent;
 import com.github.coolsquid.squidapi.Disableable;
 import com.github.coolsquid.squidapi.SquidAPI;
 import com.github.coolsquid.squidapi.SquidAPIMod;
-import com.github.coolsquid.squidapi.command.CommandDisable;
 import com.github.coolsquid.squidapi.config.SquidAPIConfig;
 import com.github.coolsquid.squidapi.exception.InvalidConfigValueException;
 import com.github.coolsquid.squidapi.helpers.server.ServerHelper;
@@ -160,8 +159,8 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 	@EventHandler
 	private void preInit(FMLPreInitializationEvent event) {
 		LogHelper.info("Preinitializing.");
-
-		CommandDisable.disableables.put("SquidUtils", this);
+		
+		this.setDisableable();
 
 		new File("./config/SquidUtils").mkdirs();
 		ConfigHandler.preInit(new File("./config/SquidUtils/SquidUtils.cfg"));
@@ -377,7 +376,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 			if (b != null) {
 				String c = this.potions.get(b.getName(), b.getName());
 				if (!c.equals(b.getName())) {
-					if (c.equals("null")) {
+					if (c.equals("empty")) {
 						EmptyPotion.replacePotion(a);
 					}
 					else {
@@ -393,7 +392,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 			if (b != null) {
 				String c = this.enchantments.get(b.getName(), b.getName());
 				if (!c.equals(b.getName())) {
-					if (c.isEmpty()) {
+					if (c.equals("empty")) {
 						Enchantment.enchantmentsList[a] = null;
 						new EmptyEnchantment(a);
 					}

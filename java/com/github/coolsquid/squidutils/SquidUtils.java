@@ -370,14 +370,14 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 				}
 			}
 		}
-		
+
 		this.potions.addHeader("//Potions to disable");
 		for (int a = 0; a < Potion.potionTypes.length; a++) {
 			Potion b = Potion.potionTypes[a];
 			if (b != null) {
 				String c = this.potions.get(b.getName(), b.getName());
 				if (!c.equals(b.getName())) {
-					if (c.isEmpty()) {
+					if (c.equals("null")) {
 						EmptyPotion.replacePotion(a);
 					}
 					else {
@@ -386,7 +386,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 				}
 			}
 		}
-		
+
 		this.enchantments.addHeader("//Enchantments to replace");
 		for (int a = 0; a < Enchantment.enchantmentsList.length; a++) {
 			Enchantment b = Enchantment.enchantmentsList[a];

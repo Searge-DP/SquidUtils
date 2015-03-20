@@ -186,6 +186,18 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 	private void init(FMLInitializationEvent event) {
 		LogHelper.info("Initializing.");
 
+		this.suggestMod("OpenEye", "Automatic crash reporting!", "http://bit.ly/1wE0yfe");
+		this.suggestMod("YAMPST", "Statistics tool for modpacks!", "http://bit.ly/1HatUVT");
+		this.suggestMod("MobProperties", "It allows the user to configure almost any aspect of any mob!", "http://bit.ly/1EcMZHr");
+		this.suggestMod("JSONAbles", "Add custom TiCon tools!", "http://bit.ly/1CFa7Ai");
+		this.suggestMod("Quadrum", "Add custom blocks and items!", "http://bit.ly/1EB3U62");
+		this.suggestMod("Minetweaker3", "Add smelting, crafting, fuels, and so much more!", "http://bit.ly/1ubqwop");
+		if (Loader.isModLoaded("Minetweaker3")) {
+			this.suggestMod("MTRM", "Adds an ingame GUI for Minetweaker!", "http://bit.ly/1xGYYYr");
+			this.suggestMod("ModTweaker2", "", "http://bit.ly/1lIxEYX");
+		}
+		this.suggestMod("Lockdown", "Allows the user to choose a map which will always be generated instead of a normal world.", "http://bit.ly/1zXDc7L");
+
 		Components.init();
 
 		ScriptingAPI.addTrigger("achievement", new AchievementHandler());

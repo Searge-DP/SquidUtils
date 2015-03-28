@@ -22,11 +22,17 @@ import com.github.coolsquid.squidutils.command.CommandPermissions;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class PermissionHelper {
+
+	public static final PermissionHelper INSTANCE = new PermissionHelper();
+
+	private PermissionHelper() {
+		
+	}
+
+	private final HashMap<UUID, HashSet<String>> permissions = new HashMap<UUID, HashSet<String>>();
+	private final ILogger filewriter = new Logger(new File("./config/SquidUtils/permissions.txt"));
 	
-	private static final HashMap<UUID, HashSet<String>> permissions = new HashMap<UUID, HashSet<String>>();
-	private static final ILogger filewriter = new Logger(new File("./config/SquidUtils/permissions.txt"));
-	
-	public static void init() {
+	public void init() {
 		SquidAPI.commands.add(new CommandPermissions());
 		List<String> permissions = FileHelper.readFile("config/SquidUtils", "permissions.txt");
 		for (String a: permissions) {
@@ -36,39 +42,39 @@ public class PermissionHelper {
 			for (String a2: s2) {
 				set.add(a2);
 			}
-			PermissionHelper.permissions.put(UUID.fromString(s[0]), set);
+			this.permissions.put(UUID.fromString(s[0]), set);
 		}
 	}
 	
 	@SubscribeEvent
 	public void save(Save event) {
 		//TODO optimize
-		for (Entry<UUID, HashSet<String>> a: permissions.entrySet()) {
+		for (Entry<UUID, HashSet<String>> a: this.permissions.entrySet()) {
 			UUID id = a.getKey();
 			String s = id.toString() + " ";
 			for (Object a2: a.getValue().toArray()) {
 				s = s + a2 + ";";
 			}
-			filewriter.log(s);
+			this.filewriter.log(s);
 		}
 	}
 	
-	public static HashSet<String> getPermissions(UUID id) {
-		if (!permissions.containsKey(id)) {
-			permissions.put(id, new HashSet<String>());
+	public HashSet<String> getPermissions(UUID id) {
+		if (!this.permissions.containsKey(id)) {
+			this.permissions.put(id, new HashSet<String>());
 		}
-		return permissions.get(id);
+		return this.permissions.get(id);
 	}
 	
-	public static boolean hasPermission(UUID id, String perm) {
-		return getPermissions(id).contains(perm) || getPermissions(id).contains("*");
+	public boolean hasPermission(UUID id, String perm) {
+		return this.getPermissions(id).contains(perm) || this.getPermissions(id).contains("*");
 	}
 	
-	public static void addPermission(UUID id, String perm) {
-		getPermissions(id).add(perm);
+	public void addPermission(UUID id, String perm) {
+		this.getPermissions(id).add(perm);
 	}
 	
-	public static void removePermission(UUID id, String perm) {
-		getPermissions(id).remove(perm);
+	public void removePermission(UUID id, String perm) {
+		this.getPermissions(id).remove(perm);
 	}
 }

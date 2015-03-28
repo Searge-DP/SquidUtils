@@ -27,7 +27,7 @@ public class FoodHandler implements IEventTrigger {
 	
 	@SubscribeEvent
 	public void event(StarvationEvent.Starve event) {
-		event.starveDamage = ConfigHandler.starvationDamage;
+		event.starveDamage = ConfigHandler.INSTANCE.starvationDamage;
 		for (EventInfo a: info) EventEffectHelper.performEffects(a, event.player);
 	}
 }

@@ -27,7 +27,7 @@ public class RegenHandler implements IEventTrigger {
 	
 	@SubscribeEvent
 	public void event(HealthRegenEvent event) {
-		if (ConfigHandler.noHungerRegen) event.setCanceled(true);
+		if (ConfigHandler.INSTANCE.noHungerRegen) event.setCanceled(true);
 		for (EventInfo a: info) {
 			EventEffectHelper.performEffects(a, event.player);
 			if (a.values.get("cancel").equals("true")) event.setCanceled(true);

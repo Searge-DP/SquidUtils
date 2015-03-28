@@ -36,10 +36,10 @@ public class EventEffectHelper {
 		if (((int) info.values.get("minarmor")) >= entity.getTotalArmorValue() || ((int) info.values.get("maxarmor")) <= entity.getTotalArmorValue()) return;
 		if (entity instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer) entity;
-			if (info.values.containsKey("requiredperm") && !PermissionHelper.hasPermission(player.getGameProfile().getId(), (String) info.values.get("requiredperm"))) {
+			if (info.values.containsKey("requiredperm") && !PermissionHelper.INSTANCE.hasPermission(player.getGameProfile().getId(), (String) info.values.get("requiredperm"))) {
 				return;
 			}
-			if (info.values.containsKey("oppositeperm") && PermissionHelper.hasPermission(player.getGameProfile().getId(), (String) info.values.get("oppositeperm"))) {
+			if (info.values.containsKey("oppositeperm") && PermissionHelper.INSTANCE.hasPermission(player.getGameProfile().getId(), (String) info.values.get("oppositeperm"))) {
 				return;
 			}
 		}

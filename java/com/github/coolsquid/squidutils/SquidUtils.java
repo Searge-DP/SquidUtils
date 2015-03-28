@@ -8,9 +8,11 @@ import java.io.File;
 import java.util.HashSet;
 import java.util.Map;
 
+import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.potion.Potion;
@@ -24,8 +26,8 @@ import com.github.coolsquid.squidapi.SquidAPI;
 import com.github.coolsquid.squidapi.SquidAPIMod;
 import com.github.coolsquid.squidapi.config.SquidAPIConfig;
 import com.github.coolsquid.squidapi.exception.InvalidConfigValueException;
+import com.github.coolsquid.squidapi.helpers.APIHelper;
 import com.github.coolsquid.squidapi.helpers.server.ServerHelper;
-import com.github.coolsquid.squidapi.reflection.ReflectionHelper;
 import com.github.coolsquid.squidapi.registry.DamageSourceRegistry;
 import com.github.coolsquid.squidapi.util.ContentRemover;
 import com.github.coolsquid.squidapi.util.ContentRemover.ContentType;
@@ -85,12 +87,12 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
 import com.google.common.collect.Maps;
 
-import cpw.mods.fml.common.API;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
+import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLInterModComms.IMCEvent;
 import cpw.mods.fml.common.event.FMLInterModComms.IMCMessage;
@@ -103,10 +105,12 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 @Mod(modid = ModInfo.modid, name = ModInfo.name, version = ModInfo.version, dependencies = ModInfo.dependencies, acceptableRemoteVersions = "*")
 public class SquidUtils extends SquidAPIMod implements Disableable {
 	
+	@Instance("SquidAPI")
+	private static SquidAPI squidapi;
 	@Instance
 	private static SquidUtils instance;
 	@Deprecated
-	private API api;
+	private ModContainer api = APIHelper.INSTANCE.getAPI("SquidUtils|ScriptingAPI");
 	
 	public SquidUtils() {
 		super("Customization to the max!");
@@ -116,10 +120,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 		return instance;
 	}
 	
-	public API getAPI() {
-		if (this.api == null) {
-			this.api = ReflectionHelper.in("com.github.coolsquid.squidutils.api").getAnnotation(API.class);
-		}
+	public ModContainer getAPI() {
 		return this.api;
 	}
 	
@@ -159,17 +160,18 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 	@EventHandler
 	private void preInit(FMLPreInitializationEvent event) {
 		LogHelper.info("Preinitializing.");
-		
+		LogHelper.info("Version id: ", this.hashCode());
+
 		this.setDisableable();
 
 		new File("./config/SquidUtils").mkdirs();
-		ConfigHandler.preInit(new File("./config/SquidUtils/SquidUtils.cfg"));
+		ConfigHandler.INSTANCE.preInit(new File("./config/SquidUtils/SquidUtils.cfg"));
 
-		if (ConfigHandler.modList.length != 0) {
-			PackIntegrityChecker.check();
+		if (ConfigHandler.INSTANCE.modList.length > 0) {
+			PackIntegrityChecker.INSTANCE.check();
 			FMLCommonHandler.instance().registerCrashCallable(new Modified());
 		}
-		if (ConfigHandler.clearRecipes == 1) {
+		if (ConfigHandler.INSTANCE.clearRecipes == 1) {
 			CraftingManager.getInstance().getRecipeList().clear();
 		}
 
@@ -212,27 +214,27 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 		ScriptingAPI.addTrigger("interact", new InteractionHandler());
 		ScriptingAPI.addTrigger("chat", new ServerChatHandler());
 
-		ScriptHandler.init();
+		ScriptHandler.INSTANCE.init();
 
 		if (Utils.isClient()) {
 			this.registerHandler(new DifficultyHandler());
-			if (!ConfigHandler.forceDifficulty.equalsIgnoreCase("FALSE")) {
-				DifficultyHandler.difficulty = ConfigHandler.forceDifficulty;
+			if (!ConfigHandler.INSTANCE.forceDifficulty.equalsIgnoreCase("FALSE")) {
+				DifficultyHandler.difficulty = ConfigHandler.INSTANCE.forceDifficulty;
 			}
 		}
-		if (!ConfigHandler.forceDifficulty.equalsIgnoreCase("FALSE") && !ConfigHandler.forceDifficulty.equalsIgnoreCase("PEACEFUL") && !ConfigHandler.forceDifficulty.equalsIgnoreCase("EASY") && !ConfigHandler.forceDifficulty.equalsIgnoreCase("NORMAL") && !ConfigHandler.forceDifficulty.equalsIgnoreCase("HARD")) {
+		if (!ConfigHandler.INSTANCE.forceDifficulty.equalsIgnoreCase("FALSE") && !ConfigHandler.INSTANCE.forceDifficulty.equalsIgnoreCase("PEACEFUL") && !ConfigHandler.INSTANCE.forceDifficulty.equalsIgnoreCase("EASY") && !ConfigHandler.INSTANCE.forceDifficulty.equalsIgnoreCase("NORMAL") && !ConfigHandler.INSTANCE.forceDifficulty.equalsIgnoreCase("HARD")) {
 			throw new InvalidConfigValueException("forceDifficulty");
 		}
-		if (ConfigHandler.noTNT) {
+		if (ConfigHandler.INSTANCE.noTNT) {
 			this.registerHandler(new TNTHandler());
 		}
-		if (ConfigHandler.noAchievements || ScriptHandler.onAchievement) {
-			if (ConfigHandler.keepTTCoreBug) {
+		if (ConfigHandler.INSTANCE.noAchievements || ScriptHandler.INSTANCE.onAchievement) {
+			if (ConfigHandler.INSTANCE.keepTTCoreBug) {
 				this.registerHandler(new AchievementHandler() {
 					@Override
 					@SubscribeEvent
 					public final void onAchievement(AchievementEvent event) {
-						if (ConfigHandler.noAchievements) event.setCanceled(true);
+						if (ConfigHandler.INSTANCE.noAchievements) event.setCanceled(true);
 						for (EventInfo a: info) {
 							EventEffectHelper.performEffects(a, event.entityLiving);
 							if (a.values.containsKey("cancel")) event.setCanceled(true);
@@ -244,87 +246,93 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 				this.registerHandler(new AchievementHandler());
 			}
 		}
-		if (ConfigHandler.noWitherBoss) {
+		if (ConfigHandler.INSTANCE.noWitherBoss) {
 			this.registerHandler(new WitherHandler());
 		}
-		if (ConfigHandler.chainRecipes) {
+		if (ConfigHandler.INSTANCE.chainRecipes) {
 			ModRecipes.chain();
 		}
-		if (ConfigHandler.noDebug && Utils.isClient()) {
+		if (ConfigHandler.INSTANCE.noDebug && Utils.isClient()) {
 			this.registerHandler(new DebugHandler());
 		}
-		if (ConfigHandler.maxRenderDistance != 16 && Utils.isClient()) {
+		if (ConfigHandler.INSTANCE.maxRenderDistance != 16 && Utils.isClient()) {
 			this.registerHandler(new RenderDistanceHandler());
 		}
-		if (ConfigHandler.villagerProtection) {
+		if (ConfigHandler.INSTANCE.villagerProtection) {
 			this.registerHandler(new VillagerHandler());
 		}
-		if (ConfigHandler.tabVanilla) {
+		if (ConfigHandler.INSTANCE.tabVanilla) {
 			ModCreativeTabs.preInit();
 		}
-		if (ConfigHandler.logStuff) {
+		if (ConfigHandler.INSTANCE.logStuff) {
 			this.registerHandler(new EventLogger());
 		}
-		if (ConfigHandler.disableAnvil) {
+		if (ConfigHandler.INSTANCE.disableAnvil) {
 			this.registerHandler(new AnvilHandler());
 		}
-		if (ScriptHandler.onCommand) {
+		if (ScriptHandler.INSTANCE.onCommand) {
 			this.registerHandler(new CommandHandler());
 		}
-		if (ConfigHandler.disableTeleportation || ScriptHandler.onTeleport) {
+		if (ConfigHandler.INSTANCE.disableTeleportation || ScriptHandler.INSTANCE.onTeleport) {
 			this.registerHandler(new TeleportationHandler());
 		}
-		if (ConfigHandler.disableBonemeal) {
+		if (ConfigHandler.INSTANCE.disableBonemeal) {
 			this.registerHandler(new BonemealHandler());
 		}
-		if (ConfigHandler.disableHoes) {
+		if (ConfigHandler.INSTANCE.disableHoes) {
 			this.registerHandler(new ToolHandler());
 		}
-		if (ConfigHandler.disableBottleFluidInteraction) {
+		if (ConfigHandler.INSTANCE.disableBottleFluidInteraction) {
 			this.registerHandler(new BottleHandler());
 		}
-		if (ConfigHandler.generateModList != 0) {
-			ModLister.init();
+		if (ConfigHandler.INSTANCE.generateModList != 0) {
+			ModLister.INSTANCE.init();
 		}
-		if (ConfigHandler.walkSpeed != 0.1F || ConfigHandler.flySpeed != 0.05F) {
+		if (ConfigHandler.INSTANCE.walkSpeed != 0.1F || ConfigHandler.INSTANCE.flySpeed != 0.05F) {
 			this.registerHandler(new SpeedHandler());
 		}
 		if (Loader.isModLoaded("AppleCore")) {
 			AppleCoreCompat.init();
 		}
-		if (ScriptHandler.onCraft) {
+		if (ScriptHandler.INSTANCE.onCraft) {
 			this.registerHandler2(new CraftingHandler());
 		}
-		if (ScriptHandler.onSmelt) {
+		if (ScriptHandler.INSTANCE.onSmelt) {
 			this.registerHandler2(new SmeltingHandler());
 		}
-		if (ScriptHandler.onHurt) {
+		if (ScriptHandler.INSTANCE.onHurt) {
 			this.registerHandler(new DamageHandler());
 		}
-		if (ScriptHandler.onHeal) {
+		if (ScriptHandler.INSTANCE.onHeal) {
 			this.registerHandler(new HealingHandler());
 		}
-		if (ScriptHandler.onToss) {
+		if (ScriptHandler.INSTANCE.onToss) {
 			this.registerHandler(new TossHandler());
 		}
-		if (ConfigHandler.explosionSizeMultiplier != 1) {
+		if (ConfigHandler.INSTANCE.explosionSizeMultiplier != 1) {
 			this.registerHandler(new ExplosionHandler());
 		}
-		if (ScriptHandler.onInteraction) {
+		if (ScriptHandler.INSTANCE.onInteraction) {
 			this.registerHandler(new InteractionHandler());
 		}
-		if (ScriptHandler.onChat) {
+		if (ScriptHandler.INSTANCE.onChat) {
 			this.registerHandler(new ServerChatHandler());
 		}
-		if (ScriptHandler.permissions) {
-			PermissionHelper.init();
-			this.registerHandler(new PermissionHelper());
+		if (ScriptHandler.INSTANCE.permissions) {
+			PermissionHelper.INSTANCE.init();
+			this.registerHandler(PermissionHelper.INSTANCE);
 		}
-		if (ConfigHandler.worldSize > 0) {
+		if (ConfigHandler.INSTANCE.worldSize > 0) {
 			this.registerHandler(new LivingUpdateHandler());
 		}
-		if (ConfigHandler.explodeTNTMinecartsOnCollide) {
+		if (ConfigHandler.INSTANCE.explodeTNTMinecartsOnCollide) {
 			this.registerHandler(new MinecartCollisionHandler());
+		}
+		if (ConfigHandler.INSTANCE.flammabilityMultiplier != 1) {
+			for (Object a: Block.blockRegistry) {
+				Block b = (Block) a;
+				Blocks.fire.setFireInfo(b, Blocks.fire.getEncouragement(b), Blocks.fire.getFlammability(b) * ConfigHandler.INSTANCE.flammabilityMultiplier);
+			}
 		}
 		
 		if (Utils.isClient()) {
@@ -442,14 +450,14 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 		if (!ItemBanHandler.bannedItems.isEmpty()) {
 			this.registerHandler(new ItemBanHandler());
 		}
-		if (ScriptHandler.onEntityJoin || !EntityJoinHandler.disable.isEmpty()) {
+		if (ScriptHandler.INSTANCE.onEntityJoin || !EntityJoinHandler.disable.isEmpty()) {
 			this.registerHandler(new EntityJoinHandler());
 		}
 		
 		RegistrySearcher.start();
 		
-		if (ConfigHandler.potionStacks > 1 || ConfigHandler.pearlStack > 1) {
-			StackSizeHandler.some(ConfigHandler.potionStacks, ConfigHandler.pearlStack);
+		if (ConfigHandler.INSTANCE.potionStacks > 1 || ConfigHandler.INSTANCE.pearlStack > 1) {
+			StackSizeHandler.some(ConfigHandler.INSTANCE.potionStacks, ConfigHandler.INSTANCE.pearlStack);
 		}
 		
 		if (!DropHandler.shouldclear.isEmpty() || !DropHandler.dropstoremove.isEmpty() || !DropHandler.drops.isEmpty()) {
@@ -461,7 +469,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 	
 	@EventHandler
 	private void finishedLoading(FMLLoadCompleteEvent event) {
-		if (ConfigHandler.clearRecipes == 2) {
+		if (ConfigHandler.INSTANCE.clearRecipes == 2) {
 			if (!ContentRemover.isBlacklistedModLoaded()) {
 				CraftingManager.getInstance().getRecipeList().clear();
 			}
@@ -518,7 +526,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 	
 	@EventHandler
 	public void onServerStarted(FMLServerStartedEvent event) {
-		if (ConfigHandler.removeAllCommands) {
+		if (ConfigHandler.INSTANCE.removeAllCommands) {
 			ServerHelper.getCommands().clear();
 		}
 		else {

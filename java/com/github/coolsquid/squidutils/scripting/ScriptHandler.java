@@ -25,29 +25,35 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
 
 public class ScriptHandler {
+
+	public static final ScriptHandler INSTANCE = new ScriptHandler();
+
+	private ScriptHandler() {
+		
+	}
+
+	public boolean onCraft;
+	public boolean onSmelt;
+	public boolean onHurt;
+	public boolean onToss;
+	public boolean onTeleport;
+	public boolean onHeal;
+	public boolean onStarve;
+	public boolean onEntityJoin;
+	public boolean onAchievement;
+	public boolean onHungerRegen;
+	public boolean onInteraction;
+	public boolean onExplosion;
+	public boolean onCommand;
+	public boolean onChat;
 	
-	public static boolean onCraft;
-	public static boolean onSmelt;
-	public static boolean onHurt;
-	public static boolean onToss;
-	public static boolean onTeleport;
-	public static boolean onHeal;
-	public static boolean onStarve;
-	public static boolean onEntityJoin;
-	public static boolean onAchievement;
-	public static boolean onHungerRegen;
-	public static boolean onInteraction;
-	public static boolean onExplosion;
-	public static boolean onCommand;
-	public static boolean onChat;
+	public boolean permissions;
 	
-	public static boolean permissions;
+	private List<String> list;
 	
-	private static List<String> list;
-	
-	private static List<String> getScripts() {
-		if (list == null) {
-			list = new ArrayList<String>();
+	private List<String> getScripts() {
+		if (this.list == null) {
+			this.list = new ArrayList<String>();
 			for (File file: FileHelper.getFilesInDir("./config/SquidUtils")) {
 				if (!file.getName().endsWith(".script")) {
 					continue;
@@ -61,7 +67,7 @@ public class ScriptHandler {
 						if (s == null) {
 							break;
 						}
-						list.add(s);
+						this.list.add(s);
 					}
 					r.close();
 				} catch (IOException e) {
@@ -69,13 +75,13 @@ public class ScriptHandler {
 				}
 			}
 		}
-		return list;
+		return this.list;
 	}
 	
-	public static void init() {
-		for (int a = 0; a < getScripts().size(); a++) {
+	public void init() {
+		for (int a = 0; a < this.getScripts().size(); a++) {
 			try {
-				String s = getScripts().get(a);
+				String s = this.getScripts().get(a);
 				if (!s.startsWith("#")) {
 					String[] s2 = s.split(" ");
 					String type = s2[0];
@@ -96,43 +102,43 @@ public class ScriptHandler {
 						Builder<String, Object> builder = ImmutableMap.builder();
 						String trigger = s2[1];
 						if (trigger.equals("craft")) {
-							onCraft = true;
+							this.onCraft = true;
 						}
 						else if (trigger.equals("smelt")) {
-							onSmelt = true;
+							this.onSmelt = true;
 						}
 						else if (trigger.equals("hurt")) {
-							onHurt = true;
+							this.onHurt = true;
 						}
 						else if (trigger.equals("toss")) {
-							onToss = true;
+							this.onToss = true;
 						}
 						else if (trigger.equals("teleport")) {
-							onTeleport = true;
+							this.onTeleport = true;
 						}
 						else if (trigger.equals("heal")) {
-							onHeal = true;
+							this.onHeal = true;
 						}
 						else if (trigger.equals("entityjoin")) {
-							onEntityJoin = true;
+							this.onEntityJoin = true;
 						}
 						else if (trigger.equals("achievement")) {
-							onAchievement = true;
+							this.onAchievement = true;
 						}
 						else if (trigger.equals("hungerregen")) {
-							onHungerRegen = true;
+							this.onHungerRegen = true;
 						}
 						else if (trigger.equals("interaction")) {
-							onInteraction = true;
+							this.onInteraction = true;
 						}
 						else if (trigger.equals("explosion")) {
-							onExplosion = true;
+							this.onExplosion = true;
 						}
 						else if (trigger.equals("command")) {
-							onCommand = true;
+							this.onCommand = true;
 						}
 						else if (trigger.equals("chat")) {
-							onChat = true;
+							this.onChat = true;
 						}
 						
 						builder.put("minchance", 1);
@@ -146,7 +152,7 @@ public class ScriptHandler {
 							String[] aa = s2[b].split("=");
 							String key = aa[0];
 							if (key.matches("(requiredperm|oppositeperm)")) {
-								permissions = true;
+								this.permissions = true;
 							}
 							if (aa.length == 1) {
 								builder.put(key, new Object());

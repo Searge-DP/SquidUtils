@@ -27,7 +27,7 @@ public class TeleportationHandler implements IEventTrigger {
 
 	@SubscribeEvent
 	public void event(EnderTeleportEvent event) {
-		if (ConfigHandler.disableTeleportation) event.setCanceled(true);
+		if (ConfigHandler.INSTANCE.disableTeleportation) event.setCanceled(true);
 		for (EventInfo a: info) {
 			EventEffectHelper.performEffects(a, event.entityLiving);
 		}

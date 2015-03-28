@@ -20,8 +20,8 @@ public class RenderDistanceHandler {
 	
 	@SubscribeEvent
 	public final void event(LivingUpdateEvent event) {
-		if (Minecraft.getMinecraft().gameSettings.renderDistanceChunks > ConfigHandler.maxRenderDistance && event.entity instanceof EntityPlayer) {
-			Minecraft.getMinecraft().gameSettings.renderDistanceChunks = ConfigHandler.maxRenderDistance;
+		if (Minecraft.getMinecraft().gameSettings.renderDistanceChunks > ConfigHandler.INSTANCE.maxRenderDistance && event.entity instanceof EntityPlayer) {
+			Minecraft.getMinecraft().gameSettings.renderDistanceChunks = ConfigHandler.INSTANCE.maxRenderDistance;
 			Minecraft.getMinecraft().gameSettings.saveOptions();
 		}
 	}

@@ -27,7 +27,7 @@ public class ExplosionHandler implements IEventTrigger {
 	
 	@SubscribeEvent
 	public void onExplosionStart(ExplosionEvent.Start event) {
-		event.explosion.explosionSize = event.explosion.explosionSize * ConfigHandler.explosionSizeMultiplier;
+		event.explosion.explosionSize = event.explosion.explosionSize * ConfigHandler.INSTANCE.explosionSizeMultiplier;
 		for (EventInfo a: info) {
 			EventEffectHelper.performEffects(a);
 		}

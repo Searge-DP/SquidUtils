@@ -4,6 +4,9 @@
  *******************************************************************************/
 package com.github.coolsquid.squidutils.scripting.components;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.Map;
 
 import net.minecraft.block.Block;
@@ -109,22 +112,22 @@ public class Components {
 		
 		Map<String, IScriptSubcommand> fishingsubcommands = Maps.newHashMap();
 		fishingsubcommands.put("create", new ScriptSubcommandFishingAdd());
-		fishingsubcommands.put("modify", new ScriptSubcommandFishingRemove());
+		fishingsubcommands.put("remove", new ScriptSubcommandFishingRemove());
 		ScriptingAPI.addCommand("fishing", new ScriptCommand(fishingsubcommands));
 		
 		Map<String, IScriptSubcommand> dungeonmobsubcommands = Maps.newHashMap();
 		dungeonmobsubcommands.put("create", new ScriptSubcommandDungeonmobAdd());
-		dungeonmobsubcommands.put("modify", new ScriptSubcommandDungeonmobRemove());
+		dungeonmobsubcommands.put("remove", new ScriptSubcommandDungeonmobRemove());
 		ScriptingAPI.addCommand("dungeonmob", new ScriptCommand(dungeonmobsubcommands));
 		
 		Map<String, IScriptSubcommand> chestgensubcommands = Maps.newHashMap();
 		chestgensubcommands.put("create", new ScriptSubcommandChestgenAdd());
-		chestgensubcommands.put("modify", new ScriptSubcommandChestgenRemove());
+		chestgensubcommands.put("remove", new ScriptSubcommandChestgenRemove());
 		ScriptingAPI.addCommand("chestgen", new ScriptCommand(chestgensubcommands));
 		
 		Map<String, IScriptSubcommand> villagersubcommands = Maps.newHashMap();
 		villagersubcommands.put("create", new ScriptSubcommandVillagerAdd());
-		villagersubcommands.put("modify", new ScriptSubcommandVillagerRemove());
+		villagersubcommands.put("remove", new ScriptSubcommandVillagerRemove());
 		ScriptingAPI.addCommand("villager", new ScriptCommand(villagersubcommands));
 		
 		Map<String, IScriptSubcommand> modsubcommands = Maps.newHashMap();
@@ -144,6 +147,11 @@ public class Components {
 		smeltingsubcommands.put("create", new ScriptSubcommandSmeltingCreate());
 		smeltingsubcommands.put("remove", new ScriptSubcommandSmeltingRemove());
 		ScriptingAPI.addCommand("smelting", new ScriptCommand(smeltingsubcommands));
+		
+		Map<String, IScriptSubcommand> reflectionsubcommands = Maps.newHashMap();
+		smeltingsubcommands.put("field", new ScriptSubcommandReflectionField());
+		smeltingsubcommands.put("method", new ScriptSubcommandReflectionMethod());
+		ScriptingAPI.addCommand("reflection", new ScriptCommand(reflectionsubcommands));
 	}
 	
 	public static class ScriptSubcommandBlockCreate implements IScriptSubcommand {
@@ -674,6 +682,41 @@ public class Components {
 		@Override
 		public void run(Map<String, String> args) {
 			ContentRemover.remove(args.get("output"), ContentType.SMELTING);
+		}
+	}
+	
+	public static class ScriptSubcommandReflectionMethod implements IScriptSubcommand {
+
+		@Override
+		public void run(Map<String, String> args) {
+			try {
+				Class<?> a = Class.forName(args.get("class"));
+				Method b = a.getMethod(args.get("name"));
+				b.setAccessible(true);
+				b.invoke(null);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public static class ScriptSubcommandReflectionField implements IScriptSubcommand {
+
+		@Override
+		public void run(Map<String, String> args) {
+			try {
+				Class<?> a = Class.forName(args.get("class"));
+				Field b = a.getField(args.get("name"));
+				b.setAccessible(true);
+				if (args.containsKey("final") && args.get("final").equals("true")) {
+					Field c = Field.class.getDeclaredField("modifiers");
+					c.setAccessible(true);
+					c.setInt(b, b.getModifiers() & ~Modifier.FINAL);
+				}
+				b.set(null, Double.parseDouble(args.get("value")));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }

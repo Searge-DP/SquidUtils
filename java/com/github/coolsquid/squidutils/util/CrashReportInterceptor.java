@@ -14,7 +14,7 @@ public class CrashReportInterceptor {
 		
 		@Override
 		public String call() throws Exception {
-			return Utils.newString((PackIntegrityChecker.haveModsBeenRemoved() || PackIntegrityChecker.haveModsBeenAdded()), ". Have mods been removed: ", PackIntegrityChecker.haveModsBeenRemoved(), ". Have mods been added: ", PackIntegrityChecker.haveModsBeenAdded(), ".");
+			return Utils.newString((PackIntegrityChecker.INSTANCE.haveModsBeenRemoved() || PackIntegrityChecker.INSTANCE.haveModsBeenAdded()), ". Have mods been removed: ", PackIntegrityChecker.INSTANCE.haveModsBeenRemoved(), ". Have mods been added: ", PackIntegrityChecker.INSTANCE.haveModsBeenAdded(), ".");
 		}
 
 		@Override

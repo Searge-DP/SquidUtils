@@ -16,9 +16,9 @@ public class RegistrySearcher {
 	 */
 	
 	public static final void start() {
-		if (ConfigHandler.allBlocksUnbreakable || ConfigHandler.hardnessMultiplier > 1 || ConfigHandler.minHardness > 0)
+		if (ConfigHandler.INSTANCE.allBlocksUnbreakable || ConfigHandler.INSTANCE.hardnessMultiplier > 1 || ConfigHandler.INSTANCE.minHardness > 0)
 			blockSearch();
-		if (ConfigHandler.stackSizeDivider != 0 || ConfigHandler.durabilityDivider != 1 || ConfigHandler.infiniteDurability)
+		if (ConfigHandler.INSTANCE.stackSizeDivider != 0 || ConfigHandler.INSTANCE.durabilityDivider != 1 || ConfigHandler.INSTANCE.infiniteDurability)
 			itemSearch();
 	}
 	
@@ -30,17 +30,17 @@ public class RegistrySearcher {
 		for (int a = 0; a != 4095; a++) {
 			if (Block.blockRegistry.getObjectById(a) != null) {
 				Block block = (Block) Block.blockRegistry.getObjectById(a);
-				if (ConfigHandler.allBlocksUnbreakable) {
+				if (ConfigHandler.INSTANCE.allBlocksUnbreakable) {
 					block.setBlockUnbreakable();
 				}
-				if (ConfigHandler.hardnessMultiplier > 1) {
+				if (ConfigHandler.INSTANCE.hardnessMultiplier > 1) {
 					float f = block.getBlockHardness(null, 0, 0, 0);
-					block.setHardness(f * ConfigHandler.hardnessMultiplier);
+					block.setHardness(f * ConfigHandler.INSTANCE.hardnessMultiplier);
 				}
-				if (ConfigHandler.minHardness > 0) {
+				if (ConfigHandler.INSTANCE.minHardness > 0) {
 					float f = block.getBlockHardness(null, 0, 0, 0);
-					if (f < ConfigHandler.minHardness) {
-						f = ConfigHandler.minHardness;
+					if (f < ConfigHandler.INSTANCE.minHardness) {
+						f = ConfigHandler.INSTANCE.minHardness;
 					}
 				}
 			}
@@ -56,19 +56,19 @@ public class RegistrySearcher {
 		for (int a = 0; a != 32000; a++) {
 			if (Item.itemRegistry.getObjectById(a) != null) {
 				Item item = (Item) Item.itemRegistry.getObjectById(a);
-				if (ConfigHandler.stackSizeDivider != 0) {
-					item.setMaxStackSize(item.getItemStackLimit() / ConfigHandler.stackSizeDivider);
+				if (ConfigHandler.INSTANCE.stackSizeDivider != 0) {
+					item.setMaxStackSize(item.getItemStackLimit() / ConfigHandler.INSTANCE.stackSizeDivider);
 					if (item.getItemStackLimit() < 1) {
 						item.setMaxStackSize(1);
 					}
 				}
-				if (ConfigHandler.durabilityDivider != 1 && item.getMaxDamage() != 0) {
-					item.setMaxDamage(item.getMaxDamage() / ConfigHandler.durabilityDivider);
+				if (ConfigHandler.INSTANCE.durabilityDivider != 1 && item.getMaxDamage() != 0) {
+					item.setMaxDamage(item.getMaxDamage() / ConfigHandler.INSTANCE.durabilityDivider);
 					if (item.getMaxDamage() < 1) {
 						item.setMaxDamage(1);
 					}
 				}
-				if (ConfigHandler.infiniteDurability) {
+				if (ConfigHandler.INSTANCE.infiniteDurability) {
 					item.setMaxDamage(0);
 				}
 			}

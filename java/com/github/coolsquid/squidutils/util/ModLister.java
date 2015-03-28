@@ -18,36 +18,42 @@ import com.google.common.collect.Lists;
 import cpw.mods.fml.common.Loader;
 
 public class ModLister {
+
+	public static final ModLister INSTANCE = new ModLister();
+
+	private ModLister() {
+		
+	}
+
+	private final ILogger logger = new Logger(new File("modlist.txt"));
 	
-	private static final ILogger logger = new Logger(new File("modlist.txt"));
-	
-	public static void init() {
-		if (ConfigHandler.generateModList == 0) {
+	public void init() {
+		if (ConfigHandler.INSTANCE.generateModList == 0) {
 			return;
 		}
-		else if (ConfigHandler.generateModList == 1) {
-			generateListOfModids();
+		else if (ConfigHandler.INSTANCE.generateModList == 1) {
+			this.generateListOfModids();
 		}
-		else if (ConfigHandler.generateModList == 2) {
-			generateListOfModidsAndVersions();
+		else if (ConfigHandler.INSTANCE.generateModList == 2) {
+			this.generateListOfModidsAndVersions();
 		}
 	}
 	
-	public static void generateListOfModids() {
+	public void generateListOfModids() {
 		LogHelper.info("Generating modlist...");
-		FileHelper.writeLines(new File("modlist.txt"), getModids());
+		FileHelper.writeLines(new File("modlist.txt"), this.getModids());
 		LogHelper.info("Generated modlist.");
 	}
 
-	public static void generateListOfModidsAndVersions() {
+	public void generateListOfModidsAndVersions() {
 		LogHelper.info("Generating modlist...");
 		for (int a = 0; a < Loader.instance().getModList().size(); a++) {
-			logger.log(Utils.newString(Loader.instance().getModList().get(a).getModId(), " ", Loader.instance().getModList().get(a).getVersion()));
+			this.logger.log(Utils.newString(Loader.instance().getModList().get(a).getModId(), " ", Loader.instance().getModList().get(a).getVersion()));
 		}
 		LogHelper.info("Generated modlist.");
 	}
 	
-	public static List<String> getModids() {
+	public List<String> getModids() {
 		return Lists.newArrayList(Loader.instance().getIndexedModList().keySet());
 	}
 }

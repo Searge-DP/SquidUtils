@@ -14,7 +14,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class LivingUpdateHandler {
 	
-	private static final int size = ConfigHandler.worldSize;
+	private static final int size = ConfigHandler.INSTANCE.worldSize;
 	
 	@SubscribeEvent
 	public void onUpdate(LivingUpdateEvent event) {

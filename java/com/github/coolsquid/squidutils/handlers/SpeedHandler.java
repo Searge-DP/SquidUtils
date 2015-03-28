@@ -16,11 +16,11 @@ public class SpeedHandler {
 	@SubscribeEvent
 	public void playerUpdate(LivingUpdateEvent event) {
 		if (event.entity instanceof EntityPlayer) {
-			if (ConfigHandler.walkSpeed != -1) {
-				((EntityPlayer) event.entity).capabilities.setPlayerWalkSpeed(ConfigHandler.walkSpeed);
+			if (ConfigHandler.INSTANCE.walkSpeed != -1) {
+				((EntityPlayer) event.entity).capabilities.setPlayerWalkSpeed(ConfigHandler.INSTANCE.walkSpeed);
 			}
-			if (ConfigHandler.flySpeed != 1) {
-				((EntityPlayer) event.entity).capabilities.setFlySpeed(ConfigHandler.flySpeed);
+			if (ConfigHandler.INSTANCE.flySpeed != 1) {
+				((EntityPlayer) event.entity).capabilities.setFlySpeed(ConfigHandler.INSTANCE.flySpeed);
 			}
 		}
 	}

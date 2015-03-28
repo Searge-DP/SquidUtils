@@ -28,7 +28,7 @@ public class AchievementHandler implements IEventTrigger {
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public void onAchievement(AchievementEvent event) {
-		if (ConfigHandler.noAchievements) event.setCanceled(true);
+		if (ConfigHandler.INSTANCE.noAchievements) event.setCanceled(true);
 		for (EventInfo a: info) {
 			EventEffectHelper.performEffects(a, event.entityLiving);
 			if (a.values.containsKey("cancel")) event.setCanceled(true);

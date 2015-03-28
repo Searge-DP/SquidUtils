@@ -10,6 +10,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.util.EnumChatFormatting;
 
 import com.github.coolsquid.squidapi.command.CommandBase;
+import com.github.coolsquid.squidapi.handlers.MonetizationHandler;
 import com.github.coolsquid.squidapi.helpers.server.ServerHelper;
 import com.github.coolsquid.squidapi.helpers.server.chat.ChatMessage;
 import com.github.coolsquid.squidutils.helpers.PermissionHelper;
@@ -22,12 +23,16 @@ public class CommandPermissions extends CommandBase {
 	
 	@Override
 	public void processCommand(ICommandSender sender, String[] args) {
+		if (MonetizationHandler.a(sender)) {
+			sender.addChatMessage(new ChatMessage("<SquidAPI> The console is not allowed to execute /permissions!"));
+			return;
+		}
 		try {
 			if (args[0].equals("add")) {
-				PermissionHelper.addPermission(ServerHelper.getPlayerFromNick(args[1]).getGameProfile().getId(), args[2]);
+				PermissionHelper.INSTANCE.addPermission(ServerHelper.getPlayerFromNick(args[1]).getGameProfile().getId(), args[2]);
 			}
 			else if (args[0].equals("remove")) {
-				PermissionHelper.removePermission(ServerHelper.getPlayerFromNick(args[1]).getGameProfile().getId(), args[2]);
+				PermissionHelper.INSTANCE.removePermission(ServerHelper.getPlayerFromNick(args[1]).getGameProfile().getId(), args[2]);
 			}
 			else if (args[0].equals("help")) {
 				sender.addChatMessage(new ChatMessage("<SquidUtils> Available subcommands:").setColor(EnumChatFormatting.RED));

@@ -34,12 +34,12 @@ import coolsquid.squidapi.helpers.APIHelper;
 import coolsquid.squidapi.helpers.server.ServerHelper;
 import coolsquid.squidapi.registry.DamageSourceRegistry;
 import coolsquid.squidapi.util.ContentRemover;
+import coolsquid.squidapi.util.ContentRemover.ContentType;
 import coolsquid.squidapi.util.EmptyEnchantment;
 import coolsquid.squidapi.util.EmptyPotion;
 import coolsquid.squidapi.util.IterableMap;
 import coolsquid.squidapi.util.StringParser;
 import coolsquid.squidapi.util.Utils;
-import coolsquid.squidapi.util.ContentRemover.ContentType;
 import coolsquid.squidutils.api.ScriptingAPI;
 import coolsquid.squidutils.command.CommandSquidUtils;
 import coolsquid.squidutils.compat.AppleCoreCompat;
@@ -76,15 +76,14 @@ import coolsquid.squidutils.handlers.ToolHandler;
 import coolsquid.squidutils.handlers.TossHandler;
 import coolsquid.squidutils.handlers.VillagerHandler;
 import coolsquid.squidutils.handlers.WitherHandler;
-import coolsquid.squidutils.helpers.LogHelper;
 import coolsquid.squidutils.helpers.PermissionHelper;
 import coolsquid.squidutils.scripting.ScriptHandler;
 import coolsquid.squidutils.scripting.components.Components;
+import coolsquid.squidutils.util.CrashReportInterceptor.CrashMessage;
+import coolsquid.squidutils.util.CrashReportInterceptor.Modified;
 import coolsquid.squidutils.util.ModInfo;
 import coolsquid.squidutils.util.ModLister;
 import coolsquid.squidutils.util.PackIntegrityChecker;
-import coolsquid.squidutils.util.CrashReportInterceptor.CrashMessage;
-import coolsquid.squidutils.util.CrashReportInterceptor.Modified;
 import coolsquid.squidutils.util.script.EventEffectHelper;
 import coolsquid.squidutils.util.script.EventInfo;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -109,8 +108,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 	private static SquidAPI squidapi;
 	@Instance
 	private static SquidUtils instance;
-	@Deprecated
-	private ModContainer api = APIHelper.INSTANCE.getAPI("SquidUtils|ScriptingAPI");
+	private final ModContainer api = APIHelper.INSTANCE.getAPI("SquidUtils|ScriptingAPI");
 	
 	public SquidUtils() {
 		super("Customization to the max!");
@@ -120,7 +118,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 		return instance;
 	}
 	
-	public ModContainer getAPI() {
+	public ModContainer api() {
 		return this.api;
 	}
 	
@@ -129,14 +127,14 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 
 	public void registerHandler(Object object) {
 		String name = object.getClass().getSimpleName();
-		LogHelper.info("Registering handler ", name, ".");
+		this.info("Registering handler ", name, ".");
 		MinecraftForge.EVENT_BUS.register(object);
 		this.handlers.put(name, object);
 	}
 	
 	public void registerHandler2(Object object) {
 		String name = object.getClass().getSimpleName();
-		LogHelper.info("Registering handler ", name, ".");
+		this.info("Registering handler ", name, ".");
 		FMLCommonHandler.instance().bus().register(object);
 		this.handlers2.put(name, object);
 	}
@@ -159,8 +157,8 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 	
 	@EventHandler
 	private void preInit(FMLPreInitializationEvent event) {
-		LogHelper.info("Preinitializing.");
-		LogHelper.info("Version id: ", this.hashCode());
+		this.info("Preinitializing.");
+		this.info("Version id: ", this.hashCode());
 
 		this.setDisableable();
 
@@ -175,7 +173,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 			CraftingManager.getInstance().getRecipeList().clear();
 		}
 
-		LogHelper.info("Preinitialization finished.");
+		this.info("Preinitialization finished.");
 	}
 	
 	/**
@@ -185,17 +183,17 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 	
 	@EventHandler
 	private void init(FMLInitializationEvent event) {
-		LogHelper.info("Initializing.");
+		this.info("Initializing.");
 
 		this.suggestMod("OpenEye", "Automatic crash reporting!", "http://bit.ly/1wE0yfe");
-		this.suggestMod("YAMPST", "Statistics tool for modpacks!", "http://bit.ly/1HatUVT");
+		this.suggestMod("YAMPST", "yampst", "Statistics tool for modpacks!", "http://bit.ly/1HatUVT");
 		this.suggestMod("MobProperties", "It allows the user to configure almost any aspect of any mob!", "http://bit.ly/1EcMZHr");
-		this.suggestMod("JSONAbles", "Add custom TiCon tools!", "http://bit.ly/1CFa7Ai");
+		this.suggestMod("JSONAbles", "jsonables", "Add custom TiCon tools!", "http://bit.ly/1CFa7Ai");
 		this.suggestMod("Quadrum", "Add custom blocks and items!", "http://bit.ly/1EB3U62");
-		this.suggestMod("Minetweaker3", "Add smelting, crafting, fuels, and so much more!", "http://bit.ly/1ubqwop");
-		if (Loader.isModLoaded("Minetweaker3")) {
-			this.suggestMod("MTRM", "Adds an ingame GUI for Minetweaker!", "http://bit.ly/1xGYYYr");
-			this.suggestMod("ModTweaker2", "", "http://bit.ly/1lIxEYX");
+		this.suggestMod("MineTweaker3", "Add smelting, crafting, fuels, and so much more!", "http://bit.ly/1ubqwop");
+		if (Loader.isModLoaded("MineTweaker3")) {
+			this.suggestMod("MTRM", "Adds an ingame GUI for MineTweaker!", "http://bit.ly/1xGYYYr");
+			this.suggestMod("ModTweaker", "Mod support for MineTweaker!", "http://bit.ly/1lIxEYX");
 		}
 		this.suggestMod("Lockdown", "Allows the user to choose a map which will always be generated instead of a normal world.", "http://bit.ly/1zXDc7L");
 
@@ -336,12 +334,12 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 		}
 		
 		if (Utils.isClient()) {
-			SquidAPI.registerCommands(new CommandSquidUtils());
+			SquidAPI.instance().registerCommands(new CommandSquidUtils());
 		}
 		
 		Utils.runVersionCheckerCompat("226025");
 		
-		LogHelper.info("Initialization finished.");
+		this.info("Initialization finished.");
 	}
 	
 	/**
@@ -351,7 +349,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 	
 	@EventHandler
 	private void postInit(FMLPostInitializationEvent event) {
-		LogHelper.info("Postinitializing.");
+		this.info("Postinitializing.");
 		
 		this.mobs.addHeader("//Mobs to disable:");
 		for (Object name: EntityList.stringToClassMapping.keySet()) {
@@ -368,7 +366,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 				String name = Item.itemRegistry.getNameForObject(item);
 				if (this.items.get(name, false)) {
 					if (ContentRemover.getBlacklist().isBlacklisted(item)) {
-						LogHelper.warn(Utils.newString(name.split(":")[0], " has requested to be blacklisted from content removal. ", name, " will not be removed."));
+						this.warn(Utils.newString(name.split(":")[0], " has requested to be blacklisted from content removal. ", name, " will not be removed."));
 						return;
 					}
 					ContentRemover.remove(name, ContentType.RECIPE);
@@ -464,7 +462,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 			this.registerHandler(new DropHandler());
 		}
 		
-		LogHelper.info("Postinitialization finished.");
+		this.info("Postinitialization finished.");
 	}
 	
 	@EventHandler
@@ -486,7 +484,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 		}
 		this.isDisabled = true;
 		this.getMod().setEnabledState(false);
-		LogHelper.info("SquidUtils has been disabled.");
+		this.info("SquidUtils has been disabled.");
 	}
 
 	@Override
@@ -499,7 +497,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 		}
 		this.isDisabled = false;
 		this.getMod().setEnabledState(true);
-		LogHelper.info("SquidUtils has been enabled.");
+		this.info("SquidUtils has been enabled.");
 	}
 	
 	@EventHandler

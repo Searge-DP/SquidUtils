@@ -20,8 +20,8 @@ import coolsquid.squidapi.helpers.FileHelper;
 import coolsquid.squidapi.util.IntUtils;
 import coolsquid.squidapi.util.StringParser;
 import coolsquid.squidapi.util.Utils;
+import coolsquid.squidutils.SquidUtils;
 import coolsquid.squidutils.api.ScriptingAPI;
-import coolsquid.squidutils.helpers.LogHelper;
 import coolsquid.squidutils.util.script.EffectInfo;
 import coolsquid.squidutils.util.script.EventInfo;
 
@@ -59,8 +59,8 @@ public class ScriptHandler {
 				if (!file.getName().endsWith(".script")) {
 					continue;
 				}
-				LogHelper.info("Found scripting file!");
-				LogHelper.info(file.getName());
+				SquidUtils.instance().info("Found scripting file!");
+				SquidUtils.instance().info(file.getName());
 				try {
 					BufferedReader r = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
 					while (true) {
@@ -189,8 +189,8 @@ public class ScriptHandler {
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
-				SquidAPI.logger.log(e);
-				SquidAPI.messages.add(Utils.newString(e.getClass().getName(), ". See SquidAPI.log for more information."));
+				SquidAPI.instance().logger.log(e);
+				SquidAPI.instance().messages.add(Utils.newString(e.getClass().getName(), ". See SquidAPI.log for more information."));
 			}
 		}
 	}

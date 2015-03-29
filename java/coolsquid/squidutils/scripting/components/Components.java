@@ -44,15 +44,14 @@ import coolsquid.squidapi.compat.ThermalExpansionCompat;
 import coolsquid.squidapi.creativetab.ITab;
 import coolsquid.squidapi.helpers.AchievementHelper;
 import coolsquid.squidapi.helpers.FishingHelper;
-import coolsquid.squidapi.helpers.LogHelper;
 import coolsquid.squidapi.helpers.RegistryHelper;
 import coolsquid.squidapi.item.ItemBasic;
 import coolsquid.squidapi.reflection.ReflectionHelper;
 import coolsquid.squidapi.util.ContentRemover;
+import coolsquid.squidapi.util.ContentRemover.ContentType;
 import coolsquid.squidapi.util.IntUtils;
 import coolsquid.squidapi.util.StringParser;
 import coolsquid.squidapi.util.Utils;
-import coolsquid.squidapi.util.ContentRemover.ContentType;
 import coolsquid.squidapi.world.biome.BiomeBase;
 import coolsquid.squidutils.SquidUtils;
 import coolsquid.squidutils.api.ScriptingAPI;
@@ -147,7 +146,7 @@ public class Components {
 		smeltingsubcommands.put("create", new ScriptSubcommandSmeltingCreate());
 		smeltingsubcommands.put("remove", new ScriptSubcommandSmeltingRemove());
 		ScriptingAPI.addCommand("smelting", new ScriptCommand(smeltingsubcommands));
-		
+
 		Map<String, IScriptSubcommand> reflectionsubcommands = Maps.newHashMap();
 		smeltingsubcommands.put("field", new ScriptSubcommandReflectionField());
 		smeltingsubcommands.put("method", new ScriptSubcommandReflectionMethod());
@@ -243,7 +242,7 @@ public class Components {
 			Item item = StringParser.parseItem(args.get("item"));
 			for (String modid: ContentRemover.getBlacklist()) {
 				if (item.getClass().getName().startsWith(modid)) {
-					LogHelper.warn(Utils.newString(modid, " has requested to be blacklisted from modification. ", args.get("item"), " will not be modified."));
+					SquidUtils.instance().warn(Utils.newString(modid, " has requested to be blacklisted from modification. ", args.get("item"), " will not be modified."));
 					return;
 				}
 			}
@@ -268,15 +267,18 @@ public class Components {
 			String desc = args.get("description").replace("_", " ");
 			if (type.equals("info")) {
 				CommandInfo command = new CommandInfo(name, desc, args.get("text").replace("_", " "));
-				SquidAPI.commands.add(command);
+				if (args.containsKey("url")) {
+					command.setUrl(args.get("url"));
+				}
+				SquidAPI.instance().commands.add(command);
 			}
 			else if (type.equals("web")) {
 				CommandWeb command = new CommandWeb(name, desc, args.get("url"));
-				SquidAPI.commands.add(command);
+				SquidAPI.instance().commands.add(command);
 			}
 			else if (type.equals("basic")) {
 				CommandCustom command = new CommandCustom(name, desc, Boolean.parseBoolean(args.get("requiresop")));
-				SquidAPI.commands.add(command);
+				SquidAPI.instance().commands.add(command);
 			}
 		}
 	}
@@ -310,7 +312,7 @@ public class Components {
 			ItemStack output = StringParser.parseItemStack(args.get("output"));
 			for (String modid: ContentRemover.getBlacklist()) {
 				if (output.getItem().getClass().getName().startsWith(modid)) {
-					LogHelper.warn(Utils.newString(modid, " has requested to be blacklisted from modification. ", args.get("item"), " will not be modified."));
+					SquidUtils.instance().warn(Utils.newString(modid, " has requested to be blacklisted from modification. ", args.get("item"), " will not be modified."));
 					return;
 				}
 			}
@@ -375,7 +377,7 @@ public class Components {
 			BiomeGenBase biome = BiomeGenBase.getBiome(id);
 			for (String modid: ContentRemover.getBlacklist()) {
 				if (biome.getClass().getName().startsWith(modid)) {
-					LogHelper.warn(Utils.newString(modid, " has requested to be blacklisted from modification. The biome (", id, ") will not be modified."));
+					SquidUtils.instance().warn(Utils.newString(modid, " has requested to be blacklisted from modification. The biome (", id, ") will not be modified."));
 					return;
 				}
 			}

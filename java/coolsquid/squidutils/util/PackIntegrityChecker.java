@@ -10,8 +10,8 @@ import java.util.List;
 
 import org.apache.logging.log4j.Level;
 
+import coolsquid.squidutils.SquidUtils;
 import coolsquid.squidutils.config.ConfigHandler;
-import coolsquid.squidutils.helpers.LogHelper;
 import cpw.mods.fml.common.Loader;
 
 public class PackIntegrityChecker implements UncaughtExceptionHandler {
@@ -64,19 +64,19 @@ public class PackIntegrityChecker implements UncaughtExceptionHandler {
 	
 	public void warn() {
 		if (!this.missingMods.isEmpty()) {
-			LogHelper.bigWarning(Level.WARN, "The modpack has been modified. DO NOT REPORT ANY BUGS!!! Missing mods:");
+			SquidUtils.instance().bigWarning("The modpack has been modified. DO NOT REPORT ANY BUGS!!! Missing mods:");
 			if (!(this.missingMods.isEmpty() || this.addedMods.isEmpty())) {
-				LogHelper.bigWarning(Level.WARN, "The modpack has been modified. DO NOT REPORT ANY BUGS!!!");
+				SquidUtils.instance().bigWarning(Level.WARN, "The modpack has been modified. DO NOT REPORT ANY BUGS!!!");
 				if (!this.missingMods.isEmpty()) {
-					LogHelper.warn("Missing mods:");
+					SquidUtils.instance().warn("Missing mods:");
 					for (int a = 0; a < this.missingMods.size(); a++) {
-						LogHelper.warn(this.missingMods.get(a));
+						SquidUtils.instance().warn(this.missingMods.get(a));
 					}
 				}
 				if (!this.addedMods.isEmpty()) {
-					LogHelper.warn("Added mods:");
+					SquidUtils.instance().warn("Added mods:");
 					for (int a = 0; a < this.addedMods.size(); a++) {
-						LogHelper.warn(this.addedMods.get(a));
+						SquidUtils.instance().warn(this.addedMods.get(a));
 					}
 				}
 			}

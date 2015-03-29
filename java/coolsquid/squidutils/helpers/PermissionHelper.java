@@ -31,7 +31,7 @@ public class PermissionHelper {
 	private final ILogger filewriter = new Logger(new File("./config/SquidUtils/permissions.txt"));
 	
 	public void init() {
-		SquidAPI.commands.add(new CommandPermissions());
+		SquidAPI.instance().registerCommands(new CommandPermissions());
 		List<String> permissions = FileHelper.readFile("config/SquidUtils", "permissions.txt");
 		for (String a: permissions) {
 			HashSet<String> set = new HashSet<String>();

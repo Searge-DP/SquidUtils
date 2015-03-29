@@ -13,8 +13,8 @@ import coolsquid.squidapi.helpers.FileHelper;
 import coolsquid.squidapi.logging.ILogger;
 import coolsquid.squidapi.logging.Logger;
 import coolsquid.squidapi.util.Utils;
+import coolsquid.squidutils.SquidUtils;
 import coolsquid.squidutils.config.ConfigHandler;
-import coolsquid.squidutils.helpers.LogHelper;
 import cpw.mods.fml.common.Loader;
 
 public class ModLister {
@@ -40,17 +40,17 @@ public class ModLister {
 	}
 	
 	public void generateListOfModids() {
-		LogHelper.info("Generating modlist...");
+		SquidUtils.instance().info("Generating modlist...");
 		FileHelper.writeLines(new File("modlist.txt"), this.getModids());
-		LogHelper.info("Generated modlist.");
+		SquidUtils.instance().info("Generated modlist.");
 	}
 
 	public void generateListOfModidsAndVersions() {
-		LogHelper.info("Generating modlist...");
+		SquidUtils.instance().info("Generating modlist...");
 		for (int a = 0; a < Loader.instance().getModList().size(); a++) {
 			this.logger.log(Utils.newString(Loader.instance().getModList().get(a).getModId(), " ", Loader.instance().getModList().get(a).getVersion()));
 		}
-		LogHelper.info("Generated modlist.");
+		SquidUtils.instance().info("Generated modlist.");
 	}
 	
 	public List<String> getModids() {

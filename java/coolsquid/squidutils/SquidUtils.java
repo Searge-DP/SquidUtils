@@ -59,6 +59,7 @@ import coolsquid.squidutils.handlers.DropHandler;
 import coolsquid.squidutils.handlers.EntityJoinHandler;
 import coolsquid.squidutils.handlers.EventLogger;
 import coolsquid.squidutils.handlers.ExplosionHandler;
+import coolsquid.squidutils.handlers.GuiHandler;
 import coolsquid.squidutils.handlers.HealingHandler;
 import coolsquid.squidutils.handlers.InteractionHandler;
 import coolsquid.squidutils.handlers.ItemBanHandler;
@@ -158,7 +159,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 	@EventHandler
 	private void preInit(FMLPreInitializationEvent event) {
 		this.info("Preinitializing.");
-		this.info("Version id: ", this.hashCode());
+		this.info("Version id: ", this.hash());
 
 		this.setDisableable();
 
@@ -332,6 +333,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 				Blocks.fire.setFireInfo(b, Blocks.fire.getEncouragement(b), Blocks.fire.getFlammability(b) * ConfigHandler.INSTANCE.flammabilityMultiplier);
 			}
 		}
+		MinecraftForge.EVENT_BUS.register(new GuiHandler());
 		
 		if (Utils.isClient()) {
 			SquidAPI.instance().registerCommands(new CommandSquidUtils());

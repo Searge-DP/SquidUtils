@@ -88,7 +88,7 @@ public class Components {
 		
 		Map<String, IScriptSubcommand> tabsubcommands = Maps.newHashMap();
 		tabsubcommands.put("create", new ScriptSubcommandTabCreate());
-		tabsubcommands.put("modify", new ScriptSubcommandCommandDisable());
+		tabsubcommands.put("disable", new ScriptSubcommandCommandDisable());
 		ScriptingAPI.addCommand("tab", new ScriptCommand(tabsubcommands));
 		
 		Map<String, IScriptSubcommand> recipesubcommands = Maps.newHashMap();

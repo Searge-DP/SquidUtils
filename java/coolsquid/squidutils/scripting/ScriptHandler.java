@@ -18,6 +18,7 @@ import com.google.common.collect.ImmutableMap.Builder;
 import coolsquid.squidapi.SquidAPI;
 import coolsquid.squidapi.helpers.FileHelper;
 import coolsquid.squidapi.util.IntUtils;
+import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidapi.util.StringParser;
 import coolsquid.squidapi.util.Utils;
 import coolsquid.squidutils.SquidUtils;
@@ -189,7 +190,7 @@ public class ScriptHandler {
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
-				SquidAPI.instance().logger.log(e);
+				MiscLib.LOGGER.log(e);
 				SquidAPI.instance().messages.add(Utils.newString(e.getClass().getName(), ". See SquidAPI.log for more information."));
 			}
 		}

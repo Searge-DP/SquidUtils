@@ -296,6 +296,8 @@ public class ConfigHandler {
 	public boolean keepTTCoreBug;
 
 	public int flammabilityMultiplier = 1;
+
+	public boolean removeBlockHighlight = false;
 	
 	/**
 	 * Sets category comments.
@@ -354,7 +356,8 @@ public class ConfigHandler {
 		this.explodeTNTMinecartsOnCollide = this.config.getBoolean("explodeTNTMinecartsOnCollide", this.CATEGORY_GENERAL, false, "Explodes minecarts with TNT whenever they collide with an entity.");
 		this.removeAllCommands = this.config.getBoolean("removeAllCommands", this.CATEGORY_GENERAL, false, "Removes all commands, except commands made with SquidUtils' scripting system. Other mods can blacklist their commands from removal.");
 		this.keepTTCoreBug = this.config.getBoolean("keepTTCoreBug", this.CATEGORY_GENERAL, false, "Keeps a ttCore/SquidUtils interaction bug launching fireworks whenever the player opens his inventory.");
-		
+		this.removeBlockHighlight = this.config.getBoolean("removeBlockHighlight", this.CATEGORY_GENERAL, false, "Removes the box around the block the player is pointing at.");
+
 		String password = this.config.getString("password", this.CATEGORY_GENERAL, "", "Sets a password required to launch Minecraft.");
 		if (!(password.isEmpty())) {
 			try {

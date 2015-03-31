@@ -43,10 +43,13 @@ import coolsquid.squidapi.util.Utils;
 import coolsquid.squidutils.api.ScriptingAPI;
 import coolsquid.squidutils.command.CommandSquidUtils;
 import coolsquid.squidutils.compat.AppleCoreCompat;
+import coolsquid.squidutils.config.BlockConfigHandler;
 import coolsquid.squidutils.config.ConfigHandler;
+import coolsquid.squidutils.config.ItemConfigHandler;
 import coolsquid.squidutils.creativetab.ModCreativeTabs;
 import coolsquid.squidutils.handlers.AchievementHandler;
 import coolsquid.squidutils.handlers.AnvilHandler;
+import coolsquid.squidutils.handlers.BlockBoxHandler;
 import coolsquid.squidutils.handlers.BonemealHandler;
 import coolsquid.squidutils.handlers.BottleHandler;
 import coolsquid.squidutils.handlers.BreakSpeedHandler;
@@ -74,6 +77,7 @@ import coolsquid.squidutils.handlers.StackSizeHandler;
 import coolsquid.squidutils.handlers.TNTHandler;
 import coolsquid.squidutils.handlers.TeleportationHandler;
 import coolsquid.squidutils.handlers.ToolHandler;
+import coolsquid.squidutils.handlers.ToolTipHandler;
 import coolsquid.squidutils.handlers.TossHandler;
 import coolsquid.squidutils.handlers.VillagerHandler;
 import coolsquid.squidutils.handlers.WitherHandler;
@@ -327,11 +331,8 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 		if (ConfigHandler.INSTANCE.explodeTNTMinecartsOnCollide) {
 			this.registerHandler(new MinecartCollisionHandler());
 		}
-		if (ConfigHandler.INSTANCE.flammabilityMultiplier != 1) {
-			for (Object a: Block.blockRegistry) {
-				Block b = (Block) a;
-				Blocks.fire.setFireInfo(b, Blocks.fire.getEncouragement(b), Blocks.fire.getFlammability(b) * ConfigHandler.INSTANCE.flammabilityMultiplier);
-			}
+		if (ConfigHandler.INSTANCE.removeBlockHighlight) {
+			MinecraftForge.EVENT_BUS.register(BlockBoxHandler.INSTANCE);
 		}
 		MinecraftForge.EVENT_BUS.register(new GuiHandler());
 		
@@ -352,7 +353,14 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 	@EventHandler
 	private void postInit(FMLPostInitializationEvent event) {
 		this.info("Postinitializing.");
-		
+
+		BlockConfigHandler.INSTANCE.init(new File("./config/SquidUtils/BlockProperties.cfg"));
+		ItemConfigHandler.INSTANCE.init(new File("./config/SquidUtils/ItemProperties.cfg"));
+
+		if (!ToolTipHandler.INSTANCE.getTooltips().isEmpty()) {
+			MinecraftForge.EVENT_BUS.register(ToolTipHandler.INSTANCE);
+		}
+
 		this.mobs.addHeader("//Mobs to disable:");
 		for (Object name: EntityList.stringToClassMapping.keySet()) {
 			if (this.mobs.get((String) name, false)) {
@@ -444,6 +452,13 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 		for (DamageSource dmg: DamageSourceRegistry.instance()) {
 			if (this.damageSources.get(dmg.damageType, false)) {
 				DamageHandler.bannedDamageSources.add(dmg);
+			}
+		}
+
+		if (ConfigHandler.INSTANCE.flammabilityMultiplier != 1) {
+			for (Object a: Block.blockRegistry) {
+				Block b = (Block) a;
+				Blocks.fire.setFireInfo(b, Blocks.fire.getEncouragement(b), Blocks.fire.getFlammability(b) * ConfigHandler.INSTANCE.flammabilityMultiplier);
 			}
 		}
 

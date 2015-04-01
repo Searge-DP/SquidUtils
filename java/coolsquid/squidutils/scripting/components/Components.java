@@ -34,7 +34,7 @@ import net.minecraftforge.fluids.FluidStack;
 import com.google.common.collect.Maps;
 
 import coolsquid.squidapi.SquidAPI;
-import coolsquid.squidapi.block.BlockBasic;
+import coolsquid.squidapi.block.BlockBase;
 import coolsquid.squidapi.compat.BloodMagicCompat;
 import coolsquid.squidapi.compat.BotaniaCompat;
 import coolsquid.squidapi.compat.Compat;
@@ -45,7 +45,7 @@ import coolsquid.squidapi.creativetab.ITab;
 import coolsquid.squidapi.helpers.AchievementHelper;
 import coolsquid.squidapi.helpers.FishingHelper;
 import coolsquid.squidapi.helpers.RegistryHelper;
-import coolsquid.squidapi.item.ItemBasic;
+import coolsquid.squidapi.item.ItemBase;
 import coolsquid.squidapi.reflection.ReflectionHelper;
 import coolsquid.squidapi.util.ContentRemover;
 import coolsquid.squidapi.util.ContentRemover.ContentType;
@@ -172,7 +172,7 @@ public class Components {
 				RegistryHelper.registerBlock(b, args.get("name"));
 			}
 			else if (args.get("type").equals("basic")) {
-				BlockBasic b = new BlockBasic(args.get("name"));
+				BlockBase b = new BlockBase(args.get("name"));
 				b.setCreativeTab(CreativeTabs.tabBlock);
 			}
 		}
@@ -230,7 +230,7 @@ public class Components {
 				RegistryHelper.registerItem(food, name);
 			}
 			else if (args.get("type").equals("basic")) {
-				new ItemBasic(name).setCreativeTab(CreativeTabs.tabMaterials);
+				new ItemBase(name).setCreativeTab(CreativeTabs.tabMaterials);
 			}
 		}
 	}

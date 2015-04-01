@@ -108,25 +108,25 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 @Mod(modid = ModInfo.modid, name = ModInfo.name, version = ModInfo.version, dependencies = ModInfo.dependencies, acceptableRemoteVersions = "*")
 public class SquidUtils extends SquidAPIMod implements Disableable {
-	
+
 	@Instance("SquidAPI")
 	private static SquidAPI squidapi;
 	@Instance
 	private static SquidUtils instance;
 	private final ModContainer api = APIHelper.INSTANCE.getAPI("SquidUtils|ScriptingAPI");
-	
+
 	public SquidUtils() {
 		super("Customization to the max!");
 	}
-	
+
 	public static SquidUtils instance() {
 		return instance;
 	}
-	
+
 	public ModContainer api() {
 		return this.api;
 	}
-	
+
 	public final Map<String, Object> handlers = Maps.newHashMap();
 	public final Map<String, Object> handlers2 = Maps.newHashMap();
 
@@ -136,16 +136,16 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 		MinecraftForge.EVENT_BUS.register(object);
 		this.handlers.put(name, object);
 	}
-	
+
 	public void registerHandler2(Object object) {
 		String name = object.getClass().getSimpleName();
 		this.info("Registering handler ", name, ".");
 		FMLCommonHandler.instance().bus().register(object);
 		this.handlers2.put(name, object);
 	}
-	
+
 	public boolean isDisabled;
-	
+
 	private final SquidAPIConfig mobs = new SquidAPIConfig(new File("./config/SquidUtils/Mobs.cfg"));
 	private final SquidAPIConfig items = new SquidAPIConfig(new File("./config/SquidUtils/Items.cfg"));
 	private final SquidAPIConfig potions = new SquidAPIConfig(new File("./config/SquidUtils/Potions.cfg"));
@@ -154,12 +154,12 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 	private final SquidAPIConfig crashMessages = new SquidAPIConfig(new File("./config/SquidUtils/CrashMessages.cfg"));
 	private final SquidAPIConfig worldTypes = new SquidAPIConfig(new File("./config/SquidUtils/WorldTypes.cfg"));
 	private final SquidAPIConfig damageSources = new SquidAPIConfig(new File("./config/SquidUtils/DamageSources.cfg"));
-	
+
 	/**
 	 * Preinit. Loads the config, clears Vanilla recipes (if toggled).
 	 * @param event
 	 */
-	
+
 	@EventHandler
 	private void preInit(FMLPreInitializationEvent event) {
 		this.info("Preinitializing.");
@@ -335,13 +335,13 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 			MinecraftForge.EVENT_BUS.register(BlockBoxHandler.INSTANCE);
 		}
 		MinecraftForge.EVENT_BUS.register(new GuiHandler());
-		
+
 		if (Utils.isClient()) {
 			SquidAPI.instance().registerCommands(new CommandSquidUtils());
 		}
-		
+
 		Utils.runVersionCheckerCompat("226025");
-		
+
 		this.info("Initialization finished.");
 	}
 	
@@ -369,7 +369,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 				EntityJoinHandler.disable.add(entityclass);
 			}
 		}
-		
+
 		this.items.addHeader("//Items to disable");
 		for (Object item: Item.itemRegistry) {
 			if (item instanceof Item) {
@@ -418,12 +418,12 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 				}
 			}
 		}
-		
+
 		this.layeredHardness.addHeader("//Layered hardness");
 		for (int a = 1; a < 27; a++) {
 			BreakSpeedHandler.layers.put(a * 10, this.layeredHardness.get(Utils.newString("layer", a), 1F));
 		}
-		
+
 		for (Float a: BreakSpeedHandler.layers.values()) {
 			if (a != 1F) {
 				this.registerHandler(new BreakSpeedHandler());
@@ -447,7 +447,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 				}
 			}
 		}
-		
+
 		this.damageSources.addHeader("//Damagesources to disable");
 		for (DamageSource dmg: DamageSourceRegistry.instance()) {
 			if (this.damageSources.get(dmg.damageType, false)) {
@@ -468,17 +468,17 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 		if (ScriptHandler.INSTANCE.onEntityJoin || !EntityJoinHandler.disable.isEmpty()) {
 			this.registerHandler(new EntityJoinHandler());
 		}
-		
+
 		RegistrySearcher.start();
-		
+
 		if (ConfigHandler.INSTANCE.potionStacks > 1 || ConfigHandler.INSTANCE.pearlStack > 1) {
 			StackSizeHandler.some(ConfigHandler.INSTANCE.potionStacks, ConfigHandler.INSTANCE.pearlStack);
 		}
-		
+
 		if (!DropHandler.shouldclear.isEmpty() || !DropHandler.dropstoremove.isEmpty() || !DropHandler.drops.isEmpty()) {
 			this.registerHandler(new DropHandler());
 		}
-		
+
 		this.info("Postinitialization finished.");
 	}
 	
@@ -516,7 +516,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 		this.getMod().setEnabledState(true);
 		this.info("SquidUtils has been enabled.");
 	}
-	
+
 	@EventHandler
 	public void onIMC(IMCEvent event) {
 		for (IMCMessage msg: event.getMessages()) {
@@ -536,9 +536,9 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 			}
 		}
 	}
-	
+
 	public final HashSet<String> commandsToDisable = new HashSet<String>();
-	
+
 	@EventHandler
 	public void onServerStarted(FMLServerStartedEvent event) {
 		if (ConfigHandler.INSTANCE.removeAllCommands) {

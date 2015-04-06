@@ -56,17 +56,24 @@ public class SquidUtilsPlugin implements IFMLLoadingPlugin, IClassTransformer {
 			LOGGER.info("Transforming " + transformedName);
 			ClassNode c = ASMHelper.createClassNode(basicClass);
 			MethodNode m = ASMHelper.getMethod(c, Methods.SET_HARDNESS, Methods.DESC);
-			transform(m, "onSetHardness");
+			transformSetter(m, "onSetHardness");
 			MethodNode m2 = ASMHelper.getMethod(c, Methods.SET_RESISTANCE, Methods.DESC);
-			transform(m2, "onSetResistance");
+			transformSetter(m2, "onSetResistance");
 			MethodNode m3 = ASMHelper.getMethod(c, Methods.SET_LIGHTLEVEL, Methods.DESC);
-			transform(m3, "onSetLightLevel");
+			transformSetter(m3, "onSetLightLevel");
+			basicClass = ASMHelper.getBytesFromClassNode(c);
+		}
+		else if (transformedName.equals("net.minecraft.block.BlockPortal")) {
+			LOGGER.info("Transforming " + transformedName);
+			ClassNode c = ASMHelper.createClassNode(basicClass);
+			MethodNode m = ASMHelper.getMethod(c, "onEntityCollidedWithBlock", "(Lnet/minecraft/world/World;IIILnet/minecraft/entity/Entity;)V");
+			transformBlockPortal(m);
 			basicClass = ASMHelper.getBytesFromClassNode(c);
 		}
 		return basicClass;
 	}
 
-	private static void transform(MethodNode m, String hook) {
+	private static void transformSetter(MethodNode m, String hook) {
 		InsnList list = new InsnList();
 
 		list.add(new VarInsnNode(Opcodes.ALOAD, 0));
@@ -74,6 +81,16 @@ public class SquidUtilsPlugin implements IFMLLoadingPlugin, IClassTransformer {
 		list.add(new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(Hooks.class), hook, "(Lnet/minecraft/block/Block;F)V", false));
 		list.add(new VarInsnNode(Opcodes.ALOAD, 0));
 		list.add(new InsnNode(Opcodes.ARETURN));
+
+		m.instructions.insertBefore(m.instructions.getFirst(), list);
+	}
+
+	private static void transformBlockPortal(MethodNode m) {
+		InsnList list = new InsnList();
+
+		list.add(new VarInsnNode(Opcodes.ALOAD, 5));
+		list.add(new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(Hooks.class), "onEntityCollideWithPortal", "(Lnet/minecraft/entity/Entity;)V", false));
+		list.add(new InsnNode(Opcodes.RETURN));
 
 		m.instructions.insertBefore(m.instructions.getFirst(), list);
 	}

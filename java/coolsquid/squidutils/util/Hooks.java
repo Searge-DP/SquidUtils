@@ -5,9 +5,11 @@
 package coolsquid.squidutils.util;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 import net.minecraftforge.common.config.Configuration;
 import coolsquid.squidapi.util.Utils;
 import coolsquid.squidapi.util.io.SquidAPIFile;
+import coolsquid.squidutils.config.GeneralConfigHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 
@@ -64,6 +66,12 @@ public class Hooks {
 				block.lightValue = (int) (value * 15.0F);
 			}
 		}
+	}
+
+	public static void onEntityCollideWithPortal(Entity entity) {
+		if (GeneralConfigHandler.SETTINGS.getBoolean("netherPortalsAllowed") && entity.ridingEntity == null && entity.riddenByEntity == null) {
+			entity.setInPortal();
+        }
 	}
 
 	public static void save() {

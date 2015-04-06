@@ -316,11 +316,12 @@ public class GeneralConfigHandler extends ConfigHandler {
 		this.removeBlockHighlight = this.config.getBoolean("removeBlockHighlight", this.CATEGORY_GENERAL, false, "Removes the box around the block the player is pointing at.");
 		SETTINGS.set("boltLivingTimeMultiplier", this.config.getInt("boltLivingTimeMultiplier", this.CATEGORY_GENERAL, 1, 0, 200, "Multiplies the lightning bolt living time by the specified amount."));
 		SETTINGS.set("displayTitle", this.config.getString("displayTitle", this.CATEGORY_GENERAL, "", "Overrides the title of the game display."));
+		SETTINGS.set("netherPortalsAllowed", this.config.getBoolean("netherPortalsAllowed", this.CATEGORY_GENERAL, true, "Set to false to disable nether portals."));
 
 		IdentityHashMap<Block, Boolean> carriable = ReflectionHelper.in(EntityEnderman.class).field("carriable", "carriable").get();
 		String[] c = Utils.newBlockNameArray(carriable.keySet());
 		carriable.clear();
-		for (String s: this.config.getStringList("test", this.CATEGORY_GENERAL, c, "")) {
+		for (String s: this.config.getStringList("carriableBlocks", this.CATEGORY_GENERAL, c, "The blocks that endermen can steal.")) {
 			carriable.put(Block.getBlockFromName(s), true);
 		}
 

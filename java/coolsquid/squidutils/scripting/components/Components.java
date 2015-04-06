@@ -50,6 +50,7 @@ import coolsquid.squidapi.reflection.ReflectionHelper;
 import coolsquid.squidapi.util.ContentRemover;
 import coolsquid.squidapi.util.ContentRemover.ContentType;
 import coolsquid.squidapi.util.IntUtils;
+import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidapi.util.StringParser;
 import coolsquid.squidapi.util.Utils;
 import coolsquid.squidapi.world.biome.BiomeBase;
@@ -88,21 +89,12 @@ public class Components {
 		
 		Map<String, IScriptSubcommand> tabsubcommands = Maps.newHashMap();
 		tabsubcommands.put("create", new ScriptSubcommandTabCreate());
-		tabsubcommands.put("disable", new ScriptSubcommandCommandDisable());
 		ScriptingAPI.addCommand("tab", new ScriptCommand(tabsubcommands));
 		
 		Map<String, IScriptSubcommand> recipesubcommands = Maps.newHashMap();
 		recipesubcommands.put("create", new ScriptSubcommandRecipeCreate());
 		recipesubcommands.put("remove", new ScriptSubcommandRecipeRemove());
 		ScriptingAPI.addCommand("recipe", new ScriptCommand(recipesubcommands));
-		
-		Map<String, IScriptSubcommand> potionsubcommands = Maps.newHashMap();
-		potionsubcommands.put("remove", new ScriptSubcommandPotionRemove());
-		ScriptingAPI.addCommand("potion", new ScriptCommand(potionsubcommands));
-		
-		Map<String, IScriptSubcommand> enchantmentsubcommands = Maps.newHashMap();
-		enchantmentsubcommands.put("remove", new ScriptSubcommandEnchantmentRemove());
-		ScriptingAPI.addCommand("enchantment", new ScriptCommand(enchantmentsubcommands));
 		
 		Map<String, IScriptSubcommand> biomesubcommands = Maps.newHashMap();
 		biomesubcommands.put("create", new ScriptSubcommandBiomeCreate());
@@ -240,11 +232,10 @@ public class Components {
 		@Override
 		public void run(Map<String, String> args) {
 			Item item = StringParser.parseItem(args.get("item"));
-			for (String modid: ContentRemover.getBlacklist()) {
-				if (item.getClass().getName().startsWith(modid)) {
-					SquidUtils.instance().warn(Utils.newString(modid, " has requested to be blacklisted from modification. ", args.get("item"), " will not be modified."));
-					return;
-				}
+			String a = MiscLib.getBlacklister(item);
+			if (a != null) {
+				SquidUtils.instance().warn(Utils.newString(a, " has requested to be blacklisted from modification. ", args.get("item"), " will not be modified."));
+				return;
 			}
 			if (args.get("property").equals("stacksize")) {
 				item.setMaxStackSize(IntUtils.parseInt(args.get("value")));
@@ -310,11 +301,10 @@ public class Components {
 		public void run(Map<String, String> args) {
 			String type = args.get("type");
 			ItemStack output = StringParser.parseItemStack(args.get("output"));
-			for (String modid: ContentRemover.getBlacklist()) {
-				if (output.getItem().getClass().getName().startsWith(modid)) {
-					SquidUtils.instance().warn(Utils.newString(modid, " has requested to be blacklisted from modification. ", args.get("item"), " will not be modified."));
-					return;
-				}
+			String a = MiscLib.getBlacklister(output.getItem());
+			if (a != null) {
+				SquidUtils.instance().warn(Utils.newString(a, " has requested to be blacklisted from modification. ", args.get("item"), " will not be modified."));
+				return;
 			}
 			if (type.equals("explosive")) {
 				RegistryHelper.addExplosionRecipe(StringParser.parseItem(args.get("input")), output, Float.parseFloat(args.get("size")));
@@ -341,22 +331,6 @@ public class Components {
 		}
 	}
 	
-	public static class ScriptSubcommandPotionRemove implements IScriptSubcommand {
-
-		@Override
-		public void run(Map<String, String> args) {
-			ContentRemover.remove(args.get("id"), ContentType.POTION);
-		}
-	}
-	
-	public static class ScriptSubcommandEnchantmentRemove implements IScriptSubcommand {
-
-		@Override
-		public void run(Map<String, String> args) {
-			ContentRemover.remove(args.get("id"), ContentType.ENCHANTMENT);
-		}
-	}
-	
 	public static class ScriptSubcommandBiomeCreate implements IScriptSubcommand {
 
 		@Override
@@ -375,11 +349,10 @@ public class Components {
 			String key = args.get("property");
 			int id = IntUtils.parseInt(args.get("id"));
 			BiomeGenBase biome = BiomeGenBase.getBiome(id);
-			for (String modid: ContentRemover.getBlacklist()) {
-				if (biome.getClass().getName().startsWith(modid)) {
-					SquidUtils.instance().warn(Utils.newString(modid, " has requested to be blacklisted from modification. The biome (", id, ") will not be modified."));
-					return;
-				}
+			String a = MiscLib.getBlacklister(biome);
+			if (a != null) {
+				SquidUtils.instance().warn(Utils.newString(a, " has requested to be blacklisted from modification. ", args.get("item"), " will not be modified."));
+				return;
 			}
 			if (key.equals("topblock")) {
 				BiomeGenBase.getBiome(id).topBlock = Block.getBlockFromName(args.get("block"));
@@ -497,7 +470,7 @@ public class Components {
 
 		@Override
 		public void run(Map<String, String> args) {
-			if (Compat.Botania.isEnabled()) {
+			if (Compat.BOTANIA.isEnabled()) {
 				String action = args.get("action");
 				String type = args.get("type");
 				if (action.equals("add")) {
@@ -535,7 +508,7 @@ public class Components {
 
 		@Override
 		public void run(Map<String, String> args) {
-			if (Compat.RotaryCraft.isEnabled()) {
+			if (Compat.ROTARYCRAFT.isEnabled()) {
 				String action = args.get("action");
 				String type = args.get("type");
 				if (action.equals("add")) {
@@ -567,7 +540,7 @@ public class Components {
 
 		@Override
 		public void run(Map<String, String> args) {
-			if (Compat.ThermalExpansion.isEnabled()) {
+			if (Compat.THERMALEXPANSION.isEnabled()) {
 				String action = args.get("action");
 				String type = args.get("type");
 				if (action.equals("add")) {
@@ -586,7 +559,7 @@ public class Components {
 
 		@Override
 		public void run(Map<String, String> args) {
-			if (Compat.RailCraft.isEnabled()) {
+			if (Compat.RAILCRAFT.isEnabled()) {
 				String action = args.get("action");
 				String type = args.get("type");
 				if (action.equals("add")) {
@@ -622,7 +595,7 @@ public class Components {
 
 		@Override
 		public void run(Map<String, String> args) {
-			if (Compat.BloodMagic.isEnabled()) {
+			if (Compat.BLOODMAGIC.isEnabled()) {
 				String action = args.get("action");
 				String type = args.get("type");
 				if (action.equals("add")) {

@@ -11,7 +11,7 @@ import java.util.List;
 import org.apache.logging.log4j.Level;
 
 import coolsquid.squidutils.SquidUtils;
-import coolsquid.squidutils.config.ConfigHandler;
+import coolsquid.squidutils.config.GeneralConfigHandler;
 import cpw.mods.fml.common.Loader;
 
 public class PackIntegrityChecker implements UncaughtExceptionHandler {
@@ -36,20 +36,20 @@ public class PackIntegrityChecker implements UncaughtExceptionHandler {
 
 	/** Checks if mods are removed/added. */
 	public void check() {
-		for (int a = 0; a < ConfigHandler.INSTANCE.modList.length; a++) {
-			this.allModsRequired.add(ConfigHandler.INSTANCE.modList[a]);
+		for (int a = 0; a < GeneralConfigHandler.INSTANCE.modList.length; a++) {
+			this.allModsRequired.add(GeneralConfigHandler.INSTANCE.modList[a]);
 		}
 		if (!this.allModsRequired.contains("mcp")) {this.allModsRequired.add("mcp");}
 		if (!this.allModsRequired.contains("Forge")) {this.allModsRequired.add("Forge");}
 		if (!this.allModsRequired.contains("fml")) {this.allModsRequired.add("FML");}
 		if (!this.allModsRequired.contains("SquidAPI")) {this.allModsRequired.add("SquidAPI");}
 		if (!this.allModsRequired.contains(ModInfo.modid)) {this.allModsRequired.add(ModInfo.modid);}
-		for (int a = 0; a < ConfigHandler.INSTANCE.optionalMods.length; a++) {
-			this.optionalMods.add(ConfigHandler.INSTANCE.optionalMods[a]);
+		for (int a = 0; a < GeneralConfigHandler.INSTANCE.optionalMods.length; a++) {
+			this.optionalMods.add(GeneralConfigHandler.INSTANCE.optionalMods[a]);
 		}
-		for (int a = 0; a < ConfigHandler.INSTANCE.modList.length; a++) {
+		for (int a = 0; a < GeneralConfigHandler.INSTANCE.modList.length; a++) {
 			if (!Loader.isModLoaded(this.allModsRequired.get(a))) {
-				this.missingMods.add(ConfigHandler.INSTANCE.modList[a]);
+				this.missingMods.add(GeneralConfigHandler.INSTANCE.modList[a]);
 			}
 		}
 		for (int a = 0; a < Loader.instance().getModList().size(); a++) {

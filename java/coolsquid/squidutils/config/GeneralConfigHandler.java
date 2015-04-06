@@ -5,43 +5,27 @@
 package coolsquid.squidutils.config;
 
 import java.io.File;
+import java.util.IdentityHashMap;
 
 import javax.swing.JOptionPane;
 
-import net.minecraftforge.common.config.Configuration;
+import net.minecraft.block.Block;
+import net.minecraft.entity.monster.EntityEnderman;
+import coolsquid.squidapi.config.ConfigHandler;
+import coolsquid.squidapi.reflection.ReflectionHelper;
+import coolsquid.squidapi.util.SquidAPIProperties;
+import coolsquid.squidapi.util.Utils;
+import coolsquid.squidapi.util.io.SquidAPIFile;
 
-public class ConfigHandler {
+public class GeneralConfigHandler extends ConfigHandler {
 
-	public static final ConfigHandler INSTANCE = new ConfigHandler();
+	public static final GeneralConfigHandler INSTANCE = new GeneralConfigHandler(new SquidAPIFile("./config/SquidUtils/SquidUtils.cfg"));
+	public static final SquidAPIProperties SETTINGS = new SquidAPIProperties();
 
-	private ConfigHandler() {
-		
+	private GeneralConfigHandler(File file) {
+		super(file);
 	}
 
-	/**
-	 * The config file.
-	 */
-	
-	private File configFile;
-	
-	/**
-	 * The configuration.
-	 */
-	
-	private Configuration config;
-	
-	public final void preInit(File file) {
-		this.configFile = file;
-		this.createConfig();
-		this.initCategories();
-		this.readConfig();
-	}
-	
-	private final void createConfig() {
-		if (this.config == null)
-			this.config = new Configuration(this.configFile);
-	}
-	
 	/*
 	 * Available categories. DO NOT MODIFY, as it breaks configs.
 	 */
@@ -255,50 +239,21 @@ public class ConfigHandler {
 	 */
 	
 	public int generateModList = 0;
-	
-	/**
-	 * Extra mods to not warn about.
-	 */
-	
 	public String[] optionalMods = new String[] {};
-	
-	/**
-	 * Replaces the starvation damage with the specified amount. Set to 0 to disable.
-	 */
-	
 	public float starvationDamage = 0;
-	
-	/**
-	 * Disables plant growth.
-	 */
-	
 	public boolean noPlantGrowth;
-	
-	/**
-	 * Disables hunger regen.
-	 */
-	
 	public boolean noHungerRegen;
-	
 	public float walkSpeed = 0.1F;
 	public float flySpeed = 0.05F;
-
 	public int minHardness = 0;
-	
 	public float explosionSizeMultiplier = 1;
-	
 	public int worldSize = 0;
-
 	public boolean explodeTNTMinecartsOnCollide;
-
 	public boolean removeAllCommands;
-
 	public boolean keepTTCoreBug;
-
 	public int flammabilityMultiplier = 1;
-
 	public boolean removeBlockHighlight = false;
-	
+
 	/**
 	 * Sets category comments.
 	 */
@@ -317,7 +272,9 @@ public class ConfigHandler {
 	 * Reads the config.
 	 */
 	
-	private final void readConfig() {
+	@Override
+	public void loadConfig() {
+		this.initCategories();
 		this.forceDifficulty = this.config.getString("forceDifficulty", this.CATEGORY_GAMESETTINGS, "FALSE", "Forces the specified difficulty. Allows for HARDCORE, HARD, NORMAL, EASY, PEACEFUL or FALSE. Set to FALSE to disable.");
 		this.noTNT = this.config.getBoolean("noTNT", this.CATEGORY_GENERAL, false, "Stops TNT from exploding.");
 		this.noAchievements = this.config.getBoolean("noAchievements", this.CATEGORY_GENERAL, false, "Disables achievements.");
@@ -357,6 +314,15 @@ public class ConfigHandler {
 		this.removeAllCommands = this.config.getBoolean("removeAllCommands", this.CATEGORY_GENERAL, false, "Removes all commands, except commands made with SquidUtils' scripting system. Other mods can blacklist their commands from removal.");
 		this.keepTTCoreBug = this.config.getBoolean("keepTTCoreBug", this.CATEGORY_GENERAL, false, "Keeps a ttCore/SquidUtils interaction bug launching fireworks whenever the player opens his inventory.");
 		this.removeBlockHighlight = this.config.getBoolean("removeBlockHighlight", this.CATEGORY_GENERAL, false, "Removes the box around the block the player is pointing at.");
+		SETTINGS.set("boltLivingTimeMultiplier", this.config.getInt("boltLivingTimeMultiplier", this.CATEGORY_GENERAL, 1, 0, 200, "Multiplies the lightning bolt living time by the specified amount."));
+		SETTINGS.set("displayTitle", this.config.getString("displayTitle", this.CATEGORY_GENERAL, "", "Overrides the title of the game display."));
+
+		IdentityHashMap<Block, Boolean> carriable = ReflectionHelper.in(EntityEnderman.class).field("carriable", "carriable").get();
+		String[] c = Utils.newBlockNameArray(carriable.keySet());
+		carriable.clear();
+		for (String s: this.config.getStringList("test", this.CATEGORY_GENERAL, c, "")) {
+			carriable.put(Block.getBlockFromName(s), true);
+		}
 
 		String password = this.config.getString("password", this.CATEGORY_GENERAL, "", "Sets a password required to launch Minecraft.");
 		if (!(password.isEmpty())) {
@@ -369,10 +335,6 @@ public class ConfigHandler {
 			catch (NullPointerException e) {
 				throw new SecurityException("Wrong password.");
 			}
-		}
-		
-		if (this.config.hasChanged()) {
-			this.config.save();
 		}
 	}
 }

@@ -14,7 +14,7 @@ import coolsquid.squidapi.logging.ILogger;
 import coolsquid.squidapi.logging.Logger;
 import coolsquid.squidapi.util.Utils;
 import coolsquid.squidutils.SquidUtils;
-import coolsquid.squidutils.config.ConfigHandler;
+import coolsquid.squidutils.config.GeneralConfigHandler;
 import cpw.mods.fml.common.Loader;
 
 public class ModLister {
@@ -28,13 +28,13 @@ public class ModLister {
 	private final ILogger logger = new Logger(new File("modlist.txt"));
 	
 	public void init() {
-		if (ConfigHandler.INSTANCE.generateModList == 0) {
+		if (GeneralConfigHandler.INSTANCE.generateModList == 0) {
 			return;
 		}
-		else if (ConfigHandler.INSTANCE.generateModList == 1) {
+		else if (GeneralConfigHandler.INSTANCE.generateModList == 1) {
 			this.generateListOfModids();
 		}
-		else if (ConfigHandler.INSTANCE.generateModList == 2) {
+		else if (GeneralConfigHandler.INSTANCE.generateModList == 2) {
 			this.generateListOfModidsAndVersions();
 		}
 	}

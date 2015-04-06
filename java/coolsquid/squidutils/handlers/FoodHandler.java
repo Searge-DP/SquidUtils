@@ -9,7 +9,7 @@ import java.util.List;
 
 import squeek.applecore.api.hunger.StarvationEvent;
 import coolsquid.squidutils.api.ScriptingAPI.IEventTrigger;
-import coolsquid.squidutils.config.ConfigHandler;
+import coolsquid.squidutils.config.GeneralConfigHandler;
 import coolsquid.squidutils.util.script.EventEffectHelper;
 import coolsquid.squidutils.util.script.EventInfo;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -25,7 +25,7 @@ public class FoodHandler implements IEventTrigger {
 	
 	@SubscribeEvent
 	public void event(StarvationEvent.Starve event) {
-		event.starveDamage = ConfigHandler.INSTANCE.starvationDamage;
+		event.starveDamage = GeneralConfigHandler.INSTANCE.starvationDamage;
 		for (EventInfo a: info) EventEffectHelper.performEffects(a, event.player);
 	}
 }

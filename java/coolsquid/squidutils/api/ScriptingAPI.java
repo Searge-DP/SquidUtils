@@ -14,6 +14,9 @@ import com.google.common.collect.ImmutableMap;
 
 import coolsquid.squidutils.util.script.EventInfo;
 
+/**
+ * Planning to remove the whole scripting system.
+ */
 public class ScriptingAPI {
 	
 	/** The commands */

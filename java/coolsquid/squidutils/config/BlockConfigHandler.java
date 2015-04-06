@@ -8,55 +8,41 @@ import java.io.File;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
-import net.minecraftforge.common.config.Configuration;
+import coolsquid.squidapi.config.ConfigHandler;
+import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidapi.util.StringParser;
 import coolsquid.squidapi.util.Utils;
+import coolsquid.squidapi.util.io.SquidAPIFile;
 
-public class BlockConfigHandler {
+public class BlockConfigHandler extends ConfigHandler {
 
-	public static final BlockConfigHandler INSTANCE = new BlockConfigHandler();
+	public static final BlockConfigHandler INSTANCE = new BlockConfigHandler(new SquidAPIFile("./config/SquidUtils/Blocks.cfg"));
 
-	private BlockConfigHandler() {
-		
+	private BlockConfigHandler(File file) {
+		super(file);
 	}
 
-	private File configFile;
-
-	private Configuration config;
-
-	public final void init(File file) {
-		this.configFile = file;
-		this.createConfig();
-		this.readConfig();
-	}
-
-	private final void createConfig() {
-		if (this.config == null)
-			this.config = new Configuration(this.configFile);
-	}
-
-	private final void readConfig() {
+	@Override
+	public void loadConfig() {
 		for (Object object: Block.blockRegistry) {
-			if (object != null && object != Blocks.air) {
+			if (object != null && object != Blocks.air && MiscLib.getBlacklister(object) == null) {
 				String name = Block.blockRegistry.getNameForObject(object);
 				Block block = (Block) object;
-				block.setHardness((float) this.config.get(name, "hardness", block.getBlockHardness(null, 0, 0, 0)).getDouble());
-				block.setResistance((float) this.config.get(name, "resistance", block.getExplosionResistance(null) * 5.0F).getDouble());
-				block.setBlockTextureName(this.config.get("texture", name, Utils.ensureNotNull(block.textureName)).getString());
-				if (block.getCreativeTabToDisplayOn() == null) {
-					this.config.get(name, "creativeTab", "null").getString();
-				}
-				else {
-					block.setCreativeTab(StringParser.parseCreativeTab(this.config.get(name, "creativeTab", block.getCreativeTabToDisplayOn().getTabLabel()).getString()));
+				block.setHardness((float) this.config.get(name, "hardness", block.blockHardness).getDouble());
+				block.setResistance((float) this.config.get(name, "resistance", block.blockResistance).getDouble());
+				if (MiscLib.CLIENT) {
+					block.setBlockTextureName(this.config.get(name, "texture", Utils.ensureNotNull(block.textureName)).getString());
+					if (block.getCreativeTabToDisplayOn() == null) {
+						this.config.get(name, "creativeTab", "null").getString();
+					}
+					else {
+						block.setCreativeTab(StringParser.parseCreativeTab(this.config.get(name, "creativeTab", block.getCreativeTabToDisplayOn().getTabLabel()).getString()));
+					}
 				}
 				block.slipperiness = (float) this.config.get(name, "slipperiness", block.slipperiness).getDouble();
 				block.setLightLevel((float) this.config.get(name, "lightLevel", block.getLightValue() / 15F).getDouble());
 				Blocks.fire.setFireInfo(block, this.config.get(name, "fireEncouragement", Blocks.fire.getEncouragement(block)).getInt(), this.config.get(name, "flammability", Blocks.fire.getFlammability(block)).getInt());
 			}
-		}
-
-		if (this.config.hasChanged()) {
-			this.config.save();
 		}
 	}
 }

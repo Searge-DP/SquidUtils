@@ -14,52 +14,44 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemTool;
-import net.minecraftforge.common.config.Configuration;
 
 import com.google.common.collect.Lists;
 
+import coolsquid.squidapi.config.ConfigHandler;
+import coolsquid.squidapi.util.ContentRemover;
+import coolsquid.squidapi.util.ContentRemover.ContentType;
+import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidapi.util.StringParser;
 import coolsquid.squidapi.util.Utils;
+import coolsquid.squidapi.util.io.SquidAPIFile;
+import coolsquid.squidutils.handlers.ItemBanHandler;
 import coolsquid.squidutils.handlers.ToolTipHandler;
 
-public class ItemConfigHandler {
+public class ItemConfigHandler extends ConfigHandler {
 
-	public static final ItemConfigHandler INSTANCE = new ItemConfigHandler();
+	public static final ItemConfigHandler INSTANCE = new ItemConfigHandler(new SquidAPIFile("./config/SquidUtils/Items.cfg"));
 
-	private ItemConfigHandler() {
-		
-	}
-
-	private File configFile;
-
-	private Configuration config;
-
-	public final void init(File file) {
-		this.configFile = file;
-		this.createConfig();
-		this.readConfig();
-	}
-
-	private final void createConfig() {
-		if (this.config == null)
-			this.config = new Configuration(this.configFile);
+	private ItemConfigHandler(File file) {
+		super(file);
 	}
 
 	@SuppressWarnings("deprecation")
-	private final void readConfig() {
+	@Override
+	public void loadConfig() {
 		for (Object object: Item.itemRegistry) {
-			if (object != null && object != Blocks.air) {
+			if (object != null && object != Blocks.air && MiscLib.getBlacklister(object) == null) {
 				String name = Item.itemRegistry.getNameForObject(object);
 				Item item = (Item) object;
-
 				item.setMaxStackSize(this.config.get(name, "stacksize", item.getItemStackLimit()).getInt());
 				item.setMaxDamage(this.config.get(name, "maxDamage", item.getMaxDamage()).getInt());
-				item.setTextureName(this.config.get(name, "texture", Utils.ensureNotNull(item.iconString)).getString());
-				if (item.getCreativeTab() == null) {
-					this.config.get(name, "creativeTab", "null").getString();
-				}
-				else {
-					item.setCreativeTab(StringParser.parseCreativeTab(this.config.get(name, "creativeTab", item.getCreativeTab().getTabLabel()).getString()));
+				if (MiscLib.CLIENT) {
+					item.setTextureName(this.config.get(name, "texture", Utils.ensureNotNull(item.iconString)).getString());
+					if (item.getCreativeTab() == null) {
+						this.config.get(name, "creativeTab", "null").getString();
+					}
+					else {
+						item.setCreativeTab(StringParser.parseCreativeTab(this.config.get(name, "creativeTab", item.getCreativeTab().getTabLabel()).getString()));
+					}
 				}
 				if (item instanceof ItemFood) {
 					ItemFood food = (ItemFood) item;
@@ -99,11 +91,12 @@ public class ItemConfigHandler {
 					}
 					ToolTipHandler.INSTANCE.getTooltips().put(item, list);
 				}
+				if (!this.config.get(name, "enabled", true).getBoolean()) {
+					ContentRemover.remove(name, ContentType.RECIPE);
+					ContentRemover.remove(name, ContentType.SMELTING);
+					ItemBanHandler.bannedItems.add(name);
+				}
 			}
-		}
-
-		if (this.config.hasChanged()) {
-			this.config.save();
 		}
 	}
 }

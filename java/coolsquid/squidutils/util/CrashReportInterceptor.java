@@ -21,25 +21,4 @@ public class CrashReportInterceptor {
 			return "Modified";
 		}
 	}
-
-	public static class CrashMessage implements ICrashCallable {
-	
-		private final String label;
-		private final String message;
-
-		public CrashMessage(String label, String message) {
-			this.label = label;
-			this.message = message;
-		}
-		
-		@Override
-		public String call() throws Exception {
-			return this.message;
-		}
-
-		@Override
-		public String getLabel() {
-			return this.label;
-		}
-	}
 }

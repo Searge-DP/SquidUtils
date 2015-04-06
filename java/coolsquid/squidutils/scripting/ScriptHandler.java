@@ -17,13 +17,13 @@ import com.google.common.collect.ImmutableMap.Builder;
 
 import coolsquid.squidapi.SquidAPI;
 import coolsquid.squidapi.helpers.FileHelper;
+import coolsquid.squidapi.util.EffectInfo;
 import coolsquid.squidapi.util.IntUtils;
 import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidapi.util.StringParser;
 import coolsquid.squidapi.util.Utils;
 import coolsquid.squidutils.SquidUtils;
 import coolsquid.squidutils.api.ScriptingAPI;
-import coolsquid.squidutils.util.script.EffectInfo;
 import coolsquid.squidutils.util.script.EventInfo;
 
 public class ScriptHandler {

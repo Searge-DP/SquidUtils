@@ -9,7 +9,7 @@ import java.util.List;
 
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 import coolsquid.squidutils.api.ScriptingAPI.IEventTrigger;
-import coolsquid.squidutils.config.ConfigHandler;
+import coolsquid.squidutils.config.GeneralConfigHandler;
 import coolsquid.squidutils.util.script.EventEffectHelper;
 import coolsquid.squidutils.util.script.EventInfo;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -25,7 +25,7 @@ public class TeleportationHandler implements IEventTrigger {
 
 	@SubscribeEvent
 	public void event(EnderTeleportEvent event) {
-		if (ConfigHandler.INSTANCE.disableTeleportation) event.setCanceled(true);
+		if (GeneralConfigHandler.INSTANCE.disableTeleportation) event.setCanceled(true);
 		for (EventInfo a: info) {
 			EventEffectHelper.performEffects(a, event.entityLiving);
 		}

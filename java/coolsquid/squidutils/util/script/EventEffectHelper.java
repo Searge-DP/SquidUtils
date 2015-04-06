@@ -13,6 +13,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.Explosion;
+import coolsquid.squidapi.util.EffectInfo;
+import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidapi.util.Utils;
 import coolsquid.squidutils.api.ScriptingAPI;
 import coolsquid.squidutils.handlers.DifficultyHandler;
@@ -99,7 +101,7 @@ public class EventEffectHelper {
 	}
 
 	public static void performEffects(EventInfo info) {
-		if (info.values.get("action").equals("setdifficulty") && Utils.isClient()) {
+		if (MiscLib.CLIENT && info.values.get("action").equals("setdifficulty")) {
 			DifficultyHandler.difficulty = (String) info.values.get("difficulty");
 		}
 	}

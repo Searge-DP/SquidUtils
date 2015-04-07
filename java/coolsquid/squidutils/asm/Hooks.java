@@ -2,20 +2,28 @@
  * Copyright (c) 2015 CoolSquid.
  * All rights reserved.
  *******************************************************************************/
-package coolsquid.squidutils.util;
+package coolsquid.squidutils.asm;
+
+import java.util.Set;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockFalling;
 import net.minecraft.entity.Entity;
+import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
+
+import com.google.common.collect.Sets;
+
 import coolsquid.squidapi.util.Utils;
 import coolsquid.squidapi.util.io.SquidAPIFile;
-import coolsquid.squidutils.config.GeneralConfigHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 
 public class Hooks {
 
 	private static final Configuration config = new Configuration(new SquidAPIFile("./config/SquidUtils/ModPermissions.cfg"));
+	public static final Set<Block> PHYSICS = Sets.newHashSet();
+	public static boolean NETHER_PORTALS = true;
 
 	public static void onSetHardness(Block block, float value) {
 		if (block != null) {
@@ -68,8 +76,14 @@ public class Hooks {
 		}
 	}
 
+	public static void onBlockFallingUpdate(BlockFalling block, World world, int x, int y, int z) {
+		if (!world.isRemote && PHYSICS.contains(block)) {
+            block.func_149830_m(world, x, y, z);
+        }
+	}
+
 	public static void onEntityCollideWithPortal(Entity entity) {
-		if (GeneralConfigHandler.SETTINGS.getBoolean("netherPortalsAllowed") && entity.ridingEntity == null && entity.riddenByEntity == null) {
+		if (NETHER_PORTALS && entity.ridingEntity == null && entity.riddenByEntity == null) {
 			entity.setInPortal();
         }
 	}

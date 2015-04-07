@@ -31,6 +31,8 @@ import coolsquid.squidapi.util.ContentRemover;
 import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidapi.util.Utils;
 import coolsquid.squidutils.api.ScriptingAPI;
+import coolsquid.squidutils.asm.Hooks;
+import coolsquid.squidutils.asm.SquidUtilsPlugin;
 import coolsquid.squidutils.command.CommandSquidUtils;
 import coolsquid.squidutils.compat.AppleCoreCompat;
 import coolsquid.squidutils.config.AchievementConfigHandler;
@@ -89,7 +91,6 @@ import coolsquid.squidutils.helpers.PermissionHelper;
 import coolsquid.squidutils.scripting.ScriptHandler;
 import coolsquid.squidutils.scripting.components.Components;
 import coolsquid.squidutils.util.CrashReportInterceptor.Modified;
-import coolsquid.squidutils.util.Hooks;
 import coolsquid.squidutils.util.ModInfo;
 import coolsquid.squidutils.util.ModLister;
 import coolsquid.squidutils.util.PackIntegrityChecker;
@@ -154,6 +155,10 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 	private void preInit(FMLPreInitializationEvent event) {
 		this.info("Preinitializing.");
 		this.info("Version id: ", this.hash());
+
+		if (SquidUtilsPlugin.config.hasChanged()) {
+			SquidUtilsPlugin.config.save();
+		}
 
 		this.setDisableable();
 

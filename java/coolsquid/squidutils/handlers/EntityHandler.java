@@ -12,7 +12,9 @@ import java.util.Set;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.ai.EntityAIAvoidEntity;
 import net.minecraft.entity.effect.EntityLightningBolt;
+import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 
@@ -83,6 +85,14 @@ public class EntityHandler implements IEventTrigger {
 			if (!props.effects.isEmpty()) {
 				for (EffectInfo a: props.effects) {
 					living.addPotionEffect(PotionHelper.newEffect(a));
+				}
+			}
+			if (entity instanceof EntityCreeper && !props.avoidCats) {
+				for (int a = 0; a < living.tasks.taskEntries.size(); a++) {
+					Object ai = living.tasks.taskEntries.get(a);
+					if (ai instanceof EntityAIAvoidEntity) {
+						living.tasks.taskEntries.remove(a);
+					}
 				}
 			}
 		}

@@ -40,7 +40,7 @@ public class ASMHelper {
 		return b;
 	}
 	
-	public static ClassNode createClassNode(byte[] b) {
+	public static ClassNode createClassNodeFromBytes(byte[] b) {
 		ClassNode c = new ClassNode();
 		ClassReader r = new ClassReader(b);
 		r.accept(c, ClassReader.EXPAND_FRAMES);

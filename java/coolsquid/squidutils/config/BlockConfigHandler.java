@@ -7,12 +7,14 @@ package coolsquid.squidutils.config;
 import java.io.File;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockFalling;
 import net.minecraft.init.Blocks;
 import coolsquid.squidapi.config.ConfigHandler;
 import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidapi.util.StringParser;
 import coolsquid.squidapi.util.Utils;
 import coolsquid.squidapi.util.io.SquidAPIFile;
+import coolsquid.squidutils.asm.Hooks;
 
 public class BlockConfigHandler extends ConfigHandler {
 
@@ -42,6 +44,11 @@ public class BlockConfigHandler extends ConfigHandler {
 				block.slipperiness = (float) this.config.get(name, "slipperiness", block.slipperiness).getDouble();
 				block.setLightLevel((float) this.config.get(name, "lightLevel", block.getLightValue() / 15F).getDouble());
 				Blocks.fire.setFireInfo(block, this.config.get(name, "fireEncouragement", Blocks.fire.getEncouragement(block)).getInt(), this.config.get(name, "flammability", Blocks.fire.getFlammability(block)).getInt());
+				if (block instanceof BlockFalling) {
+					if (this.config.get(name, "physics", true).getBoolean()) {
+						Hooks.PHYSICS.add(block);
+					}
+				}
 			}
 		}
 	}

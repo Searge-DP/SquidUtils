@@ -47,6 +47,9 @@ public class MobConfigHandler extends ConfigHandler {
 				String[] b = a.split("=");
 				props.equipment.put(Integer.parseInt(b[0]), new ItemStack((Item) Item.itemRegistry.getObject(b[1])));
 			}
+			if (name.equalsIgnoreCase("creeper")) {
+				props.avoidCats = this.config.get(name, "avoidCats", true).getBoolean();
+			}
 		}
 	}
 }

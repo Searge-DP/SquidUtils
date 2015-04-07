@@ -16,6 +16,7 @@ import coolsquid.squidapi.reflection.ReflectionHelper;
 import coolsquid.squidapi.util.SquidAPIProperties;
 import coolsquid.squidapi.util.Utils;
 import coolsquid.squidapi.util.io.SquidAPIFile;
+import coolsquid.squidutils.asm.Hooks;
 
 public class GeneralConfigHandler extends ConfigHandler {
 
@@ -24,6 +25,7 @@ public class GeneralConfigHandler extends ConfigHandler {
 
 	private GeneralConfigHandler(File file) {
 		super(file);
+		this.initCategories();
 	}
 
 	/*
@@ -34,7 +36,7 @@ public class GeneralConfigHandler extends ConfigHandler {
 	 * For options that doesn't fit elsewhere.
 	 */
 	
-	private final String CATEGORY_GENERAL = "General";
+	public final String CATEGORY_GENERAL = "General";
 	
 	/**
 	 * Options regarding mobs.
@@ -274,7 +276,6 @@ public class GeneralConfigHandler extends ConfigHandler {
 	
 	@Override
 	public void loadConfig() {
-		this.initCategories();
 		this.forceDifficulty = this.config.getString("forceDifficulty", this.CATEGORY_GAMESETTINGS, "FALSE", "Forces the specified difficulty. Allows for HARDCORE, HARD, NORMAL, EASY, PEACEFUL or FALSE. Set to FALSE to disable.");
 		this.noTNT = this.config.getBoolean("noTNT", this.CATEGORY_GENERAL, false, "Stops TNT from exploding.");
 		this.noAchievements = this.config.getBoolean("noAchievements", this.CATEGORY_GENERAL, false, "Disables achievements.");
@@ -316,7 +317,7 @@ public class GeneralConfigHandler extends ConfigHandler {
 		this.removeBlockHighlight = this.config.getBoolean("removeBlockHighlight", this.CATEGORY_GENERAL, false, "Removes the box around the block the player is pointing at.");
 		SETTINGS.set("boltLivingTimeMultiplier", this.config.getInt("boltLivingTimeMultiplier", this.CATEGORY_GENERAL, 1, 0, 200, "Multiplies the lightning bolt living time by the specified amount."));
 		SETTINGS.set("displayTitle", this.config.getString("displayTitle", this.CATEGORY_GENERAL, "", "Overrides the title of the game display."));
-		SETTINGS.set("netherPortalsAllowed", this.config.getBoolean("netherPortalsAllowed", this.CATEGORY_GENERAL, true, "Set to false to disable nether portals."));
+		Hooks.NETHER_PORTALS = this.config.getBoolean("netherPortalsAllowed", this.CATEGORY_GENERAL, true, "Set to false to disable nether portals.");
 
 		IdentityHashMap<Block, Boolean> carriable = ReflectionHelper.in(EntityEnderman.class).field("carriable", "carriable").get();
 		String[] c = Utils.newBlockNameArray(carriable.keySet());

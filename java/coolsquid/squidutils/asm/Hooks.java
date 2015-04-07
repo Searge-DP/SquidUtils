@@ -88,6 +88,12 @@ public class Hooks {
         }
 	}
 
+	/*public static void onBiomeConstruct(int id) {
+		if (BiomeGenBase.biomeList[id] != null) {
+			throw new IdException();
+		}
+	}*/
+
 	public static void save() {
 		if (config.hasChanged()) {
 			config.save();

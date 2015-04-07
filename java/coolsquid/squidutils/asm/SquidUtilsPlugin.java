@@ -23,7 +23,7 @@ import org.objectweb.asm.tree.VarInsnNode;
 import coolsquid.squidutils.config.GeneralConfigHandler;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 
-@IFMLLoadingPlugin.TransformerExclusions({"net.minecraftforge.common.config", "coolsquid.squidutils.asm", "coolsquid.squidutils.config.GeneralConfigHandler"})
+@IFMLLoadingPlugin.TransformerExclusions({"coolsquid.squidutils.asm", "coolsquid.squidutils.config.GeneralConfigHandler"})
 public class SquidUtilsPlugin implements IFMLLoadingPlugin, IClassTransformer {
 
 	public static final Logger LOGGER = LogManager.getLogger("SquidUtils");
@@ -80,8 +80,24 @@ public class SquidUtilsPlugin implements IFMLLoadingPlugin, IClassTransformer {
 			transformBlockFalling(m);
 			basicClass = ASMHelper.getBytesFromClassNode(c);
 		}
+		/*else if (transformedName.equals("net.minecraft.world.biome.BiomeGenBase")) {
+			LOGGER.info("Transforming " + transformedName);
+			ClassNode c = ASMHelper.createClassNodeFromBytes(basicClass);
+			MethodNode m = ASMHelper.getMethod(c, "<init>", "(IZ)V");
+			transformBiomeGenBase(m);
+			basicClass = ASMHelper.getBytesFromClassNode(c);
+		}*/
 		return basicClass;
 	}
+
+	/*private static void transformBiomeGenBase(MethodNode m) {
+		InsnList list = new InsnList();
+
+		list.add(new VarInsnNode(Opcodes.ILOAD, 1));
+		list.add(new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(Hooks.class), "onBiomeConstruct", "(I)V", false));
+
+		m.instructions.insertBefore(m.instructions.getFirst(), list);
+	}*/
 
 	private static void transformSetter(MethodNode m, String hook) {
 		InsnList list = new InsnList();

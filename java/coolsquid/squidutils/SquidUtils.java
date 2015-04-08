@@ -144,6 +144,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 
 	public boolean isDisabled;
 
+	@SuppressWarnings("deprecation")
 	private final SquidAPIConfig layeredHardness = new SquidAPIConfig(new File("./config/SquidUtils/LayeredHardness.cfg"));
 
 	/**

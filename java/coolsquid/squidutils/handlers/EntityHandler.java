@@ -44,13 +44,15 @@ public class EntityHandler implements IEventTrigger {
 
 	@SubscribeEvent
 	public void onJoin(EntityJoinWorldEvent event) {
+		Entity entity = event.entity;
 		if (disable.contains(event.entity.getClass())) {
 			event.setCanceled(true);
+			return;
 		}
-		if (event.entity instanceof EntityLivingBase) {
+		if (entity instanceof EntityLivingBase) {
 			for (EventInfo a: info) {
-				if (EventEffectHelper.isCorrectType((EntityLivingBase) event.entity, (String) a.values.get("entitytype"))) {
-					EventEffectHelper.performEffects(a, (EntityLivingBase) event.entity);
+				if (EventEffectHelper.isCorrectType((EntityLivingBase) entity, (String) a.values.get("entitytype"))) {
+					EventEffectHelper.performEffects(a, (EntityLivingBase) entity);
 				}
 			}
 		}

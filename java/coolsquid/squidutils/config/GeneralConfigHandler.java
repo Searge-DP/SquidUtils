@@ -255,6 +255,7 @@ public class GeneralConfigHandler extends ConfigHandler {
 	public boolean keepTTCoreBug;
 	public int flammabilityMultiplier = 1;
 	public boolean removeBlockHighlight = false;
+	public float exhaustionMultiplier = 1;
 
 	/**
 	 * Sets category comments.
@@ -318,6 +319,7 @@ public class GeneralConfigHandler extends ConfigHandler {
 		SETTINGS.set("boltLivingTimeMultiplier", this.config.getInt("boltLivingTimeMultiplier", this.CATEGORY_GENERAL, 1, 0, 200, "Multiplies the lightning bolt living time by the specified amount."));
 		SETTINGS.set("displayTitle", this.config.getString("displayTitle", this.CATEGORY_GENERAL, "", "Overrides the title of the game display."));
 		Hooks.NETHER_PORTALS = this.config.getBoolean("netherPortalsAllowed", this.CATEGORY_GENERAL, true, "Set to false to disable nether portals.");
+		this.exhaustionMultiplier = this.config.getFloat("exhaustionMultiplier", this.CATEGORY_HUNGER, 1, 0, 1080, "The amount of exhaustion applied to the player will be multiplied by this amount.");
 
 		IdentityHashMap<Block, Boolean> carriable = ReflectionHelper.in(EntityEnderman.class).field("carriable", "carriable").get();
 		String[] c = Utils.newBlockNameArray(carriable.keySet());

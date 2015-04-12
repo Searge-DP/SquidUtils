@@ -13,6 +13,8 @@ import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemFood;
+import net.minecraft.item.ItemHoe;
+import net.minecraft.item.ItemSword;
 import net.minecraft.item.ItemTool;
 
 import com.google.common.collect.Lists;
@@ -22,7 +24,7 @@ import coolsquid.squidapi.util.ContentRemover;
 import coolsquid.squidapi.util.ContentRemover.ContentType;
 import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidapi.util.StringParser;
-import coolsquid.squidapi.util.Utils;
+import coolsquid.squidapi.util.StringUtils;
 import coolsquid.squidapi.util.io.SquidAPIFile;
 import coolsquid.squidutils.handlers.ItemBanHandler;
 import coolsquid.squidutils.handlers.ToolTipHandler;
@@ -45,7 +47,7 @@ public class ItemConfigHandler extends ConfigHandler {
 				item.setMaxStackSize(this.config.get(name, "stacksize", item.getItemStackLimit()).getInt());
 				item.setMaxDamage(this.config.get(name, "maxDamage", item.getMaxDamage()).getInt());
 				if (MiscLib.CLIENT) {
-					item.setTextureName(this.config.get(name, "texture", Utils.ensureNotNull(item.iconString)).getString());
+					item.setTextureName(this.config.get(name, "texture", StringUtils.ensureNotNull(item.iconString)).getString());
 					if (item.getCreativeTab() == null) {
 						this.config.get(name, "creativeTab", "null").getString();
 					}
@@ -82,6 +84,14 @@ public class ItemConfigHandler extends ConfigHandler {
 					ItemArmor armor = (ItemArmor) item;
 					armor.damageReduceAmount = this.config.get(name, "damageReduceAmount", armor.damageReduceAmount).getInt();
 					armor.material = ArmorMaterial.valueOf(this.config.get(name, "armorMaterial", armor.getArmorMaterial().toString()).getString());
+				}
+				else if (item instanceof ItemSword) {
+					ItemSword sword = (ItemSword) item;
+					sword.field_150933_b = ToolMaterial.valueOf(this.config.get(name, "toolMaterial", sword.getToolMaterialName()).getString());
+				}
+				else if (item instanceof ItemHoe) {
+					ItemHoe hoe = (ItemHoe) item;
+					hoe.theToolMaterial = ToolMaterial.valueOf(this.config.get(name, "toolMaterial", hoe.getToolMaterialName()).getString());
 				}
 				String tooltip = this.config.get(name, "tooltip", "").getString();
 				if (!tooltip.isEmpty()) {

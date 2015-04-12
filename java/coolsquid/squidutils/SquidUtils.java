@@ -23,7 +23,6 @@ import coolsquid.squidapi.SquidAPI;
 import coolsquid.squidapi.SquidAPIMod;
 import coolsquid.squidapi.compat.Compat;
 import coolsquid.squidapi.config.ConfigurationManager;
-import coolsquid.squidapi.config.SquidAPIConfig;
 import coolsquid.squidapi.exception.InvalidConfigValueException;
 import coolsquid.squidapi.helpers.APIHelper;
 import coolsquid.squidapi.helpers.server.ServerHelper;
@@ -32,7 +31,6 @@ import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidapi.util.Utils;
 import coolsquid.squidutils.api.ScriptingAPI;
 import coolsquid.squidutils.asm.Hooks;
-import coolsquid.squidutils.asm.SquidUtilsPlugin;
 import coolsquid.squidutils.command.CommandSquidUtils;
 import coolsquid.squidutils.compat.AppleCoreCompat;
 import coolsquid.squidutils.config.AchievementConfigHandler;
@@ -45,8 +43,10 @@ import coolsquid.squidutils.config.CommandConfigHandler;
 import coolsquid.squidutils.config.CrashCallableConfigHandler;
 import coolsquid.squidutils.config.CreativeTabConfigHandler;
 import coolsquid.squidutils.config.DamageSourceConfigHandler;
+import coolsquid.squidutils.config.DimensionConfigHandler;
 import coolsquid.squidutils.config.EnchantmentConfigHandler;
 import coolsquid.squidutils.config.FishingConfigHandler;
+import coolsquid.squidutils.config.FluidConfigHandler;
 import coolsquid.squidutils.config.GeneralConfigHandler;
 import coolsquid.squidutils.config.ItemConfigHandler;
 import coolsquid.squidutils.config.MobConfigHandler;
@@ -59,7 +59,6 @@ import coolsquid.squidutils.handlers.AnvilHandler;
 import coolsquid.squidutils.handlers.BlockBoxHandler;
 import coolsquid.squidutils.handlers.BonemealHandler;
 import coolsquid.squidutils.handlers.BottleHandler;
-import coolsquid.squidutils.handlers.BreakSpeedHandler;
 import coolsquid.squidutils.handlers.CommandHandler;
 import coolsquid.squidutils.handlers.CraftingHandler;
 import coolsquid.squidutils.handlers.DamageHandler;
@@ -118,7 +117,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 	public static final ModContainer API = APIHelper.INSTANCE.getAPI("SquidUtils|ScriptingAPI");
 
 	public SquidUtils() {
-		super("Customization to the max!");
+		super("Customization to the max!", "226025");
 	}
 
 	public static SquidUtils instance() {
@@ -144,9 +143,6 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 
 	public boolean isDisabled;
 
-	@SuppressWarnings("deprecation")
-	private final SquidAPIConfig layeredHardness = new SquidAPIConfig(new File("./config/SquidUtils/LayeredHardness.cfg"));
-
 	/**
 	 * Preinit. Loads the config, clears Vanilla recipes (if toggled).
 	 * @param event
@@ -156,10 +152,6 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 	private void preInit(FMLPreInitializationEvent event) {
 		this.info("Preinitializing.");
 		this.info("Version id: ", this.hash());
-
-		if (SquidUtilsPlugin.config.hasChanged()) {
-			SquidUtilsPlugin.config.save();
-		}
 
 		this.setDisableable();
 
@@ -176,12 +168,12 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 
 		this.info("Preinitialization finished.");
 	}
-	
+
 	/**
 	 * Init. Activates modules.
 	 * @param event
 	 */
-	
+
 	@EventHandler
 	private void init(FMLInitializationEvent event) {
 		this.info("Initializing.");
@@ -363,7 +355,8 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 				ChestGenConfigHandler.INSTANCE,
 				FishingConfigHandler.INSTANCE,
 				CreativeTabConfigHandler.INSTANCE,
-				EnchantmentConfigHandler.INSTANCE);
+				EnchantmentConfigHandler.INSTANCE,
+				FluidConfigHandler.INSTANCE);
 
 		if (Compat.BOTANIA.isEnabled()) {
 			ConfigurationManager.INSTANCE.registerHandlers(
@@ -375,18 +368,6 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 
 		if (!ToolTipHandler.INSTANCE.getTooltips().isEmpty()) {
 			MinecraftForge.EVENT_BUS.register(ToolTipHandler.INSTANCE);
-		}
-
-		this.layeredHardness.addHeader("//Layered hardness");
-		for (int a = 1; a < 27; a++) {
-			BreakSpeedHandler.layers.put(a * 10, this.layeredHardness.get(Utils.newString("layer", a), 1F));
-		}
-
-		for (float a: BreakSpeedHandler.layers.values()) {
-			if (a != 1F) {
-				this.registerHandler(new BreakSpeedHandler());
-				break;
-			}
 		}
 
 		if (GeneralConfigHandler.INSTANCE.flammabilityMultiplier != 1) {
@@ -464,5 +445,6 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 			}
 		}
 		CommandConfigHandler.INSTANCE.init();
+		DimensionConfigHandler.INSTANCE.init();
 	}
 }

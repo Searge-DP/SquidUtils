@@ -25,6 +25,7 @@ public class EntityInfo {
 	public Set<EffectInfo> effects;
 	public Map<Integer, ItemStack> equipment;
 	public boolean avoidCats;
+	public int armor;
 
 	public EntityInfo() {
 		this.effects = Sets.newHashSet();

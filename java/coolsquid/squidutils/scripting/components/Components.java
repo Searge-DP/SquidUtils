@@ -52,7 +52,7 @@ import coolsquid.squidapi.util.ContentRemover.ContentType;
 import coolsquid.squidapi.util.IntUtils;
 import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidapi.util.StringParser;
-import coolsquid.squidapi.util.Utils;
+import coolsquid.squidapi.util.StringUtils;
 import coolsquid.squidapi.world.biome.BiomeBase;
 import coolsquid.squidutils.SquidUtils;
 import coolsquid.squidutils.api.ScriptingAPI;
@@ -234,7 +234,7 @@ public class Components {
 			Item item = StringParser.parseItem(args.get("item"));
 			String a = MiscLib.getBlacklister(item);
 			if (a != null) {
-				SquidUtils.instance().warn(Utils.newString(a, " has requested to be blacklisted from modification. ", args.get("item"), " will not be modified."));
+				SquidUtils.instance().warn(StringUtils.newString(a, " has requested to be blacklisted from modification. ", args.get("item"), " will not be modified."));
 				return;
 			}
 			if (args.get("property").equals("stacksize")) {
@@ -303,7 +303,7 @@ public class Components {
 			ItemStack output = StringParser.parseItemStack(args.get("output"));
 			String a = MiscLib.getBlacklister(output.getItem());
 			if (a != null) {
-				SquidUtils.instance().warn(Utils.newString(a, " has requested to be blacklisted from modification. ", args.get("item"), " will not be modified."));
+				SquidUtils.instance().warn(StringUtils.newString(a, " has requested to be blacklisted from modification. ", args.get("item"), " will not be modified."));
 				return;
 			}
 			if (type.equals("explosive")) {
@@ -351,7 +351,7 @@ public class Components {
 			BiomeGenBase biome = BiomeGenBase.getBiome(id);
 			String a = MiscLib.getBlacklister(biome);
 			if (a != null) {
-				SquidUtils.instance().warn(Utils.newString(a, " has requested to be blacklisted from modification. ", args.get("item"), " will not be modified."));
+				SquidUtils.instance().warn(StringUtils.newString(a, " has requested to be blacklisted from modification. ", args.get("item"), " will not be modified."));
 				return;
 			}
 			if (key.equals("topblock")) {
@@ -445,7 +445,7 @@ public class Components {
 
 		@Override
 		public void run(Map<String, String> args) {
-			ContentRemover.remove(Utils.newString(args.get("category"), ";", args.get("item")), ContentType.CHESTGEN);
+			ContentRemover.remove(StringUtils.newString(args.get("category"), ";", args.get("item")), ContentType.CHESTGEN);
 		}
 	}
 	
@@ -454,7 +454,7 @@ public class Components {
 		@Override
 		public void run(Map<String, String> args) {
 			VillagerRegistry.instance().registerVillagerId(IntUtils.parseInt(args.get("id")));
-			VillagerRegistry.instance().registerVillagerSkin(IntUtils.parseInt(args.get("id")), new ResourceLocation("SquidUtils", Utils.newString("textures/entity/villager/", args.get("texture"), ".png")));
+			VillagerRegistry.instance().registerVillagerSkin(IntUtils.parseInt(args.get("id")), new ResourceLocation("SquidUtils", StringUtils.newString("textures/entity/villager/", args.get("texture"), ".png")));
 		}
 	}
 	

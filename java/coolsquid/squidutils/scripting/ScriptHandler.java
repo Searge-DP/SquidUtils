@@ -21,7 +21,7 @@ import coolsquid.squidapi.util.EffectInfo;
 import coolsquid.squidapi.util.IntUtils;
 import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidapi.util.StringParser;
-import coolsquid.squidapi.util.Utils;
+import coolsquid.squidapi.util.StringUtils;
 import coolsquid.squidutils.SquidUtils;
 import coolsquid.squidutils.api.ScriptingAPI;
 import coolsquid.squidutils.util.script.EventInfo;
@@ -191,7 +191,7 @@ public class ScriptHandler {
 			} catch (Exception e) {
 				e.printStackTrace();
 				MiscLib.LOGGER.log(e);
-				SquidAPI.instance().messages.add(Utils.newString(e.getClass().getName(), ". See SquidAPI.log for more information."));
+				SquidAPI.instance().messages.add(StringUtils.newString(e.getClass().getName(), ". See SquidAPI.log for more information."));
 			}
 		}
 	}

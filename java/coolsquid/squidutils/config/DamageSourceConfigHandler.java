@@ -22,7 +22,7 @@ public class DamageSourceConfigHandler extends ConfigHandler {
 
 	@Override
 	public void loadConfig() {
-		for (DamageSource source: DamageSourceRegistry.instance()) {
+		for (DamageSource source: DamageSourceRegistry.INSTANCE) {
 			String name = source.damageType;
 			source.damageIsAbsolute = this.config.get(name, "damageIsAbsolute", source.damageIsAbsolute).getBoolean();
 			source.explosion = this.config.get(name, "explosion", source.explosion).getBoolean();

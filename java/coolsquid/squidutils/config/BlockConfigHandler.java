@@ -12,7 +12,7 @@ import net.minecraft.init.Blocks;
 import coolsquid.squidapi.config.ConfigHandler;
 import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidapi.util.StringParser;
-import coolsquid.squidapi.util.Utils;
+import coolsquid.squidapi.util.StringUtils;
 import coolsquid.squidapi.util.io.SquidAPIFile;
 import coolsquid.squidutils.asm.Hooks;
 
@@ -33,7 +33,7 @@ public class BlockConfigHandler extends ConfigHandler {
 				block.setHardness((float) this.config.get(name, "hardness", block.blockHardness).getDouble());
 				block.setResistance((float) this.config.get(name, "resistance", block.blockResistance).getDouble());
 				if (MiscLib.CLIENT) {
-					block.setBlockTextureName(this.config.get(name, "texture", Utils.ensureNotNull(block.textureName)).getString());
+					block.setBlockTextureName(this.config.get(name, "texture", StringUtils.ensureNotNull(block.textureName)).getString());
 					if (block.getCreativeTabToDisplayOn() == null) {
 						this.config.get(name, "creativeTab", "null").getString();
 					}

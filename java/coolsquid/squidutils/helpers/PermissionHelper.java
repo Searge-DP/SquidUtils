@@ -14,7 +14,6 @@ import java.util.UUID;
 import net.minecraftforge.event.world.WorldEvent.Save;
 import coolsquid.squidapi.SquidAPI;
 import coolsquid.squidapi.helpers.FileHelper;
-import coolsquid.squidapi.logging.ILogger;
 import coolsquid.squidapi.logging.Logger;
 import coolsquid.squidutils.command.CommandPermissions;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -28,7 +27,7 @@ public class PermissionHelper {
 	}
 
 	private final HashMap<UUID, HashSet<String>> permissions = new HashMap<UUID, HashSet<String>>();
-	private final ILogger filewriter = new Logger(new File("./config/SquidUtils/permissions.txt"));
+	private final Logger filewriter = new Logger(new File("./config/SquidUtils/permissions.txt"));
 	
 	public void init() {
 		SquidAPI.instance().registerCommands(new CommandPermissions());

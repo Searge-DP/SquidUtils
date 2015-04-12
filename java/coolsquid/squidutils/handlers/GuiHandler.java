@@ -6,9 +6,7 @@ package coolsquid.squidutils.handlers;
 
 import java.util.Map;
 
-import net.minecraft.client.gui.GuiButton;
 import net.minecraftforge.client.event.GuiOpenEvent;
-import net.minecraftforge.client.event.GuiScreenEvent.InitGuiEvent;
 import net.minecraftforge.common.config.Configuration;
 
 import com.google.common.collect.Maps;
@@ -32,10 +30,13 @@ public class GuiHandler {
 			if (event.gui != null && config.get("general", "enabled", false).getBoolean()) {
 				event.setCanceled(true);
 			}
+			if (config.hasChanged()) {
+				config.save();
+			}
 		}
 	}
 
-	//@SubscribeEvent
+	/*@SubscribeEvent
 	public void onInitGui(InitGuiEvent event) {
 		String guiname = event.gui.getClass().getSimpleName();
 		if (!this.configs.containsKey(guiname)) {
@@ -60,5 +61,5 @@ public class GuiHandler {
 		if (config.hasChanged()) {
 			config.save();
 		}
-	}
+	}*/
 }

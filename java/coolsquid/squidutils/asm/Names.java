@@ -21,4 +21,6 @@ public class Names {
 
 	public static final String BLOCK_PORTAL_TP = DEV ? "onEntityCollidedWithBlock" : "a";
 	public static final String BLOCK_PORTAL_TP_DESC = DEV ? "(Lnet/minecraft/world/World;IIILnet/minecraft/entity/Entity;)V" : "(Lahb;IIILsa;)V";
+
+	public static final String IS_ALLOWED_CHAR = DEV ? "isAllowedCharacter" : "a";
 }

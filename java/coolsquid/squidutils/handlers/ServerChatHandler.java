@@ -9,6 +9,7 @@ import java.util.List;
 
 import net.minecraftforge.event.ServerChatEvent;
 import coolsquid.squidutils.api.ScriptingAPI.IEventTrigger;
+import coolsquid.squidutils.config.GeneralConfigHandler;
 import coolsquid.squidutils.util.script.EventEffectHelper;
 import coolsquid.squidutils.util.script.EventInfo;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -24,6 +25,10 @@ public class ServerChatHandler implements IEventTrigger {
 	
 	@SubscribeEvent
 	public void onChat(ServerChatEvent event) {
+		if (event.message.length() < GeneralConfigHandler.INSTANCE.minMessageLength) {
+			event.setCanceled(true);
+			return;
+		}
 		for (EventInfo a: info) {
 			if (!a.values.containsKey("chattrigger") || event.message.contains((String) a.values.get("chattrigger"))) {
 				EventEffectHelper.performEffects(a, event.player);

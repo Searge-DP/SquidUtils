@@ -15,8 +15,8 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class AppleCoreCompat {
 	
-	public static final void init() {
-		if (GeneralConfigHandler.INSTANCE.starvationDamage < 0 || ScriptHandler.INSTANCE.onStarve) {
+	public static void init() {
+		if (GeneralConfigHandler.INSTANCE.starvationDamage != 1.0F || ScriptHandler.INSTANCE.onStarve) {
 			MinecraftForge.EVENT_BUS.register(new FoodHandler());
 		}
 		if (GeneralConfigHandler.INSTANCE.noPlantGrowth) {
@@ -25,7 +25,7 @@ public class AppleCoreCompat {
 		if (GeneralConfigHandler.INSTANCE.noHungerRegen || ScriptHandler.INSTANCE.onHungerRegen) {
 			MinecraftForge.EVENT_BUS.register(new RegenHandler());
 		}
-		if (GeneralConfigHandler.INSTANCE.exhaustionMultiplier != 1) {
+		if (GeneralConfigHandler.INSTANCE.exhaustionMultiplier != 1.0F) {
 			MinecraftForge.EVENT_BUS.register(new ExhaustionHandler());
 		}
 	}

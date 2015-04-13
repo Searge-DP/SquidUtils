@@ -28,221 +28,44 @@ public class GeneralConfigHandler extends ConfigHandler {
 		this.initCategories();
 	}
 
-	/*
-	 * Available categories. DO NOT MODIFY, as it breaks configs.
-	 */
-	
-	/**
-	 * For options that doesn't fit elsewhere.
-	 */
-	
 	public final String CATEGORY_GENERAL = "General";
-	
-	/**
-	 * Options regarding mobs.
-	 */
-	
 	private final String CATEGORY_MOBS = "Mob options";
-	
-	/**
-	 * Options changing block and item properties.
-	 */
-	
 	private final String CATEGORY_PROPERTIES = "Block and item properties";
-	
-	/**
-	 * Options regarding Minecraft settings.
-	 */
-	
 	private final String CATEGORY_GAMESETTINGS = "Force game options";
-	
-	/**
-	 * All options regarding creative tabs.
-	 */
-	
 	private final String CATEGORY_CREATIVETABS = "Creative tabs";
-	
-	/**
-	 * Modpack specific options.
-	 */
-	
 	private final String CATEGORY_MODPACKS = "Modpack specific options";
-	
-	/**
-	 * Hunger options. REQUIRES APPLECORE!
-	 */
-	
 	private final String CATEGORY_HUNGER = "Hunger options";
-
 	private final String CATEGORY_DISABLING = "Disabling";
-	
-	/*
-	 * Hardcoded options. Modify them as you want to.
-	 */
-	
-	public boolean debug;
-	
-	/*
-	 * All available config options. Modify them as you want to.
-	 */
-	
-	/**
-	 * Forces the specified difficulty. Will crash if set to something else than FALSE, PEACEFUL, EASY, NORMAL or HARD.
-	 */
-	
-	public String forceDifficulty = "FALSE";
-	
-	/**
-	 * Disables TNT.
-	 */
-	
-	public boolean noTNT;
-	
-	/**
-	 * Disables achievements.
-	 */
-	
-	public boolean noAchievements;
-	
-	/**
-	 * Disables the wither.
-	 */
-	
-	public boolean noWitherBoss;
-	
-	/**
-	 * Sets the max stack size for potions to the specified amount.
-	 */
-	
-	public int potionStacks = 1;
-	
-	/**
-	 * Adds recipes for chain armor.
-	 */
-	
-	public boolean chainRecipes;
-	
-	/**
-	 * Disables the debug screen.
-	 */
-	
-	public boolean noDebug;
-	
-	/**
-	 * Sets the max stack size for ender pearls to the specified amount.
-	 */
-	
-	public int pearlStack = 16;
-	
-	/**
-	 * Sets the max render distance to the specified amount.
-	 */
-	
-	public int maxRenderDistance = 16;
-	
-	/**
-	 * Makes TNT drop as an item when it explodes. Requires noTNT to be true.
-	 */
-	
-	public boolean tntDropItems = true;
-	
-	/**
-	 * Makes villagers unhurtable.
-	 */
-	
-	public boolean villagerProtection;
-	
-	/**
-	 * Logs all blocks broken and all entities killed.
-	 */
-	
-	public boolean logStuff;
-	
-	/**
-	 * Divides all stack sizes by the specified amount.
-	 */
-	
-	public int stackSizeDivider = 0;
-	
-	/**
-	 * Makes all blocks unbreakable.
-	 */
-	
-	public boolean allBlocksUnbreakable;
-	
-	/**
-	 * Divides all items durability by the specified amount.
-	 */
-	
-	public int durabilityDivider = 1;
-	
-	/**
-	 * Clears all Vanilla recipes if 1, and clears all recipes if 2.
-	 */
-	
-	public int clearRecipes = 0;
-	
-	/**
-	 * Adds an extra creative tab for Vanilla stuff.
-	 */
-	
-	public boolean tabVanilla = true;
-	
-	/**
-	 * Gives all items infinite durability.
-	 */
-	
-	public boolean infiniteDurability;
-	
-	/**
-	 * Multiplies all blocks hardness by the specified amount.
-	 */
-	
-	public float hardnessMultiplier = 1;
-	
-	/**
-	 * List of modids. All mods missing will be logged.
-	 */
-	
-	public String[] modList = new String[] {};
+	private final String CATEGORY_CHAT = "Chat options";
 
-	/**
-	 * Disables the Vanilla anvil.
-	 */
-	
+	public String forceDifficulty = "FALSE";
+	public boolean noTNT;
+	public boolean noAchievements;
+	public boolean noWitherBoss;
+	public int potionStacks = 1;
+	public boolean chainRecipes;
+	public boolean noDebug;
+	public int pearlStack = 16;
+	public int maxRenderDistance = 16;
+	public boolean tntDropItems = true;
+	public boolean villagerProtection;
+	public boolean logStuff;
+	public int stackSizeDivider = 0;
+	public boolean allBlocksUnbreakable;
+	public int durabilityDivider = 1;
+	public int clearRecipes = 0;
+	public boolean tabVanilla = true;
+	public boolean infiniteDurability;
+	public float hardnessMultiplier = 1;
+	public String[] modList = new String[] {};
 	public boolean disableAnvil;
-	
-	/**
-	 * Disables enderman and enderpearl teleportation.
-	 */
-	
 	public boolean disableTeleportation;
-	
-	/**
-	 * Disables bonemeal.
-	 */
-	
 	public boolean disableBonemeal;
-	
-	/**
-	 * Disables hoes.
-	 */
-	
 	public boolean disableHoes;
-	
-	/**
-	 * Disables glass bottle interaction.
-	 */
-	
 	public boolean disableBottleFluidInteraction;
-	
-	/**
-	 * Generates a list of modids in the working directory.
-	 */
-	
 	public int generateModList = 0;
 	public String[] optionalMods = new String[] {};
-	public float starvationDamage = 0;
+	public float starvationDamage = 1;
 	public boolean noPlantGrowth;
 	public boolean noHungerRegen;
 	public float walkSpeed = 0.1F;
@@ -256,6 +79,8 @@ public class GeneralConfigHandler extends ConfigHandler {
 	public int flammabilityMultiplier = 1;
 	public boolean removeBlockHighlight = false;
 	public float exhaustionMultiplier = 1;
+	public int minMessageLength = 1;
+	public String defaultChatText;
 
 	/**
 	 * Sets category comments.
@@ -269,6 +94,7 @@ public class GeneralConfigHandler extends ConfigHandler {
 		this.config.setCategoryComment(this.CATEGORY_CREATIVETABS, "Disable or enable creative tabs.");
 		this.config.setCategoryComment(this.CATEGORY_HUNGER, "Modify hunger options. REQUIRES APPLE CORE!");
 		this.config.setCategoryComment(this.CATEGORY_DISABLING, "Disabling of various things.");
+		this.config.setCategoryComment(this.CATEGORY_CHAT, "Chat options");
 	}
 	
 	/**
@@ -320,6 +146,12 @@ public class GeneralConfigHandler extends ConfigHandler {
 		SETTINGS.set("displayTitle", this.config.getString("displayTitle", this.CATEGORY_GENERAL, "", "Overrides the title of the game display."));
 		Hooks.NETHER_PORTALS = this.config.getBoolean("netherPortalsAllowed", this.CATEGORY_GENERAL, true, "Set to false to disable nether portals.");
 		this.exhaustionMultiplier = this.config.getFloat("exhaustionMultiplier", this.CATEGORY_HUNGER, 1, 0, 1080, "The amount of exhaustion applied to the player will be multiplied by this amount.");
+		this.defaultChatText = this.config.getString("defaultChatText", this.CATEGORY_CHAT, "", "");
+
+		this.minMessageLength = this.config.getInt("minMessageLength", this.CATEGORY_CHAT, 1, 0, 32, "");
+		for (String s: this.config.getStringList("allowedChars", this.CATEGORY_CHAT, new String[] {}, "")) {
+			Hooks.ALLOWED_CHARS.add(s.charAt(0));
+		}
 
 		IdentityHashMap<Block, Boolean> carriable = ReflectionHelper.in(EntityEnderman.class).field("carriable", "carriable").get();
 		String[] c = Utils.newBlockNameArray(carriable.keySet());

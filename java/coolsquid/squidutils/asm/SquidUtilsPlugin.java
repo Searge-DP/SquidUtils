@@ -77,7 +77,24 @@ public class SquidUtilsPlugin implements IFMLLoadingPlugin, IClassTransformer {
 			transformBlockFalling(m);
 			basicClass = ASMHelper.getBytesFromClassNode(c);
 		}
+		else if (transformedName.equals("net.minecraft.util.ChatAllowedCharacters")) {
+			LOGGER.info("Transforming " + transformedName);
+			ClassNode c = ASMHelper.createClassNodeFromBytes(basicClass);
+			MethodNode m = ASMHelper.getMethod(c, Names.IS_ALLOWED_CHAR, "(C)Z");
+			transformAllowedChars(m);
+			basicClass = ASMHelper.getBytesFromClassNode(c);
+		}
 		return basicClass;
+	}
+
+	private static void transformAllowedChars(MethodNode m) {
+		InsnList list = new InsnList();
+
+		list.add(new VarInsnNode(Opcodes.ILOAD, 0));
+		list.add(new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(Hooks.class), "isAllowedChar", "(C)Z", false));
+		list.add(new InsnNode(Opcodes.IRETURN));
+
+		m.instructions.insertBefore(m.instructions.getFirst(), list);
 	}
 
 	private static void transformSetter(MethodNode m, String hook) {

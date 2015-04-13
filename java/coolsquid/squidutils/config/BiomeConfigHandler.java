@@ -14,6 +14,7 @@ import net.minecraft.world.biome.BiomeGenBase.FlowerEntry;
 import com.google.common.collect.Lists;
 
 import coolsquid.squidapi.config.ConfigHandler;
+import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidapi.util.io.SquidAPIFile;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 
@@ -28,7 +29,7 @@ public class BiomeConfigHandler extends ConfigHandler {
 	@Override
 	public void loadConfig() {
 		for (BiomeGenBase biome: BiomeGenBase.getBiomeGenArray()) {
-			if (biome != null) {
+			if (biome != null && MiscLib.getBlacklister(biome) == null) {
 				String name = biome.biomeName;
 				if (name == null) {
 					name = biome.biomeID + "";

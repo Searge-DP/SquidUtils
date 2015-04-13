@@ -9,6 +9,7 @@ import java.io.File;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnumEnchantmentType;
 import coolsquid.squidapi.config.ConfigHandler;
+import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidapi.util.io.SquidAPIFile;
 
 public class EnchantmentConfigHandler extends ConfigHandler {
@@ -22,7 +23,7 @@ public class EnchantmentConfigHandler extends ConfigHandler {
 	@Override
 	public void loadConfig() {
 		for (Enchantment enchantment: Enchantment.enchantmentsList) {
-			if (enchantment != null) {
+			if (enchantment != null && MiscLib.getBlacklister(enchantment) == null) {
 				String name = enchantment.name;
 				if (name != null && !name.isEmpty()) {
 					enchantment.type = EnumEnchantmentType.valueOf(this.config.get(name, "type", enchantment.type.toString()).getString());

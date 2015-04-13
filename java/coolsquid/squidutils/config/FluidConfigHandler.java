@@ -9,6 +9,7 @@ import java.io.File;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import coolsquid.squidapi.config.ConfigHandler;
+import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidapi.util.io.SquidAPIFile;
 
 public class FluidConfigHandler extends ConfigHandler {
@@ -22,12 +23,14 @@ public class FluidConfigHandler extends ConfigHandler {
 	@Override
 	public void loadConfig() {
 		for (Fluid fluid: FluidRegistry.getRegisteredFluids().values()) {
-			String name = fluid.getName();
-			fluid.setDensity(this.config.get(name, "density", fluid.getDensity()).getInt());
-			fluid.setGaseous(this.config.get(name, "gaseous", fluid.isGaseous()).getBoolean());
-			fluid.setLuminosity(this.config.get(name, "luminosity", fluid.getLuminosity()).getInt());
-			fluid.setTemperature(this.config.get(name, "temperature", fluid.getTemperature()).getInt());
-			fluid.setViscosity(this.config.get(name, "viscosity", fluid.getViscosity()).getInt());
+			if (MiscLib.getBlacklister(fluid) == null) {
+				String name = fluid.getName();
+				fluid.setDensity(this.config.get(name, "density", fluid.getDensity()).getInt());
+				fluid.setGaseous(this.config.get(name, "gaseous", fluid.isGaseous()).getBoolean());
+				fluid.setLuminosity(this.config.get(name, "luminosity", fluid.getLuminosity()).getInt());
+				fluid.setTemperature(this.config.get(name, "temperature", fluid.getTemperature()).getInt());
+				fluid.setViscosity(this.config.get(name, "viscosity", fluid.getViscosity()).getInt());
+			}
 		}
 	}
 }

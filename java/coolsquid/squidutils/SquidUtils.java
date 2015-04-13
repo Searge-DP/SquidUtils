@@ -117,7 +117,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 	public static final ModContainer API = APIHelper.INSTANCE.getAPI("SquidUtils|ScriptingAPI");
 
 	public SquidUtils() {
-		super("Customization to the max!", "226025");
+		super("It's your world. Tweak it in your way.", "226025");
 	}
 
 	public static SquidUtils instance() {
@@ -303,7 +303,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 		if (ScriptHandler.INSTANCE.onInteraction) {
 			this.registerHandler(new InteractionHandler());
 		}
-		if (ScriptHandler.INSTANCE.onChat) {
+		if (ScriptHandler.INSTANCE.onChat || GeneralConfigHandler.INSTANCE.minMessageLength != 1) {
 			this.registerHandler(new ServerChatHandler());
 		}
 		if (ScriptHandler.INSTANCE.permissions) {

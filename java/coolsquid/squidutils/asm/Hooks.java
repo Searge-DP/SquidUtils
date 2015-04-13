@@ -22,6 +22,7 @@ public class Hooks {
 
 	private static final Configuration config = new Configuration(new SquidAPIFile("./config/SquidUtils/ModPermissions.cfg"));
 	public static final Set<Block> PHYSICS = Sets.newHashSet();
+	public static final Set<Character> ALLOWED_CHARS = Sets.newHashSet();
 	public static boolean NETHER_PORTALS = true;
 
 	public static void onSetHardness(Block block, float value) {
@@ -76,6 +77,10 @@ public class Hooks {
 		if (NETHER_PORTALS && entity.ridingEntity == null && entity.riddenByEntity == null) {
 			entity.setInPortal();
         }
+	}
+
+	public static boolean isAllowedChar(char c) {
+		return ALLOWED_CHARS.contains(c) || c > 31 && c != 167 && c != 127;
 	}
 
 	public static void save() {

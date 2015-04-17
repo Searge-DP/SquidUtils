@@ -33,7 +33,11 @@ public class BlockConfigHandler extends ConfigHandler {
 				block.setHardness((float) this.config.get(name, "hardness", block.blockHardness).getDouble());
 				block.setResistance((float) this.config.get(name, "resistance", block.blockResistance).getDouble());
 				if (MiscLib.CLIENT) {
-					block.setBlockTextureName(this.config.get(name, "texture", StringUtils.ensureNotNull(block.textureName)).getString());
+					String texture = StringUtils.ensureNotNull(block.textureName);
+					String texture2 = this.config.get(name, "texture", texture).getString();
+					if (!texture.equals(texture2)) {
+						block.setBlockTextureName(texture2);
+					}
 					if (block.getCreativeTabToDisplayOn() == null) {
 						this.config.get(name, "creativeTab", "null").getString();
 					}

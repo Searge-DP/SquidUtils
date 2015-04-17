@@ -102,7 +102,7 @@ public class EventEffectHelper {
 
 	public static void performEffects(EventInfo info) {
 		if (MiscLib.CLIENT && info.values.get("action").equals("setdifficulty")) {
-			DifficultyHandler.difficulty = (String) info.values.get("difficulty");
+			DifficultyHandler.DifficultyForcer.difficulty = (String) info.values.get("difficulty");
 		}
 	}
 }

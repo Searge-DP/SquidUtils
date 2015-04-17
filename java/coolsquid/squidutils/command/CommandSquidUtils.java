@@ -10,11 +10,12 @@ import net.minecraft.command.ICommandSender;
 import net.minecraftforge.common.MinecraftForge;
 import coolsquid.squidapi.command.CommandBase;
 import coolsquid.squidapi.command.ISubCommand;
+import coolsquid.squidapi.command.OpOnly;
 import coolsquid.squidapi.helpers.server.chat.ChatMessage;
 import coolsquid.squidapi.helpers.server.chat.ChatMessage.Color;
 import coolsquid.squidutils.SquidUtils;
 
-public class CommandSquidUtils extends CommandBase {
+public class CommandSquidUtils extends CommandBase implements OpOnly {
 
 	public CommandSquidUtils() {
 		super("SquidUtils", "", new SubcommandUnregister());

@@ -7,6 +7,7 @@ package coolsquid.squidutils;
 import java.io.File;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -23,7 +24,6 @@ import coolsquid.squidapi.SquidAPI;
 import coolsquid.squidapi.SquidAPIMod;
 import coolsquid.squidapi.compat.Compat;
 import coolsquid.squidapi.config.ConfigurationManager;
-import coolsquid.squidapi.exception.InvalidConfigValueException;
 import coolsquid.squidapi.helpers.APIHelper;
 import coolsquid.squidapi.helpers.server.ServerHelper;
 import coolsquid.squidapi.util.ContentRemover;
@@ -117,7 +117,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 	public static final ModContainer API = APIHelper.INSTANCE.getAPI("SquidUtils|ScriptingAPI");
 
 	public SquidUtils() {
-		super("It's your world. Tweak it in your way.", "226025");
+		super("It's your world. Shape it in your way.", "226025");
 	}
 
 	public static SquidUtils instance() {
@@ -128,17 +128,25 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 	public final Map<String, Object> handlers2 = Maps.newHashMap();
 
 	public void registerHandler(Object object) {
-		String name = object.getClass().getSimpleName();
-		this.info("Registering handler ", name, ".");
-		MinecraftForge.EVENT_BUS.register(object);
-		this.handlers.put(name, object);
+		try {
+			String name = object.getClass().getSimpleName();
+			this.info("Registering handler ", name, ".");
+			MinecraftForge.EVENT_BUS.register(object);
+			this.handlers.put(name, object);
+		} catch (Throwable t) {
+			this.error(t);
+		}
 	}
 
 	public void registerHandler2(Object object) {
-		String name = object.getClass().getSimpleName();
-		this.info("Registering handler ", name, ".");
-		FMLCommonHandler.instance().bus().register(object);
-		this.handlers2.put(name, object);
+		try {
+			String name = object.getClass().getSimpleName();
+			this.info("Registering handler ", name, ".");
+			FMLCommonHandler.instance().bus().register(object);
+			this.handlers2.put(name, object);
+		} catch (Throwable t) {
+			this.error(t);
+		}
 	}
 
 	public boolean isDisabled;
@@ -208,13 +216,14 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 		ScriptHandler.INSTANCE.init();
 
 		if (MiscLib.CLIENT) {
-			this.registerHandler(new DifficultyHandler());
-			if (!GeneralConfigHandler.INSTANCE.forceDifficulty.equalsIgnoreCase("FALSE")) {
-				DifficultyHandler.difficulty = GeneralConfigHandler.INSTANCE.forceDifficulty;
+			String d = GeneralConfigHandler.INSTANCE.forceDifficulty;
+			if (!d.equalsIgnoreCase("FALSE") && !d.equalsIgnoreCase("HARDCORE")) {
+				DifficultyHandler.DifficultyForcer.difficulty = GeneralConfigHandler.INSTANCE.forceDifficulty;
+				this.registerHandler(new DifficultyHandler.DifficultyForcer());
 			}
-		}
-		if (!GeneralConfigHandler.INSTANCE.forceDifficulty.equalsIgnoreCase("FALSE") && !GeneralConfigHandler.INSTANCE.forceDifficulty.equalsIgnoreCase("PEACEFUL") && !GeneralConfigHandler.INSTANCE.forceDifficulty.equalsIgnoreCase("EASY") && !GeneralConfigHandler.INSTANCE.forceDifficulty.equalsIgnoreCase("NORMAL") && !GeneralConfigHandler.INSTANCE.forceDifficulty.equalsIgnoreCase("HARD")) {
-			throw new InvalidConfigValueException("forceDifficulty");
+			else if (GeneralConfigHandler.INSTANCE.forceDifficulty.equalsIgnoreCase("HARDCORE")) {
+				this.registerHandler2(new DifficultyHandler.HardcoreForcer());
+			}
 		}
 		if (GeneralConfigHandler.INSTANCE.noTNT) {
 			this.registerHandler(new TNTHandler());
@@ -432,7 +441,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 		this.info("SquidUtils has been enabled.");
 	}
 
-	public final HashSet<String> commandsToDisable = new HashSet<String>();
+	public final Set<String> commandsToDisable = new HashSet<String>();
 
 	@EventHandler
 	public void onServerStarted(FMLServerStartedEvent event) {

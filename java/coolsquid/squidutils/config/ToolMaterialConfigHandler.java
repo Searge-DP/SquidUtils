@@ -29,9 +29,9 @@ public class ToolMaterialConfigHandler extends ConfigHandler {
 				material.enchantability = this.config.get(name, "enchantability", material.enchantability).getInt();
 				material.efficiencyOnProperMaterial = (float) this.config.get(name, "efficiency", material.efficiencyOnProperMaterial).getDouble();
 				material.damageVsEntity = (float) this.config.get(name, "attackDamage", material.damageVsEntity).getDouble();
-			} catch (Exception e) {
+			} catch (Throwable t) {
 				SquidUtils.instance().error(name);
-				throw e;
+				throw t;
 			}
 		}
 	}

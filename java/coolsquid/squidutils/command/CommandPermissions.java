@@ -9,15 +9,16 @@ import java.util.List;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.EnumChatFormatting;
 import coolsquid.squidapi.command.CommandBase;
+import coolsquid.squidapi.command.OpOnly;
 import coolsquid.squidapi.handlers.MonetizationHandler;
 import coolsquid.squidapi.helpers.server.ServerHelper;
 import coolsquid.squidapi.helpers.server.chat.ChatMessage;
 import coolsquid.squidutils.helpers.PermissionHelper;
 
-public class CommandPermissions extends CommandBase {
+public class CommandPermissions extends CommandBase implements OpOnly {
 
 	public CommandPermissions() {
-		super("permissions", "", true);
+		super("permissions", "");
 	}
 	
 	@Override

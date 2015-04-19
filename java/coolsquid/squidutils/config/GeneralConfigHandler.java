@@ -13,8 +13,8 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.monster.EntityEnderman;
 import coolsquid.squidapi.config.ConfigHandler;
 import coolsquid.squidapi.reflection.ReflectionHelper;
-import coolsquid.squidapi.util.SquidAPIProperties;
 import coolsquid.squidapi.util.Utils;
+import coolsquid.squidapi.util.collect.SquidAPIProperties;
 import coolsquid.squidapi.util.io.SquidAPIFile;
 import coolsquid.squidutils.asm.Hooks;
 
@@ -57,14 +57,12 @@ public class GeneralConfigHandler extends ConfigHandler {
 	public boolean tabVanilla = true;
 	public boolean infiniteDurability;
 	public float hardnessMultiplier = 1;
-	public String[] modList = new String[] {};
 	public boolean disableAnvil;
 	public boolean disableTeleportation;
 	public boolean disableBonemeal;
 	public boolean disableHoes;
 	public boolean disableBottleFluidInteraction;
 	public int generateModList = 0;
-	public String[] optionalMods = new String[] {};
 	public float starvationDamage = 1;
 	public boolean noPlantGrowth;
 	public boolean noHungerRegen;
@@ -81,6 +79,11 @@ public class GeneralConfigHandler extends ConfigHandler {
 	public float exhaustionMultiplier = 1;
 	public int minMessageLength = 1;
 	public String defaultChatText;
+	public boolean allowCheats = true;
+	public String[] incompatibleMods;
+	public String warningScreenLine1 = "Some of the mods installed might not work with this modpack.";
+	public String warningScreenLine2 = "Please do not report any issues.";
+	public String warningScreenLine3 = "The following mods are unsupported:";
 
 	/**
 	 * Sets category comments.
@@ -122,14 +125,12 @@ public class GeneralConfigHandler extends ConfigHandler {
 		this.infiniteDurability = this.config.getBoolean("infiniteDurability", this.CATEGORY_PROPERTIES, false, "Makes all items have infinite durability. Overrides \"durabilityDivider\".");
 		this.tabVanilla = this.config.getBoolean("tabVanilla", this.CATEGORY_CREATIVETABS, false, "Enables the extra Vanilla stuff creative tab.");
 		this.hardnessMultiplier = this.config.getFloat("hardnessMultiplier", this.CATEGORY_PROPERTIES, 1, 1, 100, "Multiplies all blocks hardness by the specified number. Set to 1.0 to disable.");
-		this.modList = this.config.getStringList("modList", this.CATEGORY_MODPACKS, new String[] {}, "If any of the mods listed are missing, a warning will be printed to the log.");
 		this.disableAnvil = this.config.getBoolean("disableAnvil", this.CATEGORY_GENERAL, false, "Disables the Vanilla anvil.");
 		this.disableTeleportation = this.config.getBoolean("disableTeleportation", this.CATEGORY_GENERAL, false, "Disables enderman and enderpearl teleportation.");
 		this.disableBonemeal = this.config.getBoolean("disableBonemeal", this.CATEGORY_GENERAL, false, "Disables bonemeal.");
 		this.disableHoes = this.config.getBoolean("disableHoes", this.CATEGORY_GENERAL, false, "Disables hoes.");
 		this.disableBottleFluidInteraction = this.config.getBoolean("disableBottleFluidInteraction", this.CATEGORY_GENERAL, false, "Disables bottles from working with cauldrons.");
 		this.generateModList = this.config.getInt("generateModList", this.CATEGORY_MODPACKS, 0, 0, 2, "Generates a list of modids in the working directory. Set to 1 to generate only modids, or set to 2 to generate modids and versions.");
-		this.optionalMods = this.config.getStringList("optionalMods", this.CATEGORY_MODPACKS, new String[] {}, "Extra mods to not warn about if added or removed.");
 		this.starvationDamage = this.config.getFloat("starvationDamage", this.CATEGORY_HUNGER, 1, 0, 20, "Modifies the starvation damage.");
 		this.noPlantGrowth = this.config.getBoolean("noPlantGrowth", this.CATEGORY_HUNGER, false, "Disables plant growth.");
 		this.noHungerRegen = this.config.getBoolean("noHungerRegen", this.CATEGORY_HUNGER, false, "Disables hunger regen.");
@@ -147,6 +148,11 @@ public class GeneralConfigHandler extends ConfigHandler {
 		Hooks.NETHER_PORTALS = this.config.getBoolean("netherPortalsAllowed", this.CATEGORY_GENERAL, true, "Set to false to disable nether portals.");
 		this.exhaustionMultiplier = this.config.getFloat("exhaustionMultiplier", this.CATEGORY_HUNGER, 1, 0, 1080, "The amount of exhaustion applied to the player will be multiplied by this amount.");
 		this.defaultChatText = this.config.getString("defaultChatText", this.CATEGORY_CHAT, "", "");
+		this.allowCheats = this.config.getBoolean("allowCheats", this.CATEGORY_GAMESETTINGS, true, "Set to false to force cheats to be disabled.");
+		this.incompatibleMods = this.config.getStringList("incompatibleMods", this.CATEGORY_MODPACKS, new String[] {}, "");
+		this.warningScreenLine1 = this.config.getString("warningScreenLine1", this.CATEGORY_MODPACKS, "Some of the mods installed might not work with this modpack.", "");
+		this.warningScreenLine2 = this.config.getString("warningScreenLine2", this.CATEGORY_MODPACKS, "Please do not report any issues.", "");
+		this.warningScreenLine3 = this.config.getString("warningScreenLine3", this.CATEGORY_MODPACKS, "The following mods are unsupported:", "");
 
 		this.minMessageLength = this.config.getInt("minMessageLength", this.CATEGORY_CHAT, 1, 0, 32, "");
 		for (String s: this.config.getStringList("allowedChars", this.CATEGORY_CHAT, new String[] {}, "")) {

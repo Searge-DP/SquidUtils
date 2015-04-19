@@ -12,6 +12,7 @@ import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.Explosion;
 import coolsquid.squidapi.util.EffectInfo;
 import coolsquid.squidapi.util.MiscLib;
@@ -102,7 +103,7 @@ public class EventEffectHelper {
 
 	public static void performEffects(EventInfo info) {
 		if (MiscLib.CLIENT && info.values.get("action").equals("setdifficulty")) {
-			DifficultyHandler.DifficultyForcer.difficulty = (String) info.values.get("difficulty");
+			DifficultyHandler.DifficultyForcer.difficulty = EnumDifficulty.valueOf((String) info.values.get("difficulty"));
 		}
 	}
 }

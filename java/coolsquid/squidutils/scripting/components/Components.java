@@ -49,11 +49,10 @@ import coolsquid.squidapi.item.ItemBase;
 import coolsquid.squidapi.reflection.ReflectionHelper;
 import coolsquid.squidapi.util.ContentRemover;
 import coolsquid.squidapi.util.ContentRemover.ContentType;
-import coolsquid.squidapi.util.IntUtils;
 import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidapi.util.StringParser;
 import coolsquid.squidapi.util.StringUtils;
-import coolsquid.squidapi.world.biome.BiomeBase;
+import coolsquid.squidapi.util.math.IntUtils;
 import coolsquid.squidutils.SquidUtils;
 import coolsquid.squidutils.api.ScriptingAPI;
 import coolsquid.squidutils.api.ScriptingAPI.IScriptSubcommand;
@@ -335,7 +334,8 @@ public class Components {
 
 		@Override
 		public void run(Map<String, String> args) {
-			BiomeBase biome = new BiomeBase(args.get("name"));
+			BiomeGenBase biome = new BiomeGenBase(IntUtils.parseInt(args.get("id"))) {};
+			biome.biomeName = args.get("name");
 			biome.topBlock = StringParser.parseBlock(args.get("topblock"));
 			biome.fillerBlock = StringParser.parseBlock(args.get("fillerblock"));
 			BiomeManager.addBiome(BiomeType.getType(args.get("type")), new BiomeEntry(biome, IntUtils.parseInt(args.get("weight"))));

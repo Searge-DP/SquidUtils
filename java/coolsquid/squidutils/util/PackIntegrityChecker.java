@@ -4,95 +4,84 @@
  *******************************************************************************/
 package coolsquid.squidutils.util;
 
-import java.lang.Thread.UncaughtExceptionHandler;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.File;
+import java.util.Set;
 
-import org.apache.logging.log4j.Level;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiMainMenu;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraftforge.client.event.GuiOpenEvent;
+import net.minecraftforge.common.MinecraftForge;
 
-import coolsquid.squidutils.SquidUtils;
+import com.google.common.base.Joiner;
+import com.google.common.collect.Sets;
+
+import coolsquid.squidapi.util.io.IOUtils;
 import coolsquid.squidutils.config.GeneralConfigHandler;
 import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
-public class PackIntegrityChecker implements UncaughtExceptionHandler {
+
+public class PackIntegrityChecker {
 
 	public static final PackIntegrityChecker INSTANCE = new PackIntegrityChecker();
 
+	private final Set<String> set = Sets.newHashSet();
+	private final Set<String> alreadyWarned;
+	private final File data = new File("./SquidAPI/SquidUtils/PackChecker.data");
+
 	private PackIntegrityChecker() {
-		
+		this.alreadyWarned = IOUtils.readLines(this.data);
 	}
 
-	/** List of original pack mods. */
-	private final List<String> allModsRequired = new ArrayList<String>();
-
-	/** Optional mods. */
-	private final List<String> optionalMods = new ArrayList<String>();
-
-	/** List of removed mods. */
-	private final List<String> missingMods = new ArrayList<String>();
-
-	/** List of added mods. */
-	private final List<String> addedMods = new ArrayList<String>();
-
-	/** Checks if mods are removed/added. */
-	public void check() {
-		for (int a = 0; a < GeneralConfigHandler.INSTANCE.modList.length; a++) {
-			this.allModsRequired.add(GeneralConfigHandler.INSTANCE.modList[a]);
-		}
-		if (!this.allModsRequired.contains("mcp")) {this.allModsRequired.add("mcp");}
-		if (!this.allModsRequired.contains("Forge")) {this.allModsRequired.add("Forge");}
-		if (!this.allModsRequired.contains("fml")) {this.allModsRequired.add("FML");}
-		if (!this.allModsRequired.contains("SquidAPI")) {this.allModsRequired.add("SquidAPI");}
-		if (!this.allModsRequired.contains(ModInfo.modid)) {this.allModsRequired.add(ModInfo.modid);}
-		for (int a = 0; a < GeneralConfigHandler.INSTANCE.optionalMods.length; a++) {
-			this.optionalMods.add(GeneralConfigHandler.INSTANCE.optionalMods[a]);
-		}
-		for (int a = 0; a < GeneralConfigHandler.INSTANCE.modList.length; a++) {
-			if (!Loader.isModLoaded(this.allModsRequired.get(a))) {
-				this.missingMods.add(GeneralConfigHandler.INSTANCE.modList[a]);
+	public void check(String[] unsupportedMods) {
+		for (String mod: unsupportedMods) {
+			if (Loader.isModLoaded(mod) && !this.alreadyWarned.contains(mod)) {
+				this.set.add(mod);
 			}
 		}
-		for (int a = 0; a < Loader.instance().getModList().size(); a++) {
-			if (!this.allModsRequired.contains(Loader.instance().getModList().get(a).getModId())) {
-				if (!this.optionalMods.contains(Loader.instance().getModList().get(a).getModId())) {
-					this.addedMods.add(Loader.instance().getModList().get(a).getModId());
-				}
-			}
-		}
-		this.warn();
-	}
-	
-	public void warn() {
-		if (!this.missingMods.isEmpty()) {
-			SquidUtils.instance().bigWarning("The modpack has been modified. DO NOT REPORT ANY BUGS!!! Missing mods:");
-			if (!(this.missingMods.isEmpty() || this.addedMods.isEmpty())) {
-				SquidUtils.instance().bigWarning(Level.WARN, "The modpack has been modified. DO NOT REPORT ANY BUGS!!!");
-				if (!this.missingMods.isEmpty()) {
-					SquidUtils.instance().warn("Missing mods:");
-					for (int a = 0; a < this.missingMods.size(); a++) {
-						SquidUtils.instance().warn(this.missingMods.get(a));
-					}
-				}
-				if (!this.addedMods.isEmpty()) {
-					SquidUtils.instance().warn("Added mods:");
-					for (int a = 0; a < this.addedMods.size(); a++) {
-						SquidUtils.instance().warn(this.addedMods.get(a));
-					}
-				}
-			}
+		if (!this.set.isEmpty()) {
+			MinecraftForge.EVENT_BUS.register(this);
+			IOUtils.writeLines(this.data, this.set);
 		}
 	}
-	
-	@Override
-	public void uncaughtException(Thread t, Throwable e) {
-		this.warn();
+
+	@SubscribeEvent
+	public void onGuiOpen(GuiOpenEvent event) {
+		if (event.gui instanceof GuiMainMenu) {
+			event.gui = new IncompatibleModsWarning();
+			MinecraftForge.EVENT_BUS.unregister(this);
+		}
 	}
-	
-	public boolean haveModsBeenRemoved() {
-		return !this.missingMods.isEmpty();
-	}
-	
-	public boolean haveModsBeenAdded() {
-		return !this.addedMods.isEmpty();
+
+	private class IncompatibleModsWarning extends GuiScreen {
+
+		@Override
+		public void drawScreen(int mouseRelX, int mouseRelY, float tickTime) {
+			this.drawDefaultBackground();
+			super.drawScreen(mouseRelX, mouseRelY, tickTime);
+			String string = GeneralConfigHandler.INSTANCE.warningScreenLine1;
+			String string2 = GeneralConfigHandler.INSTANCE.warningScreenLine2;
+			String string3 = GeneralConfigHandler.INSTANCE.warningScreenLine3;
+			String string4 = Joiner.on(", ").join(PackIntegrityChecker.this.set);
+			this.drawCenteredString(this.fontRendererObj, string, this.width / 2, this.height / 2 - 30, 16777215);
+			this.drawCenteredString(this.fontRendererObj, string2, this.width / 2, this.height / 2 - 20, 16777215);
+			this.drawCenteredString(this.fontRendererObj, string3, this.width / 2, this.height / 2, 16777215);
+			this.drawCenteredString(this.fontRendererObj, string4, this.width / 2, this.height / 2 + 13, 16777215);
+		}
+
+		@SuppressWarnings("unchecked")
+		@Override
+		public void initGui() {
+			GuiButton button = new GuiButton(0, 0, this.height / 2 + 60, "Continue");
+			button.xPosition = this.width / 2 - (button.width / 2);
+			this.buttonList.add(button);
+		}
+
+		@Override
+		protected void actionPerformed(GuiButton button) {
+			Minecraft.getMinecraft().displayGuiScreen(null);
+		}
 	}
 }

@@ -17,7 +17,7 @@ import com.google.common.collect.Sets;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class ItemBanHandler {
-	
+
 	public static final Set<String> bannedItems = Sets.newHashSet();
 
 	@SubscribeEvent
@@ -26,7 +26,7 @@ public class ItemBanHandler {
 			event.setCanceled(true);
 		}
 	}
-	
+
 	@SubscribeEvent
 	public void onItemJoin(EntityJoinWorldEvent event) {
 		if (event.entity instanceof EntityItem) {
@@ -36,7 +36,7 @@ public class ItemBanHandler {
 			}
 		}
 	}
-	
+
 	@SubscribeEvent
 	public void onBlockPlaced(PlaceEvent event) {
 		if (bannedItems.contains(Item.itemRegistry.getNameForObject(event.block))) {

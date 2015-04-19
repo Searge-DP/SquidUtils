@@ -27,7 +27,7 @@ public class AchievementConfigHandler extends ConfigHandler {
 	public void loadConfig() {
 		for (int a = 0; a < AchievementList.achievementList.size(); a++) {
 			Achievement achievement = (Achievement) AchievementList.achievementList.get(a);
-			if (MiscLib.getBlacklister(achievement) == null) {
+			if (achievement != null && MiscLib.getBlacklister(achievement) == null) {
 				String name = achievement.statId;
 				achievement.achievementDescription = this.config.get(name, "description", achievement.achievementDescription).getString();
 				achievement.displayColumn = this.config.get(name, "displayColumn", achievement.displayColumn).getInt();

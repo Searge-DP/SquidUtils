@@ -12,6 +12,7 @@ import java.util.Set;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.world.EnumDifficulty;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.AchievementEvent;
 
@@ -89,7 +90,6 @@ import coolsquid.squidutils.handlers.WitherHandler;
 import coolsquid.squidutils.helpers.PermissionHelper;
 import coolsquid.squidutils.scripting.ScriptHandler;
 import coolsquid.squidutils.scripting.components.Components;
-import coolsquid.squidutils.util.CrashReportInterceptor.Modified;
 import coolsquid.squidutils.util.ModInfo;
 import coolsquid.squidutils.util.ModLister;
 import coolsquid.squidutils.util.PackIntegrityChecker;
@@ -166,9 +166,8 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 		new File("./config/SquidUtils").mkdirs();
 		GeneralConfigHandler.INSTANCE.init();
 
-		if (GeneralConfigHandler.INSTANCE.modList.length > 0) {
-			PackIntegrityChecker.INSTANCE.check();
-			FMLCommonHandler.instance().registerCrashCallable(new Modified());
+		if (MiscLib.CLIENT && GeneralConfigHandler.INSTANCE.incompatibleMods.length > 0) {
+			PackIntegrityChecker.INSTANCE.check(GeneralConfigHandler.INSTANCE.incompatibleMods);
 		}
 		if (GeneralConfigHandler.INSTANCE.clearRecipes == 1) {
 			CraftingManager.getInstance().getRecipeList().clear();
@@ -215,15 +214,16 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 
 		ScriptHandler.INSTANCE.init();
 
-		if (MiscLib.CLIENT) {
-			String d = GeneralConfigHandler.INSTANCE.forceDifficulty;
-			if (!d.equalsIgnoreCase("FALSE") && !d.equalsIgnoreCase("HARDCORE")) {
-				DifficultyHandler.DifficultyForcer.difficulty = GeneralConfigHandler.INSTANCE.forceDifficulty;
-				this.registerHandler(new DifficultyHandler.DifficultyForcer());
-			}
-			else if (GeneralConfigHandler.INSTANCE.forceDifficulty.equalsIgnoreCase("HARDCORE")) {
-				this.registerHandler2(new DifficultyHandler.HardcoreForcer());
-			}
+		String d = GeneralConfigHandler.INSTANCE.forceDifficulty;
+		if (MiscLib.CLIENT && !d.equalsIgnoreCase("FALSE") && !d.equalsIgnoreCase("HARDCORE")) {
+			DifficultyHandler.DifficultyForcer.difficulty = EnumDifficulty.valueOf(GeneralConfigHandler.INSTANCE.forceDifficulty.toUpperCase());
+			this.registerHandler(new DifficultyHandler.DifficultyForcer());
+		}
+		else if (GeneralConfigHandler.INSTANCE.forceDifficulty.equalsIgnoreCase("HARDCORE")) {
+			this.registerHandler(new DifficultyHandler.HardcoreForcer());
+		}
+		if (!GeneralConfigHandler.INSTANCE.allowCheats) {
+			this.registerHandler(new DifficultyHandler.CheatForcer());
 		}
 		if (GeneralConfigHandler.INSTANCE.noTNT) {
 			this.registerHandler(new TNTHandler());
@@ -424,7 +424,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 			FMLCommonHandler.instance().bus().unregister(object);
 		}
 		this.isDisabled = true;
-		this.getMod().setEnabledState(false);
+		this.setEnabledState(false);
 		this.info("SquidUtils has been disabled.");
 	}
 
@@ -437,7 +437,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 			FMLCommonHandler.instance().bus().register(object);
 		}
 		this.isDisabled = false;
-		this.getMod().setEnabledState(true);
+		this.setEnabledState(true);
 		this.info("SquidUtils has been enabled.");
 	}
 

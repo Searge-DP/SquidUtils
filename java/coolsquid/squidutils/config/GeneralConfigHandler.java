@@ -33,7 +33,6 @@ public class GeneralConfigHandler extends ConfigHandler {
 	private final String CATEGORY_PROPERTIES = "Block and item properties";
 	private final String CATEGORY_GAMESETTINGS = "Force game options";
 	private final String CATEGORY_CREATIVETABS = "Creative tabs";
-	private final String CATEGORY_MODPACKS = "Modpack specific options";
 	private final String CATEGORY_HUNGER = "Hunger options";
 	private final String CATEGORY_DISABLING = "Disabling";
 	private final String CATEGORY_CHAT = "Chat options";
@@ -62,7 +61,6 @@ public class GeneralConfigHandler extends ConfigHandler {
 	public boolean disableBonemeal;
 	public boolean disableHoes;
 	public boolean disableBottleFluidInteraction;
-	public int generateModList = 0;
 	public float starvationDamage = 1;
 	public boolean noPlantGrowth;
 	public boolean noHungerRegen;
@@ -80,10 +78,6 @@ public class GeneralConfigHandler extends ConfigHandler {
 	public int minMessageLength = 1;
 	public String defaultChatText;
 	public boolean allowCheats = true;
-	public String[] incompatibleMods;
-	public String warningScreenLine1 = "Some of the mods installed might not work with this modpack.";
-	public String warningScreenLine2 = "Please do not report any issues.";
-	public String warningScreenLine3 = "The following mods are unsupported:";
 
 	/**
 	 * Sets category comments.
@@ -130,7 +124,6 @@ public class GeneralConfigHandler extends ConfigHandler {
 		this.disableBonemeal = this.config.getBoolean("disableBonemeal", this.CATEGORY_GENERAL, false, "Disables bonemeal.");
 		this.disableHoes = this.config.getBoolean("disableHoes", this.CATEGORY_GENERAL, false, "Disables hoes.");
 		this.disableBottleFluidInteraction = this.config.getBoolean("disableBottleFluidInteraction", this.CATEGORY_GENERAL, false, "Disables bottles from working with cauldrons.");
-		this.generateModList = this.config.getInt("generateModList", this.CATEGORY_MODPACKS, 0, 0, 2, "Generates a list of modids in the working directory. Set to 1 to generate only modids, or set to 2 to generate modids and versions.");
 		this.starvationDamage = this.config.getFloat("starvationDamage", this.CATEGORY_HUNGER, 1, 0, 20, "Modifies the starvation damage.");
 		this.noPlantGrowth = this.config.getBoolean("noPlantGrowth", this.CATEGORY_HUNGER, false, "Disables plant growth.");
 		this.noHungerRegen = this.config.getBoolean("noHungerRegen", this.CATEGORY_HUNGER, false, "Disables hunger regen.");
@@ -149,10 +142,6 @@ public class GeneralConfigHandler extends ConfigHandler {
 		this.exhaustionMultiplier = this.config.getFloat("exhaustionMultiplier", this.CATEGORY_HUNGER, 1, 0, 1080, "The amount of exhaustion applied to the player will be multiplied by this amount.");
 		this.defaultChatText = this.config.getString("defaultChatText", this.CATEGORY_CHAT, "", "");
 		this.allowCheats = this.config.getBoolean("allowCheats", this.CATEGORY_GAMESETTINGS, true, "Set to false to force cheats to be disabled.");
-		this.incompatibleMods = this.config.getStringList("incompatibleMods", this.CATEGORY_MODPACKS, new String[] {}, "");
-		this.warningScreenLine1 = this.config.getString("warningScreenLine1", this.CATEGORY_MODPACKS, "Some of the mods installed might not work with this modpack.", "");
-		this.warningScreenLine2 = this.config.getString("warningScreenLine2", this.CATEGORY_MODPACKS, "Please do not report any issues.", "");
-		this.warningScreenLine3 = this.config.getString("warningScreenLine3", this.CATEGORY_MODPACKS, "The following mods are unsupported:", "");
 
 		this.minMessageLength = this.config.getInt("minMessageLength", this.CATEGORY_CHAT, 1, 0, 32, "");
 		for (String s: this.config.getStringList("allowedChars", this.CATEGORY_CHAT, new String[] {}, "")) {

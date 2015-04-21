@@ -32,8 +32,8 @@ public class BlockConfigHandler extends ConfigHandler {
 				if (object != null && object != Blocks.air && MiscLib.getBlacklister(object) == null) {
 					String name = Block.blockRegistry.getNameForObject(object);
 					Block block = (Block) object;
-					block.setHardness((float) this.config.get(name, "hardness", block.blockHardness).getDouble());
-					block.setResistance((float) this.config.get(name, "resistance", block.blockResistance).getDouble());
+					block.blockHardness = (float) this.config.get(name, "hardness", block.blockHardness).getDouble();
+					block.blockResistance = (float) this.config.get(name, "resistance", block.blockResistance).getDouble();
 					if (MiscLib.CLIENT) {
 						String texture = StringUtils.ensureNotNull(block.textureName);
 						String texture2 = this.config.get(name, "texture", texture).getString();

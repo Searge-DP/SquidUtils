@@ -4,38 +4,17 @@
  *******************************************************************************/
 package coolsquid.squidutils.handlers;
 
-import java.util.Map;
-
 import net.minecraft.client.gui.GuiChat;
 import net.minecraftforge.client.event.GuiOpenEvent;
-import net.minecraftforge.common.config.Configuration;
-
-import com.google.common.collect.Maps;
-
-import coolsquid.squidapi.util.io.SquidAPIFile;
 import coolsquid.squidutils.config.GeneralConfigHandler;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class GuiHandler {
 
-	private final Map<String, Configuration> configs = Maps.newHashMap();
-
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public void onGuiOpen(GuiOpenEvent event) {
 		if (event.gui != null) {
-			String guiname = event.gui.getClass().getSimpleName();
-			if (!this.configs.containsKey(guiname)) {
-				this.configs.put(guiname, new Configuration(new SquidAPIFile("./config/SquidUtils/GUIs/" + guiname + ".cfg")));
-			}
-			Configuration config = this.configs.get(guiname);
-			if (event.gui != null && config.get("general", "enabled", false).getBoolean()) {
-				event.setCanceled(true);
-			}
-			if (config.hasChanged()) {
-				config.save();
-			}
-
 			if (event.gui instanceof GuiChat && GeneralConfigHandler.INSTANCE.defaultChatText != null) {
 				GuiChat chat = (GuiChat) event.gui;
 				chat.defaultInputFieldText = GeneralConfigHandler.INSTANCE.defaultChatText;

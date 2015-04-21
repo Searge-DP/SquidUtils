@@ -51,6 +51,7 @@ import coolsquid.squidutils.config.FluidConfigHandler;
 import coolsquid.squidutils.config.GeneralConfigHandler;
 import coolsquid.squidutils.config.ItemConfigHandler;
 import coolsquid.squidutils.config.MobConfigHandler;
+import coolsquid.squidutils.config.ModListConfigHandler;
 import coolsquid.squidutils.config.ToolMaterialConfigHandler;
 import coolsquid.squidutils.config.compat.botania.BrewConfigHandler;
 import coolsquid.squidutils.config.compat.botania.ElvenTradeConfigHandler;
@@ -92,7 +93,6 @@ import coolsquid.squidutils.scripting.ScriptHandler;
 import coolsquid.squidutils.scripting.components.Components;
 import coolsquid.squidutils.util.ModInfo;
 import coolsquid.squidutils.util.ModLister;
-import coolsquid.squidutils.util.PackIntegrityChecker;
 import coolsquid.squidutils.util.script.EventEffectHelper;
 import coolsquid.squidutils.util.script.EventInfo;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -166,9 +166,8 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 		new File("./config/SquidUtils").mkdirs();
 		GeneralConfigHandler.INSTANCE.init();
 
-		if (MiscLib.CLIENT && GeneralConfigHandler.INSTANCE.incompatibleMods.length > 0) {
-			PackIntegrityChecker.INSTANCE.check(GeneralConfigHandler.INSTANCE.incompatibleMods);
-		}
+		ModListConfigHandler.INSTANCE.init();
+
 		if (GeneralConfigHandler.INSTANCE.clearRecipes == 1) {
 			CraftingManager.getInstance().getRecipeList().clear();
 		}
@@ -282,7 +281,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 		if (GeneralConfigHandler.INSTANCE.disableBottleFluidInteraction) {
 			this.registerHandler(new BottleHandler());
 		}
-		if (GeneralConfigHandler.INSTANCE.generateModList != 0) {
+		if (ModListConfigHandler.INSTANCE.generateModList != 0) {
 			ModLister.INSTANCE.init();
 		}
 		if (GeneralConfigHandler.INSTANCE.walkSpeed != 0.1F || GeneralConfigHandler.INSTANCE.flySpeed != 0.05F) {
@@ -340,12 +339,12 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 
 		this.info("Initialization finished.");
 	}
-	
+
 	/**
 	 * My postinit. Used for compatibility and universal changes.
 	 * @param event
 	 */
-	
+
 	@EventHandler
 	private void postInit(FMLPostInitializationEvent event) {
 		this.info("Postinitializing.");

@@ -18,7 +18,7 @@ import com.google.common.base.Joiner;
 import com.google.common.collect.Sets;
 
 import coolsquid.squidapi.util.io.IOUtils;
-import coolsquid.squidutils.config.GeneralConfigHandler;
+import coolsquid.squidutils.config.ModListConfigHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
@@ -35,10 +35,18 @@ public class PackIntegrityChecker {
 		this.alreadyWarned = IOUtils.readLines(this.data);
 	}
 
-	public void check(String[] unsupportedMods) {
+	public void check(String[] unsupportedMods, String[] mods) {
 		for (String mod: unsupportedMods) {
 			if (Loader.isModLoaded(mod) && !this.alreadyWarned.contains(mod)) {
 				this.set.add(mod);
+			}
+		}
+		if (mods.length != 0) {
+			Set<String> modlist = Sets.newHashSet(mods);
+			for (String mod: Loader.instance().getIndexedModList().keySet()) {
+				if (!modlist.contains(mod) && !this.alreadyWarned.contains(mod)) {
+					this.set.add(mod);
+				}
 			}
 		}
 		if (!this.set.isEmpty()) {
@@ -61,9 +69,9 @@ public class PackIntegrityChecker {
 		public void drawScreen(int mouseRelX, int mouseRelY, float tickTime) {
 			this.drawDefaultBackground();
 			super.drawScreen(mouseRelX, mouseRelY, tickTime);
-			String string = GeneralConfigHandler.INSTANCE.warningScreenLine1;
-			String string2 = GeneralConfigHandler.INSTANCE.warningScreenLine2;
-			String string3 = GeneralConfigHandler.INSTANCE.warningScreenLine3;
+			String string = ModListConfigHandler.INSTANCE.warningScreenLine1;
+			String string2 = ModListConfigHandler.INSTANCE.warningScreenLine2;
+			String string3 = ModListConfigHandler.INSTANCE.warningScreenLine3;
 			String string4 = Joiner.on(", ").join(PackIntegrityChecker.this.set);
 			this.drawCenteredString(this.fontRendererObj, string, this.width / 2, this.height / 2 - 30, 16777215);
 			this.drawCenteredString(this.fontRendererObj, string2, this.width / 2, this.height / 2 - 20, 16777215);

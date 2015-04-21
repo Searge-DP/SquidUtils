@@ -13,7 +13,7 @@ import coolsquid.squidapi.helpers.FileHelper;
 import coolsquid.squidapi.logging.Logger;
 import coolsquid.squidapi.util.StringUtils;
 import coolsquid.squidutils.SquidUtils;
-import coolsquid.squidutils.config.GeneralConfigHandler;
+import coolsquid.squidutils.config.ModListConfigHandler;
 import cpw.mods.fml.common.Loader;
 
 public class ModLister {
@@ -27,13 +27,10 @@ public class ModLister {
 	private final Logger logger = new Logger(new File("modlist.txt"));
 	
 	public void init() {
-		if (GeneralConfigHandler.INSTANCE.generateModList == 0) {
-			return;
-		}
-		else if (GeneralConfigHandler.INSTANCE.generateModList == 1) {
+		if (ModListConfigHandler.INSTANCE.generateModList == 1) {
 			this.generateListOfModids();
 		}
-		else if (GeneralConfigHandler.INSTANCE.generateModList == 2) {
+		else if (ModListConfigHandler.INSTANCE.generateModList == 2) {
 			this.generateListOfModidsAndVersions();
 		}
 	}

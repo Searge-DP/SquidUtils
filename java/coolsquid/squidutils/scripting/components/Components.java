@@ -54,7 +54,6 @@ import coolsquid.squidapi.util.StringParser;
 import coolsquid.squidapi.util.StringUtils;
 import coolsquid.squidapi.util.math.IntUtils;
 import coolsquid.squidutils.SquidUtils;
-import coolsquid.squidutils.api.ScriptingAPI;
 import coolsquid.squidutils.api.ScriptingAPI.IScriptSubcommand;
 import coolsquid.squidutils.api.ScriptingAPI.ScriptCommand;
 import coolsquid.squidutils.command.CommandCustom;
@@ -69,92 +68,102 @@ import coolsquid.starstones.creativetab.ModCreativeTabs;
 import cpw.mods.fml.common.registry.VillagerRegistry;
 
 public class Components {
-	
+
 	public static void init() {
 		Map<String, IScriptSubcommand> blocksubcommands = Maps.newHashMap();
 		blocksubcommands.put("create", new ScriptSubcommandBlockCreate());
 		blocksubcommands.put("modify", new ScriptSubcommandBlockModify());
-		ScriptingAPI.addCommand("block", new ScriptCommand(blocksubcommands));
-		
+		SquidUtils.API.getScripting().addCommand("block", new ScriptCommand(blocksubcommands));
+
 		Map<String, IScriptSubcommand> itemsubcommands = Maps.newHashMap();
 		itemsubcommands.put("create", new ScriptSubcommandItemCreate());
 		itemsubcommands.put("modify", new ScriptSubcommandItemModify());
-		ScriptingAPI.addCommand("item", new ScriptCommand(itemsubcommands));
-		
+		SquidUtils.API.getScripting().addCommand("item", new ScriptCommand(itemsubcommands));
+
 		Map<String, IScriptSubcommand> commandsubcommands = Maps.newHashMap();
 		commandsubcommands.put("create", new ScriptSubcommandCommandCreate());
 		commandsubcommands.put("disable", new ScriptSubcommandCommandDisable());
-		ScriptingAPI.addCommand("command", new ScriptCommand(commandsubcommands));
-		
+		SquidUtils.API.getScripting().addCommand("command", new ScriptCommand(commandsubcommands));
+
 		Map<String, IScriptSubcommand> tabsubcommands = Maps.newHashMap();
 		tabsubcommands.put("create", new ScriptSubcommandTabCreate());
-		ScriptingAPI.addCommand("tab", new ScriptCommand(tabsubcommands));
-		
+		SquidUtils.API.getScripting().addCommand("tab", new ScriptCommand(tabsubcommands));
+
 		Map<String, IScriptSubcommand> recipesubcommands = Maps.newHashMap();
 		recipesubcommands.put("create", new ScriptSubcommandRecipeCreate());
 		recipesubcommands.put("remove", new ScriptSubcommandRecipeRemove());
-		ScriptingAPI.addCommand("recipe", new ScriptCommand(recipesubcommands));
-		
+		SquidUtils.API.getScripting().addCommand("recipe", new ScriptCommand(recipesubcommands));
+
 		Map<String, IScriptSubcommand> biomesubcommands = Maps.newHashMap();
 		biomesubcommands.put("create", new ScriptSubcommandBiomeCreate());
 		biomesubcommands.put("modify", new ScriptSubcommandBiomeModify());
-		ScriptingAPI.addCommand("biome", new ScriptCommand(biomesubcommands));
-		
+		SquidUtils.API.getScripting().addCommand("biome", new ScriptCommand(biomesubcommands));
+
 		Map<String, IScriptSubcommand> fishingsubcommands = Maps.newHashMap();
 		fishingsubcommands.put("create", new ScriptSubcommandFishingAdd());
 		fishingsubcommands.put("remove", new ScriptSubcommandFishingRemove());
-		ScriptingAPI.addCommand("fishing", new ScriptCommand(fishingsubcommands));
-		
+		SquidUtils.API.getScripting().addCommand("fishing", new ScriptCommand(fishingsubcommands));
+
 		Map<String, IScriptSubcommand> dungeonmobsubcommands = Maps.newHashMap();
 		dungeonmobsubcommands.put("create", new ScriptSubcommandDungeonmobAdd());
 		dungeonmobsubcommands.put("remove", new ScriptSubcommandDungeonmobRemove());
-		ScriptingAPI.addCommand("dungeonmob", new ScriptCommand(dungeonmobsubcommands));
-		
+		SquidUtils.API.getScripting().addCommand("dungeonmob", new ScriptCommand(dungeonmobsubcommands));
+
 		Map<String, IScriptSubcommand> chestgensubcommands = Maps.newHashMap();
 		chestgensubcommands.put("create", new ScriptSubcommandChestgenAdd());
 		chestgensubcommands.put("remove", new ScriptSubcommandChestgenRemove());
-		ScriptingAPI.addCommand("chestgen", new ScriptCommand(chestgensubcommands));
-		
+		SquidUtils.API.getScripting().addCommand("chestgen", new ScriptCommand(chestgensubcommands));
+
 		Map<String, IScriptSubcommand> villagersubcommands = Maps.newHashMap();
 		villagersubcommands.put("create", new ScriptSubcommandVillagerAdd());
 		villagersubcommands.put("remove", new ScriptSubcommandVillagerRemove());
-		ScriptingAPI.addCommand("villager", new ScriptCommand(villagersubcommands));
-		
+		SquidUtils.API.getScripting().addCommand("villager", new ScriptCommand(villagersubcommands));
+
 		Map<String, IScriptSubcommand> modsubcommands = Maps.newHashMap();
 		modsubcommands.put("Botania", new ScriptSubcommandModsBotania());
 		modsubcommands.put("RotaryCraft", new ScriptSubcommandModsRotaryCraft());
 		modsubcommands.put("ThermalExpansion", new ScriptSubcommandModsThermalExpansion());
 		modsubcommands.put("BloodMagic", new ScriptSubcommandModsBloodMagic());
 		modsubcommands.put("ThermalExpansion", new ScriptSubcommandModsRailCraft());
-		ScriptingAPI.addCommand("mods", new ScriptCommand(modsubcommands));
-		
+		SquidUtils.API.getScripting().addCommand("mods", new ScriptCommand(modsubcommands));
+
 		Map<String, IScriptSubcommand> achievementsubcommands = Maps.newHashMap();
 		achievementsubcommands.put("create", new ScriptSubcommandAchievementCreate());
 		achievementsubcommands.put("remove", new ScriptSubcommandAchievementRemove());
-		ScriptingAPI.addCommand("achievement", new ScriptCommand(achievementsubcommands));
-		
+		SquidUtils.API.getScripting().addCommand("achievement", new ScriptCommand(achievementsubcommands));
+
 		Map<String, IScriptSubcommand> smeltingsubcommands = Maps.newHashMap();
 		smeltingsubcommands.put("create", new ScriptSubcommandSmeltingCreate());
 		smeltingsubcommands.put("remove", new ScriptSubcommandSmeltingRemove());
-		ScriptingAPI.addCommand("smelting", new ScriptCommand(smeltingsubcommands));
+		SquidUtils.API.getScripting().addCommand("smelting", new ScriptCommand(smeltingsubcommands));
 
 		Map<String, IScriptSubcommand> reflectionsubcommands = Maps.newHashMap();
 		smeltingsubcommands.put("field", new ScriptSubcommandReflectionField());
 		smeltingsubcommands.put("method", new ScriptSubcommandReflectionMethod());
-		ScriptingAPI.addCommand("reflection", new ScriptCommand(reflectionsubcommands));
+		SquidUtils.API.getScripting().addCommand("reflection", new ScriptCommand(reflectionsubcommands));
 	}
-	
+
 	public static class ScriptSubcommandBlockCreate implements IScriptSubcommand {
-		
+
 		@Override
 		public void run(Map<String, String> args) {
 			if (args.get("type").equals("meteor")) {
 				MeteorType t = null;
-				if (args.get(3).equals("STONE")) t = MeteorType.STONE;
-				else if (args.get("meteortype").equals("END")) t = MeteorType.END;
-				else if (args.get("meteortype").equals("ICE")) t = MeteorType.ICE;
-				else if (args.get("meteortype").equals("OBSIDIAN")) t = MeteorType.OBSIDIAN;
-				else if (args.get("meteortype").equals("HELL")) t = MeteorType.HELL;
+				if (args.get(3).equals("STONE")) {
+					t = MeteorType.STONE;
+				}
+				else if (args.get("meteortype").equals("END")) {
+					t = MeteorType.END;
+				}
+				else if (args.get("meteortype").equals("ICE")) {
+					t = MeteorType.ICE;
+				}
+				else if (args.get("meteortype").equals("OBSIDIAN")) {
+					t = MeteorType.OBSIDIAN;
+				}
+				else if (args.get("meteortype").equals("HELL")) {
+					t = MeteorType.HELL;
+				}
 				new BlockMeteorBase(args.get("name"), t).setCreativeTab(ModCreativeTabs.tab);
 			}
 			else if (args.get("type").equals("glass")) {
@@ -168,7 +177,7 @@ public class Components {
 			}
 		}
 	}
-	
+
 	public static class ScriptSubcommandBlockModify implements IScriptSubcommand {
 
 		@Override
@@ -204,9 +213,9 @@ public class Components {
 			}
 		}
 	}
-	
+
 	public static class ScriptSubcommandItemCreate implements IScriptSubcommand {
-		
+
 		@Override
 		public void run(Map<String, String> args) {
 			String name = args.get("name");
@@ -225,7 +234,7 @@ public class Components {
 			}
 		}
 	}
-	
+
 	public static class ScriptSubcommandItemModify implements IScriptSubcommand {
 
 		@Override
@@ -247,7 +256,7 @@ public class Components {
 			}
 		}
 	}
-	
+
 	public static class ScriptSubcommandCommandCreate implements IScriptSubcommand {
 
 		@Override
@@ -272,15 +281,15 @@ public class Components {
 			}
 		}
 	}
-	
+
 	public static class ScriptSubcommandCommandDisable implements IScriptSubcommand {
 
 		@Override
 		public void run(Map<String, String> args) {
-			SquidUtils.instance().commandsToDisable.add(args.get("name"));
+			SquidUtils.API.disableCommand(args.get("name"));
 		}
 	}
-	
+
 	public static class ScriptSubcommandTabCreate implements IScriptSubcommand {
 
 		@Override
@@ -293,7 +302,7 @@ public class Components {
 			}
 		}
 	}
-	
+
 	public static class ScriptSubcommandRecipeCreate implements IScriptSubcommand {
 
 		@Override
@@ -316,7 +325,7 @@ public class Components {
 			}
 		}
 	}
-	
+
 	public static class ScriptSubcommandRecipeRemove implements IScriptSubcommand {
 
 		@Override
@@ -329,7 +338,7 @@ public class Components {
 			}
 		}
 	}
-	
+
 	public static class ScriptSubcommandBiomeCreate implements IScriptSubcommand {
 
 		@Override
@@ -341,7 +350,7 @@ public class Components {
 			BiomeManager.addBiome(BiomeType.getType(args.get("type")), new BiomeEntry(biome, IntUtils.parseInt(args.get("weight"))));
 		}
 	}
-	
+
 	public static class ScriptSubcommandBiomeModify implements IScriptSubcommand {
 
 		@Override
@@ -379,7 +388,7 @@ public class Components {
 			}
 		}
 	}
-	
+
 	public static class ScriptSubcommandFishingRemove implements IScriptSubcommand {
 
 		@Override
@@ -397,7 +406,7 @@ public class Components {
 			}
 		}
 	}
-	
+
 	public static class ScriptSubcommandFishingAdd implements IScriptSubcommand {
 
 		@Override
@@ -416,7 +425,7 @@ public class Components {
 			}
 		}
 	}
-	
+
 	public static class ScriptSubcommandDungeonmobRemove implements IScriptSubcommand {
 
 		@Override
@@ -424,7 +433,7 @@ public class Components {
 			ContentRemover.remove(args.get("mob"), ContentType.DUNGEONMOB);
 		}
 	}
-	
+
 	public static class ScriptSubcommandDungeonmobAdd implements IScriptSubcommand {
 
 		@Override
@@ -432,7 +441,7 @@ public class Components {
 			DungeonHooks.addDungeonMob(args.get("mob"), IntUtils.parseInt(args.get("rarity")));
 		}
 	}
-	
+
 	public static class ScriptSubcommandChestgenAdd implements IScriptSubcommand {
 
 		@Override
@@ -440,7 +449,7 @@ public class Components {
 			ChestGenHooks.addItem(args.get("category"), new WeightedRandomChestContent(StringParser.parseItemStack(args.get("item")), IntUtils.parseInt(args.get("minchance")), IntUtils.parseInt(args.get("maxchance")), IntUtils.parseInt(args.get("weight"))));
 		}
 	}
-	
+
 	public static class ScriptSubcommandChestgenRemove implements IScriptSubcommand {
 
 		@Override
@@ -448,7 +457,7 @@ public class Components {
 			ContentRemover.remove(StringUtils.newString(args.get("category"), ";", args.get("item")), ContentType.CHESTGEN);
 		}
 	}
-	
+
 	public static class ScriptSubcommandVillagerAdd implements IScriptSubcommand {
 
 		@Override
@@ -457,7 +466,7 @@ public class Components {
 			VillagerRegistry.instance().registerVillagerSkin(IntUtils.parseInt(args.get("id")), new ResourceLocation("SquidUtils", StringUtils.newString("textures/entity/villager/", args.get("texture"), ".png")));
 		}
 	}
-	
+
 	public static class ScriptSubcommandVillagerRemove implements IScriptSubcommand {
 
 		@Override
@@ -465,7 +474,7 @@ public class Components {
 			ContentRemover.remove(args.get("id"), ContentType.PROFESSION);
 		}
 	}
-	
+
 	public static class ScriptSubcommandModsBotania implements IScriptSubcommand {
 
 		@Override
@@ -503,7 +512,7 @@ public class Components {
 			}
 		}
 	}
-	
+
 	public static class ScriptSubcommandModsRotaryCraft implements IScriptSubcommand {
 
 		@Override
@@ -535,7 +544,7 @@ public class Components {
 			}
 		}
 	}
-	
+
 	public static class ScriptSubcommandModsThermalExpansion implements IScriptSubcommand {
 
 		@Override
@@ -554,7 +563,7 @@ public class Components {
 			}
 		}
 	}
-	
+
 	public static class ScriptSubcommandModsRailCraft implements IScriptSubcommand {
 
 		@Override
@@ -590,7 +599,7 @@ public class Components {
 			}
 		}
 	}
-	
+
 	public static class ScriptSubcommandModsBloodMagic implements IScriptSubcommand {
 
 		@Override
@@ -613,7 +622,7 @@ public class Components {
 			}
 		}
 	}
-	
+
 	public static class ScriptSubcommandAchievementCreate implements IScriptSubcommand {
 
 		@Override
@@ -626,7 +635,7 @@ public class Components {
 			}
 		}
 	}
-	
+
 	public static class ScriptSubcommandAchievementRemove implements IScriptSubcommand {
 
 		@Override
@@ -643,7 +652,7 @@ public class Components {
 			}
 		}
 	}
-	
+
 	public static class ScriptSubcommandSmeltingCreate implements IScriptSubcommand {
 
 		@Override
@@ -651,7 +660,7 @@ public class Components {
 			RegistryHelper.addSmelting(StringParser.parseItem(args.get("input")), StringParser.parseItemStack(args.get("output")));
 		}
 	}
-	
+
 	public static class ScriptSubcommandSmeltingRemove implements IScriptSubcommand {
 
 		@Override
@@ -659,7 +668,7 @@ public class Components {
 			ContentRemover.remove(args.get("output"), ContentType.SMELTING);
 		}
 	}
-	
+
 	public static class ScriptSubcommandReflectionMethod implements IScriptSubcommand {
 
 		@Override
@@ -674,7 +683,7 @@ public class Components {
 			}
 		}
 	}
-	
+
 	public static class ScriptSubcommandReflectionField implements IScriptSubcommand {
 
 		@Override

@@ -5,6 +5,7 @@
 package coolsquid.squidutils.util;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Set;
 
 import net.minecraft.client.Minecraft;
@@ -14,9 +15,12 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.common.MinecraftForge;
 
+import org.apache.commons.io.FileUtils;
+
 import com.google.common.base.Joiner;
 import com.google.common.collect.Sets;
 
+import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidapi.util.io.IOUtils;
 import coolsquid.squidutils.config.ModListConfigHandler;
 import cpw.mods.fml.common.Loader;
@@ -51,7 +55,14 @@ public class PackIntegrityChecker {
 		}
 		if (!this.set.isEmpty()) {
 			MinecraftForge.EVENT_BUS.register(this);
-			IOUtils.writeLines(this.data, this.set);
+			for (String mod: this.set) {
+				try {
+					FileUtils.write(this.data, mod, true);
+					FileUtils.write(this.data, MiscLib.LINE, true);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 

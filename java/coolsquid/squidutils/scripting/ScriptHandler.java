@@ -23,7 +23,6 @@ import coolsquid.squidapi.util.StringParser;
 import coolsquid.squidapi.util.StringUtils;
 import coolsquid.squidapi.util.math.IntUtils;
 import coolsquid.squidutils.SquidUtils;
-import coolsquid.squidutils.api.ScriptingAPI;
 import coolsquid.squidutils.util.script.EventInfo;
 
 public class ScriptHandler {
@@ -31,7 +30,7 @@ public class ScriptHandler {
 	public static final ScriptHandler INSTANCE = new ScriptHandler();
 
 	private ScriptHandler() {
-		
+
 	}
 
 	public boolean onCraft;
@@ -48,11 +47,11 @@ public class ScriptHandler {
 	public boolean onExplosion;
 	public boolean onCommand;
 	public boolean onChat;
-	
+
 	public boolean permissions;
-	
+
 	private List<String> list;
-	
+
 	private List<String> getScripts() {
 		if (this.list == null) {
 			this.list = new ArrayList<String>();
@@ -79,7 +78,7 @@ public class ScriptHandler {
 		}
 		return this.list;
 	}
-	
+
 	public void init() {
 		for (int a = 0; a < this.getScripts().size(); a++) {
 			try {
@@ -98,7 +97,7 @@ public class ScriptHandler {
 								builder.put(aa[0], aa[1]);
 							}
 						}
-						ScriptingAPI.getCommands().get(type).getSubcommands().get(s2[1]).run(builder.build());
+						SquidUtils.API.getScripting().getCommands().get(type).getSubcommands().get(s2[1]).run(builder.build());
 					}
 					else {
 						Builder<String, Object> builder = ImmutableMap.builder();
@@ -142,14 +141,14 @@ public class ScriptHandler {
 						else if (trigger.equals("chat")) {
 							this.onChat = true;
 						}
-						
+
 						builder.put("minchance", 1);
 						builder.put("maxchance", 1);
 						builder.put("minhealth", -1F);
 						builder.put("maxhealth", Float.MAX_VALUE);
 						builder.put("minarmor", -1);
 						builder.put("maxarmor", Integer.MAX_VALUE);
-						
+
 						for (int b = 2; b < s2.length; b++) {
 							String[] aa = s2[b].split("=");
 							String key = aa[0];
@@ -185,7 +184,7 @@ public class ScriptHandler {
 						}
 						EventInfo info = new EventInfo();
 						info.values = builder.build();
-						ScriptingAPI.getTriggers().get(trigger).info().add(info);
+						SquidUtils.API.getScripting().getTriggers().get(trigger).info().add(info);
 					}
 				}
 			} catch (Exception e) {
@@ -195,7 +194,7 @@ public class ScriptHandler {
 			}
 		}
 	}
-	
+
 	/*public static void postInit() throws Exception {
 		for (int a = 0; a < getScripts().size(); a++) {
 			String s = getScripts().get(a);

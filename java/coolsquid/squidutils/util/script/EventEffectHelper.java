@@ -17,25 +17,31 @@ import net.minecraft.world.Explosion;
 import coolsquid.squidapi.util.EffectInfo;
 import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidapi.util.Utils;
-import coolsquid.squidutils.api.ScriptingAPI;
+import coolsquid.squidutils.SquidUtils;
 import coolsquid.squidutils.handlers.DifficultyHandler;
 import coolsquid.squidutils.helpers.PermissionHelper;
 
 public class EventEffectHelper {
-	
+
 	public static void run(HashMap<Object, EventInfo> items, Item item, EntityLivingBase entity) {
 		if (items.containsKey(item)) {
 			performEffects(items.get(item), entity);
 		}
 	}
-	
+
 	public static void performEffects(EventInfo info, EntityLivingBase entity) {
 		if (info.values.containsKey("minchance") && info.values.containsKey("maxchance") && !Utils.getChance((int) info.values.get("minchance"), (int) info.values.get("maxchance"))) {
 			return;
 		}
-		if (!isCorrectType(entity, (String) info.values.get("entitytype"))) return;
-		if (((float) info.values.get("minhealth")) >= entity.getHealth() || ((float) info.values.get("maxhealth")) <= entity.getHealth()) return;
-		if (((int) info.values.get("minarmor")) >= entity.getTotalArmorValue() || ((int) info.values.get("maxarmor")) <= entity.getTotalArmorValue()) return;
+		if (!isCorrectType(entity, (String) info.values.get("entitytype"))) {
+			return;
+		}
+		if (((float) info.values.get("minhealth")) >= entity.getHealth() || ((float) info.values.get("maxhealth")) <= entity.getHealth()) {
+			return;
+		}
+		if (((int) info.values.get("minarmor")) >= entity.getTotalArmorValue() || ((int) info.values.get("maxarmor")) <= entity.getTotalArmorValue()) {
+			return;
+		}
 		if (entity instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer) entity;
 			if (info.values.containsKey("requiredperm") && !PermissionHelper.INSTANCE.hasPermission(player.getGameProfile().getId(), (String) info.values.get("requiredperm"))) {
@@ -45,8 +51,8 @@ public class EventEffectHelper {
 				return;
 			}
 		}
-		if (ScriptingAPI.getActions().containsKey(info.values.get("action"))) {
-			ScriptingAPI.getActions().get(info.values.get("action")).run(entity, info);
+		if (SquidUtils.API.getScripting().getActions().containsKey(info.values.get("action"))) {
+			SquidUtils.API.getScripting().getActions().get(info.values.get("action")).run(entity, info);
 		}
 		performEffects(info);
 		if (info.values.get("action").equals("cleareffects")) {
@@ -90,15 +96,20 @@ public class EventEffectHelper {
 			}
 		}
 	}
-	
+
 	public static boolean isCorrectType(EntityLivingBase entity, String type) {
-		if (type == null || type.equals(""))
+		if (type == null || type.equals("")) {
 			return true;
-		else if (type.equals("undead") && entity.isEntityUndead())
+		}
+		else if (type.equals("undead") && entity.isEntityUndead()) {
 			return true;
-		else if (type.equals("animal") && entity instanceof EntityAnimal)
+		}
+		else if (type.equals("animal") && entity instanceof EntityAnimal) {
 			return true;
-		else return entity.getClass().getName().toLowerCase().contains(type.toLowerCase());
+		}
+		else {
+			return entity.getClass().getName().toLowerCase().contains(type.toLowerCase());
+		}
 	}
 
 	public static void performEffects(EventInfo info) {

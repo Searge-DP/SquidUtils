@@ -36,7 +36,7 @@ public class Hooks {
 				block.blockHardness = value;
 				if (block.blockResistance < value * 5.0F) {
 					block.blockResistance = value * 5.0F;
-		        }
+				}
 			}
 		}
 	}
@@ -69,14 +69,14 @@ public class Hooks {
 
 	public static void onBlockFallingUpdate(BlockFalling block, World world, int x, int y, int z) {
 		if (!world.isRemote && PHYSICS.contains(block)) {
-            block.func_149830_m(world, x, y, z);
-        }
+			block.func_149830_m(world, x, y, z);
+		}
 	}
 
 	public static void onEntityCollideWithPortal(Entity entity) {
 		if (NETHER_PORTALS && entity.ridingEntity == null && entity.riddenByEntity == null) {
 			entity.setInPortal();
-        }
+		}
 	}
 
 	public static boolean isAllowedChar(char c) {

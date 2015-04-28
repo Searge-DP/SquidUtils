@@ -11,107 +11,52 @@ import java.util.Map;
 import net.minecraft.entity.EntityLivingBase;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 
 import coolsquid.squidutils.util.script.EventInfo;
 
-/**
- * Planning to remove the whole scripting system.
- */
 public class ScriptingAPI {
-	
-	/** The commands */
-	@Deprecated
-	private static final HashMap<String, ScriptCommand> commands = new HashMap<String, ScriptCommand>();
-	
-	/** The actions. */
-	@Deprecated
-	private static final HashMap<String, IEventAction> actions = new HashMap<String, IEventAction>();
-	
-	/** The triggers. */
-	@Deprecated
-	private static final HashMap<String, IEventTrigger> triggers = new HashMap<String, IEventTrigger>();
-	
-	/** The conditions. */
-	@Deprecated
-	private static final HashMap<String, IEventCondition> conditions = new HashMap<String, IEventCondition>();
-	
-	/**
-	 * Gets the commands.
-	 * Cannot be modified.
-	 *
-	 * @return the commands
-	 */
-	public static ImmutableMap<String, ScriptCommand> getCommands() {
-		return ImmutableMap.copyOf(commands);
+
+	private final HashMap<String, ScriptCommand> commands = Maps.newHashMap();
+	private final HashMap<String, IEventAction> actions = Maps.newHashMap();
+	private final HashMap<String, IEventTrigger> triggers = Maps.newHashMap();
+	private final HashMap<String, IEventCondition> conditions = Maps.newHashMap();
+
+	public ImmutableMap<String, ScriptCommand> getCommands() {
+		return ImmutableMap.copyOf(this.commands);
 	}
-	
-	/**
-	 * Gets the actions.
-	 * Cannot be modified.
-	 * 
-	 * @return the actions
-	 */
-	public static ImmutableMap<String, IEventAction> getActions() {
-		return ImmutableMap.copyOf(actions);
+
+	public ImmutableMap<String, IEventAction> getActions() {
+		return ImmutableMap.copyOf(this.actions);
 	}
-	
-	/**
-	 * Gets the triggers.
-	 * Cannot be modified.
-	 * 
-	 * @return the triggers
-	 */
-	public static ImmutableMap<String, IEventTrigger> getTriggers() {
-		return ImmutableMap.copyOf(triggers);
+
+	public ImmutableMap<String, IEventTrigger> getTriggers() {
+		return ImmutableMap.copyOf(this.triggers);
 	}
-	
-	/**
-	 * Gets the conditions.
-	 * Cannot be modified.
-	 *
-	 * @return the conditions
-	 */
-	public static ImmutableMap<String, IEventCondition> getConditions() {
-		return ImmutableMap.copyOf(conditions);
+
+	public ImmutableMap<String, IEventCondition> getConditions() {
+		return ImmutableMap.copyOf(this.conditions);
 	}
-	
-	public static void addCommand(String name, ScriptCommand command) {
-		commands.put(name, command);
+
+	public void addCommand(String name, ScriptCommand command) {
+		this.commands.put(name, command);
 	}
-	
-	/**
-	 * Adds an action.
-	 *
-	 * @param name the name
-	 * @param action the action
-	 */
-	public static void addAction(String name, IEventAction action) {
-		actions.put(name, action);
+
+	public void addAction(String name, IEventAction action) {
+		this.actions.put(name, action);
 	}
-	
-	/**
-	 * Adds a trigger.
-	 *
-	 * @param name the name
-	 * @param trigger the trigger
-	 */
-	public static void addTrigger(String name, IEventTrigger trigger) {
-		triggers.put(name, trigger);
+
+	public void addTrigger(String name, IEventTrigger trigger) {
+		this.triggers.put(name, trigger);
 	}
-	
-	/**
-	 * Adds a condition.
-	 *
-	 * @param name the name
-	 * @param argument the argument
-	 */
-	public static void addCondition(String name, IEventCondition argument) {
-		conditions.put(name, argument);
+
+	public void addCondition(String name, IEventCondition argument) {
+		this.conditions.put(name, argument);
 	}
-	
+
 	public static class ScriptCommand {
 		private final Map<String, IScriptSubcommand> subcommands;
-		
+
 		public ScriptCommand(Map<String, IScriptSubcommand> subcommands) {
 			this.subcommands = subcommands;
 		}
@@ -121,54 +66,24 @@ public class ScriptingAPI {
 		}
 	}
 
-	public interface IScriptSubcommand {
+	public static interface IScriptSubcommand {
 		void run(Map<String, String> args);
 	}
-	
-	/**
-	 * The Interface IEventAction.
-	 */
-	public interface IEventAction {
-		
-		/**
-		 * Run.
-		 *
-		 * @param entity the entity
-		 * @param info the info
-		 */
+
+	public static interface IEventAction {
 		void run(EntityLivingBase entity, EventInfo info);
-		
-		/**
-		 * Inits the.
-		 *
-		 * @param info the info
-		 */
 		void init(EventInfo info);
 	}
-	
-	/**
-	 * The Interface IEventTrigger.
-	 */
-	public interface IEventTrigger {
-		
-		/**
-		 * Info.
-		 *
-		 * @return the array list
-		 */
+
+	public static interface IEventTrigger {
 		List<EventInfo> info();
 	}
-	
-	/**
-	 * The Interface IEventCondition.
-	 */
-	public interface IEventCondition {
-		
-		/**
-		 * Run.
-		 *
-		 * @param condition the condition
-		 */
+
+	public static interface IEventCondition {
 		void run(String condition);
+	}
+
+	public static ScriptingAPI create() {
+		return new ScriptingAPI();
 	}
 }

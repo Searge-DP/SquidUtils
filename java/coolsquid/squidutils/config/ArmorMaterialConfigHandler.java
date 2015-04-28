@@ -7,9 +7,10 @@ package coolsquid.squidutils.config;
 import java.io.File;
 import java.util.Set;
 
+import net.minecraft.item.ItemArmor.ArmorMaterial;
+
 import com.google.common.collect.Sets;
 
-import net.minecraft.item.ItemArmor.ArmorMaterial;
 import coolsquid.squidapi.config.ConfigHandler;
 import coolsquid.squidapi.util.io.SquidAPIFile;
 
@@ -26,15 +27,9 @@ public class ArmorMaterialConfigHandler extends ConfigHandler {
 	public void loadConfig() {
 		for (ArmorMaterial material: materials) {
 			String name = material.toString();
-			if (!isBlacklisted(name)) {
-				material.enchantability = this.config.get(name, "enchantability", material.enchantability).getInt();
-				material.damageReductionAmountArray = this.config.get(name, "damageReduction", material.damageReductionAmountArray).getIntList();
-				material.maxDamageFactor = this.config.get(name, "material", material.maxDamageFactor).getInt();
-			}
+			material.enchantability = this.config.get(name, "enchantability", material.enchantability).getInt();
+			material.damageReductionAmountArray = this.config.get(name, "damageReduction", material.damageReductionAmountArray).getIntList();
+			material.maxDamageFactor = this.config.get(name, "material", material.maxDamageFactor).getInt();
 		}
-	}
-
-	private static boolean isBlacklisted(String name) {
-		return name.matches("(Bedrock)");
 	}
 }

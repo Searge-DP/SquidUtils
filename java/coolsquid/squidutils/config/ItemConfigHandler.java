@@ -7,7 +7,6 @@ package coolsquid.squidutils.config;
 import java.io.File;
 import java.util.List;
 
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor;
@@ -20,15 +19,11 @@ import net.minecraft.item.ItemTool;
 import com.google.common.collect.Lists;
 
 import coolsquid.squidapi.config.ConfigHandler;
-import coolsquid.squidapi.util.ContentRemover;
-import coolsquid.squidapi.util.ContentRemover.ContentType;
 import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidapi.util.StringParser;
 import coolsquid.squidapi.util.StringUtils;
 import coolsquid.squidapi.util.io.SquidAPIFile;
 import coolsquid.squidutils.SquidUtils;
-import coolsquid.squidutils.handlers.ItemBanHandler;
-import coolsquid.squidutils.handlers.ToolTipHandler;
 
 public class ItemConfigHandler extends ConfigHandler {
 
@@ -38,16 +33,18 @@ public class ItemConfigHandler extends ConfigHandler {
 		super(file);
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public void loadConfig() {
-		for (Object object: Item.itemRegistry) {
+		for (Object object: Item.itemRegistry.getKeys()) {
 			try {
-				if (object != null && object != Blocks.air && MiscLib.getBlacklister(object) == null) {
-					String name = Item.itemRegistry.getNameForObject(object);
-					Item item = (Item) object;
-					item.setMaxStackSize(this.config.get(name, "stacksize", item.getItemStackLimit()).getInt());
-					item.setMaxDamage(this.config.get(name, "maxDamage", item.getMaxDamage()).getInt());
+				if (object != null && MiscLib.getBlacklister(object) == null) {
+					String name = (String) object;
+					Item item = (Item) Item.itemRegistry.getObject(name);
+					if (SquidUtils.COMMON.isDebugMode()) {
+						SquidUtils.instance().info(name, " (", item.getClass().getName(), ')');
+					}
+					item.maxStackSize = this.config.get(name, "stacksize", item.maxStackSize).getInt();
+					item.maxDamage = this.config.get(name, "maxDamage", item.maxDamage).getInt();
 					if (MiscLib.CLIENT) {
 						item.setTextureName(this.config.get(name, "texture", StringUtils.ensureNotNull(item.iconString)).getString());
 						if (item.getCreativeTab() == null) {
@@ -101,12 +98,10 @@ public class ItemConfigHandler extends ConfigHandler {
 						for (String a: tooltip.split("/n/")) {
 							list.add(a);
 						}
-						ToolTipHandler.INSTANCE.getTooltips().put(item, list);
+						SquidUtils.API.registerTooltips(item, list);
 					}
 					if (!this.config.get(name, "enabled", true).getBoolean()) {
-						ContentRemover.remove(name, ContentType.RECIPE);
-						ContentRemover.remove(name, ContentType.SMELTING);
-						ItemBanHandler.bannedItems.add(name);
+						SquidUtils.API.banItem(name);
 					}
 				}
 			} catch (Throwable t) {

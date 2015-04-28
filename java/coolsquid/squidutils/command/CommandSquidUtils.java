@@ -7,7 +7,6 @@ package coolsquid.squidutils.command;
 import java.util.List;
 
 import net.minecraft.command.ICommandSender;
-import net.minecraftforge.common.MinecraftForge;
 import coolsquid.squidapi.command.CommandBase;
 import coolsquid.squidapi.command.ISubCommand;
 import coolsquid.squidapi.command.OpOnly;
@@ -20,7 +19,7 @@ public class CommandSquidUtils extends CommandBase implements OpOnly {
 	public CommandSquidUtils() {
 		super("SquidUtils", "", new SubcommandUnregister());
 	}
-	
+
 	private static class SubcommandUnregister implements ISubCommand {
 
 		@Override
@@ -35,7 +34,7 @@ public class CommandSquidUtils extends CommandBase implements OpOnly {
 				return;
 			}
 			try {
-				MinecraftForge.EVENT_BUS.unregister(SquidUtils.instance().handlers.get(args.get(0)));
+				SquidUtils.API.getEventHandlerManager().unregister(args.get(0));
 				sender.addChatMessage(new ChatMessage("<SquidUtils> Handler successfully unregistered!"));
 			} catch (Exception e) {
 				sender.addChatMessage(new ChatMessage("<SquidUtils> ", e.getClass().getName()).setColor(Color.RED));

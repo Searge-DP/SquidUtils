@@ -16,6 +16,7 @@ import coolsquid.squidapi.reflection.ReflectionHelper;
 import coolsquid.squidapi.util.Utils;
 import coolsquid.squidapi.util.collect.SquidAPIProperties;
 import coolsquid.squidapi.util.io.SquidAPIFile;
+import coolsquid.squidutils.SquidUtils;
 import coolsquid.squidutils.asm.Hooks;
 
 public class GeneralConfigHandler extends ConfigHandler {
@@ -78,11 +79,12 @@ public class GeneralConfigHandler extends ConfigHandler {
 	public int minMessageLength = 1;
 	public String defaultChatText;
 	public boolean allowCheats = true;
+	public long defaultSeed = 0;
 
 	/**
 	 * Sets category comments.
 	 */
-	
+
 	private void initCategories() {
 		this.config.setCategoryComment(this.CATEGORY_GENERAL, "General options.");
 		this.config.setCategoryComment(this.CATEGORY_MOBS, "Mob options.");
@@ -93,11 +95,11 @@ public class GeneralConfigHandler extends ConfigHandler {
 		this.config.setCategoryComment(this.CATEGORY_DISABLING, "Disabling of various things.");
 		this.config.setCategoryComment(this.CATEGORY_CHAT, "Chat options");
 	}
-	
+
 	/**
 	 * Reads the config.
 	 */
-	
+
 	@Override
 	public void loadConfig() {
 		this.forceDifficulty = this.config.getString("forceDifficulty", this.CATEGORY_GAMESETTINGS, "FALSE", "Forces the specified difficulty. Allows for HARDCORE, HARD, NORMAL, EASY, PEACEFUL or FALSE. Set to FALSE to disable.");
@@ -142,6 +144,8 @@ public class GeneralConfigHandler extends ConfigHandler {
 		this.exhaustionMultiplier = this.config.getFloat("exhaustionMultiplier", this.CATEGORY_HUNGER, 1, 0, 1080, "The amount of exhaustion applied to the player will be multiplied by this amount.");
 		this.defaultChatText = this.config.getString("defaultChatText", this.CATEGORY_CHAT, "", "");
 		this.allowCheats = this.config.getBoolean("allowCheats", this.CATEGORY_GAMESETTINGS, true, "Set to false to force cheats to be disabled.");
+		this.defaultSeed = (long) this.config.getFloat("defaultSeed", this.CATEGORY_GENERAL, 0, Float.MIN_VALUE, Float.MAX_VALUE, "Forces the world seed to be the specified number.");
+		SquidUtils.COMMON.setDebug(this.config.getBoolean("debug", this.CATEGORY_GENERAL, false, "Enables debug mode."));
 
 		this.minMessageLength = this.config.getInt("minMessageLength", this.CATEGORY_CHAT, 1, 0, 32, "");
 		for (String s: this.config.getStringList("allowedChars", this.CATEGORY_CHAT, new String[] {}, "")) {

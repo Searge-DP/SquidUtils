@@ -16,6 +16,7 @@ public class SquidUtilsAPI {
 	private final Registry<Material> materials = Registry.create();
 
 	private final ScriptingAPI scripting = new ScriptingAPI();
+	private final IMCHandler imc = new IMCHandler();
 
 	public SquidUtilsAPI() {
 		this.damageSources.register("anvil", DamageSource.anvil);
@@ -103,5 +104,9 @@ public class SquidUtilsAPI {
 
 	void registerMaterialWithIMC(String mod, String name, Material material) {
 		this.materials.register(mod + ':' + name, material);
+	}
+
+	public IMCHandler getIMCHandler() {
+		return this.imc;
 	}
 }

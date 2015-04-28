@@ -24,7 +24,6 @@ import coolsquid.squidapi.helpers.server.ServerHelper;
 import coolsquid.squidapi.util.ContentRemover;
 import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidapi.util.Utils;
-import coolsquid.squidutils.api.IMCHandler;
 import coolsquid.squidutils.api.SquidUtilsAPI;
 import coolsquid.squidutils.api.eventhandler.EventHandlerManager;
 import coolsquid.squidutils.asm.Hooks;
@@ -111,7 +110,6 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 
 	public static final SquidUtilsAPI API = new SquidUtilsAPI();
 	public static final CommonHandler COMMON = new CommonHandler();
-	private static final IMCHandler IMC = new IMCHandler();
 	private static final EventHandlerManager handlers = COMMON.getEventHandlerManager();
 
 	@Instance
@@ -129,8 +127,6 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 	private void preInit(FMLPreInitializationEvent event) {
 		this.info("Preinitializing.");
 		this.info("Version id: ", this.hash());
-
-		this.setDisableable();
 
 		new File("./config/SquidUtils").mkdirs();
 		GeneralConfigHandler.INSTANCE.init();
@@ -413,6 +409,6 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 
 	@EventHandler
 	public void onIMC(IMCEvent event) {
-		IMC.handleIMCEvent(event);
+		API.getIMCHandler().handleIMCEvent(event);
 	}
 }

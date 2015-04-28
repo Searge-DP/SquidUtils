@@ -34,7 +34,7 @@ public class CommandSquidUtils extends CommandBase implements OpOnly {
 				return;
 			}
 			try {
-				SquidUtils.API.getEventHandlerManager().unregister(args.get(0));
+				SquidUtils.COMMON.getEventHandlerManager().unregister(args.get(0));
 				sender.addChatMessage(new ChatMessage("<SquidUtils> Handler successfully unregistered!"));
 			} catch (Exception e) {
 				sender.addChatMessage(new ChatMessage("<SquidUtils> ", e.getClass().getName()).setColor(Color.RED));

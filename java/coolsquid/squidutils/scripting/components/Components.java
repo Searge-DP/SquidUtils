@@ -286,7 +286,7 @@ public class Components {
 
 		@Override
 		public void run(Map<String, String> args) {
-			SquidUtils.API.disableCommand(args.get("name"));
+			SquidUtils.COMMON.disableCommand(args.get("name"));
 		}
 	}
 

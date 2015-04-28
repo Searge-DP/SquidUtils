@@ -14,8 +14,8 @@ public class ToolTipHandler {
 
 	@SubscribeEvent
 	public void tooltip(ItemTooltipEvent event) {
-		if (event.itemStack != null && SquidUtils.API.getTooltips().containsKey(event.itemStack.getItem())) {
-			for (String tooltip: SquidUtils.API.getTooltips().get(event.itemStack.getItem())) {
+		if (event.itemStack != null && SquidUtils.COMMON.getTooltips().containsKey(event.itemStack.getItem())) {
+			for (String tooltip: SquidUtils.COMMON.getTooltips().get(event.itemStack.getItem())) {
 				event.toolTip.add(tooltip);
 			}
 		}

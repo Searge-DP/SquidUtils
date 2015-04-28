@@ -24,6 +24,7 @@ import coolsquid.squidapi.helpers.server.ServerHelper;
 import coolsquid.squidapi.util.ContentRemover;
 import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidapi.util.Utils;
+import coolsquid.squidutils.api.IMCHandler;
 import coolsquid.squidutils.api.SquidUtilsAPI;
 import coolsquid.squidutils.api.eventhandler.EventHandlerManager;
 import coolsquid.squidutils.asm.Hooks;
@@ -98,6 +99,7 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLInterModComms.IMCEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -107,16 +109,17 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 @Mod(modid = ModInfo.modid, name = ModInfo.name, version = ModInfo.version, dependencies = ModInfo.dependencies, acceptableRemoteVersions = "*")
 public class SquidUtils extends SquidAPIMod implements Disableable {
 
-	public static SquidUtils instance() {
-		return instance;
-	}
+	public static final SquidUtilsAPI API = new SquidUtilsAPI();
+	public static final CommonHandler COMMON = new CommonHandler();
+	private static final IMCHandler IMC = new IMCHandler();
+	private static final EventHandlerManager handlers = COMMON.getEventHandlerManager();
 
 	@Instance
 	private static SquidUtils instance;
 
-	public static final SquidUtilsAPI API = new SquidUtilsAPI();
-	public static final CommonHandler COMMON = new CommonHandler();
-	private static final EventHandlerManager handlers = API.getEventHandlerManager();
+	public static SquidUtils instance() {
+		return instance;
+	}
 
 	public SquidUtils() {
 		super("It's your world. Shape it in your way.");
@@ -338,7 +341,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 
 		ConfigurationManager.INSTANCE.loadConfigs(this);
 
-		if (!API.getTooltips().isEmpty()) {
+		if (!COMMON.getTooltips().isEmpty()) {
 			MinecraftForge.EVENT_BUS.register(ToolTipHandler.INSTANCE);
 		}
 
@@ -349,7 +352,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 			}
 		}
 
-		if (!API.getBannedItems().isEmpty()) {
+		if (!COMMON.getBannedItems().isEmpty()) {
 			handlers.registerForgeHandler(new ItemBanHandler());
 		}
 
@@ -365,7 +368,9 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 			handlers.registerForgeHandler(new DropHandler());
 		}
 
-		this.info("Postinitialization finished.");
+		this.info("Postinitialization finished.");for (String a: API.getMaterials().names()) {
+			this.info(a);
+		}
 	}
 
 	@EventHandler
@@ -384,7 +389,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 			ServerHelper.getCommands().clear();
 		}
 		else {
-			for (String command: API.getDisabledCommands()) {
+			for (String command: COMMON.getDisabledCommands()) {
 				ServerHelper.removeCommand(command);
 			}
 		}
@@ -404,5 +409,10 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 		handlers.registerAll();
 		this.setEnabledState(true);
 		this.info("SquidUtils has been enabled.");
+	}
+
+	@EventHandler
+	public void onIMC(IMCEvent event) {
+		IMC.handleIMCEvent(event);
 	}
 }

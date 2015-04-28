@@ -145,7 +145,7 @@ public class GeneralConfigHandler extends ConfigHandler {
 		this.defaultChatText = this.config.getString("defaultChatText", this.CATEGORY_CHAT, "", "");
 		this.allowCheats = this.config.getBoolean("allowCheats", this.CATEGORY_GAMESETTINGS, true, "Set to false to force cheats to be disabled.");
 		this.defaultSeed = (long) this.config.getFloat("defaultSeed", this.CATEGORY_GENERAL, 0, Float.MIN_VALUE, Float.MAX_VALUE, "Forces the world seed to be the specified number.");
-		SquidUtils.COMMON.setDebug(this.config.getBoolean("debug", this.CATEGORY_GENERAL, false, "Enables debug mode."));
+		SquidUtils.COMMON.setDebugMode(this.config.getBoolean("debug", this.CATEGORY_GENERAL, false, "Enables debug mode."));
 
 		this.minMessageLength = this.config.getInt("minMessageLength", this.CATEGORY_CHAT, 1, 0, 32, "");
 		for (String s: this.config.getStringList("allowedChars", this.CATEGORY_CHAT, new String[] {}, "")) {

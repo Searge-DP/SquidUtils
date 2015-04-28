@@ -8,8 +8,8 @@ import java.io.File;
 import java.util.List;
 
 import net.minecraftforge.common.config.ConfigCategory;
+import coolsquid.squidapi.SquidAPI;
 import coolsquid.squidapi.config.ConfigHandler;
-import coolsquid.squidapi.handlers.CommonHandler;
 import coolsquid.squidapi.reflection.ReflectionHelper;
 import coolsquid.squidapi.util.io.SquidAPIFile;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -37,7 +37,7 @@ public class CrashCallableConfigHandler extends ConfigHandler {
 		}
 		ConfigCategory customCallables = this.config.getCategory("customCallables");
 		for (ConfigCategory subcategory: customCallables.getChildren()) {
-			CommonHandler.instance().registerCallable(subcategory.getName(), subcategory.get("message").getString());
+			SquidAPI.COMMON.registerCallable(subcategory.getName(), subcategory.get("message").getString());
 		}
 	}
 }

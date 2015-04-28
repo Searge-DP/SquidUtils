@@ -32,7 +32,7 @@ public class DamageSourceConfigHandler extends ConfigHandler {
 			source.projectile = this.config.get(name, "projectile", source.projectile).getBoolean();
 			source.hungerDamage = (float) this.config.get(name, "hungerDamage", source.hungerDamage).getDouble();
 			if (!this.config.get(name, "enabled", true).getBoolean()) {
-				SquidUtils.API.disableDamageSource(source);
+				SquidUtils.COMMON.disableDamageSource(source);
 			}
 		}
 	}

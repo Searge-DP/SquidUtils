@@ -98,10 +98,10 @@ public class ItemConfigHandler extends ConfigHandler {
 						for (String a: tooltip.split("/n/")) {
 							list.add(a);
 						}
-						SquidUtils.API.registerTooltips(item, list);
+						SquidUtils.COMMON.addTooltips(item, list);
 					}
 					if (!this.config.get(name, "enabled", true).getBoolean()) {
-						SquidUtils.API.banItem(name);
+						SquidUtils.COMMON.banItem(name);
 					}
 				}
 			} catch (Throwable t) {

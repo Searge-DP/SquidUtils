@@ -4,33 +4,17 @@
  *******************************************************************************/
 package coolsquid.squidutils.api;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import net.minecraft.block.material.Material;
-import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
-
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Sets;
-
 import coolsquid.squidapi.registry.Registry;
-import coolsquid.squidapi.util.ContentRemover;
-import coolsquid.squidapi.util.ContentRemover.ContentType;
-import coolsquid.squidapi.util.Utils;
-import coolsquid.squidutils.api.eventhandler.EventHandlerManager;
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.ModContainer;
 
 public class SquidUtilsAPI {
 
 	private final Registry<DamageSource> damageSources = Registry.create();
 	private final Registry<Material> materials = Registry.create();
 
-	private final Set<DamageSource> bannedDamageSources = Sets.newHashSet();
-	private final Set<String> bannedItems = Sets.newHashSet();
-	private final Set<String> disabledCommands = new HashSet<String>();
-	private final ArrayListMultimap<Item, String> tooltips = ArrayListMultimap.create();
-	private final EventHandlerManager eventHandlerManager = EventHandlerManager.create();
 	private final ScriptingAPI scripting = new ScriptingAPI();
 
 	public SquidUtilsAPI() {
@@ -86,42 +70,19 @@ public class SquidUtilsAPI {
 	}
 
 	public void registerDamageSource(DamageSource source) {
-		this.damageSources.register(Utils.getCurrentMod().getModId() + ":" + source.damageType, source);
+		ModContainer mod = Loader.instance().activeModContainer();
+		if (mod == null) {
+			throw new IllegalStateException();
+		}
+		this.damageSources.register(mod.getModId() + ':' + source.damageType, source);
 	}
 
 	public void registerMaterial(String name, Material material) {
-		this.materials.register(Utils.getCurrentMod().getModId() + ":" + name, material);
-	}
-
-	public void registerTooltip(Item item, String tooltip) {
-		this.tooltips.put(item, tooltip);
-	}
-
-	public void registerTooltips(Item item, List<String> tooltips) {
-		for (String tooltip: tooltips) {
-			this.tooltips.put(item, tooltip);
+		ModContainer mod = Loader.instance().activeModContainer();
+		if (mod == null) {
+			throw new IllegalStateException();
 		}
-	}
-
-	public void banItem(String name) {
-		ContentRemover.remove(name, ContentType.RECIPE);
-		ContentRemover.remove(name, ContentType.SMELTING);
-		ContentRemover.remove(name, ContentType.FISH);
-		ContentRemover.remove(name, ContentType.JUNK);
-		ContentRemover.remove(name, ContentType.TREASURE);
-		this.bannedItems.add(name);
-	}
-
-	public void disableDamageSource(DamageSource source) {
-		this.bannedDamageSources.add(source);
-	}
-
-	public void disableCommand(String name) {
-		this.disabledCommands.add(name);
-	}
-
-	public Set<String> getBannedItems() {
-		return this.bannedItems;
+		this.materials.register(mod.getModId() + ':' + name, material);
 	}
 
 	public Registry<DamageSource> getDamageSources() {
@@ -132,23 +93,15 @@ public class SquidUtilsAPI {
 		return this.materials;
 	}
 
-	public Set<DamageSource> getDisabledDamageSources() {
-		return this.bannedDamageSources;
-	}
-
-	public Set<String> getDisabledCommands() {
-		return this.disabledCommands;
-	}
-
-	public ArrayListMultimap<Item, String> getTooltips() {
-		return this.tooltips;
-	}
-
-	public EventHandlerManager getEventHandlerManager() {
-		return this.eventHandlerManager;
-	}
-
 	public ScriptingAPI getScripting() {
 		return this.scripting;
+	}
+
+	void registerDamageSourceWithIMC(String mod, DamageSource source) {
+		this.damageSources.register(mod + ':' + source.damageType, source);
+	}
+
+	void registerMaterialWithIMC(String mod, String name, Material material) {
+		this.materials.register(mod + ':' + name, material);
 	}
 }

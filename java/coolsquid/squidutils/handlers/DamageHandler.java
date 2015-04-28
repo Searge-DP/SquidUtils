@@ -15,17 +15,17 @@ import coolsquid.squidutils.util.script.EventInfo;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class DamageHandler implements IEventTrigger {
-	
+
 	public static final List<EventInfo> info = new ArrayList<EventInfo>();
-	
+
 	@Override
 	public List<EventInfo> info() {
 		return info;
 	}
-	
+
 	@SubscribeEvent
 	public void onHurt(LivingHurtEvent event) {
-		if (SquidUtils.API.getDisabledDamageSources().contains(event.source)) {
+		if (SquidUtils.COMMON.getDisabledDamageSources().contains(event.source)) {
 			event.setCanceled(true);
 		}
 		for (EventInfo a: info) {

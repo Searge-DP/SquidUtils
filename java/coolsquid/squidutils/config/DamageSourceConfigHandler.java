@@ -23,6 +23,9 @@ public class DamageSourceConfigHandler extends ConfigHandler {
 	public void loadConfig() {
 		for (DamageSource source: SquidUtils.API.getDamageSources()) {
 			String name = source.damageType;
+			if (SquidUtils.COMMON.isDebugMode()) {
+				SquidUtils.instance().info(name, " (", source.getClass().getName(), ')');
+			}
 			source.damageIsAbsolute = this.config.get(name, "damageIsAbsolute", source.damageIsAbsolute).getBoolean();
 			source.explosion = this.config.get(name, "explosion", source.explosion).getBoolean();
 			source.fireDamage = this.config.get(name, "fireDamage", source.fireDamage).getBoolean();

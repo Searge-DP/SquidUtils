@@ -87,11 +87,11 @@ public class SquidUtilsAPI {
 	}
 
 	public Registry<DamageSource> getDamageSources() {
-		return this.damageSources;
+		return this.damageSources.clone();
 	}
 
 	public Registry<Material> getMaterials() {
-		return this.materials;
+		return this.materials.clone();
 	}
 
 	public ScriptingAPI getScripting() {

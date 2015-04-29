@@ -15,7 +15,6 @@ import coolsquid.squidapi.util.StringParser;
 import coolsquid.squidapi.util.StringUtils;
 import coolsquid.squidapi.util.io.SquidAPIFile;
 import coolsquid.squidutils.SquidUtils;
-import coolsquid.squidutils.asm.Hooks;
 
 public class BlockConfigHandler extends ConfigHandler {
 
@@ -33,7 +32,7 @@ public class BlockConfigHandler extends ConfigHandler {
 					String name = (String) object;
 					Block block = Block.getBlockFromName(name);
 					if (SquidUtils.COMMON.isDebugMode()) {
-						SquidUtils.instance().info(name, '(', block.getClass().getName(), ')');
+						SquidUtils.instance().info(name, " (", block.getClass().getName(), ')');
 					}
 					block.blockHardness = (float) this.config.get(name, "hardness", block.blockHardness).getDouble();
 					block.blockResistance = (float) this.config.get(name, "resistance", block.blockResistance).getDouble();
@@ -55,7 +54,7 @@ public class BlockConfigHandler extends ConfigHandler {
 					Blocks.fire.setFireInfo(block, this.config.get(name, "fireEncouragement", Blocks.fire.getEncouragement(block)).getInt(), this.config.get(name, "flammability", Blocks.fire.getFlammability(block)).getInt());
 					if (block instanceof BlockFalling) {
 						if (this.config.get(name, "physics", true).getBoolean()) {
-							Hooks.PHYSICS.add(block);
+							SquidUtils.COMMON.activatePhysicsForBlock((BlockFalling) block);
 						}
 					}
 					if (SquidUtils.API.getMaterials().containsValue(block.blockMaterial)) {

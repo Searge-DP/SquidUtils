@@ -9,7 +9,7 @@ import java.util.List;
 
 import net.minecraftforge.event.entity.player.AchievementEvent;
 import coolsquid.squidutils.api.ScriptingAPI.IEventTrigger;
-import coolsquid.squidutils.config.GeneralConfigHandler;
+import coolsquid.squidutils.config.ModConfigHandler;
 import coolsquid.squidutils.util.script.EventEffectHelper;
 import coolsquid.squidutils.util.script.EventInfo;
 import cpw.mods.fml.common.eventhandler.EventPriority;
@@ -26,7 +26,7 @@ public class AchievementHandler implements IEventTrigger {
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public void onAchievement(AchievementEvent event) {
-		if (GeneralConfigHandler.INSTANCE.noAchievements) event.setCanceled(true);
+		if (ModConfigHandler.INSTANCE.noAchievements) event.setCanceled(true);
 		for (EventInfo a: info) {
 			EventEffectHelper.performEffects(a, event.entityLiving);
 			if (a.values.containsKey("cancel")) event.setCanceled(true);

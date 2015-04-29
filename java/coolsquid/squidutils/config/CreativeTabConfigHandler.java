@@ -13,6 +13,7 @@ import coolsquid.squidapi.config.ConfigHandler;
 import coolsquid.squidapi.creativetab.ITab;
 import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidapi.util.io.SquidAPIFile;
+import coolsquid.squidutils.SquidUtils;
 
 public class CreativeTabConfigHandler extends ConfigHandler {
 
@@ -30,6 +31,9 @@ public class CreativeTabConfigHandler extends ConfigHandler {
 			}
 			for (CreativeTabs tab: CreativeTabs.creativeTabArray) {
 				String name = tab.getTabLabel();
+				if (SquidUtils.COMMON.isDebugMode()) {
+					SquidUtils.instance().info(name, " (", tab.getClass().getName(), ')');
+				}
 				tab.setBackgroundImageName(this.config.get(name, "background", tab.getBackgroundImageName()).getString());
 				if (!this.config.get(name, "scrollbar", true).getBoolean()) {
 					tab.setNoScrollbar();

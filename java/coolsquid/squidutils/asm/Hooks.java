@@ -4,25 +4,19 @@
  *******************************************************************************/
 package coolsquid.squidutils.asm;
 
-import java.util.Set;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
-
-import com.google.common.collect.Sets;
-
 import coolsquid.squidapi.util.Utils;
 import coolsquid.squidapi.util.io.SquidAPIFile;
+import coolsquid.squidutils.SquidUtils;
 import cpw.mods.fml.common.ModContainer;
 
 public class Hooks {
 
 	private static final Configuration config = new Configuration(new SquidAPIFile("./config/SquidUtils/ModPermissions.cfg"));
-	public static final Set<Block> PHYSICS = Sets.newHashSet();
-	public static final Set<Character> ALLOWED_CHARS = Sets.newHashSet();
 	public static boolean NETHER_PORTALS = true;
 
 	public static void onSetHardness(Block block, float value) {
@@ -68,7 +62,7 @@ public class Hooks {
 	}
 
 	public static void onBlockFallingUpdate(BlockFalling block, World world, int x, int y, int z) {
-		if (!world.isRemote && PHYSICS.contains(block)) {
+		if (!world.isRemote && SquidUtils.COMMON.getPhysics().contains(block)) {
 			block.func_149830_m(world, x, y, z);
 		}
 	}
@@ -80,7 +74,7 @@ public class Hooks {
 	}
 
 	public static boolean isAllowedChar(char c) {
-		return ALLOWED_CHARS.contains(c) || c > 31 && c != 167 && c != 127;
+		return SquidUtils.COMMON.getAllowedChars().contains(c) || c > 31 && c != 167 && c != 127;
 	}
 
 	public static void save() {

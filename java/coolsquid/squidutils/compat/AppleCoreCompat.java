@@ -6,7 +6,7 @@ package coolsquid.squidutils.compat;
 
 import net.minecraftforge.common.MinecraftForge;
 import squeek.applecore.api.hunger.ExhaustionEvent;
-import coolsquid.squidutils.config.GeneralConfigHandler;
+import coolsquid.squidutils.config.ModConfigHandler;
 import coolsquid.squidutils.handlers.FoodHandler;
 import coolsquid.squidutils.handlers.PlantHandler;
 import coolsquid.squidutils.handlers.RegenHandler;
@@ -16,16 +16,16 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 public class AppleCoreCompat {
 	
 	public static void init() {
-		if (GeneralConfigHandler.INSTANCE.starvationDamage != 1.0F || ScriptHandler.INSTANCE.onStarve) {
+		if (ModConfigHandler.INSTANCE.starvationDamage != 1.0F || ScriptHandler.INSTANCE.onStarve) {
 			MinecraftForge.EVENT_BUS.register(new FoodHandler());
 		}
-		if (GeneralConfigHandler.INSTANCE.noPlantGrowth) {
+		if (ModConfigHandler.INSTANCE.noPlantGrowth) {
 			MinecraftForge.EVENT_BUS.register(new PlantHandler());
 		}
-		if (GeneralConfigHandler.INSTANCE.noHungerRegen || ScriptHandler.INSTANCE.onHungerRegen) {
+		if (ModConfigHandler.INSTANCE.noHungerRegen || ScriptHandler.INSTANCE.onHungerRegen) {
 			MinecraftForge.EVENT_BUS.register(new RegenHandler());
 		}
-		if (GeneralConfigHandler.INSTANCE.exhaustionMultiplier != 1.0F) {
+		if (ModConfigHandler.INSTANCE.exhaustionMultiplier != 1.0F) {
 			MinecraftForge.EVENT_BUS.register(new ExhaustionHandler());
 		}
 	}
@@ -34,7 +34,7 @@ public class AppleCoreCompat {
 
 		@SubscribeEvent
 		public void onExhaustion(ExhaustionEvent.Exhausted event) {
-			event.deltaExhaustion *= GeneralConfigHandler.INSTANCE.exhaustionMultiplier;
+			event.deltaExhaustion *= ModConfigHandler.INSTANCE.exhaustionMultiplier;
 		}
 	}
 }

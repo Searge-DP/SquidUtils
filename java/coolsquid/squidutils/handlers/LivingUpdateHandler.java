@@ -7,12 +7,12 @@ package coolsquid.squidutils.handlers;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
-import coolsquid.squidutils.config.GeneralConfigHandler;
+import coolsquid.squidutils.config.ModConfigHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class LivingUpdateHandler {
 	
-	private static final int size = GeneralConfigHandler.INSTANCE.worldSize;
+	private static final int size = ModConfigHandler.INSTANCE.worldSize;
 	
 	@SubscribeEvent
 	public void onUpdate(LivingUpdateEvent event) {

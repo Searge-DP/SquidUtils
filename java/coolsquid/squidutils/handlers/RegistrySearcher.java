@@ -6,7 +6,7 @@ package coolsquid.squidutils.handlers;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import coolsquid.squidutils.config.GeneralConfigHandler;
+import coolsquid.squidutils.config.ModConfigHandler;
 
 public class RegistrySearcher {
 	
@@ -15,9 +15,9 @@ public class RegistrySearcher {
 	 */
 	
 	public static final void start() {
-		if (GeneralConfigHandler.INSTANCE.allBlocksUnbreakable || GeneralConfigHandler.INSTANCE.hardnessMultiplier > 1 || GeneralConfigHandler.INSTANCE.minHardness > 0)
+		if (ModConfigHandler.INSTANCE.allBlocksUnbreakable || ModConfigHandler.INSTANCE.hardnessMultiplier > 1 || ModConfigHandler.INSTANCE.minHardness > 0)
 			blockSearch();
-		if (GeneralConfigHandler.INSTANCE.stackSizeDivider != 0 || GeneralConfigHandler.INSTANCE.durabilityDivider != 1 || GeneralConfigHandler.INSTANCE.infiniteDurability)
+		if (ModConfigHandler.INSTANCE.stackSizeDivider != 0 || ModConfigHandler.INSTANCE.durabilityDivider != 1 || ModConfigHandler.INSTANCE.infiniteDurability)
 			itemSearch();
 	}
 	
@@ -29,17 +29,17 @@ public class RegistrySearcher {
 		for (int a = 0; a != 4095; a++) {
 			if (Block.blockRegistry.getObjectById(a) != null) {
 				Block block = (Block) Block.blockRegistry.getObjectById(a);
-				if (GeneralConfigHandler.INSTANCE.allBlocksUnbreakable) {
+				if (ModConfigHandler.INSTANCE.allBlocksUnbreakable) {
 					block.setBlockUnbreakable();
 				}
-				if (GeneralConfigHandler.INSTANCE.hardnessMultiplier > 1) {
+				if (ModConfigHandler.INSTANCE.hardnessMultiplier > 1) {
 					float f = block.getBlockHardness(null, 0, 0, 0);
-					block.setHardness(f * GeneralConfigHandler.INSTANCE.hardnessMultiplier);
+					block.setHardness(f * ModConfigHandler.INSTANCE.hardnessMultiplier);
 				}
-				if (GeneralConfigHandler.INSTANCE.minHardness > 0) {
+				if (ModConfigHandler.INSTANCE.minHardness > 0) {
 					float f = block.getBlockHardness(null, 0, 0, 0);
-					if (f < GeneralConfigHandler.INSTANCE.minHardness) {
-						f = GeneralConfigHandler.INSTANCE.minHardness;
+					if (f < ModConfigHandler.INSTANCE.minHardness) {
+						f = ModConfigHandler.INSTANCE.minHardness;
 					}
 				}
 			}
@@ -55,19 +55,19 @@ public class RegistrySearcher {
 		for (int a = 0; a != 32000; a++) {
 			if (Item.itemRegistry.getObjectById(a) != null) {
 				Item item = (Item) Item.itemRegistry.getObjectById(a);
-				if (GeneralConfigHandler.INSTANCE.stackSizeDivider != 0) {
-					item.setMaxStackSize(item.getItemStackLimit() / GeneralConfigHandler.INSTANCE.stackSizeDivider);
+				if (ModConfigHandler.INSTANCE.stackSizeDivider != 0) {
+					item.setMaxStackSize(item.getItemStackLimit() / ModConfigHandler.INSTANCE.stackSizeDivider);
 					if (item.getItemStackLimit() < 1) {
 						item.setMaxStackSize(1);
 					}
 				}
-				if (GeneralConfigHandler.INSTANCE.durabilityDivider != 1 && item.getMaxDamage() != 0) {
-					item.setMaxDamage(item.getMaxDamage() / GeneralConfigHandler.INSTANCE.durabilityDivider);
+				if (ModConfigHandler.INSTANCE.durabilityDivider != 1 && item.getMaxDamage() != 0) {
+					item.setMaxDamage(item.getMaxDamage() / ModConfigHandler.INSTANCE.durabilityDivider);
 					if (item.getMaxDamage() < 1) {
 						item.setMaxDamage(1);
 					}
 				}
-				if (GeneralConfigHandler.INSTANCE.infiniteDurability) {
+				if (ModConfigHandler.INSTANCE.infiniteDurability) {
 					item.setMaxDamage(0);
 				}
 			}

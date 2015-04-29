@@ -19,12 +19,12 @@ import coolsquid.squidapi.util.io.SquidAPIFile;
 import coolsquid.squidutils.SquidUtils;
 import coolsquid.squidutils.asm.Hooks;
 
-public class GeneralConfigHandler extends ConfigHandler {
+public class ModConfigHandler extends ConfigHandler {
 
-	public static final GeneralConfigHandler INSTANCE = new GeneralConfigHandler(new SquidAPIFile("./config/SquidUtils/SquidUtils.cfg"));
+	public static final ModConfigHandler INSTANCE = new ModConfigHandler(new SquidAPIFile("./config/SquidUtils/SquidUtils.cfg"));
 	public static final SquidAPIProperties SETTINGS = new SquidAPIProperties();
 
-	private GeneralConfigHandler(File file) {
+	private ModConfigHandler(File file) {
 		super(file);
 		this.initCategories();
 	}
@@ -149,7 +149,7 @@ public class GeneralConfigHandler extends ConfigHandler {
 
 		this.minMessageLength = this.config.getInt("minMessageLength", this.CATEGORY_CHAT, 1, 0, 32, "");
 		for (String s: this.config.getStringList("allowedChars", this.CATEGORY_CHAT, new String[] {}, "")) {
-			Hooks.ALLOWED_CHARS.add(s.charAt(0));
+			SquidUtils.COMMON.addAllowedChar(s.charAt(0));
 		}
 
 		IdentityHashMap<Block, Boolean> carriable = ReflectionHelper.in(EntityEnderman.class).field("carriable", "carriable").get();

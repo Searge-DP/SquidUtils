@@ -9,7 +9,7 @@ import java.util.List;
 
 import squeek.applecore.api.hunger.HealthRegenEvent;
 import coolsquid.squidutils.api.ScriptingAPI.IEventTrigger;
-import coolsquid.squidutils.config.GeneralConfigHandler;
+import coolsquid.squidutils.config.ModConfigHandler;
 import coolsquid.squidutils.util.script.EventEffectHelper;
 import coolsquid.squidutils.util.script.EventInfo;
 import cpw.mods.fml.common.eventhandler.Event.Result;
@@ -26,7 +26,7 @@ public class RegenHandler implements IEventTrigger {
 	
 	@SubscribeEvent
 	public void event(HealthRegenEvent.AllowRegen event) {
-		if (GeneralConfigHandler.INSTANCE.noHungerRegen) {
+		if (ModConfigHandler.INSTANCE.noHungerRegen) {
 			event.setResult(Result.DENY);
 			return;
 		}

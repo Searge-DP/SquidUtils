@@ -24,7 +24,7 @@ public class DimensionConfigHandler extends ConfigHandler {
 	public void loadConfig() {
 		for (WorldServer world: DimensionManager.getWorlds()) {
 			WorldProvider provider = world.provider;
-			String name = provider.dimensionId + "";
+			String name = "dim" + provider.dimensionId;
 			provider.hasNoSky = !this.config.get(name, "skies", !provider.hasNoSky).getBoolean();
 		}
 	}

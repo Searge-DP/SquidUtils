@@ -14,6 +14,7 @@ import coolsquid.squidapi.config.ConfigHandler;
 import coolsquid.squidapi.helpers.AchievementHelper;
 import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidapi.util.io.SquidAPIFile;
+import coolsquid.squidutils.SquidUtils;
 
 public class AchievementConfigHandler extends ConfigHandler {
 
@@ -29,6 +30,9 @@ public class AchievementConfigHandler extends ConfigHandler {
 			Achievement achievement = (Achievement) AchievementList.achievementList.get(a);
 			if (achievement != null && MiscLib.getBlacklister(achievement) == null) {
 				String name = achievement.statId;
+				if (SquidUtils.COMMON.isDebugMode()) {
+					SquidUtils.instance().info(name, " (", achievement.getClass().getName(), ')');
+				}
 				achievement.achievementDescription = this.config.get(name, "description", achievement.achievementDescription).getString();
 				achievement.displayColumn = this.config.get(name, "displayColumn", achievement.displayColumn).getInt();
 				achievement.displayRow = this.config.get(name, "displayRow", achievement.displayRow).getInt();

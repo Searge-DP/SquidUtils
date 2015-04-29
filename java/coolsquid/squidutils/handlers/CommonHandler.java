@@ -7,6 +7,8 @@ package coolsquid.squidutils.handlers;
 import java.util.HashSet;
 import java.util.Set;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockFalling;
 import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
 
@@ -22,6 +24,8 @@ public class CommonHandler {
 	private final Set<DamageSource> disabledDamageSources = Sets.newHashSet();
 	private final Set<String> bannedItems = Sets.newHashSet();
 	private final Set<String> disabledCommands = new HashSet<String>();
+	private final Set<Block> physics = Sets.newHashSet();
+	private final Set<Character> allowedChars = Sets.newHashSet();
 	private final ArrayListMultimap<Item, String> tooltips = ArrayListMultimap.create();
 	private final EventHandlerManager eventHandlerManager = EventHandlerManager.create();
 	private boolean debug;
@@ -53,6 +57,14 @@ public class CommonHandler {
 		this.disabledCommands.add(name);
 	}
 
+	public void addAllowedChar(char c) {
+		this.allowedChars.add(c);
+	}
+
+	public void activatePhysicsForBlock(BlockFalling block) {
+		this.physics.add(block);
+	}
+
 	public Set<DamageSource> getDisabledDamageSources() {
 		return this.disabledDamageSources;
 	}
@@ -67,6 +79,14 @@ public class CommonHandler {
 
 	public ArrayListMultimap<Item, String> getTooltips() {
 		return this.tooltips;
+	}
+
+	public Set<Block> getPhysics() {
+		return this.physics;
+	}
+
+	public Set<Character> getAllowedChars() {
+		return this.allowedChars;
 	}
 
 	public EventHandlerManager getEventHandlerManager() {

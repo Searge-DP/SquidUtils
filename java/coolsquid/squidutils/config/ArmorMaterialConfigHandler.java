@@ -13,6 +13,7 @@ import com.google.common.collect.Sets;
 
 import coolsquid.squidapi.config.ConfigHandler;
 import coolsquid.squidapi.util.io.SquidAPIFile;
+import coolsquid.squidutils.SquidUtils;
 
 public class ArmorMaterialConfigHandler extends ConfigHandler {
 
@@ -27,6 +28,9 @@ public class ArmorMaterialConfigHandler extends ConfigHandler {
 	public void loadConfig() {
 		for (ArmorMaterial material: materials) {
 			String name = material.toString();
+			if (SquidUtils.COMMON.isDebugMode()) {
+				SquidUtils.instance().info(name);
+			}
 			material.enchantability = this.config.get(name, "enchantability", material.enchantability).getInt();
 			material.damageReductionAmountArray = this.config.get(name, "damageReduction", material.damageReductionAmountArray).getIntList();
 			material.maxDamageFactor = this.config.get(name, "material", material.maxDamageFactor).getInt();

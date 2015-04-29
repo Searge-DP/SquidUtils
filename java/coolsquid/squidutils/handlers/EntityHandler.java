@@ -24,7 +24,7 @@ import com.google.common.collect.Sets;
 import coolsquid.squidapi.helpers.PotionHelper;
 import coolsquid.squidapi.util.EffectInfo;
 import coolsquid.squidutils.api.ScriptingAPI.IEventTrigger;
-import coolsquid.squidutils.config.GeneralConfigHandler;
+import coolsquid.squidutils.config.ModConfigHandler;
 import coolsquid.squidutils.util.EntityInfo;
 import coolsquid.squidutils.util.script.EventEffectHelper;
 import coolsquid.squidutils.util.script.EventInfo;
@@ -100,7 +100,7 @@ public class EntityHandler implements IEventTrigger {
 		}
 		else if (entity instanceof EntityLightningBolt) {
 			EntityLightningBolt bolt = (EntityLightningBolt) entity;
-			bolt.boltLivingTime *= GeneralConfigHandler.SETTINGS.getInt("boltLivingTimeMultiplier");
+			bolt.boltLivingTime *= ModConfigHandler.SETTINGS.getInt("boltLivingTimeMultiplier");
 		}
 	}
 }

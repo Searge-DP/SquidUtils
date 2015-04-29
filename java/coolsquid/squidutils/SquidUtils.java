@@ -43,9 +43,9 @@ import coolsquid.squidutils.config.DimensionConfigHandler;
 import coolsquid.squidutils.config.EnchantmentConfigHandler;
 import coolsquid.squidutils.config.FishingConfigHandler;
 import coolsquid.squidutils.config.FluidConfigHandler;
-import coolsquid.squidutils.config.GeneralConfigHandler;
 import coolsquid.squidutils.config.ItemConfigHandler;
 import coolsquid.squidutils.config.MobConfigHandler;
+import coolsquid.squidutils.config.ModConfigHandler;
 import coolsquid.squidutils.config.ModListConfigHandler;
 import coolsquid.squidutils.config.ToolMaterialConfigHandler;
 import coolsquid.squidutils.config.WorldGenConfigHandler;
@@ -129,11 +129,11 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 		this.info("Version id: ", this.hash());
 
 		new File("./config/SquidUtils").mkdirs();
-		GeneralConfigHandler.INSTANCE.init();
+		ModConfigHandler.INSTANCE.init();
 
 		ModListConfigHandler.INSTANCE.init();
 
-		if (GeneralConfigHandler.INSTANCE.clearRecipes == 1) {
+		if (ModConfigHandler.INSTANCE.clearRecipes == 1) {
 			CraftingManager.getInstance().getRecipeList().clear();
 		}
 
@@ -173,27 +173,27 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 
 		ScriptHandler.INSTANCE.init();
 
-		String d = GeneralConfigHandler.INSTANCE.forceDifficulty;
+		String d = ModConfigHandler.INSTANCE.forceDifficulty;
 		if (MiscLib.CLIENT && !d.equalsIgnoreCase("FALSE") && !d.equalsIgnoreCase("HARDCORE")) {
-			DifficultyHandler.DifficultyForcer.difficulty = EnumDifficulty.valueOf(GeneralConfigHandler.INSTANCE.forceDifficulty.toUpperCase());
+			DifficultyHandler.DifficultyForcer.difficulty = EnumDifficulty.valueOf(ModConfigHandler.INSTANCE.forceDifficulty.toUpperCase());
 			handlers.registerForgeHandler(new DifficultyHandler.DifficultyForcer());
 		}
-		else if (GeneralConfigHandler.INSTANCE.forceDifficulty.equalsIgnoreCase("HARDCORE")) {
+		else if (ModConfigHandler.INSTANCE.forceDifficulty.equalsIgnoreCase("HARDCORE")) {
 			handlers.registerForgeHandler(new DifficultyHandler.HardcoreForcer());
 		}
-		if (!GeneralConfigHandler.INSTANCE.allowCheats) {
+		if (!ModConfigHandler.INSTANCE.allowCheats) {
 			handlers.registerForgeHandler(new DifficultyHandler.CheatForcer());
 		}
-		if (GeneralConfigHandler.INSTANCE.noTNT) {
+		if (ModConfigHandler.INSTANCE.noTNT) {
 			handlers.registerForgeHandler(new TNTHandler());
 		}
-		if (GeneralConfigHandler.INSTANCE.noAchievements || ScriptHandler.INSTANCE.onAchievement) {
-			if (GeneralConfigHandler.INSTANCE.keepTTCoreBug) {
+		if (ModConfigHandler.INSTANCE.noAchievements || ScriptHandler.INSTANCE.onAchievement) {
+			if (ModConfigHandler.INSTANCE.keepTTCoreBug) {
 				handlers.registerForgeHandler(new AchievementHandler() {
 					@Override
 					@SubscribeEvent
 					public final void onAchievement(AchievementEvent event) {
-						if (GeneralConfigHandler.INSTANCE.noAchievements) {
+						if (ModConfigHandler.INSTANCE.noAchievements) {
 							event.setCanceled(true);
 						}
 						for (EventInfo a: info) {
@@ -209,46 +209,46 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 				handlers.registerForgeHandler(new AchievementHandler());
 			}
 		}
-		if (GeneralConfigHandler.INSTANCE.noWitherBoss) {
+		if (ModConfigHandler.INSTANCE.noWitherBoss) {
 			handlers.registerForgeHandler(new WitherHandler());
 		}
-		if (GeneralConfigHandler.INSTANCE.chainRecipes) {
+		if (ModConfigHandler.INSTANCE.chainRecipes) {
 			ModRecipes.chain();
 		}
-		if (GeneralConfigHandler.INSTANCE.noDebug && MiscLib.CLIENT) {
+		if (ModConfigHandler.INSTANCE.noDebug && MiscLib.CLIENT) {
 			handlers.registerForgeHandler(new DebugHandler());
 		}
-		if (GeneralConfigHandler.INSTANCE.maxRenderDistance != 16 && MiscLib.CLIENT) {
+		if (ModConfigHandler.INSTANCE.maxRenderDistance != 16 && MiscLib.CLIENT) {
 			handlers.registerForgeHandler(new RenderDistanceHandler());
 		}
-		if (GeneralConfigHandler.INSTANCE.villagerProtection) {
+		if (ModConfigHandler.INSTANCE.villagerProtection) {
 			handlers.registerForgeHandler(new VillagerHandler());
 		}
-		if (GeneralConfigHandler.INSTANCE.tabVanilla) {
+		if (ModConfigHandler.INSTANCE.tabVanilla) {
 			ModCreativeTabs.preInit();
 		}
-		if (GeneralConfigHandler.INSTANCE.disableAnvil) {
+		if (ModConfigHandler.INSTANCE.disableAnvil) {
 			handlers.registerForgeHandler(new AnvilHandler());
 		}
 		if (ScriptHandler.INSTANCE.onCommand) {
 			handlers.registerForgeHandler(new CommandHandler());
 		}
-		if (GeneralConfigHandler.INSTANCE.disableTeleportation || ScriptHandler.INSTANCE.onTeleport) {
+		if (ModConfigHandler.INSTANCE.disableTeleportation || ScriptHandler.INSTANCE.onTeleport) {
 			handlers.registerForgeHandler(new TeleportationHandler());
 		}
-		if (GeneralConfigHandler.INSTANCE.disableBonemeal) {
+		if (ModConfigHandler.INSTANCE.disableBonemeal) {
 			handlers.registerForgeHandler(new BonemealHandler());
 		}
-		if (GeneralConfigHandler.INSTANCE.disableHoes) {
+		if (ModConfigHandler.INSTANCE.disableHoes) {
 			handlers.registerForgeHandler(new ToolHandler());
 		}
-		if (GeneralConfigHandler.INSTANCE.disableBottleFluidInteraction) {
+		if (ModConfigHandler.INSTANCE.disableBottleFluidInteraction) {
 			handlers.registerForgeHandler(new BottleHandler());
 		}
 		if (ModListConfigHandler.INSTANCE.generateModList != 0) {
 			ModLister.INSTANCE.init();
 		}
-		if (GeneralConfigHandler.INSTANCE.walkSpeed != 0.1F || GeneralConfigHandler.INSTANCE.flySpeed != 0.05F) {
+		if (ModConfigHandler.INSTANCE.walkSpeed != 0.1F || ModConfigHandler.INSTANCE.flySpeed != 0.05F) {
 			handlers.registerForgeHandler(new SpeedHandler());
 		}
 		if (Loader.isModLoaded("AppleCore")) {
@@ -269,35 +269,35 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 		if (ScriptHandler.INSTANCE.onToss) {
 			handlers.registerForgeHandler(new TossHandler());
 		}
-		if (GeneralConfigHandler.INSTANCE.explosionSizeMultiplier != 1) {
+		if (ModConfigHandler.INSTANCE.explosionSizeMultiplier != 1) {
 			handlers.registerForgeHandler(new ExplosionHandler());
 		}
 		if (ScriptHandler.INSTANCE.onInteraction) {
 			handlers.registerForgeHandler(new InteractionHandler());
 		}
-		if (ScriptHandler.INSTANCE.onChat || GeneralConfigHandler.INSTANCE.minMessageLength != 1) {
+		if (ScriptHandler.INSTANCE.onChat || ModConfigHandler.INSTANCE.minMessageLength != 1) {
 			handlers.registerForgeHandler(new ServerChatHandler());
 		}
 		if (ScriptHandler.INSTANCE.permissions) {
 			PermissionHelper.INSTANCE.init();
 			handlers.registerForgeHandler(PermissionHelper.INSTANCE);
 		}
-		if (GeneralConfigHandler.INSTANCE.worldSize > 0) {
+		if (ModConfigHandler.INSTANCE.worldSize > 0) {
 			handlers.registerForgeHandler(new LivingUpdateHandler());
 		}
-		if (GeneralConfigHandler.INSTANCE.explodeTNTMinecartsOnCollide) {
+		if (ModConfigHandler.INSTANCE.explodeTNTMinecartsOnCollide) {
 			handlers.registerForgeHandler(new MinecartCollisionHandler());
 		}
-		if (!GeneralConfigHandler.SETTINGS.getProperty("displayTitle").equals("")) {
-			Display.setTitle((String) GeneralConfigHandler.SETTINGS.getProperty("displayTitle"));
+		if (!ModConfigHandler.SETTINGS.getProperty("displayTitle").equals("")) {
+			Display.setTitle((String) ModConfigHandler.SETTINGS.getProperty("displayTitle"));
 		}
 		if (MiscLib.CLIENT) {
-			if (GeneralConfigHandler.INSTANCE.removeBlockHighlight) {
+			if (ModConfigHandler.INSTANCE.removeBlockHighlight) {
 				MinecraftForge.EVENT_BUS.register(BlockBoxHandler.INSTANCE);
 			}
 			MinecraftForge.EVENT_BUS.register(new GuiHandler());
 			SquidAPI.instance().registerCommands(new CommandSquidUtils());
-			if (GeneralConfigHandler.INSTANCE.defaultSeed != 0) {
+			if (ModConfigHandler.INSTANCE.defaultSeed != 0) {
 				handlers.registerForgeHandler(new SeedForcer());
 			}
 		}
@@ -341,10 +341,10 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 			MinecraftForge.EVENT_BUS.register(ToolTipHandler.INSTANCE);
 		}
 
-		if (GeneralConfigHandler.INSTANCE.flammabilityMultiplier != 1) {
+		if (ModConfigHandler.INSTANCE.flammabilityMultiplier != 1) {
 			for (Object a: Block.blockRegistry) {
 				Block b = (Block) a;
-				Blocks.fire.setFireInfo(b, Blocks.fire.getEncouragement(b), Blocks.fire.getFlammability(b) * GeneralConfigHandler.INSTANCE.flammabilityMultiplier);
+				Blocks.fire.setFireInfo(b, Blocks.fire.getEncouragement(b), Blocks.fire.getFlammability(b) * ModConfigHandler.INSTANCE.flammabilityMultiplier);
 			}
 		}
 
@@ -356,8 +356,8 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 
 		RegistrySearcher.start();
 
-		if (GeneralConfigHandler.INSTANCE.potionStacks > 1 || GeneralConfigHandler.INSTANCE.pearlStack > 1) {
-			StackSizeHandler.some(GeneralConfigHandler.INSTANCE.potionStacks, GeneralConfigHandler.INSTANCE.pearlStack);
+		if (ModConfigHandler.INSTANCE.potionStacks > 1 || ModConfigHandler.INSTANCE.pearlStack > 1) {
+			StackSizeHandler.some(ModConfigHandler.INSTANCE.potionStacks, ModConfigHandler.INSTANCE.pearlStack);
 		}
 
 		if (!DropHandler.shouldclear.isEmpty() || !DropHandler.dropstoremove.isEmpty() || !DropHandler.drops.isEmpty()) {
@@ -371,7 +371,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 
 	@EventHandler
 	private void finishedLoading(FMLLoadCompleteEvent event) {
-		if (GeneralConfigHandler.INSTANCE.clearRecipes == 2) {
+		if (ModConfigHandler.INSTANCE.clearRecipes == 2) {
 			if (!ContentRemover.isBlacklistedModLoaded()) {
 				CraftingManager.getInstance().getRecipeList().clear();
 			}
@@ -381,7 +381,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 
 	@EventHandler
 	public void onServerStarted(FMLServerStartedEvent event) {
-		if (GeneralConfigHandler.INSTANCE.removeAllCommands) {
+		if (ModConfigHandler.INSTANCE.removeAllCommands) {
 			ServerHelper.getCommands().clear();
 		}
 		else {

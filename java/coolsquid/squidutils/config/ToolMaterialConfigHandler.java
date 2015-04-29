@@ -13,6 +13,7 @@ import com.google.common.collect.Sets;
 
 import coolsquid.squidapi.config.ConfigHandler;
 import coolsquid.squidapi.util.io.SquidAPIFile;
+import coolsquid.squidutils.SquidUtils;
 
 public class ToolMaterialConfigHandler extends ConfigHandler {
 
@@ -27,6 +28,9 @@ public class ToolMaterialConfigHandler extends ConfigHandler {
 	public void loadConfig() {
 		for (ToolMaterial material: materials) {
 			String name = material.toString();
+			if (SquidUtils.COMMON.isDebugMode()) {
+				SquidUtils.instance().info(name);
+			}
 			material.maxUses = this.config.get(name, "durability", material.maxUses).getInt();
 			material.harvestLevel = this.config.get(name, "harvestLevel", material.harvestLevel).getInt();
 			material.enchantability = this.config.get(name, "enchantability", material.enchantability).getInt();

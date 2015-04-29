@@ -6,7 +6,7 @@ package coolsquid.squidutils.handlers;
 
 import net.minecraft.client.gui.GuiChat;
 import net.minecraftforge.client.event.GuiOpenEvent;
-import coolsquid.squidutils.config.GeneralConfigHandler;
+import coolsquid.squidutils.config.ModConfigHandler;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
@@ -15,9 +15,9 @@ public class GuiHandler {
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public void onGuiOpen(GuiOpenEvent event) {
 		if (event.gui != null) {
-			if (event.gui instanceof GuiChat && GeneralConfigHandler.INSTANCE.defaultChatText != null) {
+			if (event.gui instanceof GuiChat && ModConfigHandler.INSTANCE.defaultChatText != null) {
 				GuiChat chat = (GuiChat) event.gui;
-				chat.defaultInputFieldText = GeneralConfigHandler.INSTANCE.defaultChatText;
+				chat.defaultInputFieldText = ModConfigHandler.INSTANCE.defaultChatText;
 			}
 		}
 	}

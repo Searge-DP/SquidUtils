@@ -16,6 +16,7 @@ import com.google.common.collect.Lists;
 import coolsquid.squidapi.config.ConfigHandler;
 import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidapi.util.io.SquidAPIFile;
+import coolsquid.squidutils.SquidUtils;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 
 public class BiomeConfigHandler extends ConfigHandler {
@@ -33,6 +34,9 @@ public class BiomeConfigHandler extends ConfigHandler {
 				String name = biome.biomeName;
 				if (name == null) {
 					name = biome.biomeID + "";
+				}
+				if (SquidUtils.COMMON.isDebugMode()) {
+					SquidUtils.instance().info(name, " (", biome.getClass().getName(), ')');
 				}
 				biome.setBiomeName(this.config.get(name, "name", name).getString());
 				biome.topBlock = Block.getBlockFromName(this.config.get(name, "topBlock", Block.blockRegistry.getNameForObject(biome.topBlock)).getString());

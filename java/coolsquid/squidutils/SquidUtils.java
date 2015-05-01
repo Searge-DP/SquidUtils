@@ -51,6 +51,7 @@ import coolsquid.squidutils.config.ToolMaterialConfigHandler;
 import coolsquid.squidutils.config.WorldGenConfigHandler;
 import coolsquid.squidutils.config.compat.botania.BrewConfigHandler;
 import coolsquid.squidutils.config.compat.botania.ElvenTradeConfigHandler;
+import coolsquid.squidutils.config.compat.ticon.TiConToolMaterialConfigHandler;
 import coolsquid.squidutils.creativetab.ModCreativeTabs;
 import coolsquid.squidutils.handlers.AchievementHandler;
 import coolsquid.squidutils.handlers.AnvilHandler;
@@ -131,10 +132,11 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 		new File("./config/SquidUtils").mkdirs();
 		ModConfigHandler.INSTANCE.init();
 
-		ModListConfigHandler.INSTANCE.init();
-
-		if (ModConfigHandler.INSTANCE.clearRecipes == 1) {
-			CraftingManager.getInstance().getRecipeList().clear();
+		if (MiscLib.CLIENT) {
+			ModListConfigHandler.INSTANCE.init();
+			if (ModConfigHandler.INSTANCE.clearRecipes == 1) {
+				CraftingManager.getInstance().getRecipeList().clear();
+			}
 		}
 
 		this.info("Preinitialization finished.");
@@ -327,7 +329,8 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 				CreativeTabConfigHandler.INSTANCE,
 				EnchantmentConfigHandler.INSTANCE,
 				FluidConfigHandler.INSTANCE,
-				WorldGenConfigHandler.INSTANCE);
+				WorldGenConfigHandler.INSTANCE,
+				TiConToolMaterialConfigHandler.INSTANCE);
 
 		if (Compat.BOTANIA.isEnabled()) {
 			ConfigurationManager.INSTANCE.registerHandlers(
@@ -364,9 +367,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 			handlers.registerForgeHandler(new DropHandler());
 		}
 
-		this.info("Postinitialization finished.");for (String a: API.getMaterials().names()) {
-			this.info(a);
-		}
+		this.info("Postinitialization finished.");
 	}
 
 	@EventHandler

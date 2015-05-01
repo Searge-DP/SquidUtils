@@ -6,7 +6,7 @@ package coolsquid.squidutils.api;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.util.DamageSource;
-import coolsquid.squidapi.registry.Registry;
+import coolsquid.squidapi.util.collect.Registry;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 

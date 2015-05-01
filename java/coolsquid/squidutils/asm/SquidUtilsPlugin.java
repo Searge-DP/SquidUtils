@@ -52,9 +52,9 @@ public class SquidUtilsPlugin implements IFMLLoadingPlugin, IClassTransformer {
 	}
 
 	@Override
-	public byte[] transform(String name, String transformedName, byte[] basicClass) {
-		if (transformedName.equals("net.minecraft.block.Block")) {
-			LOGGER.info("Transforming " + transformedName);
+	public byte[] transform(String untransformedName, String name, byte[] basicClass) {
+		if (name.equals("net.minecraft.block.Block")) {
+			LOGGER.info("Transforming " + name);
 			ClassNode c = ASMHelper.createClassNodeFromBytes(basicClass);
 			MethodNode m = ASMHelper.getMethod(c, Names.SET_HARDNESS, Names.DESC);
 			transformSetter(m, "onSetHardness");
@@ -64,22 +64,22 @@ public class SquidUtilsPlugin implements IFMLLoadingPlugin, IClassTransformer {
 			transformSetter(m3, "onSetLightLevel");
 			basicClass = ASMHelper.getBytesFromClassNode(c);
 		}
-		else if (transformedName.equals("net.minecraft.block.BlockPortal")) {
-			LOGGER.info("Transforming " + transformedName);
+		else if (name.equals("net.minecraft.block.BlockPortal")) {
+			LOGGER.info("Transforming " + name);
 			ClassNode c = ASMHelper.createClassNodeFromBytes(basicClass);
 			MethodNode m = ASMHelper.getMethod(c, Names.BLOCK_PORTAL_TP, Names.BLOCK_PORTAL_TP_DESC);
 			transformBlockPortal(m);
 			basicClass = ASMHelper.getBytesFromClassNode(c);
 		}
-		else if (transformedName.equals("net.minecraft.block.BlockFalling")) {
-			LOGGER.info("Transforming " + transformedName);
+		else if (name.equals("net.minecraft.block.BlockFalling")) {
+			LOGGER.info("Transforming " + name);
 			ClassNode c = ASMHelper.createClassNodeFromBytes(basicClass);
 			MethodNode m = ASMHelper.getMethod(c, Names.BLOCK_FALLING_UPDATE, Names.BLOCK_FALLING_UPDATE_DESC);
 			transformBlockFalling(m);
 			basicClass = ASMHelper.getBytesFromClassNode(c);
 		}
-		else if (transformedName.equals("net.minecraft.util.ChatAllowedCharacters")) {
-			LOGGER.info("Transforming " + transformedName);
+		else if (name.equals("net.minecraft.util.ChatAllowedCharacters")) {
+			LOGGER.info("Transforming " + name);
 			ClassNode c = ASMHelper.createClassNodeFromBytes(basicClass);
 			MethodNode m = ASMHelper.getMethod(c, Names.IS_ALLOWED_CHAR, "(C)Z");
 			transformAllowedChars(m);

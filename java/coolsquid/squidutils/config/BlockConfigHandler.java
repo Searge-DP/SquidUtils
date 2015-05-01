@@ -59,11 +59,11 @@ public class BlockConfigHandler extends ConfigHandler {
 					}
 					if (SquidUtils.API.getMaterials().containsValue(block.blockMaterial)) {
 						String material = SquidUtils.API.getMaterials().getName(block.blockMaterial);
-						block.blockHardness *= (float) BlockMaterialConfigHandler.INSTANCE.getConfig().get(material, "hardnessMultiplier", 0).getDouble();
-						block.blockResistance *= (float) BlockMaterialConfigHandler.INSTANCE.getConfig().get(material, "resistanceMultiplier", 0).getDouble();
-						block.slipperiness *= (float) BlockMaterialConfigHandler.INSTANCE.getConfig().get(material, "slipperinessMultiplier", 0).getDouble();
-						block.lightValue *= BlockMaterialConfigHandler.INSTANCE.getConfig().get(material, "lightLevelMultiplier", 0).getInt();
-						Blocks.fire.setFireInfo(block, BlockMaterialConfigHandler.INSTANCE.getConfig().get(material, "fireEncouragementMultiplier", 0).getInt() * Blocks.fire.getEncouragement(block), this.config.get(name, "flammabilityMultiplier", 0).getInt() * Blocks.fire.getFlammability(block));
+						block.blockHardness *= (float) BlockMaterialConfigHandler.INSTANCE.getConfig().get(material, "hardnessMultiplier", 1).getDouble();
+						block.blockResistance *= (float) BlockMaterialConfigHandler.INSTANCE.getConfig().get(material, "resistanceMultiplier", 1).getDouble();
+						block.slipperiness *= (float) BlockMaterialConfigHandler.INSTANCE.getConfig().get(material, "slipperinessMultiplier", 1).getDouble();
+						block.lightValue *= BlockMaterialConfigHandler.INSTANCE.getConfig().get(material, "lightLevelMultiplier", 1).getInt();
+						Blocks.fire.setFireInfo(block, BlockMaterialConfigHandler.INSTANCE.getConfig().get(material, "fireEncouragementMultiplier", 1).getInt() * Blocks.fire.getEncouragement(block), this.config.get(name, "flammabilityMultiplier", 0).getInt() * Blocks.fire.getFlammability(block));
 					}
 				}
 			} catch (Throwable t) {

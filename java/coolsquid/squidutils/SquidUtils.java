@@ -51,6 +51,8 @@ import coolsquid.squidutils.config.ToolMaterialConfigHandler;
 import coolsquid.squidutils.config.WorldGenConfigHandler;
 import coolsquid.squidutils.config.compat.botania.BrewConfigHandler;
 import coolsquid.squidutils.config.compat.botania.ElvenTradeConfigHandler;
+import coolsquid.squidutils.config.compat.ticon.TiConArrowMaterialConfigHandler;
+import coolsquid.squidutils.config.compat.ticon.TiConBowMaterialConfigHandler;
 import coolsquid.squidutils.config.compat.ticon.TiConToolMaterialConfigHandler;
 import coolsquid.squidutils.creativetab.ModCreativeTabs;
 import coolsquid.squidutils.handlers.AchievementHandler;
@@ -329,13 +331,18 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 				CreativeTabConfigHandler.INSTANCE,
 				EnchantmentConfigHandler.INSTANCE,
 				FluidConfigHandler.INSTANCE,
-				WorldGenConfigHandler.INSTANCE,
-				TiConToolMaterialConfigHandler.INSTANCE);
+				WorldGenConfigHandler.INSTANCE);
 
 		if (Compat.BOTANIA.isEnabled()) {
 			ConfigurationManager.INSTANCE.registerHandlers(
 					BrewConfigHandler.INSTANCE,
 					ElvenTradeConfigHandler.INSTANCE);
+		}
+		if (Compat.TICON.isEnabled()) {
+			ConfigurationManager.INSTANCE.registerHandlers(
+					TiConToolMaterialConfigHandler.INSTANCE,
+					TiConBowMaterialConfigHandler.INSTANCE,
+					TiConArrowMaterialConfigHandler.INSTANCE);
 		}
 
 		ConfigurationManager.INSTANCE.loadConfigs(this);

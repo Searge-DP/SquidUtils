@@ -15,6 +15,8 @@ import net.minecraftforge.event.entity.player.AchievementEvent;
 
 import org.lwjgl.opengl.Display;
 
+import com.google.common.collect.Lists;
+
 import coolsquid.squidapi.Disableable;
 import coolsquid.squidapi.SquidAPI;
 import coolsquid.squidapi.SquidAPIMod;
@@ -54,6 +56,13 @@ import coolsquid.squidutils.config.compat.botania.ElvenTradeConfigHandler;
 import coolsquid.squidutils.config.compat.ticon.TiConArrowMaterialConfigHandler;
 import coolsquid.squidutils.config.compat.ticon.TiConBowMaterialConfigHandler;
 import coolsquid.squidutils.config.compat.ticon.TiConToolMaterialConfigHandler;
+import coolsquid.squidutils.config.custom.AchievementCreationHandler;
+import coolsquid.squidutils.config.custom.BiomeCreationHandler;
+import coolsquid.squidutils.config.custom.CrashCallableCreationHandler;
+import coolsquid.squidutils.config.custom.CustomContentManager;
+import coolsquid.squidutils.config.custom.ItemCreationHandler;
+import coolsquid.squidutils.config.custom.RecipeCreationHandler;
+import coolsquid.squidutils.config.custom.ShutdownHookCreationHandler;
 import coolsquid.squidutils.creativetab.ModCreativeTabs;
 import coolsquid.squidutils.handlers.AchievementHandler;
 import coolsquid.squidutils.handlers.AnvilHandler;
@@ -123,7 +132,8 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 	}
 
 	public SquidUtils() {
-		super("It's your world. Shape it in your way.");
+		super("It's your world. Shape it in your way.", Lists.newArrayList("CoolSquid"), "MightyPork, for creating the logo.", "http://forum.feed-the-beast.com/threads/squidutils-now-with-15k-config-options.57203/");
+		this.getMetadata().logoFile = "SquidUtils.png";
 	}
 
 	@EventHandler
@@ -150,7 +160,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 
 		this.suggestMod("OpenEye", "Automatic crash reporting!", "http://bit.ly/1wE0yfe");
 		this.suggestMod("YAMPST", "yampst", "Statistics tool for modpacks!", "http://bit.ly/1HatUVT");
-		this.suggestMod("MobProperties", "It allows the user to configure almost any aspect of any mob!", "http://bit.ly/1EcMZHr");
+		this.suggestMod("MobProperties", "Allows the user to configure almost any aspect of any mob!", "http://bit.ly/1EcMZHr");
 		this.suggestMod("JSONAbles", "jsonables", "Add custom TiCon tools!", "http://bit.ly/1CFa7Ai");
 		this.suggestMod("Quadrum", "Add custom blocks and items!", "http://bit.ly/1EB3U62");
 		this.suggestMod("MineTweaker3", "Add smelting, crafting, fuels, and so much more!", "http://bit.ly/1ubqwop");
@@ -176,6 +186,16 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 		API.getScripting().addTrigger("chat", new ServerChatHandler());
 
 		ScriptHandler.INSTANCE.init();
+
+		CustomContentManager.INSTANCE.registerHandlers(
+				CrashCallableCreationHandler.INSTANCE,
+				BiomeCreationHandler.INSTANCE,
+				RecipeCreationHandler.INSTANCE,
+				AchievementCreationHandler.INSTANCE,
+				ItemCreationHandler.INSTANCE,
+				ShutdownHookCreationHandler.INSTANCE);
+
+		CustomContentManager.INSTANCE.loadAll();
 
 		String d = ModConfigHandler.INSTANCE.forceDifficulty;
 		if (MiscLib.CLIENT && !d.equalsIgnoreCase("FALSE") && !d.equalsIgnoreCase("HARDCORE")) {

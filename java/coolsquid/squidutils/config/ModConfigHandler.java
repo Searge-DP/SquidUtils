@@ -144,12 +144,18 @@ public class ModConfigHandler extends ConfigHandler {
 		this.exhaustionMultiplier = this.config.getFloat("exhaustionMultiplier", this.CATEGORY_HUNGER, 1, 0, 1080, "The amount of exhaustion applied to the player will be multiplied by this amount.");
 		this.defaultChatText = this.config.getString("defaultChatText", this.CATEGORY_CHAT, "", "");
 		this.allowCheats = this.config.getBoolean("allowCheats", this.CATEGORY_GAMESETTINGS, true, "Set to false to force cheats to be disabled.");
-		this.defaultSeed = (long) this.config.getFloat("defaultSeed", this.CATEGORY_GENERAL, 0, Float.MIN_VALUE, Float.MAX_VALUE, "Forces the world seed to be the specified number.");
 		SquidUtils.COMMON.setDebugMode(this.config.getBoolean("debug", this.CATEGORY_GENERAL, false, "Enables debug mode."));
 
 		this.minMessageLength = this.config.getInt("minMessageLength", this.CATEGORY_CHAT, 1, 0, 32, "");
 		for (String s: this.config.getStringList("allowedChars", this.CATEGORY_CHAT, new String[] {}, "")) {
 			SquidUtils.COMMON.addAllowedChar(s.charAt(0));
+		}
+
+		String seed = this.config.getString("defaultSeed", this.CATEGORY_GENERAL, "0", "Forces the world seed to be the specified value.");
+		try {
+			this.defaultSeed = Long.parseLong(seed);
+		} catch (NumberFormatException numberformatexception) {
+			this.defaultSeed = seed.hashCode();
 		}
 
 		IdentityHashMap<Block, Boolean> carriable = ReflectionHelper.in(EntityEnderman.class).field("carriable", "carriable").get();

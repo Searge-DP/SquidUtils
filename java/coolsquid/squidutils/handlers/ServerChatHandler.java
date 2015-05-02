@@ -15,14 +15,14 @@ import coolsquid.squidutils.util.script.EventInfo;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class ServerChatHandler implements IEventTrigger {
-	
+
 	public static final List<EventInfo> info = new ArrayList<EventInfo>();
-	
+
 	@Override
 	public List<EventInfo> info() {
 		return info;
 	}
-	
+
 	@SubscribeEvent
 	public void onChat(ServerChatEvent event) {
 		if (event.message.length() < ModConfigHandler.INSTANCE.minMessageLength) {

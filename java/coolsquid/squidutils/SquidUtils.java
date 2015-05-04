@@ -51,6 +51,7 @@ import coolsquid.squidutils.config.ModConfigHandler;
 import coolsquid.squidutils.config.ModListConfigHandler;
 import coolsquid.squidutils.config.ToolMaterialConfigHandler;
 import coolsquid.squidutils.config.WorldGenConfigHandler;
+import coolsquid.squidutils.config.WorldTypeConfigHandler;
 import coolsquid.squidutils.config.compat.botania.BrewConfigHandler;
 import coolsquid.squidutils.config.compat.botania.ElvenTradeConfigHandler;
 import coolsquid.squidutils.config.compat.ticon.TiConArrowMaterialConfigHandler;
@@ -63,6 +64,7 @@ import coolsquid.squidutils.config.custom.CustomContentManager;
 import coolsquid.squidutils.config.custom.ItemCreationHandler;
 import coolsquid.squidutils.config.custom.RecipeCreationHandler;
 import coolsquid.squidutils.config.custom.ShutdownHookCreationHandler;
+import coolsquid.squidutils.config.custom.UpdateCheckerCreationHandler;
 import coolsquid.squidutils.creativetab.ModCreativeTabs;
 import coolsquid.squidutils.handlers.AchievementHandler;
 import coolsquid.squidutils.handlers.AnvilHandler;
@@ -193,7 +195,8 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 				RecipeCreationHandler.INSTANCE,
 				AchievementCreationHandler.INSTANCE,
 				ItemCreationHandler.INSTANCE,
-				ShutdownHookCreationHandler.INSTANCE);
+				ShutdownHookCreationHandler.INSTANCE,
+				UpdateCheckerCreationHandler.INSTANCE);
 
 		CustomContentManager.INSTANCE.loadAll();
 
@@ -351,7 +354,8 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 				CreativeTabConfigHandler.INSTANCE,
 				EnchantmentConfigHandler.INSTANCE,
 				FluidConfigHandler.INSTANCE,
-				WorldGenConfigHandler.INSTANCE);
+				WorldGenConfigHandler.INSTANCE,
+				WorldTypeConfigHandler.INSTANCE);
 
 		if (Compat.BOTANIA.isEnabled()) {
 			ConfigurationManager.INSTANCE.registerHandlers(

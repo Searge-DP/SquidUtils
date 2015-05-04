@@ -2,7 +2,7 @@
  * Copyright (c) 2015 CoolSquid.
  * All rights reserved.
  *******************************************************************************/
-package coolsquid.squidutils.api.eventhandler;
+package coolsquid.squidutils.util;
 
 import cpw.mods.fml.common.eventhandler.EventBus;
 

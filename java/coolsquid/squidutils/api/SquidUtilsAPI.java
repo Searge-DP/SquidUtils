@@ -12,11 +12,10 @@ import cpw.mods.fml.common.ModContainer;
 
 public class SquidUtilsAPI {
 
-	private final Registry<DamageSource> damageSources = Registry.create();
-	private final Registry<Material> materials = Registry.create();
+	final Registry<DamageSource> damageSources = Registry.create();
+	final Registry<Material> materials = Registry.create();
 
 	private final ScriptingAPI scripting = new ScriptingAPI();
-	private final IMCHandler imc = new IMCHandler();
 
 	public SquidUtilsAPI() {
 		this.damageSources.register("anvil", DamageSource.anvil);
@@ -75,6 +74,9 @@ public class SquidUtilsAPI {
 		if (mod == null) {
 			throw new IllegalStateException();
 		}
+		else if (source == null || source.damageType == null) {
+			throw new IllegalArgumentException();
+		}
 		this.damageSources.register(mod.getModId() + ':' + source.damageType, source);
 	}
 
@@ -82,6 +84,9 @@ public class SquidUtilsAPI {
 		ModContainer mod = Loader.instance().activeModContainer();
 		if (mod == null) {
 			throw new IllegalStateException();
+		}
+		else if (name == null) {
+			throw new IllegalArgumentException();
 		}
 		this.materials.register(mod.getModId() + ':' + name, material);
 	}
@@ -96,17 +101,5 @@ public class SquidUtilsAPI {
 
 	public ScriptingAPI getScripting() {
 		return this.scripting;
-	}
-
-	void registerDamageSourceWithIMC(String mod, DamageSource source) {
-		this.damageSources.register(mod + ':' + source.damageType, source);
-	}
-
-	void registerMaterialWithIMC(String mod, String name, Material material) {
-		this.materials.register(mod + ':' + name, material);
-	}
-
-	public IMCHandler getIMCHandler() {
-		return this.imc;
 	}
 }

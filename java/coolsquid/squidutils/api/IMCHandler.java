@@ -45,16 +45,16 @@ public class IMCHandler {
 		String field = tag.getString("field");
 		Object object = ReflectionHelper.in(clazz).field(field, field).get();
 		if (key.equals("registerDamageSource")) {
-			SquidUtils.API.registerDamageSourceWithIMC(sender, (DamageSource) object);
+			registerDamageSource(sender, (DamageSource) object);
 		}
 		else if (key.equals("registerMaterial")) {
-			SquidUtils.API.registerMaterialWithIMC(sender, tag.getString("name"), (Material) object);
+			registerMaterial(sender, tag.getString("name"), (Material) object);
 		}
 	}
 
 	private void handleItemStack(String key, ItemStack stack, String sender) {
 		if (key.equals("registerMaterial")) {
-			SquidUtils.API.registerMaterialWithIMC(sender, stack.getDisplayName(), Block.getBlockFromItem(stack.getItem()).blockMaterial);
+			registerMaterial(sender, stack.getDisplayName(), Block.getBlockFromItem(stack.getItem()).blockMaterial);
 		}
 	}
 
@@ -62,10 +62,18 @@ public class IMCHandler {
 		String[] values = message.split(" ");
 		Object object = ReflectionHelper.in(Class.forName(values[0])).field(values[1], values[1]).get();
 		if (key.equals("registerDamageSource")) {
-			SquidUtils.API.registerDamageSourceWithIMC(sender, (DamageSource) object);
+			registerDamageSource(sender, (DamageSource) object);
 		}
 		else if (key.equals("registerMaterial")) {
-			SquidUtils.API.registerMaterialWithIMC(sender, values[2], (Material) object);
+			registerMaterial(sender, values[2], (Material) object);
 		}
+	}
+
+	private static void registerDamageSource(String mod, DamageSource source) {
+		SquidUtils.API.damageSources.register(mod + ':' + source.damageType, source);
+	}
+
+	private static void registerMaterial(String mod, String name, Material material) {
+		SquidUtils.API.materials.register(mod + ':' + name, material);
 	}
 }

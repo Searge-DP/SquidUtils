@@ -17,7 +17,8 @@ import com.google.common.collect.Sets;
 
 import coolsquid.squidapi.util.ContentRemover;
 import coolsquid.squidapi.util.ContentRemover.ContentType;
-import coolsquid.squidutils.api.eventhandler.EventHandlerManager;
+import coolsquid.squidutils.api.IMCHandler;
+import coolsquid.squidutils.util.EventHandlerManager;
 
 public class CommonHandler {
 
@@ -28,6 +29,7 @@ public class CommonHandler {
 	private final Set<Character> allowedChars = Sets.newHashSet();
 	private final ArrayListMultimap<Item, String> tooltips = ArrayListMultimap.create();
 	private final EventHandlerManager eventHandlerManager = EventHandlerManager.create();
+	private final IMCHandler imc = new IMCHandler();
 	private boolean debug;
 
 	public void addTooltip(Item item, String tooltip) {
@@ -99,5 +101,9 @@ public class CommonHandler {
 
 	public void setDebugMode(boolean debug) {
 		this.debug = debug;
+	}
+
+	public IMCHandler getIMCHandler() {
+		return this.imc;
 	}
 }

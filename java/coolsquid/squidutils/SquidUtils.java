@@ -27,7 +27,6 @@ import coolsquid.squidapi.util.ContentRemover;
 import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidapi.util.Utils;
 import coolsquid.squidutils.api.SquidUtilsAPI;
-import coolsquid.squidutils.api.eventhandler.EventHandlerManager;
 import coolsquid.squidutils.asm.Hooks;
 import coolsquid.squidutils.command.CommandSquidUtils;
 import coolsquid.squidutils.compat.AppleCoreCompat;
@@ -103,6 +102,7 @@ import coolsquid.squidutils.handlers.WitherHandler;
 import coolsquid.squidutils.helpers.PermissionHelper;
 import coolsquid.squidutils.scripting.ScriptHandler;
 import coolsquid.squidutils.scripting.components.Components;
+import coolsquid.squidutils.util.EventHandlerManager;
 import coolsquid.squidutils.util.ModInfo;
 import coolsquid.squidutils.util.ModLister;
 import coolsquid.squidutils.util.script.EventEffectHelper;
@@ -159,18 +159,6 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 	@EventHandler
 	private void init(FMLInitializationEvent event) {
 		this.info("Initializing.");
-
-		this.suggestMod("OpenEye", "Automatic crash reporting!", "http://bit.ly/1wE0yfe");
-		this.suggestMod("YAMPST", "yampst", "Statistics tool for modpacks!", "http://bit.ly/1HatUVT");
-		this.suggestMod("MobProperties", "Allows the user to configure almost any aspect of any mob!", "http://bit.ly/1EcMZHr");
-		this.suggestMod("JSONAbles", "jsonables", "Add custom TiCon tools!", "http://bit.ly/1CFa7Ai");
-		this.suggestMod("Quadrum", "Add custom blocks and items!", "http://bit.ly/1EB3U62");
-		this.suggestMod("MineTweaker3", "Add smelting, crafting, fuels, and so much more!", "http://bit.ly/1ubqwop");
-		if (Loader.isModLoaded("MineTweaker3")) {
-			this.suggestMod("MTRM", "Adds an ingame GUI for MineTweaker!", "http://bit.ly/1xGYYYr");
-			this.suggestMod("ModTweaker", "Mod support for MineTweaker!", "http://bit.ly/1lIxEYX");
-		}
-		this.suggestMod("Lockdown", "Allows the user to choose a map which will always be generated instead of a normal world.", "http://bit.ly/1zXDc7L");
 
 		Components.init();
 
@@ -272,7 +260,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 		if (ModConfigHandler.INSTANCE.disableBottleFluidInteraction) {
 			handlers.registerForgeHandler(new BottleHandler());
 		}
-		if (ModListConfigHandler.INSTANCE.generateModList != 0) {
+		if (MiscLib.CLIENT && ModListConfigHandler.INSTANCE.generateModList != 0) {
 			ModLister.INSTANCE.init();
 		}
 		if (ModConfigHandler.INSTANCE.walkSpeed != 0.1F || ModConfigHandler.INSTANCE.flySpeed != 0.05F) {
@@ -441,6 +429,6 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 
 	@EventHandler
 	public void onIMC(IMCEvent event) {
-		API.getIMCHandler().handleIMCEvent(event);
+		COMMON.getIMCHandler().handleIMCEvent(event);
 	}
 }

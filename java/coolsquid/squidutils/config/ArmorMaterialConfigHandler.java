@@ -5,12 +5,8 @@
 package coolsquid.squidutils.config;
 
 import java.io.File;
-import java.util.Set;
 
 import net.minecraft.item.ItemArmor.ArmorMaterial;
-
-import com.google.common.collect.Sets;
-
 import coolsquid.squidapi.config.ConfigHandler;
 import coolsquid.squidapi.util.io.SquidAPIFile;
 import coolsquid.squidutils.SquidUtils;
@@ -18,7 +14,6 @@ import coolsquid.squidutils.SquidUtils;
 public class ArmorMaterialConfigHandler extends ConfigHandler {
 
 	public static final ArmorMaterialConfigHandler INSTANCE = new ArmorMaterialConfigHandler(new SquidAPIFile("./config/SquidUtils/ArmorMaterials.cfg"));
-	private static final Set<ArmorMaterial> materials = Sets.newHashSet(ArmorMaterial.CHAIN, ArmorMaterial.CLOTH, ArmorMaterial.DIAMOND, ArmorMaterial.GOLD, ArmorMaterial.IRON);
 
 	private ArmorMaterialConfigHandler(File file) {
 		super(file);
@@ -26,7 +21,7 @@ public class ArmorMaterialConfigHandler extends ConfigHandler {
 
 	@Override
 	public void loadConfig() {
-		for (ArmorMaterial material: materials) {
+		for (ArmorMaterial material: ArmorMaterial.values()) {
 			String name = material.toString();
 			if (SquidUtils.COMMON.isDebugMode()) {
 				SquidUtils.instance().info(name);

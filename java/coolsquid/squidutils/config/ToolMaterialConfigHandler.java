@@ -5,12 +5,8 @@
 package coolsquid.squidutils.config;
 
 import java.io.File;
-import java.util.Set;
 
 import net.minecraft.item.Item.ToolMaterial;
-
-import com.google.common.collect.Sets;
-
 import coolsquid.squidapi.config.ConfigHandler;
 import coolsquid.squidapi.util.io.SquidAPIFile;
 import coolsquid.squidutils.SquidUtils;
@@ -18,7 +14,6 @@ import coolsquid.squidutils.SquidUtils;
 public class ToolMaterialConfigHandler extends ConfigHandler {
 
 	public static final ToolMaterialConfigHandler INSTANCE = new ToolMaterialConfigHandler(new SquidAPIFile("./config/SquidUtils/ToolMaterials.cfg"));
-	private static final Set<ToolMaterial> materials = Sets.newHashSet(ToolMaterial.STONE, ToolMaterial.WOOD, ToolMaterial.EMERALD, ToolMaterial.GOLD, ToolMaterial.IRON);
 
 	private ToolMaterialConfigHandler(File file) {
 		super(file);
@@ -26,7 +21,7 @@ public class ToolMaterialConfigHandler extends ConfigHandler {
 
 	@Override
 	public void loadConfig() {
-		for (ToolMaterial material: materials) {
+		for (ToolMaterial material: ToolMaterial.values()) {
 			String name = material.toString();
 			if (SquidUtils.COMMON.isDebugMode()) {
 				SquidUtils.instance().info(name);

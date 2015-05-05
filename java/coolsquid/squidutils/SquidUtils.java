@@ -303,8 +303,8 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 		if (ModConfigHandler.INSTANCE.explodeTNTMinecartsOnCollide) {
 			handlers.registerForgeHandler(new MinecartCollisionHandler());
 		}
-		if (!ModConfigHandler.SETTINGS.getProperty("displayTitle").equals("")) {
-			Display.setTitle((String) ModConfigHandler.SETTINGS.getProperty("displayTitle"));
+		if (!ModConfigHandler.INSTANCE.displayTitle.isEmpty()) {
+			Display.setTitle(ModConfigHandler.INSTANCE.displayTitle);
 		}
 		if (MiscLib.CLIENT) {
 			if (ModConfigHandler.INSTANCE.removeBlockHighlight) {

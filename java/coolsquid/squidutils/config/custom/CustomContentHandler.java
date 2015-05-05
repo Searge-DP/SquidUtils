@@ -25,7 +25,7 @@ public abstract class CustomContentHandler<E> {
 		this.type = type;
 	}
 
-	public void load(Gson gson) {
+	final void load(Gson gson) {
 		for (File file: this.dir.listFiles()) {
 			try {
 				SquidUtils.instance().info("Found content file: " + file.getPath());

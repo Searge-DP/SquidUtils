@@ -14,7 +14,7 @@ import coolsquid.squidutils.SquidUtils;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.EventBus;
 
-public class EventHandlerManager {
+public class EventHandlerManager implements IEventHandlerRegistrationManager {
 
 	private final Map<String, EventHandler> eventHandlers = Maps.newHashMap();
 
@@ -22,6 +22,10 @@ public class EventHandlerManager {
 		return this.eventHandlers;
 	}
 
+	/* (non-Javadoc)
+	 * @see coolsquid.squidutils.util.IEventHandlerRegistrationManager#register(java.lang.Object, cpw.mods.fml.common.eventhandler.EventBus)
+	 */
+	@Override
 	public void register(Object handler, EventBus bus) {
 		try {
 			String name = handler.getClass().getSimpleName();

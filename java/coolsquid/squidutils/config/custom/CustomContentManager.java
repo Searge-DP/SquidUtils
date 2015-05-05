@@ -19,10 +19,6 @@ public class CustomContentManager {
 	private final GsonBuilder gsonBuilder = new GsonBuilder();
 	private final Set<CustomContentHandler<?>> handlers = Sets.newHashSet();
 
-	public GsonBuilder getGsonBuilder() {
-		return this.gsonBuilder;
-	}
-
 	public void registerHandlers(CustomContentHandler<?>... handlers) {
 		for (CustomContentHandler<?> handler: handlers) {
 			this.handlers.add(handler);

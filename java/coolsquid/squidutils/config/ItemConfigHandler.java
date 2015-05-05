@@ -77,7 +77,6 @@ public class ItemConfigHandler extends ConfigHandler {
 						ItemTool tool = (ItemTool) item;
 						tool.damageVsEntity = (float) this.config.get(name, "damageVsEntity", tool.damageVsEntity).getDouble();
 						tool.efficiencyOnProperMaterial = (float) this.config.get(name, "efficiency", tool.damageVsEntity).getDouble();
-						tool.toolMaterial = ToolMaterial.valueOf(this.config.get(name, "toolMaterial", tool.getToolMaterialName()).getString());
 					}
 					else if (item instanceof ItemArmor) {
 						ItemArmor armor = (ItemArmor) item;

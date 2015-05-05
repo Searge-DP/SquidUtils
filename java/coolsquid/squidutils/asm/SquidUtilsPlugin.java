@@ -22,7 +22,7 @@ import org.objectweb.asm.tree.VarInsnNode;
 import coolsquid.squidapi.asm.ASMHelper;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 
-@IFMLLoadingPlugin.TransformerExclusions({"coolsquid.squidutils.asm", "coolsquid.squidapi.asm", "coolsquid.squidapi.exception"})
+@IFMLLoadingPlugin.TransformerExclusions("coolsquid.squidutils.asm")
 public class SquidUtilsPlugin implements IFMLLoadingPlugin, IClassTransformer {
 
 	public static final Logger LOGGER = LogManager.getLogger("SquidUtils");

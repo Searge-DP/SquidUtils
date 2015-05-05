@@ -14,7 +14,6 @@ import net.minecraft.entity.monster.EntityEnderman;
 import coolsquid.squidapi.config.ConfigHandler;
 import coolsquid.squidapi.reflection.ReflectionHelper;
 import coolsquid.squidapi.util.Utils;
-import coolsquid.squidapi.util.collect.SquidAPIProperties;
 import coolsquid.squidapi.util.io.SquidAPIFile;
 import coolsquid.squidutils.SquidUtils;
 import coolsquid.squidutils.asm.Hooks;
@@ -22,7 +21,6 @@ import coolsquid.squidutils.asm.Hooks;
 public class ModConfigHandler extends ConfigHandler {
 
 	public static final ModConfigHandler INSTANCE = new ModConfigHandler(new SquidAPIFile("./config/SquidUtils/SquidUtils.cfg"));
-	public static final SquidAPIProperties SETTINGS = new SquidAPIProperties();
 
 	private ModConfigHandler(File file) {
 		super(file);
@@ -80,6 +78,8 @@ public class ModConfigHandler extends ConfigHandler {
 	public String defaultChatText;
 	public boolean allowCheats = true;
 	public long defaultSeed = 0;
+	public int boltLivingTimeMultiplier = 1;
+	public String displayTitle = "";
 
 	/**
 	 * Sets category comments.
@@ -138,12 +138,12 @@ public class ModConfigHandler extends ConfigHandler {
 		this.removeAllCommands = this.config.getBoolean("removeAllCommands", this.CATEGORY_GENERAL, false, "Removes all commands, except commands made with SquidUtils' scripting system. Other mods can blacklist their commands from removal.");
 		this.keepTTCoreBug = this.config.getBoolean("keepTTCoreBug", this.CATEGORY_GENERAL, false, "Keeps a ttCore/SquidUtils interaction bug launching fireworks whenever the player opens his inventory.");
 		this.removeBlockHighlight = this.config.getBoolean("removeBlockHighlight", this.CATEGORY_GENERAL, false, "Removes the box around the block the player is pointing at.");
-		SETTINGS.set("boltLivingTimeMultiplier", this.config.getInt("boltLivingTimeMultiplier", this.CATEGORY_GENERAL, 1, 0, 200, "Multiplies the lightning bolt living time by the specified amount."));
-		SETTINGS.set("displayTitle", this.config.getString("displayTitle", this.CATEGORY_GENERAL, "", "Overrides the title of the game display."));
-		Hooks.NETHER_PORTALS = this.config.getBoolean("netherPortalsAllowed", this.CATEGORY_GENERAL, true, "Set to false to disable nether portals.");
+		this.boltLivingTimeMultiplier = this.config.getInt("boltLivingTimeMultiplier", this.CATEGORY_GENERAL, 1, 0, 200, "Multiplies the lightning bolt living time by the specified amount.");
+		this.displayTitle = this.config.getString("displayTitle", this.CATEGORY_GENERAL, "", "Overrides the title of the game display.");
 		this.exhaustionMultiplier = this.config.getFloat("exhaustionMultiplier", this.CATEGORY_HUNGER, 1, 0, 1080, "The amount of exhaustion applied to the player will be multiplied by this amount.");
 		this.defaultChatText = this.config.getString("defaultChatText", this.CATEGORY_CHAT, "", "");
 		this.allowCheats = this.config.getBoolean("allowCheats", this.CATEGORY_GAMESETTINGS, true, "Set to false to force cheats to be disabled.");
+		Hooks.NETHER_PORTALS = this.config.getBoolean("netherPortalsAllowed", this.CATEGORY_GENERAL, true, "Set to false to disable nether portals.");
 		SquidUtils.COMMON.setDebugMode(this.config.getBoolean("debug", this.CATEGORY_GENERAL, false, "Enables debug mode."));
 
 		this.minMessageLength = this.config.getInt("minMessageLength", this.CATEGORY_CHAT, 1, 0, 32, "");

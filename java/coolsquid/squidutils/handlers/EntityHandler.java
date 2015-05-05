@@ -31,12 +31,12 @@ import coolsquid.squidutils.util.script.EventInfo;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class EntityHandler implements IEventTrigger {
-	
+
 	public static final Set<Class<? extends Entity>> disable = Sets.newHashSet();
-	
+
 	public static final List<EventInfo> info = new ArrayList<EventInfo>();
 	public static final Map<Class<Entity>, EntityInfo> properties = Maps.newHashMap();
-	
+
 	@Override
 	public List<EventInfo> info() {
 		return info;
@@ -100,7 +100,7 @@ public class EntityHandler implements IEventTrigger {
 		}
 		else if (entity instanceof EntityLightningBolt) {
 			EntityLightningBolt bolt = (EntityLightningBolt) entity;
-			bolt.boltLivingTime *= ModConfigHandler.SETTINGS.getInt("boltLivingTimeMultiplier");
+			bolt.boltLivingTime *= ModConfigHandler.INSTANCE.boltLivingTimeMultiplier;
 		}
 	}
 }

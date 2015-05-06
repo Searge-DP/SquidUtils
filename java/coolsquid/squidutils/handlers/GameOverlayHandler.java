@@ -4,17 +4,16 @@
  *******************************************************************************/
 package coolsquid.squidutils.handlers;
 
-import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
+import coolsquid.squidutils.SquidUtils;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
-public class DebugHandler {
+public class GameOverlayHandler {
 
 	@SubscribeEvent
-	public final void event(RenderGameOverlayEvent.Pre event) {
-		if (event.type == ElementType.DEBUG) {
-			Minecraft.getMinecraft().gameSettings.showDebugInfo = false;
+	public void onRenderOverlay(RenderGameOverlayEvent event) {
+		if (SquidUtils.COMMON.getDisabledOverlays().contains(event.type)) {
+			event.setCanceled(true);
 		}
 	}
 }

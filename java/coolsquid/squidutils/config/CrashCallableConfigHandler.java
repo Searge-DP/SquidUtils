@@ -7,8 +7,6 @@ package coolsquid.squidutils.config;
 import java.io.File;
 import java.util.List;
 
-import net.minecraftforge.common.config.ConfigCategory;
-import coolsquid.squidapi.SquidAPI;
 import coolsquid.squidapi.config.ConfigHandler;
 import coolsquid.squidapi.reflection.ReflectionHelper;
 import coolsquid.squidapi.util.io.SquidAPIFile;
@@ -30,14 +28,10 @@ public class CrashCallableConfigHandler extends ConfigHandler {
 			ICrashCallable callable = callables.get(a);
 			if (!callable.getClass().getName().startsWith("coolsquid.")) {
 				String name = callable.getLabel().replace(":", "").replace(" ", "");
-				if (!this.config.get("systemCallables", name, true).getBoolean()) {
+				if (!this.config.get(name, "enable", true).getBoolean()) {
 					callables.remove(a);
 				}
 			}
-		}
-		ConfigCategory customCallables = this.config.getCategory("customCallables");
-		for (ConfigCategory subcategory: customCallables.getChildren()) {
-			SquidAPI.COMMON.registerCallable(subcategory.getName(), subcategory.get("message").getString());
 		}
 	}
 }

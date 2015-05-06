@@ -28,13 +28,13 @@ public class ModConfigHandler extends ConfigHandler {
 	}
 
 	public final String CATEGORY_GENERAL = "General";
-	private final String CATEGORY_MOBS = "Mob options";
-	private final String CATEGORY_PROPERTIES = "Block and item properties";
-	private final String CATEGORY_GAMESETTINGS = "Force game options";
-	private final String CATEGORY_CREATIVETABS = "Creative tabs";
-	private final String CATEGORY_HUNGER = "Hunger options";
-	private final String CATEGORY_DISABLING = "Disabling";
-	private final String CATEGORY_CHAT = "Chat options";
+	public final String CATEGORY_MOBS = "Mob options";
+	public final String CATEGORY_PROPERTIES = "Block and item properties";
+	public final String CATEGORY_GAMESETTINGS = "Force game options";
+	public final String CATEGORY_CREATIVETABS = "Creative tabs";
+	public final String CATEGORY_HUNGER = "Hunger options";
+	public final String CATEGORY_DISABLING = "Disabling";
+	public final String CATEGORY_CHAT = "Chat options";
 
 	public String forceDifficulty = "FALSE";
 	public boolean noTNT;

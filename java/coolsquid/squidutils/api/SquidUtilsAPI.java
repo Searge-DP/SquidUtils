@@ -10,6 +10,10 @@ import coolsquid.squidapi.util.collect.Registry;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 
+/**
+ * Instructions may be found at http://coolsquidmc.blogspot.no/2015/05/using-squidutils-api.html.
+ */
+
 public class SquidUtilsAPI {
 
 	final Registry<DamageSource> damageSources = Registry.create();
@@ -92,11 +96,11 @@ public class SquidUtilsAPI {
 	}
 
 	public Registry<DamageSource> getDamageSources() {
-		return this.damageSources.clone();
+		return this.damageSources;
 	}
 
 	public Registry<Material> getMaterials() {
-		return this.materials.clone();
+		return this.materials;
 	}
 
 	public ScriptingAPI getScripting() {

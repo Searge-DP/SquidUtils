@@ -44,6 +44,7 @@ import coolsquid.squidutils.config.DimensionConfigHandler;
 import coolsquid.squidutils.config.EnchantmentConfigHandler;
 import coolsquid.squidutils.config.FishingConfigHandler;
 import coolsquid.squidutils.config.FluidConfigHandler;
+import coolsquid.squidutils.config.GameOverlayConfigHandler;
 import coolsquid.squidutils.config.ItemConfigHandler;
 import coolsquid.squidutils.config.MobConfigHandler;
 import coolsquid.squidutils.config.ModConfigHandler;
@@ -136,6 +137,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 	public SquidUtils() {
 		super("It's your world. Shape it in your way.", Lists.newArrayList("CoolSquid"), "MightyPork, for creating the logo.", "http://forum.feed-the-beast.com/threads/squidutils-now-with-15k-config-options.57203/");
 		this.getMetadata().logoFile = "SquidUtils.png";
+		this.setUpdateUrl("http://pastebin.com/raw.php?i=gvAzhu92");
 	}
 
 	@EventHandler
@@ -345,11 +347,16 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 				WorldGenConfigHandler.INSTANCE,
 				WorldTypeConfigHandler.INSTANCE);
 
+		if (MiscLib.CLIENT) {
+			ConfigurationManager.INSTANCE.registerHandlers(GameOverlayConfigHandler.INSTANCE);
+		}
+
 		if (Compat.BOTANIA.isEnabled()) {
 			ConfigurationManager.INSTANCE.registerHandlers(
 					BrewConfigHandler.INSTANCE,
 					ElvenTradeConfigHandler.INSTANCE);
 		}
+
 		if (Compat.TICON.isEnabled()) {
 			ConfigurationManager.INSTANCE.registerHandlers(
 					TiConToolMaterialConfigHandler.INSTANCE,

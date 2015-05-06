@@ -11,6 +11,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
+import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Sets;
@@ -27,6 +28,7 @@ public class CommonHandler {
 	private final Set<String> disabledCommands = new HashSet<String>();
 	private final Set<Block> physics = Sets.newHashSet();
 	private final Set<Character> allowedChars = Sets.newHashSet();
+	private final Set<ElementType> disabledOverlays = Sets.newHashSet();
 	private final ArrayListMultimap<Item, String> tooltips = ArrayListMultimap.create();
 	private final EventHandlerManager eventHandlerManager = EventHandlerManager.create();
 	private final IMCHandler imc = new IMCHandler();
@@ -105,5 +107,13 @@ public class CommonHandler {
 
 	public IMCHandler getIMCHandler() {
 		return this.imc;
+	}
+
+	public void disableOverlay(ElementType overlay) {
+		this.disabledOverlays.add(overlay);
+	}
+
+	public Set<ElementType> getDisabledOverlays() {
+		return this.disabledOverlays;
 	}
 }

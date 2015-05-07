@@ -20,6 +20,11 @@ public class CommandSquidUtils extends CommandBase implements OpOnly {
 		super("SquidUtils", "", new SubcommandUnregister());
 	}
 
+	@Override
+	public void processCommand(ICommandSender sender, String[] args) {
+		SquidUtils.instance().info(SquidUtils.list.get(0));
+	}
+
 	private static class SubcommandUnregister implements ISubCommand {
 
 		@Override

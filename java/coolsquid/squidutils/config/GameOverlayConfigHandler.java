@@ -13,7 +13,7 @@ import coolsquid.squidutils.handlers.GameOverlayHandler;
 
 public class GameOverlayConfigHandler extends ConfigHandler {
 
-	public static final ConfigHandler INSTANCE = new GameOverlayConfigHandler(new File("./config/SquidUtils/GameOverlays.cfg"));
+	public static final GameOverlayConfigHandler INSTANCE = new GameOverlayConfigHandler(new File("./config/SquidUtils/GameOverlays.cfg"));
 
 	public GameOverlayConfigHandler(File file) {
 		super(file);

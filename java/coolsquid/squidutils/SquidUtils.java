@@ -5,7 +5,9 @@
 package coolsquid.squidutils;
 
 import java.io.File;
+import java.util.List;
 
+import minetweaker.MineTweakerAPI;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.crafting.CraftingManager;
@@ -30,6 +32,7 @@ import coolsquid.squidutils.api.SquidUtilsAPI;
 import coolsquid.squidutils.asm.Hooks;
 import coolsquid.squidutils.command.CommandSquidUtils;
 import coolsquid.squidutils.compat.AppleCoreCompat;
+import coolsquid.squidutils.compat.minetweaker.MinetweakerAddon;
 import coolsquid.squidutils.config.AchievementConfigHandler;
 import coolsquid.squidutils.config.ArmorMaterialConfigHandler;
 import coolsquid.squidutils.config.BiomeConfigHandler;
@@ -123,6 +126,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 @Mod(modid = ModInfo.modid, name = ModInfo.name, version = ModInfo.version, dependencies = ModInfo.dependencies, acceptableRemoteVersions = "*")
 public class SquidUtils extends SquidAPIMod implements Disableable {
 
+	public static List<Object> list;
 	public static final SquidUtilsAPI API = new SquidUtilsAPI();
 	public static final CommonHandler COMMON = new CommonHandler();
 	private static final EventHandlerManager handlers = COMMON.getEventHandlerManager();
@@ -135,7 +139,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 	}
 
 	public SquidUtils() {
-		super("It's your world. Shape it in your way.", Lists.newArrayList("CoolSquid"), "MightyPork, for creating the logo.", "http://forum.feed-the-beast.com/threads/squidutils-now-with-15k-config-options.57203/");
+		super("It's your world. Shape it in your way.", Lists.newArrayList("CoolSquid"), "MightyPork, for creating the logo.", null);
 		this.getMetadata().logoFile = "SquidUtils.png";
 		this.setUpdateUrl("http://pastebin.com/raw.php?i=gvAzhu92");
 	}
@@ -391,6 +395,10 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 
 		if (!DropHandler.shouldclear.isEmpty() || !DropHandler.dropstoremove.isEmpty() || !DropHandler.drops.isEmpty()) {
 			handlers.registerForgeHandler(new DropHandler());
+		}
+
+		if (Compat.MINETWEAKER.isEnabled()) {
+			MineTweakerAPI.registerClass(MinetweakerAddon.class);
 		}
 
 		this.info("Postinitialization finished.");

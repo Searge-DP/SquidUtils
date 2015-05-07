@@ -5,7 +5,6 @@
 package coolsquid.squidutils;
 
 import java.io.File;
-import java.util.List;
 
 import minetweaker.MineTweakerAPI;
 import net.minecraft.block.Block;
@@ -25,14 +24,15 @@ import coolsquid.squidapi.SquidAPIMod;
 import coolsquid.squidapi.compat.Compat;
 import coolsquid.squidapi.config.ConfigurationManager;
 import coolsquid.squidapi.helpers.server.ServerHelper;
-import coolsquid.squidapi.util.ContentRemover;
 import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidapi.util.Utils;
 import coolsquid.squidutils.api.SquidUtilsAPI;
 import coolsquid.squidutils.asm.Hooks;
 import coolsquid.squidutils.command.CommandSquidUtils;
 import coolsquid.squidutils.compat.AppleCoreCompat;
-import coolsquid.squidutils.compat.minetweaker.MinetweakerAddon;
+import coolsquid.squidutils.compat.minetweaker.BlockUtils;
+import coolsquid.squidutils.compat.minetweaker.CommandUtils;
+import coolsquid.squidutils.compat.minetweaker.MiscUtils;
 import coolsquid.squidutils.config.AchievementConfigHandler;
 import coolsquid.squidutils.config.ArmorMaterialConfigHandler;
 import coolsquid.squidutils.config.BiomeConfigHandler;
@@ -126,7 +126,6 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 @Mod(modid = ModInfo.modid, name = ModInfo.name, version = ModInfo.version, dependencies = ModInfo.dependencies, acceptableRemoteVersions = "*")
 public class SquidUtils extends SquidAPIMod implements Disableable {
 
-	public static List<Object> list;
 	public static final SquidUtilsAPI API = new SquidUtilsAPI();
 	public static final CommonHandler COMMON = new CommonHandler();
 	private static final EventHandlerManager handlers = COMMON.getEventHandlerManager();
@@ -148,6 +147,42 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 	private void preInit(FMLPreInitializationEvent event) {
 		this.info("Preinitializing.");
 		this.info("Version id: ", this.hash());
+
+		ConfigurationManager.INSTANCE.registerHandlers(
+				BlockConfigHandler.INSTANCE,
+				ItemConfigHandler.INSTANCE,
+				ToolMaterialConfigHandler.INSTANCE,
+				ArmorMaterialConfigHandler.INSTANCE,
+				BiomeConfigHandler.INSTANCE,
+				BlockMaterialConfigHandler.INSTANCE,
+				MobConfigHandler.INSTANCE,
+				AchievementConfigHandler.INSTANCE,
+				DamageSourceConfigHandler.INSTANCE,
+				CrashCallableConfigHandler.INSTANCE,
+				ChestGenConfigHandler.INSTANCE,
+				FishingConfigHandler.INSTANCE,
+				CreativeTabConfigHandler.INSTANCE,
+				EnchantmentConfigHandler.INSTANCE,
+				FluidConfigHandler.INSTANCE,
+				WorldGenConfigHandler.INSTANCE,
+				WorldTypeConfigHandler.INSTANCE);
+
+		if (MiscLib.CLIENT) {
+			ConfigurationManager.INSTANCE.registerHandlers(GameOverlayConfigHandler.INSTANCE);
+		}
+
+		if (Compat.BOTANIA.isEnabled()) {
+			ConfigurationManager.INSTANCE.registerHandlers(
+					BrewConfigHandler.INSTANCE,
+					ElvenTradeConfigHandler.INSTANCE);
+		}
+
+		if (Compat.TICON.isEnabled()) {
+			ConfigurationManager.INSTANCE.registerHandlers(
+					TiConToolMaterialConfigHandler.INSTANCE,
+					TiConBowMaterialConfigHandler.INSTANCE,
+					TiConArrowMaterialConfigHandler.INSTANCE);
+		}
 
 		new File("./config/SquidUtils").mkdirs();
 		ModConfigHandler.INSTANCE.init();
@@ -332,42 +367,6 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 	private void postInit(FMLPostInitializationEvent event) {
 		this.info("Postinitializing.");
 
-		ConfigurationManager.INSTANCE.registerHandlers(
-				BlockConfigHandler.INSTANCE,
-				ItemConfigHandler.INSTANCE,
-				ToolMaterialConfigHandler.INSTANCE,
-				ArmorMaterialConfigHandler.INSTANCE,
-				BiomeConfigHandler.INSTANCE,
-				BlockMaterialConfigHandler.INSTANCE,
-				MobConfigHandler.INSTANCE,
-				AchievementConfigHandler.INSTANCE,
-				DamageSourceConfigHandler.INSTANCE,
-				CrashCallableConfigHandler.INSTANCE,
-				ChestGenConfigHandler.INSTANCE,
-				FishingConfigHandler.INSTANCE,
-				CreativeTabConfigHandler.INSTANCE,
-				EnchantmentConfigHandler.INSTANCE,
-				FluidConfigHandler.INSTANCE,
-				WorldGenConfigHandler.INSTANCE,
-				WorldTypeConfigHandler.INSTANCE);
-
-		if (MiscLib.CLIENT) {
-			ConfigurationManager.INSTANCE.registerHandlers(GameOverlayConfigHandler.INSTANCE);
-		}
-
-		if (Compat.BOTANIA.isEnabled()) {
-			ConfigurationManager.INSTANCE.registerHandlers(
-					BrewConfigHandler.INSTANCE,
-					ElvenTradeConfigHandler.INSTANCE);
-		}
-
-		if (Compat.TICON.isEnabled()) {
-			ConfigurationManager.INSTANCE.registerHandlers(
-					TiConToolMaterialConfigHandler.INSTANCE,
-					TiConBowMaterialConfigHandler.INSTANCE,
-					TiConArrowMaterialConfigHandler.INSTANCE);
-		}
-
 		ConfigurationManager.INSTANCE.loadConfigs(this);
 
 		if (!COMMON.getTooltips().isEmpty()) {
@@ -398,7 +397,9 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 		}
 
 		if (Compat.MINETWEAKER.isEnabled()) {
-			MineTweakerAPI.registerClass(MinetweakerAddon.class);
+			MineTweakerAPI.registerClass(BlockUtils.class);
+			MineTweakerAPI.registerClass(MiscUtils.class);
+			MineTweakerAPI.registerClass(CommandUtils.class);
 		}
 
 		this.info("Postinitialization finished.");
@@ -406,9 +407,12 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 
 	@EventHandler
 	private void finishedLoading(FMLLoadCompleteEvent event) {
+		COMMON.registerCreativeTabs();
 		if (ModConfigHandler.INSTANCE.clearRecipes == 2) {
-			if (!ContentRemover.isBlacklistedModLoaded()) {
-				CraftingManager.getInstance().getRecipeList().clear();
+			for (int a = 0; a < CraftingManager.getInstance().getRecipeList().size(); a++) {
+				if (MiscLib.getBlacklister(CraftingManager.getInstance().getRecipeList().get(a)) == null) {
+					CraftingManager.getInstance().getRecipeList().remove(a);
+				}
 			}
 		}
 		Hooks.save();

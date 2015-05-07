@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import net.minecraft.block.Block;
 import net.minecraft.entity.monster.EntityEnderman;
 import coolsquid.squidapi.config.ConfigHandler;
+import coolsquid.squidapi.config.ConfigurationManager;
 import coolsquid.squidapi.reflection.ReflectionHelper;
 import coolsquid.squidapi.util.Utils;
 import coolsquid.squidapi.util.io.SquidAPIFile;
@@ -35,6 +36,7 @@ public class ModConfigHandler extends ConfigHandler {
 	public final String CATEGORY_HUNGER = "Hunger options";
 	public final String CATEGORY_DISABLING = "Disabling";
 	public final String CATEGORY_CHAT = "Chat options";
+	public final String CATEGORY_HANDLERS = "Config handlers";
 
 	public String forceDifficulty = "FALSE";
 	public boolean noTNT;
@@ -94,6 +96,7 @@ public class ModConfigHandler extends ConfigHandler {
 		this.config.setCategoryComment(this.CATEGORY_HUNGER, "Modify hunger options. REQUIRES APPLE CORE!");
 		this.config.setCategoryComment(this.CATEGORY_DISABLING, "Disabling of various things.");
 		this.config.setCategoryComment(this.CATEGORY_CHAT, "Chat options");
+		this.config.setCategoryComment(this.CATEGORY_HANDLERS, "Config handlers");
 	}
 
 	/**
@@ -102,6 +105,15 @@ public class ModConfigHandler extends ConfigHandler {
 
 	@Override
 	public void loadConfig() {
+		for (ConfigHandler handler: ConfigurationManager.INSTANCE.getHandlers(SquidUtils.instance())) {
+			if (!this.config.getBoolean(handler.getConfig().getConfigFile().getName().replace(".cfg", ""), this.CATEGORY_HANDLERS, true, "")) {
+				ConfigurationManager.INSTANCE.getHandlers(SquidUtils.instance()).remove(handler);
+			}
+		}
+		if (!this.config.getBoolean("SquidUtils", this.CATEGORY_HANDLERS, true, "")) {
+			return;
+		}
+
 		this.forceDifficulty = this.config.getString("forceDifficulty", this.CATEGORY_GAMESETTINGS, "FALSE", "Forces the specified difficulty. Allows for HARDCORE, HARD, NORMAL, EASY, PEACEFUL or FALSE. Set to FALSE to disable.");
 		this.noTNT = this.config.getBoolean("noTNT", this.CATEGORY_GENERAL, false, "Stops TNT from exploding.");
 		this.noAchievements = this.config.getBoolean("noAchievements", this.CATEGORY_GENERAL, false, "Disables achievements.");

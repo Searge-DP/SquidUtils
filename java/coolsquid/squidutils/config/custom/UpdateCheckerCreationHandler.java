@@ -27,7 +27,7 @@ public class UpdateCheckerCreationHandler extends CustomContentHandler<UpdateChe
 
 	@Override
 	protected void handle(UpdateChecker fromJson) {
-		UpdateManager.INSTANCE.extraCheckers.add(fromJson);
+		UpdateManager.INSTANCE.registerUpdateChecker(fromJson);
 	}
 
 	static {

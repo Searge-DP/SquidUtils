@@ -9,7 +9,6 @@ import java.io.File;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import coolsquid.squidapi.config.ConfigHandler;
 import coolsquid.squidutils.SquidUtils;
-import coolsquid.squidutils.handlers.GameOverlayHandler;
 
 public class GameOverlayConfigHandler extends ConfigHandler {
 
@@ -25,9 +24,6 @@ public class GameOverlayConfigHandler extends ConfigHandler {
 			if (!this.config.get(overlay.toString(), "enable", true).getBoolean()) {
 				SquidUtils.COMMON.disableOverlay(overlay);
 			}
-		}
-		if (!SquidUtils.COMMON.getDisabledOverlays().isEmpty()) {
-			SquidUtils.COMMON.getEventHandlerManager().registerForgeHandler(new GameOverlayHandler());
 		}
 	}
 }

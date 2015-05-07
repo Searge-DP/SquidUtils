@@ -9,6 +9,7 @@ import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
@@ -18,6 +19,7 @@ import com.google.common.collect.Sets;
 
 import coolsquid.squidapi.util.ContentRemover;
 import coolsquid.squidapi.util.ContentRemover.ContentType;
+import coolsquid.squidapi.util.collect.Registry;
 import coolsquid.squidutils.api.IMCHandler;
 import coolsquid.squidutils.util.EventHandlerManager;
 
@@ -29,6 +31,7 @@ public class CommonHandler {
 	private final Set<Block> physics = Sets.newHashSet();
 	private final Set<Character> allowedChars = Sets.newHashSet();
 	private final Set<ElementType> disabledOverlays = Sets.newHashSet();
+	private final Registry<CreativeTabs> creativeTabs = Registry.create();
 	private final ArrayListMultimap<Item, String> tooltips = ArrayListMultimap.create();
 	private final EventHandlerManager eventHandlerManager = EventHandlerManager.create();
 	private final IMCHandler imc = new IMCHandler();
@@ -111,9 +114,24 @@ public class CommonHandler {
 
 	public void disableOverlay(ElementType overlay) {
 		this.disabledOverlays.add(overlay);
+		if (!this.eventHandlerManager.getEventHandlers().containsKey("GameOverlayHandler")) {
+			this.eventHandlerManager.registerForgeHandler(new GameOverlayHandler());
+		}
 	}
 
 	public Set<ElementType> getDisabledOverlays() {
 		return this.disabledOverlays;
+	}
+
+	public void registerCreativeTabs() {
+		for (CreativeTabs tab: CreativeTabs.creativeTabArray) {
+			if (!this.creativeTabs.containsValue(tab) && !this.creativeTabs.containsName(tab.getTabLabel())) {
+				this.creativeTabs.register(tab.getTabLabel(), tab);
+			}
+		}
+	}
+
+	public Registry<CreativeTabs> getCreativeTabs() {
+		return this.creativeTabs;
 	}
 }

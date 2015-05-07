@@ -44,12 +44,12 @@ public class MiscUtils {
 
 	@ZenMethod
 	public static void registerLoginMessage(String sender, String message, String format) {
-		SquidAPI.COMMON.registerLoginMessage(new ChatMessage('<', sender, "> ", message).setColor(EnumChatFormatting.getValueByName(format)));
+		SquidAPI.COMMON.registerLoginMessage(new ChatMessage("<", sender, "> ", message).setColor(EnumChatFormatting.getValueByName(format)));
 	}
 
 	@ZenMethod
 	public static void registerLoginMessage(String sender, String message) {
-		SquidAPI.COMMON.registerLoginMessage(new ChatMessage('<', sender, "> ", message));
+		SquidAPI.COMMON.registerLoginMessage(new ChatMessage("<", sender, "> ", message));
 	}
 
 	@ZenMethod

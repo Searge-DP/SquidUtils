@@ -148,42 +148,6 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 		this.info("Preinitializing.");
 		this.info("Version id: ", this.hash());
 
-		ConfigurationManager.INSTANCE.registerHandlers(
-				BlockConfigHandler.INSTANCE,
-				ItemConfigHandler.INSTANCE,
-				ToolMaterialConfigHandler.INSTANCE,
-				ArmorMaterialConfigHandler.INSTANCE,
-				BiomeConfigHandler.INSTANCE,
-				BlockMaterialConfigHandler.INSTANCE,
-				MobConfigHandler.INSTANCE,
-				AchievementConfigHandler.INSTANCE,
-				DamageSourceConfigHandler.INSTANCE,
-				CrashCallableConfigHandler.INSTANCE,
-				ChestGenConfigHandler.INSTANCE,
-				FishingConfigHandler.INSTANCE,
-				CreativeTabConfigHandler.INSTANCE,
-				EnchantmentConfigHandler.INSTANCE,
-				FluidConfigHandler.INSTANCE,
-				WorldGenConfigHandler.INSTANCE,
-				WorldTypeConfigHandler.INSTANCE);
-
-		if (MiscLib.CLIENT) {
-			ConfigurationManager.INSTANCE.registerHandlers(GameOverlayConfigHandler.INSTANCE);
-		}
-
-		if (Compat.BOTANIA.isEnabled()) {
-			ConfigurationManager.INSTANCE.registerHandlers(
-					BrewConfigHandler.INSTANCE,
-					ElvenTradeConfigHandler.INSTANCE);
-		}
-
-		if (Compat.TICON.isEnabled()) {
-			ConfigurationManager.INSTANCE.registerHandlers(
-					TiConToolMaterialConfigHandler.INSTANCE,
-					TiConBowMaterialConfigHandler.INSTANCE,
-					TiConArrowMaterialConfigHandler.INSTANCE);
-		}
-
 		new File("./config/SquidUtils").mkdirs();
 		ModConfigHandler.INSTANCE.init();
 
@@ -366,6 +330,42 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 	@EventHandler
 	private void postInit(FMLPostInitializationEvent event) {
 		this.info("Postinitializing.");
+
+		ConfigurationManager.INSTANCE.registerHandlers(
+				BlockConfigHandler.INSTANCE,
+				ItemConfigHandler.INSTANCE,
+				ToolMaterialConfigHandler.INSTANCE,
+				ArmorMaterialConfigHandler.INSTANCE,
+				BiomeConfigHandler.INSTANCE,
+				BlockMaterialConfigHandler.INSTANCE,
+				MobConfigHandler.INSTANCE,
+				AchievementConfigHandler.INSTANCE,
+				DamageSourceConfigHandler.INSTANCE,
+				CrashCallableConfigHandler.INSTANCE,
+				ChestGenConfigHandler.INSTANCE,
+				FishingConfigHandler.INSTANCE,
+				CreativeTabConfigHandler.INSTANCE,
+				EnchantmentConfigHandler.INSTANCE,
+				FluidConfigHandler.INSTANCE,
+				WorldGenConfigHandler.INSTANCE,
+				WorldTypeConfigHandler.INSTANCE);
+
+		if (MiscLib.CLIENT) {
+			ConfigurationManager.INSTANCE.registerHandlers(GameOverlayConfigHandler.INSTANCE);
+		}
+
+		if (Compat.BOTANIA.isEnabled()) {
+			ConfigurationManager.INSTANCE.registerHandlers(
+					BrewConfigHandler.INSTANCE,
+					ElvenTradeConfigHandler.INSTANCE);
+		}
+
+		if (Compat.TICON.isEnabled()) {
+			ConfigurationManager.INSTANCE.registerHandlers(
+					TiConToolMaterialConfigHandler.INSTANCE,
+					TiConBowMaterialConfigHandler.INSTANCE,
+					TiConArrowMaterialConfigHandler.INSTANCE);
+		}
 
 		ConfigurationManager.INSTANCE.loadConfigs(this);
 

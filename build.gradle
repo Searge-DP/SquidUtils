@@ -92,7 +92,14 @@ jar {
     }
 }
 
-<<<<<<< HEAD
+dependencies {
+    compile(group: 'coolsquid', name: 'SquidAPI', version: '1.1.10.3', classifier: 'dev')
+    compile name: "Botania" , version: botaniaVersion, classifier: "deobf"
+    compile name: "MineTweaker3" , version: minetweakerVersion, classifier: "Dev"
+    compile(group: 'tconstruct', name: 'TConstruct', version: tconstructVersion, classifier: 'deobf')
+    compile "applecore:AppleCore:1.7.10-1.2.1+102.f60d3:api"
+}
+
 task sourcesJar(type: Jar, dependsOn: classes) {
     classifier = 'sources'
     from sourceSets.main.java
@@ -107,12 +114,3 @@ artifacts {
     archives sourcesJar
     archives devJar
 }
-=======
-dependencies {
-    compile(group: 'coolsquid', name: 'SquidAPI', version: '1.1.10.3', classifier: 'dev')
-    compile name: "Botania" , version: botaniaVersion, classifier: "deobf"
-    compile name: "MineTweaker3" , version: minetweakerVersion, classifier: "Dev"
-    compile(group: 'tconstruct', name: 'TConstruct', version: tconstructVersion, classifier: 'deobf')
-    compile "applecore:AppleCore:1.7.10-1.2.1+102.f60d3:api"
-}
->>>>>>> origin/head

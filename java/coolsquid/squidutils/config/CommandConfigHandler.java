@@ -11,14 +11,13 @@ import net.minecraftforge.common.config.ConfigCategory;
 import coolsquid.squidapi.command.CommandBase;
 import coolsquid.squidapi.config.ConfigHandler;
 import coolsquid.squidapi.helpers.server.ServerHelper;
-import coolsquid.squidapi.util.io.SquidAPIFile;
 import coolsquid.squidutils.command.CommandInfo;
 import coolsquid.squidutils.command.CommandOpenUrl;
 import coolsquid.squidutils.command.CommandWeb;
 
 public class CommandConfigHandler extends ConfigHandler {
 
-	public static final CommandConfigHandler INSTANCE = new CommandConfigHandler(new SquidAPIFile("./config/SquidUtils/Commands.cfg"));
+	public static final CommandConfigHandler INSTANCE = new CommandConfigHandler(new File("./config/SquidUtils/Commands.cfg"));
 
 	private CommandConfigHandler(File file) {
 		super(file);

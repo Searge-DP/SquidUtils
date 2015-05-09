@@ -15,13 +15,12 @@ import com.google.common.collect.Lists;
 
 import coolsquid.squidapi.config.ConfigHandler;
 import coolsquid.squidapi.util.MiscLib;
-import coolsquid.squidapi.util.io.SquidAPIFile;
 import coolsquid.squidutils.SquidUtils;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 
 public class BiomeConfigHandler extends ConfigHandler {
 
-	public static final BiomeConfigHandler INSTANCE = new BiomeConfigHandler(new SquidAPIFile("./config/SquidUtils/Biomes.cfg"));
+	public static final BiomeConfigHandler INSTANCE = new BiomeConfigHandler(new File("./config/SquidUtils/Biomes.cfg"));
 
 	private BiomeConfigHandler(File file) {
 		super(file);

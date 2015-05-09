@@ -10,11 +10,10 @@ import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 import coolsquid.squidapi.config.ConfigHandler;
-import coolsquid.squidapi.util.io.SquidAPIFile;
 
 public class DimensionConfigHandler extends ConfigHandler {
 
-	public static final DimensionConfigHandler INSTANCE = new DimensionConfigHandler(new SquidAPIFile("./config/SquidUtils/Dimensions.cfg"));
+	public static final DimensionConfigHandler INSTANCE = new DimensionConfigHandler(new File("./config/SquidUtils/Dimensions.cfg"));
 
 	private DimensionConfigHandler(File file) {
 		super(file);

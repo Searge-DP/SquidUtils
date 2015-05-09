@@ -13,11 +13,10 @@ import net.minecraft.util.WeightedRandomFishable;
 import net.minecraftforge.common.config.ConfigCategory;
 import coolsquid.squidapi.config.ConfigHandler;
 import coolsquid.squidapi.helpers.FishingHelper;
-import coolsquid.squidapi.util.io.SquidAPIFile;
 
 public class FishingConfigHandler extends ConfigHandler {
 
-	public static final FishingConfigHandler INSTANCE = new FishingConfigHandler(new SquidAPIFile("./config/SquidUtils/Fishing.cfg"));
+	public static final FishingConfigHandler INSTANCE = new FishingConfigHandler(new File("./config/SquidUtils/Fishing.cfg"));
 
 	private FishingConfigHandler(File file) {
 		super(file);

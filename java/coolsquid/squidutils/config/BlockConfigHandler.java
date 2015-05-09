@@ -13,12 +13,11 @@ import coolsquid.squidapi.config.ConfigHandler;
 import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidapi.util.StringParser;
 import coolsquid.squidapi.util.StringUtils;
-import coolsquid.squidapi.util.io.SquidAPIFile;
 import coolsquid.squidutils.SquidUtils;
 
 public class BlockConfigHandler extends ConfigHandler {
 
-	public static final BlockConfigHandler INSTANCE = new BlockConfigHandler(new SquidAPIFile("./config/SquidUtils/Blocks.cfg"));
+	public static final BlockConfigHandler INSTANCE = new BlockConfigHandler(new File("./config/SquidUtils/Blocks.cfg"));
 
 	private BlockConfigHandler(File file) {
 		super(file);

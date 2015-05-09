@@ -10,11 +10,10 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnumEnchantmentType;
 import coolsquid.squidapi.config.ConfigHandler;
 import coolsquid.squidapi.util.MiscLib;
-import coolsquid.squidapi.util.io.SquidAPIFile;
 
 public class EnchantmentConfigHandler extends ConfigHandler {
 
-	public static final EnchantmentConfigHandler INSTANCE = new EnchantmentConfigHandler(new SquidAPIFile("./config/SquidUtils/Enchantments.cfg"));
+	public static final EnchantmentConfigHandler INSTANCE = new EnchantmentConfigHandler(new File("./config/SquidUtils/Enchantments.cfg"));
 
 	private EnchantmentConfigHandler(File file) {
 		super(file);

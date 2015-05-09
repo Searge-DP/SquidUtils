@@ -13,7 +13,7 @@ import cpw.mods.fml.common.IWorldGenerator;
 
 public class WorldGenConfigHandler extends ConfigHandler {
 
-	public static final ConfigHandler INSTANCE = new WorldGenConfigHandler(new File("./config/SquidUtils/WorldGen.cfg"));
+	public static final WorldGenConfigHandler INSTANCE = new WorldGenConfigHandler(new File("./config/SquidUtils/WorldGen.cfg"));
 
 	public WorldGenConfigHandler(File file) {
 		super(file);

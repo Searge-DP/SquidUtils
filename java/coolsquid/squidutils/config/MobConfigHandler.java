@@ -13,13 +13,12 @@ import net.minecraft.item.ItemStack;
 import coolsquid.squidapi.config.ConfigHandler;
 import coolsquid.squidapi.util.EffectInfo;
 import coolsquid.squidapi.util.MiscLib;
-import coolsquid.squidapi.util.io.SquidAPIFile;
 import coolsquid.squidutils.handlers.EntityHandler;
 import coolsquid.squidutils.util.EntityInfo;
 
 public class MobConfigHandler extends ConfigHandler {
 
-	public static final MobConfigHandler INSTANCE = new MobConfigHandler(new SquidAPIFile("./config/SquidUtils/Mobs.cfg"));
+	public static final MobConfigHandler INSTANCE = new MobConfigHandler(new File("./config/SquidUtils/Mobs.cfg"));
 
 	private MobConfigHandler(File file) {
 		super(file);

@@ -4,19 +4,20 @@
  *******************************************************************************/
 package coolsquid.squidutils.asm;
 
+import java.io.File;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 import coolsquid.squidapi.util.Utils;
-import coolsquid.squidapi.util.io.SquidAPIFile;
 import coolsquid.squidutils.SquidUtils;
 import cpw.mods.fml.common.ModContainer;
 
 public class Hooks {
 
-	private static final Configuration config = new Configuration(new SquidAPIFile("./config/SquidUtils/ModPermissions.cfg"));
+	private static final Configuration config = new Configuration(new File("./config/SquidUtils/ModPermissions.cfg"));
 	public static boolean NETHER_PORTALS = true;
 
 	public static void onSetHardness(Block block, float value) {

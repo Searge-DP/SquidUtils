@@ -14,11 +14,10 @@ import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.config.ConfigCategory;
 import coolsquid.squidapi.config.ConfigHandler;
 import coolsquid.squidapi.reflection.ReflectionHelper;
-import coolsquid.squidapi.util.io.SquidAPIFile;
 
 public class ChestGenConfigHandler extends ConfigHandler {
 
-	public static final ChestGenConfigHandler INSTANCE = new ChestGenConfigHandler(new SquidAPIFile("./config/SquidUtils/ChestGen.cfg"));
+	public static final ChestGenConfigHandler INSTANCE = new ChestGenConfigHandler(new File("./config/SquidUtils/ChestGen.cfg"));
 
 	private ChestGenConfigHandler(File file) {
 		super(file);

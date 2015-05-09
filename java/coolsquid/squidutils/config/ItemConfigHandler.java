@@ -22,12 +22,11 @@ import coolsquid.squidapi.config.ConfigHandler;
 import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidapi.util.StringParser;
 import coolsquid.squidapi.util.StringUtils;
-import coolsquid.squidapi.util.io.SquidAPIFile;
 import coolsquid.squidutils.SquidUtils;
 
 public class ItemConfigHandler extends ConfigHandler {
 
-	public static final ItemConfigHandler INSTANCE = new ItemConfigHandler(new SquidAPIFile("./config/SquidUtils/Items.cfg"));
+	public static final ItemConfigHandler INSTANCE = new ItemConfigHandler(new File("./config/SquidUtils/Items.cfg"));
 
 	private ItemConfigHandler(File file) {
 		super(file);

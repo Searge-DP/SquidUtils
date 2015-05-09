@@ -10,11 +10,10 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import coolsquid.squidapi.config.ConfigHandler;
 import coolsquid.squidapi.util.MiscLib;
-import coolsquid.squidapi.util.io.SquidAPIFile;
 
 public class FluidConfigHandler extends ConfigHandler {
 
-	public static final FluidConfigHandler INSTANCE = new FluidConfigHandler(new SquidAPIFile("./config/SquidUtils/Fluids.cfg"));
+	public static final FluidConfigHandler INSTANCE = new FluidConfigHandler(new File("./config/SquidUtils/Fluids.cfg"));
 
 	private FluidConfigHandler(File file) {
 		super(file);

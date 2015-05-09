@@ -11,7 +11,7 @@ import coolsquid.squidapi.config.ConfigHandler;
 
 public class WorldTypeConfigHandler extends ConfigHandler {
 
-	public static final ConfigHandler INSTANCE = new WorldTypeConfigHandler(new File("./config/SquidUtils/WorldTypes.cfg"));
+	public static final WorldTypeConfigHandler INSTANCE = new WorldTypeConfigHandler(new File("./config/SquidUtils/WorldTypes.cfg"));
 
 	public WorldTypeConfigHandler(File file) {
 		super(file);

@@ -5,6 +5,9 @@
 package coolsquid.squidutils;
 
 import java.io.File;
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.util.List;
 
 import minetweaker.MineTweakerAPI;
 import net.minecraft.block.Block;
@@ -63,6 +66,7 @@ import coolsquid.squidutils.config.compat.botania.ElvenTradeConfigHandler;
 import coolsquid.squidutils.config.compat.ticon.TiConArrowMaterialConfigHandler;
 import coolsquid.squidutils.config.compat.ticon.TiConBowMaterialConfigHandler;
 import coolsquid.squidutils.config.compat.ticon.TiConToolMaterialConfigHandler;
+import coolsquid.squidutils.config.compat.uptodate.UpToDateConfigHandler;
 import coolsquid.squidutils.config.custom.AchievementCreationHandler;
 import coolsquid.squidutils.config.custom.BiomeCreationHandler;
 import coolsquid.squidutils.config.custom.CrashCallableCreationHandler;
@@ -143,6 +147,21 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 	public SquidUtils() {
 		super("It's your world. Shape it in your way.", Lists.newArrayList("CoolSquid"), "MightyPork, for creating the logo.", null, "http://pastebin.com/raw.php?i=gvAzhu92", 226025);
 		this.getMetadata().logoFile = "SquidUtils.png";
+	}
+
+	public static List<String> getNames(Class<?> clazz) {
+		List<String> list = Lists.newArrayList();
+		for (Method m: clazz.getDeclaredMethods()) {
+			StringBuilder b = new StringBuilder();
+			b.append(m.getName());
+			b.append('(');
+			for (Parameter p: m.getParameters()) {
+				b.append(p.toString());
+			}
+			b.append(");");
+			list.add(b.toString());
+		}
+		return list;
 	}
 
 	@EventHandler
@@ -324,6 +343,10 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 			}
 		}
 
+		if (Compat.UPTODATE.isEnabled()) {
+			UpToDateConfigHandler.INSTANCE.init();
+		}
+
 		this.info("Initialization finished.");
 	}
 
@@ -344,14 +367,15 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 				CrashCallableConfigHandler.INSTANCE,
 				ChestGenConfigHandler.INSTANCE,
 				FishingConfigHandler.INSTANCE,
-				CreativeTabConfigHandler.INSTANCE,
 				EnchantmentConfigHandler.INSTANCE,
 				FluidConfigHandler.INSTANCE,
 				WorldGenConfigHandler.INSTANCE,
 				WorldTypeConfigHandler.INSTANCE);
 
 		if (MiscLib.CLIENT) {
-			ConfigurationManager.INSTANCE.registerHandlers(GameOverlayConfigHandler.INSTANCE);
+			ConfigurationManager.INSTANCE.registerHandlers(
+					GameOverlayConfigHandler.INSTANCE,
+					CreativeTabConfigHandler.INSTANCE);
 		}
 
 		if (Compat.BOTANIA.isEnabled()) {

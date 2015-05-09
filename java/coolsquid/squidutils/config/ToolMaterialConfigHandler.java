@@ -8,12 +8,11 @@ import java.io.File;
 
 import net.minecraft.item.Item.ToolMaterial;
 import coolsquid.squidapi.config.ConfigHandler;
-import coolsquid.squidapi.util.io.SquidAPIFile;
 import coolsquid.squidutils.SquidUtils;
 
 public class ToolMaterialConfigHandler extends ConfigHandler {
 
-	public static final ToolMaterialConfigHandler INSTANCE = new ToolMaterialConfigHandler(new SquidAPIFile("./config/SquidUtils/ToolMaterials.cfg"));
+	public static final ToolMaterialConfigHandler INSTANCE = new ToolMaterialConfigHandler(new File("./config/SquidUtils/ToolMaterials.cfg"));
 
 	private ToolMaterialConfigHandler(File file) {
 		super(file);

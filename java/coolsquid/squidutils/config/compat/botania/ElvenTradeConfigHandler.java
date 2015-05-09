@@ -17,11 +17,10 @@ import com.google.common.collect.Lists;
 
 import coolsquid.squidapi.config.ConfigHandler;
 import coolsquid.squidapi.util.StringParser;
-import coolsquid.squidapi.util.io.SquidAPIFile;
 
 public class ElvenTradeConfigHandler extends ConfigHandler {
 
-	public static final ElvenTradeConfigHandler INSTANCE = new ElvenTradeConfigHandler(new SquidAPIFile("./config/SquidUtils/compat/Botania/ElvenTradeRecipes.cfg"));
+	public static final ElvenTradeConfigHandler INSTANCE = new ElvenTradeConfigHandler(new File("./config/SquidUtils/compat/Botania/ElvenTradeRecipes.cfg"));
 
 	private ElvenTradeConfigHandler(File file) {
 		super(file);

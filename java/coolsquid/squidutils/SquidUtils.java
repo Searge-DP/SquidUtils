@@ -25,14 +25,17 @@ import coolsquid.squidapi.compat.Compat;
 import coolsquid.squidapi.config.ConfigurationManager;
 import coolsquid.squidapi.helpers.server.ServerHelper;
 import coolsquid.squidapi.util.MiscLib;
-import coolsquid.squidapi.util.Utils;
 import coolsquid.squidutils.api.SquidUtilsAPI;
 import coolsquid.squidutils.asm.Hooks;
 import coolsquid.squidutils.command.CommandSquidUtils;
 import coolsquid.squidutils.compat.AppleCoreCompat;
 import coolsquid.squidutils.compat.minetweaker.BlockUtils;
 import coolsquid.squidutils.compat.minetweaker.CommandUtils;
+import coolsquid.squidutils.compat.minetweaker.LogUtils;
 import coolsquid.squidutils.compat.minetweaker.MiscUtils;
+import coolsquid.squidutils.compat.minetweaker.RuntimeUtils;
+import coolsquid.squidutils.compat.minetweaker.StringUtils;
+import coolsquid.squidutils.compat.minetweaker.SystemUtils;
 import coolsquid.squidutils.config.AchievementConfigHandler;
 import coolsquid.squidutils.config.ArmorMaterialConfigHandler;
 import coolsquid.squidutils.config.BiomeConfigHandler;
@@ -138,9 +141,8 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 	}
 
 	public SquidUtils() {
-		super("It's your world. Shape it in your way.", Lists.newArrayList("CoolSquid"), "MightyPork, for creating the logo.", null);
+		super("It's your world. Shape it in your way.", Lists.newArrayList("CoolSquid"), "MightyPork, for creating the logo.", null, "http://pastebin.com/raw.php?i=gvAzhu92", 226025);
 		this.getMetadata().logoFile = "SquidUtils.png";
-		this.setUpdateUrl("http://pastebin.com/raw.php?i=gvAzhu92");
 	}
 
 	@EventHandler
@@ -322,8 +324,6 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 			}
 		}
 
-		Utils.runVersionCheckerCompat("226025");
-
 		this.info("Initialization finished.");
 	}
 
@@ -400,6 +400,10 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 			MineTweakerAPI.registerClass(BlockUtils.class);
 			MineTweakerAPI.registerClass(MiscUtils.class);
 			MineTweakerAPI.registerClass(CommandUtils.class);
+			MineTweakerAPI.registerClass(LogUtils.class);
+			MineTweakerAPI.registerClass(StringUtils.class);
+			MineTweakerAPI.registerClass(RuntimeUtils.class);
+			MineTweakerAPI.registerClass(SystemUtils.class);
 		}
 
 		this.info("Postinitialization finished.");

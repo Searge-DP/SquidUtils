@@ -4,36 +4,27 @@
  *******************************************************************************/
 package coolsquid.squidutils.command;
 
-import java.lang.reflect.InvocationTargetException;
-
 import coolsquid.squidapi.command.CommandBase;
-import coolsquid.squidapi.util.Utils;
+import coolsquid.squidapi.util.interfaces.IFactory;
 
 public enum EnumCommandType {
 
-	INFO(CommandInfo.class),
-	OPENURL(CommandOpenUrl.class),
-	WEBINFO(CommandWeb.class),
-	BASE(CommandBase.class);
+	INFO(new IFactory<CommandInfo>() {@Override public CommandInfo newInstance(String... params) {return new CommandInfo(params[0], params[1], params[2]);}}),
+	OPENURL(new IFactory<CommandOpenUrl>() {@Override public CommandOpenUrl newInstance(String... params) {return new CommandOpenUrl(params[0], params[1], params[2]);}}),
+	WEBINFO(new IFactory<CommandWeb>() {@Override public CommandWeb newInstance(String... params) {return new CommandWeb(params[0], params[1], params[2]);}}),
+	BASE(new IFactory<CommandBase>() {@Override public CommandBase newInstance(String... params) {return new CommandBase(params[0], params[1]);}});
 
-	private Class<? extends CommandBase> clazz;
+	private IFactory<? extends CommandBase> factory;
 
-	private EnumCommandType(Class<? extends CommandBase> clazz) {
-		this.clazz = clazz;
+	private EnumCommandType(IFactory<? extends CommandBase> factory) {
+		this.factory = factory;
 	}
 
-	public Class<? extends CommandBase> getCommandClass() {
-		return this.clazz;
+	public IFactory<? extends CommandBase> getFactory() {
+		return this.factory;
 	}
 
-	public CommandBase createCommand(Object... parameters) {
-		try {
-			return this.clazz.getConstructor(Utils.getClasses(parameters)).newInstance(parameters);
-		} catch (InstantiationException | IllegalAccessException
-				| IllegalArgumentException | InvocationTargetException
-				| NoSuchMethodException | SecurityException e) {
-			e.printStackTrace();
-		}
-		return null;
+	public CommandBase newInstance(String... parameters) {
+		return this.factory.newInstance(parameters);
 	}
 }

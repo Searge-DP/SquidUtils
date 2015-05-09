@@ -4,6 +4,7 @@
  *******************************************************************************/
 package coolsquid.squidutils.compat.minetweaker;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.GameSettings.Options;
 import net.minecraft.util.EnumChatFormatting;
@@ -17,10 +18,10 @@ import coolsquid.squidapi.SquidAPI;
 import coolsquid.squidapi.helpers.server.chat.ChatMessage;
 import coolsquid.squidapi.util.Utils;
 import coolsquid.squidapi.util.objects.CrashCallable;
-import coolsquid.squidapi.util.version.UpdateManager;
 import coolsquid.squidapi.util.version.VersionContainer;
 import coolsquid.squidutils.SquidUtils;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
 
 @ZenClass("mods.squidutils.Misc")
 public class MiscUtils {
@@ -62,7 +63,7 @@ public class MiscUtils {
 	@ZenMethod
 	public static String getOutdatedMods() {
 		StringBuilder a = new StringBuilder();
-		for (VersionContainer b: UpdateManager.INSTANCE.getOutdatedMods()) {
+		for (VersionContainer b: SquidAPI.UPDATER.getOutdatedMods()) {
 			a.append(b.getMod().getName());
 			a.append(", ");
 		}
@@ -81,6 +82,13 @@ public class MiscUtils {
 	}
 
 	@ZenMethod
+	public static void disablePhysics(String[] blocks) {
+		for (String block: blocks) {
+			SquidUtils.COMMON.getPhysics().remove(Block.getBlockFromName(block));
+		}
+	}
+
+	@ZenMethod
 	public static void setDefaultSetting(String name, double value) {
 		Options setting = Options.valueOf(name);
 		Minecraft.getMinecraft().gameSettings.setOptionFloatValue(setting, (float) value);
@@ -93,8 +101,15 @@ public class MiscUtils {
 	}
 
 	@ZenMethod
-	public static void crash() {
-		FMLCommonHandler.instance().raiseException(new RuntimeException(), "debug", true);
+	public static void crash(String message, boolean b) {
+		if (b) {
+			crash(message);
+		}
+	}
+
+	@ZenMethod
+	public static void crash(String message) {
+		FMLCommonHandler.instance().raiseException(new RuntimeException(), message, true);
 	}
 
 	@ZenMethod
@@ -102,5 +117,20 @@ public class MiscUtils {
 		for (String name: names) {
 			SquidUtils.COMMON.disableOverlay(ElementType.valueOf(name));
 		}
+	}
+
+	@ZenMethod
+	public static boolean isOutOfDate(String name) {
+		for (VersionContainer version: SquidAPI.UPDATER.getOutdatedMods()) {
+			if (version.getMod().getModId().equals(name)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@ZenMethod
+	public static boolean isModLoaded(String modid) {
+		return Loader.isModLoaded(modid);
 	}
 }

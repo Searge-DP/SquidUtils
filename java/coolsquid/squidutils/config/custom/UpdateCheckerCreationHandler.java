@@ -12,8 +12,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
+import coolsquid.squidapi.SquidAPI;
 import coolsquid.squidapi.util.version.UpdateChecker;
-import coolsquid.squidapi.util.version.UpdateManager;
 import cpw.mods.fml.common.DummyModContainer;
 import cpw.mods.fml.common.ModMetadata;
 
@@ -27,7 +27,7 @@ public class UpdateCheckerCreationHandler extends CustomContentHandler<UpdateChe
 
 	@Override
 	protected void handle(UpdateChecker fromJson) {
-		UpdateManager.INSTANCE.registerUpdateChecker(fromJson);
+		SquidAPI.UPDATER.registerUpdateChecker(fromJson);
 	}
 
 	static {

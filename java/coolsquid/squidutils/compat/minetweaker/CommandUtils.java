@@ -6,6 +6,9 @@ package coolsquid.squidutils.compat.minetweaker;
 
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
+
+import com.google.common.base.Joiner;
+
 import coolsquid.squidapi.helpers.server.ServerHelper;
 import coolsquid.squidutils.command.EnumCommandType;
 
@@ -14,7 +17,7 @@ public class CommandUtils {
 
 	@ZenMethod
 	public static void createCommand(String type, String[] parameters) {
-		ServerHelper.registerCommand(EnumCommandType.valueOf(type).createCommand((Object[]) parameters));
+		ServerHelper.registerCommand(EnumCommandType.valueOf(type).newInstance(parameters));
 	}
 
 	@ZenMethod
@@ -27,5 +30,15 @@ public class CommandUtils {
 		for (String name: names) {
 			ServerHelper.removeCommand(name);
 		}
+	}
+
+	@ZenMethod
+	public static String[] getCommands() {
+		return ServerHelper.getCommands().keySet().toArray(new String[] {});
+	}
+
+	@ZenMethod
+	public static String getCommandsString() {
+		return Joiner.on(", ").join(ServerHelper.getCommands().keySet());
 	}
 }

@@ -7,14 +7,13 @@ package coolsquid.squidutils.helpers;
 import java.io.File;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map.Entry;
 import java.util.UUID;
 
 import net.minecraftforge.event.world.WorldEvent.Save;
 import coolsquid.squidapi.SquidAPI;
-import coolsquid.squidapi.helpers.FileHelper;
 import coolsquid.squidapi.logging.Logger;
+import coolsquid.squidapi.util.io.IOUtils;
 import coolsquid.squidutils.command.CommandPermissions;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
@@ -23,16 +22,15 @@ public class PermissionHelper {
 	public static final PermissionHelper INSTANCE = new PermissionHelper();
 
 	private PermissionHelper() {
-		
+
 	}
 
 	private final HashMap<UUID, HashSet<String>> permissions = new HashMap<UUID, HashSet<String>>();
 	private final Logger filewriter = new Logger(new File("./config/SquidUtils/permissions.txt"));
-	
+
 	public void init() {
 		SquidAPI.instance().registerCommands(new CommandPermissions());
-		List<String> permissions = FileHelper.readFile("config/SquidUtils", "permissions.txt");
-		for (String a: permissions) {
+		for (String a: IOUtils.newReader("./config/SquidUtils/permissions.txt")) {
 			HashSet<String> set = new HashSet<String>();
 			String[] s = a.split(" ");
 			String[] s2 = s[1].split(";");
@@ -42,7 +40,7 @@ public class PermissionHelper {
 			this.permissions.put(UUID.fromString(s[0]), set);
 		}
 	}
-	
+
 	@SubscribeEvent
 	public void save(Save event) {
 		//TODO optimize
@@ -55,22 +53,22 @@ public class PermissionHelper {
 			this.filewriter.log(s);
 		}
 	}
-	
+
 	public HashSet<String> getPermissions(UUID id) {
 		if (!this.permissions.containsKey(id)) {
 			this.permissions.put(id, new HashSet<String>());
 		}
 		return this.permissions.get(id);
 	}
-	
+
 	public boolean hasPermission(UUID id, String perm) {
 		return this.getPermissions(id).contains(perm) || this.getPermissions(id).contains("*");
 	}
-	
+
 	public void addPermission(UUID id, String perm) {
 		this.getPermissions(id).add(perm);
 	}
-	
+
 	public void removePermission(UUID id, String perm) {
 		this.getPermissions(id).remove(perm);
 	}

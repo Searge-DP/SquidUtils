@@ -14,13 +14,12 @@ import net.minecraft.entity.monster.EntityEnderman;
 import coolsquid.squidapi.config.ConfigHandler;
 import coolsquid.squidapi.reflection.ReflectionHelper;
 import coolsquid.squidapi.util.Utils;
-import coolsquid.squidapi.util.io.SquidAPIFile;
 import coolsquid.squidutils.SquidUtils;
 import coolsquid.squidutils.asm.Hooks;
 
 public class ModConfigHandler extends ConfigHandler {
 
-	public static final ModConfigHandler INSTANCE = new ModConfigHandler(new SquidAPIFile("./config/SquidUtils/SquidUtils.cfg"));
+	public static final ModConfigHandler INSTANCE = new ModConfigHandler(new File("./config/SquidUtils/SquidUtils.cfg"));
 
 	private ModConfigHandler(File file) {
 		super(file);

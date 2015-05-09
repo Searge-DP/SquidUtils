@@ -10,11 +10,11 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
 
 import coolsquid.squidapi.SquidAPI;
-import coolsquid.squidapi.helpers.FileHelper;
 import coolsquid.squidapi.util.EffectInfo;
 import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidapi.util.StringParser;
 import coolsquid.squidapi.util.StringUtils;
+import coolsquid.squidapi.util.io.FileFilters;
 import coolsquid.squidapi.util.io.IOUtils;
 import coolsquid.squidapi.util.math.IntUtils;
 import coolsquid.squidutils.SquidUtils;
@@ -46,10 +46,7 @@ public class ScriptHandler {
 	public boolean permissions;
 
 	public void init() {
-		for (File file: FileHelper.getFilesInDir("./config/SquidUtils")) {
-			if (!file.getName().endsWith(".script")) {
-				continue;
-			}
+		for (File file: new File("./config/SquidUtils").listFiles(FileFilters.SCRIPTS)) {
 			SquidUtils.instance().info("Found scripting file!");
 			SquidUtils.instance().info(file.getName());
 			for (String line: IOUtils.newReader(file)) {

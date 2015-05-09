@@ -42,5 +42,22 @@ jar {
         attributes 'FMLAT': 'SquidUtils_at.cfg'
         attributes 'FMLCorePlugin': 'coolsquid.squidutils.asm.SquidUtilsPlugin'
         attributes 'FMLCorePluginContainsFMLMod': 'true'
+        attributes 'Built-By': System.properties['user.name']
+        attributes 'Created-By': System.properties['java.version'] + ' (' + System.properties['java.vm.vendor'] + ')'
     }
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.java
+}
+
+task devJar(type: Jar) {
+    from sourceSets.main.output
+    classifier = 'dev'
+}
+
+artifacts {
+    archives sourcesJar
+    archives devJar
 }

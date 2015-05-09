@@ -417,7 +417,9 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 
 	@EventHandler
 	private void finishedLoading(FMLLoadCompleteEvent event) {
-		COMMON.registerCreativeTabs();
+		if (MiscLib.CLIENT) {
+			COMMON.registerCreativeTabs();
+		}
 		if (ModConfigHandler.INSTANCE.clearRecipes == 2) {
 			for (int a = 0; a < CraftingManager.getInstance().getRecipeList().size(); a++) {
 				if (MiscLib.getBlacklister(CraftingManager.getInstance().getRecipeList().get(a)) == null) {

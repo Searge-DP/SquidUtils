@@ -22,6 +22,8 @@ import coolsquid.squidapi.util.ContentRemover.ContentType;
 import coolsquid.squidapi.util.collect.Registry;
 import coolsquid.squidutils.api.IMCHandler;
 import coolsquid.squidutils.util.EventHandlerManager;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class CommonHandler {
 
@@ -123,6 +125,7 @@ public class CommonHandler {
 		return this.disabledOverlays;
 	}
 
+	@SideOnly(Side.CLIENT)
 	public void registerCreativeTabs() {
 		for (CreativeTabs tab: CreativeTabs.creativeTabArray) {
 			if (!this.creativeTabs.containsValue(tab) && !this.creativeTabs.containsName(tab.getTabLabel())) {

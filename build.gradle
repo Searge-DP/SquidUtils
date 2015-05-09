@@ -9,14 +9,9 @@ buildscript {
             name = "sonatype"
             url = "https://oss.sonatype.org/content/repositories/snapshots/"
         }
-        maven {
-            name = "RX14"
-            url = "http://mvn.rx14.co.uk/repo/"
-        }
     }
     dependencies {
         classpath "net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT"
-        compile name: "SquidAPI"   , group: "coolsquid", version: 1.1.10.4, classifier: "deobf"
     }
 }
 
@@ -25,10 +20,40 @@ apply plugin: "forge"
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
-version = "2.1.1"
 group= "coolsquid"
 archivesBaseName = "SquidUtils"
-minecraft.version = "1.7.10-10.13.2.1272"
+version = modVersion
+minecraft.version = mcVer
+
+// Jenkins support
+if (System.env.BUILD_NUMBER != null) version = "$version.$System.env.BUILD_NUMBER"
+
+repositories {
+    mavenCentral()
+    maven {
+        name = "rx14"
+        url = "http://mvn.rx14.co.uk/local/"
+    }
+    maven {
+        name "ChickenBones"
+        url "http://chickenbones.net/maven/"
+    }
+    maven {
+        name "progwml6"
+        url 'http://dvs1.progwml6.com/files/maven'
+    }
+	maven {
+		url "http://www.ryanliptak.com/maven/"
+	}
+    ivy {
+        name "Botania"
+        artifactPattern "http://botaniamod.net/files/deobf/[module] [revision]-[classifier].[ext]"
+    }
+    ivy {
+        name "MineTweaker3"
+        artifactPattern "http://minetweaker3.powerofbytes.com/download/[module]-[classifier]-[revision].[ext]"
+    }
+}
 
 sourceSets {
     main {
@@ -37,10 +62,40 @@ sourceSets {
     }
 }
 
+processResources
+{
+    // this will ensure that this task is redone when the versions change.
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+
+    // replace stuff in mcmod.info, nothing else
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+                
+        // replace version and mcversion
+        expand 'version':project.version, 'mcversion':project.minecraft.version
+    }
+        
+    // copy everything else, thats not the mcmod.info
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}
+
 jar {
     manifest {
         attributes 'FMLAT': 'SquidUtils_at.cfg'
         attributes 'FMLCorePlugin': 'coolsquid.squidutils.asm.SquidUtilsPlugin'
         attributes 'FMLCorePluginContainsFMLMod': 'true'
+        attributes 'Built-By': System.properties['user.name']
+        attributes 'Created-By': System.properties['java.version'] + ' (' + System.properties['java.vm.vendor'] + ')'
     }
+}
+
+dependencies {
+    compile(group: 'coolsquid', name: 'SquidAPI', version: '1.1.10.3', classifier: 'dev')
+    compile name: "Botania" , version: botaniaVersion, classifier: "deobf"
+    compile name: "MineTweaker3" , version: minetweakerVersion, classifier: "Dev"
+    compile(group: 'tconstruct', name: 'TConstruct', version: tconstructVersion, classifier: 'deobf')
+    compile "applecore:AppleCore:1.7.10-1.2.1+102.f60d3:api"
 }

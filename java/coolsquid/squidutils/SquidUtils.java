@@ -5,9 +5,6 @@
 package coolsquid.squidutils;
 
 import java.io.File;
-import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
-import java.util.List;
 
 import minetweaker.MineTweakerAPI;
 import net.minecraft.block.Block;
@@ -147,21 +144,6 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 	public SquidUtils() {
 		super("It's your world. Shape it in your way.", Lists.newArrayList("CoolSquid"), "MightyPork, for creating the logo.", null, "http://pastebin.com/raw.php?i=gvAzhu92", 226025);
 		this.getMetadata().logoFile = "SquidUtils.png";
-	}
-
-	public static List<String> getNames(Class<?> clazz) {
-		List<String> list = Lists.newArrayList();
-		for (Method m: clazz.getDeclaredMethods()) {
-			StringBuilder b = new StringBuilder();
-			b.append(m.getName());
-			b.append('(');
-			for (Parameter p: m.getParameters()) {
-				b.append(p.toString());
-			}
-			b.append(");");
-			list.add(b.toString());
-		}
-		return list;
 	}
 
 	@EventHandler

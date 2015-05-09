@@ -1,0 +1,16 @@
+[
+{
+  "modid": "SquidUtils",
+  "name": "SquidUtils",
+  "description": "It's your world. Shape it in your way.",
+  "version": "",
+  "mcversion": "",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["CoolSquid"],
+  "credits": "MightyPork, for creating the logo.",
+  "logoFile": "SquidUtils.png",
+  "screenshots": [],
+  "dependencies": ["SquidAPI"]
+}
+]

@@ -29,7 +29,7 @@ public class EventHandlerManager implements IEventHandlerRegistrationManager {
 	public void register(Object handler, EventBus bus) {
 		try {
 			String name = handler.getClass().getSimpleName();
-			SquidUtils.instance().info("Registering handler ", name, ".");
+			SquidUtils.instance().info("Registering handler " + name + ".");
 			bus.register(handler);
 			this.eventHandlers.put(name, new EventHandler(bus, handler));
 		} catch (Throwable t) {

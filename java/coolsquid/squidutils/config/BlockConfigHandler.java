@@ -31,7 +31,7 @@ public class BlockConfigHandler extends ConfigHandler {
 					String name = (String) object;
 					Block block = Block.getBlockFromName(name);
 					if (SquidUtils.COMMON.isDebugMode()) {
-						SquidUtils.instance().info(name, " (", block.getClass().getName(), ')');
+						SquidUtils.instance().info(name + " (" + block.getClass().getName() + ')');
 					}
 					block.blockHardness = (float) this.config.get(name, "hardness", block.blockHardness).getDouble();
 					block.blockResistance = (float) this.config.get(name, "resistance", block.blockResistance).getDouble();

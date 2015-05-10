@@ -35,7 +35,7 @@ public class BiomeConfigHandler extends ConfigHandler {
 					name = biome.biomeID + "";
 				}
 				if (SquidUtils.COMMON.isDebugMode()) {
-					SquidUtils.instance().info(name, " (", biome.getClass().getName(), ')');
+					SquidUtils.instance().info(name + " (" + biome.getClass().getName() + ')');
 				}
 				biome.setBiomeName(this.config.get(name, "name", name).getString());
 				biome.topBlock = Block.getBlockFromName(this.config.get(name, "topBlock", Block.blockRegistry.getNameForObject(biome.topBlock)).getString());

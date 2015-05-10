@@ -40,7 +40,7 @@ public class ItemConfigHandler extends ConfigHandler {
 					String name = (String) object;
 					Item item = (Item) Item.itemRegistry.getObject(name);
 					if (SquidUtils.COMMON.isDebugMode()) {
-						SquidUtils.instance().info(name, " (", item.getClass().getName(), ')');
+						SquidUtils.instance().info(name + " (" + item.getClass().getName() + ')');
 					}
 					item.maxStackSize = this.config.get(name, "stacksize", item.maxStackSize).getInt();
 					item.maxDamage = this.config.get(name, "maxDamage", item.maxDamage).getInt();

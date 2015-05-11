@@ -10,13 +10,14 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.config.ConfigCategory;
 import coolsquid.squidapi.config.ConfigHandler;
+import coolsquid.squidapi.config.impl.ConfigHandlerImpl;
 import coolsquid.squidapi.creativetab.ITab;
 import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidutils.SquidUtils;
 
-public class CreativeTabConfigHandler extends ConfigHandler {
+public class CreativeTabConfigHandler extends ConfigHandlerImpl {
 
-	public static final CreativeTabConfigHandler INSTANCE = new CreativeTabConfigHandler(new File("./config/SquidUtils/CreativeTabs.cfg"));
+	public static final ConfigHandler INSTANCE = new CreativeTabConfigHandler(new File("./config/SquidUtils/CreativeTabs.cfg"));
 
 	private CreativeTabConfigHandler(File file) {
 		super(file);

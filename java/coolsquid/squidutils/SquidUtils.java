@@ -24,8 +24,11 @@ import coolsquid.squidapi.SquidAPIMod;
 import coolsquid.squidapi.compat.Compat;
 import coolsquid.squidapi.config.ConfigurationManager;
 import coolsquid.squidapi.helpers.server.ServerHelper;
+import coolsquid.squidapi.util.EventHandlerManager;
 import coolsquid.squidapi.util.MiscLib;
+import coolsquid.squidutils.api.ScriptingAPI;
 import coolsquid.squidutils.api.SquidUtilsAPI;
+import coolsquid.squidutils.api.impl.SquidUtilsAPIImpl;
 import coolsquid.squidutils.asm.Hooks;
 import coolsquid.squidutils.command.CommandSquidUtils;
 import coolsquid.squidutils.compat.AppleCoreCompat;
@@ -110,7 +113,6 @@ import coolsquid.squidutils.handlers.WitherHandler;
 import coolsquid.squidutils.helpers.PermissionHelper;
 import coolsquid.squidutils.scripting.ScriptHandler;
 import coolsquid.squidutils.scripting.components.Components;
-import coolsquid.squidutils.util.EventHandlerManager;
 import coolsquid.squidutils.util.ModInfo;
 import coolsquid.squidutils.util.ModLister;
 import coolsquid.squidutils.util.script.EventEffectHelper;
@@ -130,7 +132,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 @Mod(modid = ModInfo.modid, name = ModInfo.name, version = ModInfo.version, dependencies = ModInfo.dependencies, acceptableRemoteVersions = "*")
 public class SquidUtils extends SquidAPIMod implements Disableable {
 
-	public static final SquidUtilsAPI API = new SquidUtilsAPI();
+	public static final SquidUtilsAPI API = new SquidUtilsAPIImpl();
 	public static final CommonHandler COMMON = new CommonHandler();
 	private static final EventHandlerManager handlers = COMMON.getEventHandlerManager();
 
@@ -170,18 +172,19 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 
 		Components.init();
 
-		API.getScripting().addTrigger("achievement", new AchievementHandler());
-		API.getScripting().addTrigger("command", new CommandHandler());
-		API.getScripting().addTrigger("teleport", new TeleportationHandler());
-		API.getScripting().addTrigger("craft", new CraftingHandler());
-		API.getScripting().addTrigger("smelt", new SmeltingHandler());
-		API.getScripting().addTrigger("hurt", new DamageHandler());
-		API.getScripting().addTrigger("heal", new HealingHandler());
-		API.getScripting().addTrigger("toss", new TossHandler());
-		API.getScripting().addTrigger("entityjoin", new EntityHandler());
-		API.getScripting().addTrigger("explosion", new ExplosionHandler());
-		API.getScripting().addTrigger("interact", new InteractionHandler());
-		API.getScripting().addTrigger("chat", new ServerChatHandler());
+		ScriptingAPI scripting = API.getScripting();
+		scripting.addTrigger("achievement", new AchievementHandler());
+		scripting.addTrigger("command", new CommandHandler());
+		scripting.addTrigger("teleport", new TeleportationHandler());
+		scripting.addTrigger("craft", new CraftingHandler());
+		scripting.addTrigger("smelt", new SmeltingHandler());
+		scripting.addTrigger("hurt", new DamageHandler());
+		scripting.addTrigger("heal", new HealingHandler());
+		scripting.addTrigger("toss", new TossHandler());
+		scripting.addTrigger("entityjoin", new EntityHandler());
+		scripting.addTrigger("explosion", new ExplosionHandler());
+		scripting.addTrigger("interact", new InteractionHandler());
+		scripting.addTrigger("chat", new ServerChatHandler());
 
 		ScriptHandler.INSTANCE.init();
 

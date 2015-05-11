@@ -9,7 +9,7 @@ import java.util.List;
 
 import net.minecraftforge.event.CommandEvent;
 import coolsquid.squidapi.helpers.server.ServerHelper;
-import coolsquid.squidutils.api.ScriptingAPI.IEventTrigger;
+import coolsquid.squidutils.api.scripting.IEventTrigger;
 import coolsquid.squidutils.command.CommandCustom;
 import coolsquid.squidutils.util.script.EventEffectHelper;
 import coolsquid.squidutils.util.script.EventInfo;

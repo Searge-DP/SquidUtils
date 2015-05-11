@@ -8,11 +8,12 @@ import java.io.File;
 
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import coolsquid.squidapi.config.ConfigHandler;
+import coolsquid.squidapi.config.impl.ConfigHandlerImpl;
 import coolsquid.squidutils.SquidUtils;
 
-public class ArmorMaterialConfigHandler extends ConfigHandler {
+public class ArmorMaterialConfigHandler extends ConfigHandlerImpl {
 
-	public static final ArmorMaterialConfigHandler INSTANCE = new ArmorMaterialConfigHandler(new File("./config/SquidUtils/ArmorMaterials.cfg"));
+	public static final ConfigHandler INSTANCE = new ArmorMaterialConfigHandler(new File("./config/SquidUtils/ArmorMaterials.cfg"));
 
 	private ArmorMaterialConfigHandler(File file) {
 		super(file);

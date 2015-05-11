@@ -11,13 +11,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Achievement;
 import net.minecraft.stats.AchievementList;
 import coolsquid.squidapi.config.ConfigHandler;
+import coolsquid.squidapi.config.impl.ConfigHandlerImpl;
 import coolsquid.squidapi.helpers.AchievementHelper;
 import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidutils.SquidUtils;
 
-public class AchievementConfigHandler extends ConfigHandler {
+public class AchievementConfigHandler extends ConfigHandlerImpl {
 
-	public static final AchievementConfigHandler INSTANCE = new AchievementConfigHandler(new File("./config/SquidUtils/Achievements.cfg"));
+	public static final ConfigHandler INSTANCE = new AchievementConfigHandler(new File("./config/SquidUtils/Achievements.cfg"));
 
 	private AchievementConfigHandler(File file) {
 		super(file);

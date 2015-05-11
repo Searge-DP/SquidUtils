@@ -8,11 +8,12 @@ import java.io.File;
 
 import net.minecraft.util.DamageSource;
 import coolsquid.squidapi.config.ConfigHandler;
+import coolsquid.squidapi.config.impl.ConfigHandlerImpl;
 import coolsquid.squidutils.SquidUtils;
 
-public class DamageSourceConfigHandler extends ConfigHandler {
+public class DamageSourceConfigHandler extends ConfigHandlerImpl {
 
-	public static final DamageSourceConfigHandler INSTANCE = new DamageSourceConfigHandler(new File("./config/SquidUtils/DamageSources.cfg"));
+	public static final ConfigHandler INSTANCE = new DamageSourceConfigHandler(new File("./config/SquidUtils/DamageSources.cfg"));
 
 	private DamageSourceConfigHandler(File file) {
 		super(file);
@@ -20,7 +21,7 @@ public class DamageSourceConfigHandler extends ConfigHandler {
 
 	@Override
 	public void loadConfig() {
-		for (DamageSource source: SquidUtils.API.getDamageSources()) {
+		for (DamageSource source: SquidUtils.API.getDamageSources().values()) {
 			String name = source.damageType;
 			if (SquidUtils.COMMON.isDebugMode()) {
 				SquidUtils.instance().info(name + " (" + source.getClass().getName() + ')');

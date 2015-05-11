@@ -9,11 +9,12 @@ import java.io.File;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import coolsquid.squidapi.config.ConfigHandler;
+import coolsquid.squidapi.config.impl.ConfigHandlerImpl;
 import coolsquid.squidutils.SquidUtils;
 
-public class BlockMaterialConfigHandler extends ConfigHandler {
+public class BlockMaterialConfigHandler extends ConfigHandlerImpl {
 
-	public static final BlockMaterialConfigHandler INSTANCE = new BlockMaterialConfigHandler(new File("./config/SquidUtils/BlockMaterials.cfg"));
+	public static final ConfigHandler INSTANCE = new BlockMaterialConfigHandler(new File("./config/SquidUtils/BlockMaterials.cfg"));
 
 	private BlockMaterialConfigHandler(File file) {
 		super(file);

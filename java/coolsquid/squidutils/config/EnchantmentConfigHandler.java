@@ -9,11 +9,12 @@ import java.io.File;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnumEnchantmentType;
 import coolsquid.squidapi.config.ConfigHandler;
+import coolsquid.squidapi.config.impl.ConfigHandlerImpl;
 import coolsquid.squidapi.util.MiscLib;
 
-public class EnchantmentConfigHandler extends ConfigHandler {
+public class EnchantmentConfigHandler extends ConfigHandlerImpl {
 
-	public static final EnchantmentConfigHandler INSTANCE = new EnchantmentConfigHandler(new File("./config/SquidUtils/Enchantments.cfg"));
+	public static final ConfigHandler INSTANCE = new EnchantmentConfigHandler(new File("./config/SquidUtils/Enchantments.cfg"));
 
 	private EnchantmentConfigHandler(File file) {
 		super(file);

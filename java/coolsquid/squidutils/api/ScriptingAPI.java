@@ -4,86 +4,64 @@
  *******************************************************************************/
 package coolsquid.squidutils.api;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import net.minecraft.entity.EntityLivingBase;
+import coolsquid.squidutils.api.scripting.IEventAction;
+import coolsquid.squidutils.api.scripting.IEventCondition;
+import coolsquid.squidutils.api.scripting.IEventTrigger;
+import coolsquid.squidutils.api.scripting.ScriptCommand;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
+public interface ScriptingAPI {
 
-import coolsquid.squidutils.util.script.EventInfo;
+	/**
+	 * Gets the commands.
+	 * @return the commands
+	 */
+	public abstract Map<String, ScriptCommand> getCommands();
 
-public class ScriptingAPI {
+	/**
+	 * Gets the actions.
+	 * @return the actions
+	 */
+	public abstract Map<String, IEventAction> getActions();
 
-	private final HashMap<String, ScriptCommand> commands = Maps.newHashMap();
-	private final HashMap<String, IEventAction> actions = Maps.newHashMap();
-	private final HashMap<String, IEventTrigger> triggers = Maps.newHashMap();
-	private final HashMap<String, IEventCondition> conditions = Maps.newHashMap();
+	/**
+	 * Gets the triggers.
+	 * @return the triggers
+	 */
+	public abstract Map<String, IEventTrigger> getTriggers();
 
-	public ImmutableMap<String, ScriptCommand> getCommands() {
-		return ImmutableMap.copyOf(this.commands);
-	}
+	/**
+	 * Gets the conditions.
+	 * @return the conditions
+	 */
+	public abstract Map<String, IEventCondition> getConditions();
 
-	public ImmutableMap<String, IEventAction> getActions() {
-		return ImmutableMap.copyOf(this.actions);
-	}
+	/**
+	 * Adds a command.
+	 * @param name the name
+	 * @param command the command
+	 */
+	public abstract void addCommand(String name, ScriptCommand command);
 
-	public ImmutableMap<String, IEventTrigger> getTriggers() {
-		return ImmutableMap.copyOf(this.triggers);
-	}
+	/**
+	 * Adds an action.
+	 * @param name the name
+	 * @param action the action
+	 */
+	public abstract void addAction(String name, IEventAction action);
 
-	public ImmutableMap<String, IEventCondition> getConditions() {
-		return ImmutableMap.copyOf(this.conditions);
-	}
+	/**
+	 * Adds a trigger.
+	 * @param name the name
+	 * @param trigger the trigger
+	 */
+	public abstract void addTrigger(String name, IEventTrigger trigger);
 
-	public void addCommand(String name, ScriptCommand command) {
-		this.commands.put(name, command);
-	}
-
-	public void addAction(String name, IEventAction action) {
-		this.actions.put(name, action);
-	}
-
-	public void addTrigger(String name, IEventTrigger trigger) {
-		this.triggers.put(name, trigger);
-	}
-
-	public void addCondition(String name, IEventCondition argument) {
-		this.conditions.put(name, argument);
-	}
-
-	public static class ScriptCommand {
-		private final Map<String, IScriptSubcommand> subcommands;
-
-		public ScriptCommand(Map<String, IScriptSubcommand> subcommands) {
-			this.subcommands = subcommands;
-		}
-
-		public Map<String, IScriptSubcommand> getSubcommands() {
-			return this.subcommands;
-		}
-	}
-
-	public static interface IScriptSubcommand {
-		void run(Map<String, String> args);
-	}
-
-	public static interface IEventAction {
-		void run(EntityLivingBase entity, EventInfo info);
-		void init(EventInfo info);
-	}
-
-	public static interface IEventTrigger {
-		List<EventInfo> info();
-	}
-
-	public static interface IEventCondition {
-		void run(String condition);
-	}
-
-	public static ScriptingAPI create() {
-		return new ScriptingAPI();
-	}
+	/**
+	 * Adds a condition.
+	 * @param name the name
+	 * @param argument the argument
+	 */
+	public abstract void addCondition(String name, IEventCondition argument);
 }

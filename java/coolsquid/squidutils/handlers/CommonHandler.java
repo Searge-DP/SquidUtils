@@ -18,10 +18,10 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Sets;
 
 import coolsquid.squidapi.util.ContentRemover;
+import coolsquid.squidapi.util.EventHandlerManager;
 import coolsquid.squidapi.util.ContentRemover.ContentType;
 import coolsquid.squidapi.util.collect.Registry;
-import coolsquid.squidutils.api.IMCHandler;
-import coolsquid.squidutils.util.EventHandlerManager;
+import coolsquid.squidutils.api.impl.IMCHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

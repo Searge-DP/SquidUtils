@@ -7,12 +7,13 @@ package coolsquid.squidutils.config;
 import java.io.File;
 
 import coolsquid.squidapi.config.ConfigHandler;
+import coolsquid.squidapi.config.impl.ConfigHandlerImpl;
 import coolsquid.squidapi.util.Utils;
 import cpw.mods.fml.common.ICrashCallable;
 
-public class CrashCallableConfigHandler extends ConfigHandler {
+public class CrashCallableConfigHandler extends ConfigHandlerImpl {
 
-	public static final CrashCallableConfigHandler INSTANCE = new CrashCallableConfigHandler(new File("./config/SquidUtils/CrashCallables.cfg"));
+	public static final ConfigHandler INSTANCE = new CrashCallableConfigHandler(new File("./config/SquidUtils/CrashCallables.cfg"));
 
 	private CrashCallableConfigHandler(File file) {
 		super(file);

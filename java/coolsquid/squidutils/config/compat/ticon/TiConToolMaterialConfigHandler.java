@@ -9,11 +9,12 @@ import java.io.File;
 import tconstruct.library.TConstructRegistry;
 import tconstruct.library.tools.ToolMaterial;
 import coolsquid.squidapi.config.ConfigHandler;
+import coolsquid.squidapi.config.impl.ConfigHandlerImpl;
 import coolsquid.squidapi.reflection.ReflectionHelper;
 
-public class TiConToolMaterialConfigHandler extends ConfigHandler {
+public class TiConToolMaterialConfigHandler extends ConfigHandlerImpl {
 
-	public static final TiConToolMaterialConfigHandler INSTANCE = new TiConToolMaterialConfigHandler(new File("./config/SquidUtils/compat/TiCon/ToolMaterials.cfg"));
+	public static final ConfigHandler INSTANCE = new TiConToolMaterialConfigHandler(new File("./config/SquidUtils/compat/TiCon/ToolMaterials.cfg"));
 
 	public TiConToolMaterialConfigHandler(File file) {
 		super(file);

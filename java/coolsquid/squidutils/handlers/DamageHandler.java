@@ -9,7 +9,7 @@ import java.util.List;
 
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import coolsquid.squidutils.SquidUtils;
-import coolsquid.squidutils.api.ScriptingAPI.IEventTrigger;
+import coolsquid.squidutils.api.scripting.IEventTrigger;
 import coolsquid.squidutils.util.script.EventEffectHelper;
 import coolsquid.squidutils.util.script.EventInfo;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;

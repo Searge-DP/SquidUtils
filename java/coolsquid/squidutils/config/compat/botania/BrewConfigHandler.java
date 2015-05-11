@@ -17,10 +17,11 @@ import vazkii.botania.api.brew.Brew;
 import com.google.common.collect.Lists;
 
 import coolsquid.squidapi.config.ConfigHandler;
+import coolsquid.squidapi.config.impl.ConfigHandlerImpl;
 
-public class BrewConfigHandler extends ConfigHandler {
+public class BrewConfigHandler extends ConfigHandlerImpl {
 
-	public static final BrewConfigHandler INSTANCE = new BrewConfigHandler(new File("./config/SquidUtils/compat/Botania/BrewRecipes.cfg"));
+	public static final ConfigHandler INSTANCE = new BrewConfigHandler(new File("./config/SquidUtils/compat/Botania/BrewRecipes.cfg"));
 
 	private BrewConfigHandler(File file) {
 		super(file);

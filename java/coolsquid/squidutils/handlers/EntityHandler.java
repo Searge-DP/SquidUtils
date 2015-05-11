@@ -23,7 +23,7 @@ import com.google.common.collect.Sets;
 
 import coolsquid.squidapi.helpers.PotionHelper;
 import coolsquid.squidapi.util.EffectInfo;
-import coolsquid.squidutils.api.ScriptingAPI.IEventTrigger;
+import coolsquid.squidutils.api.scripting.IEventTrigger;
 import coolsquid.squidutils.config.ModConfigHandler;
 import coolsquid.squidutils.util.EntityInfo;
 import coolsquid.squidutils.util.script.EventEffectHelper;

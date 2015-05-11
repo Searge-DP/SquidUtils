@@ -11,13 +11,13 @@ import javax.swing.JOptionPane;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.monster.EntityEnderman;
-import coolsquid.squidapi.config.ConfigHandler;
+import coolsquid.squidapi.config.impl.ConfigHandlerImpl;
 import coolsquid.squidapi.reflection.ReflectionHelper;
 import coolsquid.squidapi.util.Utils;
 import coolsquid.squidutils.SquidUtils;
 import coolsquid.squidutils.asm.Hooks;
 
-public class ModConfigHandler extends ConfigHandler {
+public class ModConfigHandler extends ConfigHandlerImpl {
 
 	public static final ModConfigHandler INSTANCE = new ModConfigHandler(new File("./config/SquidUtils/SquidUtils.cfg"));
 

@@ -7,7 +7,7 @@ package coolsquid.squidutils.handlers;
 import java.util.ArrayList;
 import java.util.List;
 
-import coolsquid.squidutils.api.ScriptingAPI.IEventTrigger;
+import coolsquid.squidutils.api.scripting.IEventTrigger;
 import coolsquid.squidutils.util.script.EventEffectHelper;
 import coolsquid.squidutils.util.script.EventInfo;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;

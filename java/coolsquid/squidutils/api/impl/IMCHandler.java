@@ -2,7 +2,7 @@
  * Copyright (c) 2015 CoolSquid.
  * All rights reserved.
  *******************************************************************************/
-package coolsquid.squidutils.api;
+package coolsquid.squidutils.api.impl;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -16,12 +16,22 @@ import cpw.mods.fml.common.event.FMLInterModComms.IMCMessage;
 
 public class IMCHandler {
 
+	/**
+	 * Handles an IMC event.
+	 *
+	 * @param event the event
+	 */
 	public void handleIMCEvent(IMCEvent event) {
 		for (IMCMessage message: event.getMessages()) {
 			this.handleMessage(message);
 		}
 	}
 
+	/**
+	 * Handles an IMC message.
+	 *
+	 * @param message the message
+	 */
 	public void handleMessage(IMCMessage message) {
 		try {
 			if (message.isStringMessage()) {
@@ -58,7 +68,7 @@ public class IMCHandler {
 		}
 	}
 
-	public void handleString(String key, String message, String sender) throws ClassNotFoundException {
+	private void handleString(String key, String message, String sender) throws ClassNotFoundException {
 		String[] values = message.split(" ");
 		Object object = ReflectionHelper.in(Class.forName(values[0])).field(values[1], values[1]).get();
 		if (key.equals("registerDamageSource")) {
@@ -70,10 +80,10 @@ public class IMCHandler {
 	}
 
 	private static void registerDamageSource(String mod, DamageSource source) {
-		SquidUtils.API.damageSources.register(mod + ':' + source.damageType, source);
+		((SquidUtilsAPIImpl) SquidUtils.API).damageSources.register(mod + ':' + source.damageType, source);
 	}
 
 	private static void registerMaterial(String mod, String name, Material material) {
-		SquidUtils.API.materials.register(mod + ':' + name, material);
+		((SquidUtilsAPIImpl) SquidUtils.API).materials.register(mod + ':' + name, material);
 	}
 }

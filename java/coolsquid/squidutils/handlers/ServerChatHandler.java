@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraftforge.event.ServerChatEvent;
-import coolsquid.squidutils.api.ScriptingAPI.IEventTrigger;
+import coolsquid.squidutils.api.scripting.IEventTrigger;
 import coolsquid.squidutils.config.ModConfigHandler;
 import coolsquid.squidutils.util.script.EventEffectHelper;
 import coolsquid.squidutils.util.script.EventInfo;

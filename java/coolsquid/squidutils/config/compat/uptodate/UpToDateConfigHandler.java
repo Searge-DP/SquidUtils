@@ -10,15 +10,16 @@ import java.util.Map;
 import pt.uptodate.FetchedUpdateable;
 import pt.uptodate.UpToDate;
 import coolsquid.squidapi.config.ConfigHandler;
+import coolsquid.squidapi.config.impl.ConfigHandlerImpl;
 import coolsquid.squidapi.util.DataSorter;
 import coolsquid.squidapi.util.io.WebUtils;
 import coolsquid.squidapi.util.math.IntUtils;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 
-public class UpToDateConfigHandler extends ConfigHandler {
+public class UpToDateConfigHandler extends ConfigHandlerImpl {
 
-	public static final UpToDateConfigHandler INSTANCE = new UpToDateConfigHandler(new File("./config/SquidUtils/UpToDate.cfg"));
+	public static final ConfigHandler INSTANCE = new UpToDateConfigHandler(new File("./config/SquidUtils/UpToDate.cfg"));
 
 	public UpToDateConfigHandler(File file) {
 		super(file);
@@ -32,12 +33,12 @@ public class UpToDateConfigHandler extends ConfigHandler {
 			String name = data.containsKey("name") ? data.get("name") : modid;
 			if (Loader.isModLoaded(modid)) {
 				ModContainer mod = Loader.instance().getIndexedModList().get(modid);
-				UpToDate.registerFetched(newFetchedUpdateable(name, mod.getVersion(), mod.getMetadata().url, data.get("url")));
+				UpToDate.registerFetched(fetchUpdate(name, mod.getVersion(), mod.getMetadata().url, data.get("url")));
 			}
 		}
 	}
 
-	private static FetchedUpdateable newFetchedUpdateable(String name, String version, String friendlyUrl, String url) {
+	private static FetchedUpdateable fetchUpdate(String name, String version, String friendlyUrl, String url) {
 		Map<String, String> data = DataSorter.sort(WebUtils.readAll(url), "version", "severity", "url");
 		String remoteVersion = data.get("version");
 		int severity = IntUtils.parseInt(data.get("severity"));

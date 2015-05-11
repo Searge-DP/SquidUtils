@@ -9,11 +9,12 @@ import java.io.File;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import coolsquid.squidapi.config.ConfigHandler;
+import coolsquid.squidapi.config.impl.ConfigHandlerImpl;
 import coolsquid.squidapi.util.MiscLib;
 
-public class FluidConfigHandler extends ConfigHandler {
+public class FluidConfigHandler extends ConfigHandlerImpl {
 
-	public static final FluidConfigHandler INSTANCE = new FluidConfigHandler(new File("./config/SquidUtils/Fluids.cfg"));
+	public static final ConfigHandler INSTANCE = new FluidConfigHandler(new File("./config/SquidUtils/Fluids.cfg"));
 
 	private FluidConfigHandler(File file) {
 		super(file);

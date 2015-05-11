@@ -14,13 +14,14 @@ import net.minecraft.world.biome.BiomeGenBase.FlowerEntry;
 import com.google.common.collect.Lists;
 
 import coolsquid.squidapi.config.ConfigHandler;
+import coolsquid.squidapi.config.impl.ConfigHandlerImpl;
 import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidutils.SquidUtils;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 
-public class BiomeConfigHandler extends ConfigHandler {
+public class BiomeConfigHandler extends ConfigHandlerImpl {
 
-	public static final BiomeConfigHandler INSTANCE = new BiomeConfigHandler(new File("./config/SquidUtils/Biomes.cfg"));
+	public static final ConfigHandler INSTANCE = new BiomeConfigHandler(new File("./config/SquidUtils/Biomes.cfg"));
 
 	private BiomeConfigHandler(File file) {
 		super(file);

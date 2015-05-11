@@ -6,13 +6,13 @@ package coolsquid.squidutils.config;
 
 import java.io.File;
 
-import coolsquid.squidapi.config.ConfigHandler;
+import coolsquid.squidapi.config.impl.ConfigHandlerImpl;
 import coolsquid.squidutils.util.PackIntegrityChecker;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class ModListConfigHandler extends ConfigHandler {
+public class ModListConfigHandler extends ConfigHandlerImpl {
 
 	public static final ModListConfigHandler INSTANCE = new ModListConfigHandler(new File("./config/SquidUtils/Modlist.cfg"));
 

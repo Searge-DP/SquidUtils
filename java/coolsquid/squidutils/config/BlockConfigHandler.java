@@ -10,14 +10,15 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.init.Blocks;
 import coolsquid.squidapi.config.ConfigHandler;
+import coolsquid.squidapi.config.impl.ConfigHandlerImpl;
 import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidapi.util.StringParser;
 import coolsquid.squidapi.util.StringUtils;
 import coolsquid.squidutils.SquidUtils;
 
-public class BlockConfigHandler extends ConfigHandler {
+public class BlockConfigHandler extends ConfigHandlerImpl {
 
-	public static final BlockConfigHandler INSTANCE = new BlockConfigHandler(new File("./config/SquidUtils/Blocks.cfg"));
+	public static final ConfigHandler INSTANCE = new BlockConfigHandler(new File("./config/SquidUtils/Blocks.cfg"));
 
 	private BlockConfigHandler(File file) {
 		super(file);

@@ -236,9 +236,6 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 		if (ModConfigHandler.INSTANCE.noWitherBoss) {
 			handlers.registerForgeHandler(new WitherHandler());
 		}
-		if (ModConfigHandler.INSTANCE.chainRecipes) {
-			ModRecipes.chain();
-		}
 		if (ModConfigHandler.INSTANCE.noDebug && MiscLib.CLIENT) {
 			handlers.registerForgeHandler(new DebugHandler());
 		}

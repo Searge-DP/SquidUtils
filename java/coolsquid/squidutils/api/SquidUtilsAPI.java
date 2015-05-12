@@ -8,6 +8,10 @@ import net.minecraft.block.material.Material;
 import net.minecraft.util.DamageSource;
 import coolsquid.squidapi.util.collect.Registry;
 
+/**
+ * Instructions may be found at http://coolsquidmc.blogspot.no/2015/05/using-squidutils-api.html
+ */
+
 public interface SquidUtilsAPI {
 
 	/**

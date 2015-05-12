@@ -7,20 +7,17 @@ package coolsquid.squidutils.api.impl;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.DamageSource;
 import coolsquid.squidapi.util.collect.Registry;
+import coolsquid.squidapi.util.collect.impl.RegistryImpl;
 import coolsquid.squidutils.SquidUtils;
 import coolsquid.squidutils.api.ScriptingAPI;
 import coolsquid.squidutils.api.SquidUtilsAPI;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 
-/**
- * Instructions may be found at http://coolsquidmc.blogspot.no/2015/05/using-squidutils-api.html.
- */
-
 public class SquidUtilsAPIImpl implements SquidUtilsAPI {
 
-	final Registry<DamageSource> damageSources = Registry.create();
-	final Registry<Material> materials = Registry.create();
+	final Registry<DamageSource> damageSources = new RegistryImpl<DamageSource>();
+	final Registry<Material> materials = new RegistryImpl<Material>();
 
 	private final ScriptingAPI scripting = new ScriptingAPIImpl();
 

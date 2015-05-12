@@ -18,9 +18,10 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Sets;
 
 import coolsquid.squidapi.util.ContentRemover;
-import coolsquid.squidapi.util.EventHandlerManager;
 import coolsquid.squidapi.util.ContentRemover.ContentType;
+import coolsquid.squidapi.util.EventHandlerManager;
 import coolsquid.squidapi.util.collect.Registry;
+import coolsquid.squidapi.util.collect.impl.RegistryImpl;
 import coolsquid.squidutils.api.impl.IMCHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -33,9 +34,9 @@ public class CommonHandler {
 	private final Set<Block> physics = Sets.newHashSet();
 	private final Set<Character> allowedChars = Sets.newHashSet();
 	private final Set<ElementType> disabledOverlays = Sets.newHashSet();
-	private final Registry<CreativeTabs> creativeTabs = Registry.create();
+	private final Registry<CreativeTabs> creativeTabs = new RegistryImpl<CreativeTabs>();
 	private final ArrayListMultimap<Item, String> tooltips = ArrayListMultimap.create();
-	private final EventHandlerManager eventHandlerManager = EventHandlerManager.create();
+	private final EventHandlerManager eventHandlerManager = new EventHandlerManager();
 	private final IMCHandler imc = new IMCHandler();
 	private boolean debug;
 

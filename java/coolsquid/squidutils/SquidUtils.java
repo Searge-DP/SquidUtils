@@ -151,7 +151,6 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 	@EventHandler
 	private void preInit(FMLPreInitializationEvent event) {
 		this.info("Preinitializing.");
-		this.info("Version id: " + this.hash());
 
 		new File("./config/SquidUtils").mkdirs();
 		ModConfigHandler.INSTANCE.init();
@@ -450,14 +449,12 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 	@Override
 	public void disable() {
 		handlers.unregisterAll();
-		this.setEnabledState(false);
 		this.info("SquidUtils has been disabled.");
 	}
 
 	@Override
 	public void enable() {
 		handlers.registerAll();
-		this.setEnabledState(true);
 		this.info("SquidUtils has been enabled.");
 	}
 

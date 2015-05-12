@@ -67,6 +67,7 @@ import coolsquid.starstones.block.MeteorType;
 import coolsquid.starstones.creativetab.ModCreativeTabs;
 import cpw.mods.fml.common.registry.VillagerRegistry;
 
+@SuppressWarnings("deprecation")
 public class Components {
 
 	public static void init() {
@@ -313,9 +314,6 @@ public class Components {
 			if (a != null) {
 				SquidUtils.instance().warn(StringUtils.newString(a, " has requested to be blacklisted from modification. ", args.get("item"), " will not be modified."));
 				return;
-			}
-			if (type.equals("explosive")) {
-				RegistryHelper.addExplosionRecipe(StringParser.parseItem(args.get("input")), output, Float.parseFloat(args.get("size")));
 			}
 			else if (type.equals("shapeless")) {
 				RegistryHelper.addShapelessRecipe(output, new ItemStack[] {StringParser.parseItemStack(args.get("input"))});

@@ -270,15 +270,15 @@ public class Components {
 				if (args.containsKey("url")) {
 					command.setUrl(args.get("url"));
 				}
-				SquidAPI.instance().commands.add(command);
+				SquidAPI.COMMON.registerCommand(command);
 			}
 			else if (type.equals("web")) {
 				CommandWeb command = new CommandWeb(name, desc, args.get("url"));
-				SquidAPI.instance().commands.add(command);
+				SquidAPI.COMMON.registerCommand(command);
 			}
 			else if (type.equals("basic")) {
 				CommandCustom command = new CommandCustom(name, desc, Boolean.parseBoolean(args.get("requiresop")));
-				SquidAPI.instance().commands.add(command);
+				SquidAPI.COMMON.registerCommand(command);
 			}
 		}
 	}

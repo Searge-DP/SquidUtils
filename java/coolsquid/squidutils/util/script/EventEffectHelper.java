@@ -19,7 +19,6 @@ import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidapi.util.Utils;
 import coolsquid.squidutils.SquidUtils;
 import coolsquid.squidutils.handlers.DifficultyHandler;
-import coolsquid.squidutils.helpers.PermissionHelper;
 
 public class EventEffectHelper {
 
@@ -41,15 +40,6 @@ public class EventEffectHelper {
 		}
 		if (((int) info.values.get("minarmor")) >= entity.getTotalArmorValue() || ((int) info.values.get("maxarmor")) <= entity.getTotalArmorValue()) {
 			return;
-		}
-		if (entity instanceof EntityPlayer) {
-			EntityPlayer player = (EntityPlayer) entity;
-			if (info.values.containsKey("requiredperm") && !PermissionHelper.INSTANCE.hasPermission(player.getGameProfile().getId(), (String) info.values.get("requiredperm"))) {
-				return;
-			}
-			if (info.values.containsKey("oppositeperm") && PermissionHelper.INSTANCE.hasPermission(player.getGameProfile().getId(), (String) info.values.get("oppositeperm"))) {
-				return;
-			}
 		}
 		if (SquidUtils.API.getScripting().getActions().containsKey(info.values.get("action"))) {
 			SquidUtils.API.getScripting().getActions().get(info.values.get("action")).run(entity, info);

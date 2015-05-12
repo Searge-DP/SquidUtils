@@ -110,7 +110,6 @@ import coolsquid.squidutils.handlers.ToolTipHandler;
 import coolsquid.squidutils.handlers.TossHandler;
 import coolsquid.squidutils.handlers.VillagerHandler;
 import coolsquid.squidutils.handlers.WitherHandler;
-import coolsquid.squidutils.helpers.PermissionHelper;
 import coolsquid.squidutils.scripting.ScriptHandler;
 import coolsquid.squidutils.scripting.components.Components;
 import coolsquid.squidutils.util.ModInfo;
@@ -303,10 +302,6 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 		if (ScriptHandler.INSTANCE.onChat || ModConfigHandler.INSTANCE.minMessageLength != 1) {
 			handlers.registerForgeHandler(new ServerChatHandler());
 		}
-		if (ScriptHandler.INSTANCE.permissions) {
-			PermissionHelper.INSTANCE.init();
-			handlers.registerForgeHandler(PermissionHelper.INSTANCE);
-		}
 		if (ModConfigHandler.INSTANCE.worldSize > 0) {
 			handlers.registerForgeHandler(new LivingUpdateHandler());
 		}
@@ -321,7 +316,7 @@ public class SquidUtils extends SquidAPIMod implements Disableable {
 				MinecraftForge.EVENT_BUS.register(BlockBoxHandler.INSTANCE);
 			}
 			MinecraftForge.EVENT_BUS.register(new GuiHandler());
-			SquidAPI.instance().registerCommands(new CommandSquidUtils());
+			SquidAPI.COMMON.registerCommand(new CommandSquidUtils());
 			if (ModConfigHandler.INSTANCE.defaultSeed != 0) {
 				handlers.registerForgeHandler(new SeedForcer());
 			}

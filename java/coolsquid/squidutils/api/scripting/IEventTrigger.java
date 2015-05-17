@@ -6,7 +6,7 @@ package coolsquid.squidutils.api.scripting;
 
 import java.util.List;
 
-import coolsquid.squidutils.util.script.EventInfo;
+import coolsquid.squidutils.util.EventInfo;
 
 public interface IEventTrigger {
 	public abstract List<EventInfo> info();

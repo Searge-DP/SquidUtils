@@ -19,10 +19,9 @@ import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
 
-import coolsquid.squidapi.asm.ASMHelper;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 
-@IFMLLoadingPlugin.TransformerExclusions({"coolsquid.squidutils.asm", "coolsquid.squidutils"})
+@IFMLLoadingPlugin.TransformerExclusions("coolsquid.squidutils.asm")
 public class SquidUtilsPlugin implements IFMLLoadingPlugin, IClassTransformer {
 
 	public static final Logger LOGGER = LogManager.getLogger("SquidUtils");
@@ -44,6 +43,7 @@ public class SquidUtilsPlugin implements IFMLLoadingPlugin, IClassTransformer {
 
 	@Override
 	public void injectData(Map<String, Object> data) {
+
 	}
 
 	@Override

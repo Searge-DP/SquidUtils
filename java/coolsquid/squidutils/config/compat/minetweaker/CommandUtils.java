@@ -2,7 +2,7 @@
  * Copyright (c) 2015 CoolSquid.
  * All rights reserved.
  *******************************************************************************/
-package coolsquid.squidutils.compat.minetweaker;
+package coolsquid.squidutils.config.compat.minetweaker;
 
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;

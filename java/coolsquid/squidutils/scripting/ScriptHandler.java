@@ -18,7 +18,7 @@ import coolsquid.squidapi.util.io.FileFilters;
 import coolsquid.squidapi.util.io.IOUtils;
 import coolsquid.squidapi.util.math.IntUtils;
 import coolsquid.squidutils.SquidUtils;
-import coolsquid.squidutils.util.script.EventInfo;
+import coolsquid.squidutils.util.EventInfo;
 
 public class ScriptHandler {
 

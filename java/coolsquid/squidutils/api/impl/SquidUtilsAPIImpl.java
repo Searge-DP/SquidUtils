@@ -14,12 +14,16 @@ import coolsquid.squidutils.api.SquidUtilsAPI;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 
+/**
+ * @author CoolSquid
+ * @see coolsquid.squidutils.api.SquidUtilsAPI
+ */
 public class SquidUtilsAPIImpl implements SquidUtilsAPI {
 
 	final Registry<DamageSource> damageSources = new RegistryImpl<DamageSource>();
 	final Registry<Material> materials = new RegistryImpl<Material>();
 
-	private final ScriptingAPI scripting = new ScriptingAPIImpl();
+	private ScriptingAPI scripting;
 
 	public SquidUtilsAPIImpl() {
 		this.damageSources.register("anvil", DamageSource.anvil);
@@ -112,8 +116,11 @@ public class SquidUtilsAPIImpl implements SquidUtilsAPI {
 	}
 
 	@Override
-	@Deprecated
 	public ScriptingAPI getScripting() {
 		return this.scripting;
+	}
+
+	public void setScripting(ScriptingAPI scripting) {
+		this.scripting = scripting;
 	}
 }

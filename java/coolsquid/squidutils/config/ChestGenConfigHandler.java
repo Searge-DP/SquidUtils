@@ -11,7 +11,6 @@ import java.util.HashMap;
 import net.minecraft.item.Item;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.common.ChestGenHooks;
-import net.minecraftforge.common.config.ConfigCategory;
 import coolsquid.squidapi.config.ConfigHandler;
 import coolsquid.squidapi.config.impl.ConfigHandlerImpl;
 import coolsquid.squidapi.reflection.ReflectionHelper;
@@ -39,17 +38,6 @@ public class ChestGenConfigHandler extends ConfigHandlerImpl {
 				content.itemWeight = this.config.get(name, "weight", content.itemWeight).getInt();
 				content.theMaximumChanceToGenerateItem = this.config.get(name, "minChance", content.theMaximumChanceToGenerateItem).getInt();
 				content.theMinimumChanceToGenerateItem = this.config.get(name, "minChance", content.theMinimumChanceToGenerateItem).getInt();
-			}
-		}
-		String customChestGen = "customChestGen";
-		for (ConfigCategory child: this.config.getCategory(customChestGen).getChildren()) {
-			for (ConfigCategory category: child.getChildren()) {
-				Item item = (Item) Item.itemRegistry.getObject(category.getName());
-				int damage = category.get("damage").getInt();
-				int minChance = category.get("minAmount").getInt();
-				int maxChance = category.get("maxAmount").getInt();
-				int weight = category.get("weight").getInt();
-				ChestGenHooks.addItem(child.getName(), new WeightedRandomChestContent(item, damage, minChance, maxChance, weight));
 			}
 		}
 	}

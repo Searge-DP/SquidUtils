@@ -5,7 +5,7 @@
 package coolsquid.squidutils.api.scripting;
 
 import net.minecraft.entity.EntityLivingBase;
-import coolsquid.squidutils.util.script.EventInfo;
+import coolsquid.squidutils.util.EventInfo;
 
 public interface IEventAction {
 	public abstract void run(EntityLivingBase entity, EventInfo info);

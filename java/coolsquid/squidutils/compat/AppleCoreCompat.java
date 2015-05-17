@@ -10,19 +10,18 @@ import coolsquid.squidutils.config.ModConfigHandler;
 import coolsquid.squidutils.handlers.FoodHandler;
 import coolsquid.squidutils.handlers.PlantHandler;
 import coolsquid.squidutils.handlers.RegenHandler;
-import coolsquid.squidutils.scripting.ScriptHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class AppleCoreCompat {
-	
+
 	public static void init() {
-		if (ModConfigHandler.INSTANCE.starvationDamage != 1.0F || ScriptHandler.INSTANCE.onStarve) {
+		if (ModConfigHandler.INSTANCE.starvationDamage != 1.0F) {
 			MinecraftForge.EVENT_BUS.register(new FoodHandler());
 		}
 		if (ModConfigHandler.INSTANCE.noPlantGrowth) {
 			MinecraftForge.EVENT_BUS.register(new PlantHandler());
 		}
-		if (ModConfigHandler.INSTANCE.noHungerRegen || ScriptHandler.INSTANCE.onHungerRegen) {
+		if (ModConfigHandler.INSTANCE.noHungerRegen) {
 			MinecraftForge.EVENT_BUS.register(new RegenHandler());
 		}
 		if (ModConfigHandler.INSTANCE.exhaustionMultiplier != 1.0F) {

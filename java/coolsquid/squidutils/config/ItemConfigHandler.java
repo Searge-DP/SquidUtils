@@ -8,12 +8,8 @@ import java.io.File;
 import java.util.List;
 
 import net.minecraft.item.Item;
-import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor;
-import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemFood;
-import net.minecraft.item.ItemHoe;
-import net.minecraft.item.ItemSword;
 import net.minecraft.item.ItemTool;
 
 import com.google.common.collect.Lists;
@@ -81,15 +77,6 @@ public class ItemConfigHandler extends ConfigHandlerImpl {
 					else if (item instanceof ItemArmor) {
 						ItemArmor armor = (ItemArmor) item;
 						armor.damageReduceAmount = this.config.get(name, "damageReduceAmount", armor.damageReduceAmount).getInt();
-						armor.material = ArmorMaterial.valueOf(this.config.get(name, "armorMaterial", armor.getArmorMaterial().toString()).getString());
-					}
-					else if (item instanceof ItemSword) {
-						ItemSword sword = (ItemSword) item;
-						sword.field_150933_b = ToolMaterial.valueOf(this.config.get(name, "toolMaterial", sword.getToolMaterialName()).getString());
-					}
-					else if (item instanceof ItemHoe) {
-						ItemHoe hoe = (ItemHoe) item;
-						hoe.theToolMaterial = ToolMaterial.valueOf(this.config.get(name, "toolMaterial", hoe.getToolMaterialName()).getString());
 					}
 					String tooltip = this.config.get(name, "tooltip", "").getString();
 					if (!tooltip.isEmpty()) {

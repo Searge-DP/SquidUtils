@@ -2,7 +2,7 @@
  * Copyright (c) 2015 CoolSquid.
  * All rights reserved.
  *******************************************************************************/
-package coolsquid.squidutils.util.script;
+package coolsquid.squidutils.scripting;
 
 import java.util.HashMap;
 
@@ -19,6 +19,7 @@ import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidapi.util.Utils;
 import coolsquid.squidutils.SquidUtils;
 import coolsquid.squidutils.handlers.DifficultyHandler;
+import coolsquid.squidutils.util.EventInfo;
 
 public class EventEffectHelper {
 

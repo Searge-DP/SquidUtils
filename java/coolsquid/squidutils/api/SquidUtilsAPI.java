@@ -9,7 +9,8 @@ import net.minecraft.util.DamageSource;
 import coolsquid.squidapi.util.collect.Registry;
 
 /**
- * Instructions may be found at http://coolsquidmc.blogspot.no/2015/05/using-squidutils-api.html
+ * Instructions may be found at {@link http://coolsquidmc.blogspot.no/2015/05/using-squidutils-api.html}
+ * @author CoolSquid
  */
 
 public interface SquidUtilsAPI {
@@ -40,9 +41,7 @@ public interface SquidUtilsAPI {
 	public abstract Registry<Material> getMaterials();
 
 	/**
-	 * Will undergo big changes eventually.
-	 * @return the scripting API
+	 * @return the scripting API if SquidUtils|Scripting is loaded, or null if it's not.
 	 */
 	public abstract ScriptingAPI getScripting();
-
 }

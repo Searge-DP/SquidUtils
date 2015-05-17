@@ -4,38 +4,17 @@
  *******************************************************************************/
 package coolsquid.squidutils.handlers;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraftforge.event.ServerChatEvent;
-import coolsquid.squidutils.api.scripting.IEventTrigger;
 import coolsquid.squidutils.config.ModConfigHandler;
-import coolsquid.squidutils.util.script.EventEffectHelper;
-import coolsquid.squidutils.util.script.EventInfo;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
-public class ServerChatHandler implements IEventTrigger {
-
-	public static final List<EventInfo> info = new ArrayList<EventInfo>();
-
-	@Override
-	public List<EventInfo> info() {
-		return info;
-	}
+public class ServerChatHandler {
 
 	@SubscribeEvent
 	public void onChat(ServerChatEvent event) {
 		if (event.message.length() < ModConfigHandler.INSTANCE.minMessageLength) {
 			event.setCanceled(true);
 			return;
-		}
-		for (EventInfo a: info) {
-			if (!a.values.containsKey("chattrigger") || event.message.contains((String) a.values.get("chattrigger"))) {
-				EventEffectHelper.performEffects(a, event.player);
-				if (a.values.get("cancel") != null) {
-					event.setCanceled(true);
-				}
-			}
 		}
 	}
 }

@@ -11,6 +11,10 @@ import coolsquid.squidutils.api.scripting.IEventCondition;
 import coolsquid.squidutils.api.scripting.IEventTrigger;
 import coolsquid.squidutils.api.scripting.ScriptCommand;
 
+/**
+ * Will undergo big changes. You have been warned.
+ * @author CoolSquid
+ */
 public interface ScriptingAPI {
 
 	/**

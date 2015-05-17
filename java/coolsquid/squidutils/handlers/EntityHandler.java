@@ -4,57 +4,38 @@
  *******************************************************************************/
 package coolsquid.squidutils.handlers;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIAvoidEntity;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
 import coolsquid.squidapi.helpers.PotionHelper;
 import coolsquid.squidapi.util.EffectInfo;
-import coolsquid.squidutils.api.scripting.IEventTrigger;
+import coolsquid.squidutils.SquidUtils;
 import coolsquid.squidutils.config.ModConfigHandler;
 import coolsquid.squidutils.util.EntityInfo;
-import coolsquid.squidutils.util.script.EventEffectHelper;
-import coolsquid.squidutils.util.script.EventInfo;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
-public class EntityHandler implements IEventTrigger {
+public class EntityHandler {
 
 	public static final Set<Class<? extends Entity>> disable = Sets.newHashSet();
-
-	public static final List<EventInfo> info = new ArrayList<EventInfo>();
 	public static final Map<Class<Entity>, EntityInfo> properties = Maps.newHashMap();
-
-	@Override
-	public List<EventInfo> info() {
-		return info;
-	}
 
 	@SubscribeEvent
 	public void onJoin(EntityJoinWorldEvent event) {
-		Entity entity = event.entity;
 		if (disable.contains(event.entity.getClass())) {
 			event.setCanceled(true);
 			return;
-		}
-		if (entity instanceof EntityLivingBase) {
-			for (EventInfo a: info) {
-				if (EventEffectHelper.isCorrectType((EntityLivingBase) entity, (String) a.values.get("entitytype"))) {
-					EventEffectHelper.performEffects(a, (EntityLivingBase) entity);
-				}
-			}
 		}
 	}
 
@@ -101,6 +82,13 @@ public class EntityHandler implements IEventTrigger {
 		else if (entity instanceof EntityLightningBolt) {
 			EntityLightningBolt bolt = (EntityLightningBolt) entity;
 			bolt.boltLivingTime *= ModConfigHandler.INSTANCE.boltLivingTimeMultiplier;
+		}
+	}
+
+	@SubscribeEvent
+	public void onHurt(LivingHurtEvent event) {
+		if (SquidUtils.COMMON.getDisabledDamageSources().contains(event.source)) {
+			event.setCanceled(true);
 		}
 	}
 }

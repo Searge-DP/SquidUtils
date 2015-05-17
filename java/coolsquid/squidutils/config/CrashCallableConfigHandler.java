@@ -5,6 +5,7 @@
 package coolsquid.squidutils.config;
 
 import java.io.File;
+import java.util.List;
 
 import coolsquid.squidapi.config.ConfigHandler;
 import coolsquid.squidapi.config.impl.ConfigHandlerImpl;
@@ -21,12 +22,13 @@ public class CrashCallableConfigHandler extends ConfigHandlerImpl {
 
 	@Override
 	public void loadConfig() {
-		for (int a = 0; a < Utils.getCrashCallables().size(); a++) {
-			ICrashCallable callable = Utils.getCrashCallables().get(a);
+		List<ICrashCallable> list = Utils.getCrashCallables();
+		for (int a = 0; a < list.size(); a++) {
+			ICrashCallable callable = list.get(a);
 			if (!callable.getClass().getName().startsWith("coolsquid.")) {
 				String name = callable.getLabel().replace(":", "").replace(" ", "");
 				if (!this.config.get(name, "enable", true).getBoolean()) {
-					Utils.getCrashCallables().remove(a);
+					list.remove(a);
 				}
 			}
 		}

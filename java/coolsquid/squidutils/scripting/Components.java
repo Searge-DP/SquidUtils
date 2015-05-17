@@ -2,7 +2,7 @@
  * Copyright (c) 2015 CoolSquid.
  * All rights reserved.
  *******************************************************************************/
-package coolsquid.squidutils.scripting.components;
+package coolsquid.squidutils.scripting;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;

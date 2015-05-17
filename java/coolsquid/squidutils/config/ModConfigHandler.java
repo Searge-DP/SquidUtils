@@ -46,7 +46,6 @@ public class ModConfigHandler extends ConfigHandlerImpl {
 	public int pearlStack = 16;
 	public int maxRenderDistance = 16;
 	public boolean tntDropItems = true;
-	public boolean villagerProtection;
 	public boolean logStuff;
 	public int stackSizeDivider = 0;
 	public boolean allBlocksUnbreakable;
@@ -113,7 +112,6 @@ public class ModConfigHandler extends ConfigHandlerImpl {
 		this.pearlStack = this.config.getInt("maxEnderPearlStackSize", this.CATEGORY_PROPERTIES, 16, 1, 64, "Sets the max stacksize for enderpearls.");
 		this.maxRenderDistance = this.config.getInt("maxRenderDistance", this.CATEGORY_GAMESETTINGS, 16, 1, 16, "Sets the max render distance. Set to 16 to disable.");
 		this.tntDropItems = this.config.getBoolean("tntDropItems", this.CATEGORY_GENERAL, true, "Should TNT drop items when removed? Only applies if \"noTNT\" is true.");
-		this.villagerProtection = this.config.getBoolean("villagerProtection", this.CATEGORY_MOBS, false, "Makes villagers unhurtable.");
 		this.logStuff = this.config.getBoolean("logStuff", this.CATEGORY_GENERAL, false, "Logs all blocks broken and all entity deaths.");
 		this.stackSizeDivider = this.config.getInt("stackSizeDivider", this.CATEGORY_PROPERTIES, 0, 0, 64, "Sets the max stack size for all items. Set to 0 to disable.");
 		this.allBlocksUnbreakable = this.config.getBoolean("allBlocksUnbreakable", this.CATEGORY_PROPERTIES, false, "Makes all blocks unbreakable.");

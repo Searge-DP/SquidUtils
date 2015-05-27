@@ -65,12 +65,15 @@ import coolsquid.squidutils.config.compat.ticon.TiConToolMaterialConfigHandler;
 import coolsquid.squidutils.config.compat.uptodate.UpToDateConfigHandler;
 import coolsquid.squidutils.config.custom.AchievementCreationHandler;
 import coolsquid.squidutils.config.custom.BiomeCreationHandler;
+import coolsquid.squidutils.config.custom.BlockCreationHandler;
+import coolsquid.squidutils.config.custom.BlockMaterialCreationHandler;
 import coolsquid.squidutils.config.custom.ChestGenCreationHandler;
 import coolsquid.squidutils.config.custom.CrashCallableCreationHandler;
 import coolsquid.squidutils.config.custom.CustomContentManager;
 import coolsquid.squidutils.config.custom.ItemCreationHandler;
 import coolsquid.squidutils.config.custom.RecipeCreationHandler;
 import coolsquid.squidutils.config.custom.ShutdownHookCreationHandler;
+import coolsquid.squidutils.config.custom.ToolMaterialCreationHandler;
 import coolsquid.squidutils.config.custom.UpdateCheckerCreationHandler;
 import coolsquid.squidutils.creativetab.ModCreativeTabs;
 import coolsquid.squidutils.handlers.AchievementHandler;
@@ -113,11 +116,11 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
-@Mod(modid = ModInfo.modid, name = ModInfo.name, version = ModInfo.version, dependencies = ModInfo.dependencies, acceptableRemoteVersions = "*")
+@Mod(modid = ModInfo.modid, name = ModInfo.name, version = ModInfo.version, dependencies = ModInfo.dependencies, acceptableRemoteVersions = "*", acceptedMinecraftVersions = "1.7.10")
 public class SquidUtils extends SquidAPIMod {
 
 	/**
-	 * Instructions may be found at {@link http://coolsquidmc.blogspot.no/2015/05/using-squidutils-api.html}
+	 * Instructions may be found at <a href=http://coolsquidmc.blogspot.no/2015/05/using-squidutils-api.html>my website</a>.
 	 */
 	public static final SquidUtilsAPI API = new SquidUtilsAPIImpl();
 	public static final CommonHandler COMMON = new CommonHandler();
@@ -145,19 +148,26 @@ public class SquidUtils extends SquidAPIMod {
 		if (MiscLib.CLIENT) {
 			ModListConfigHandler.INSTANCE.init();
 			if (ModConfigHandler.INSTANCE.clearRecipes == 1) {
-				CraftingManager.getInstance().getRecipeList().clear();
+				for (int i = 0; i < CraftingManager.getInstance().getRecipeList().size(); i++) {
+					if (CraftingManager.getInstance().getRecipeList().get(i).getClass().getName().startsWith("net.minecraft.")) {
+						CraftingManager.getInstance().getRecipeList().remove(i);
+					}
+				}
 			}
 		}
 
 		CustomContentManager.INSTANCE.registerHandlers(
+				BlockMaterialCreationHandler.INSTANCE,
 				CrashCallableCreationHandler.INSTANCE,
 				RecipeCreationHandler.INSTANCE,
 				ShutdownHookCreationHandler.INSTANCE,
 				UpdateCheckerCreationHandler.INSTANCE,
 				AchievementCreationHandler.INSTANCE,
-				ItemCreationHandler.INSTANCE,
 				BiomeCreationHandler.INSTANCE,
-				ChestGenCreationHandler.INSTANCE);
+				ChestGenCreationHandler.INSTANCE,
+				ToolMaterialCreationHandler.INSTANCE,
+				ItemCreationHandler.INSTANCE,
+				BlockCreationHandler.INSTANCE);
 
 		ConfigurationManager.INSTANCE.registerHandlers(
 				CrashCallableConfigHandler.INSTANCE,
@@ -217,6 +227,7 @@ public class SquidUtils extends SquidAPIMod {
 	private void init(FMLInitializationEvent event) {
 		this.info("Initializing.");
 
+		COMMON.registerCreativeTabs();
 		CustomContentManager.INSTANCE.loadAll();
 
 		SquidUtilsScripting.init();
@@ -355,9 +366,9 @@ public class SquidUtils extends SquidAPIMod {
 			COMMON.registerCreativeTabs();
 		}
 		if (ModConfigHandler.INSTANCE.clearRecipes == 2) {
-			for (int a = 0; a < CraftingManager.getInstance().getRecipeList().size(); a++) {
-				if (MiscLib.getBlacklister(CraftingManager.getInstance().getRecipeList().get(a)) == null) {
-					CraftingManager.getInstance().getRecipeList().remove(a);
+			for (int i = 0; i < CraftingManager.getInstance().getRecipeList().size(); i++) {
+				if (MiscLib.getBlacklister(CraftingManager.getInstance().getRecipeList().get(i)) == null) {
+					CraftingManager.getInstance().getRecipeList().remove(i);
 				}
 			}
 		}

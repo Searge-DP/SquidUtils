@@ -64,7 +64,7 @@ public class MiscUtils {
 	public static String getOutdatedMods() {
 		StringBuilder a = new StringBuilder();
 		for (VersionContainer b: SquidAPI.UPDATER.getOutdatedMods()) {
-			a.append(b.getMod().getName());
+			a.append(b.getName());
 			a.append(", ");
 		}
 		return a.substring(0, a.length() - 2);
@@ -122,7 +122,7 @@ public class MiscUtils {
 	@ZenMethod
 	public static boolean isOutOfDate(String name) {
 		for (VersionContainer version: SquidAPI.UPDATER.getOutdatedMods()) {
-			if (version.getMod().getModId().equals(name)) {
+			if (version.getModId().equals(name)) {
 				return true;
 			}
 		}

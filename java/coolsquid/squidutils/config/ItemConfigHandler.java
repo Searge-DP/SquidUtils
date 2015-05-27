@@ -15,13 +15,12 @@ import net.minecraft.item.ItemTool;
 import com.google.common.collect.Lists;
 
 import coolsquid.squidapi.config.ConfigHandler;
-import coolsquid.squidapi.config.impl.ConfigHandlerImpl;
 import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidapi.util.StringParser;
 import coolsquid.squidapi.util.StringUtils;
 import coolsquid.squidutils.SquidUtils;
 
-public class ItemConfigHandler extends ConfigHandlerImpl {
+public class ItemConfigHandler extends ConfigHandler {
 
 	public static final ConfigHandler INSTANCE = new ItemConfigHandler(new File("./config/SquidUtils/Items.cfg"));
 

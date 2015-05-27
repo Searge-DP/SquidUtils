@@ -163,7 +163,7 @@ public class ScriptHandler {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			MiscLib.LOGGER.log(e);
+			MiscLib.LOGGER.catching(e);
 			SquidAPI.COMMON.registerLoginMessage(StringUtils.newString(e.getClass().getName(), ". See SquidAPI.log for more information."));
 		}
 	}

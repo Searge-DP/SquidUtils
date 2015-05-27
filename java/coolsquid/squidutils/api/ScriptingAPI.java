@@ -13,6 +13,7 @@ import coolsquid.squidutils.api.scripting.ScriptCommand;
 
 /**
  * Will undergo big changes. You have been warned.
+ *
  * @author CoolSquid
  */
 public interface ScriptingAPI {

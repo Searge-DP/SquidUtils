@@ -16,10 +16,9 @@ import vazkii.botania.api.BotaniaAPI;
 import com.google.common.collect.Lists;
 
 import coolsquid.squidapi.config.ConfigHandler;
-import coolsquid.squidapi.config.impl.ConfigHandlerImpl;
 import coolsquid.squidapi.util.StringParser;
 
-public class ElvenTradeConfigHandler extends ConfigHandlerImpl {
+public class ElvenTradeConfigHandler extends ConfigHandler {
 
 	public static final ConfigHandler INSTANCE = new ElvenTradeConfigHandler(new File("./config/SquidUtils/compat/Botania/ElvenTradeRecipes.cfg"));
 

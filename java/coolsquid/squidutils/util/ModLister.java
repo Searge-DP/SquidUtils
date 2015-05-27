@@ -4,12 +4,13 @@
  *******************************************************************************/
 package coolsquid.squidutils.util;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import com.google.common.collect.Lists;
 
-import coolsquid.squidapi.logging.Logger;
 import coolsquid.squidapi.util.StringUtils;
 import coolsquid.squidapi.util.io.IOUtils;
 import coolsquid.squidutils.SquidUtils;
@@ -23,8 +24,6 @@ public class ModLister {
 	private ModLister() {
 
 	}
-
-	private final Logger logger = new Logger(new File("modlist.txt"));
 
 	public void init() {
 		if (ModListConfigHandler.INSTANCE.generateModList == 1) {
@@ -42,9 +41,14 @@ public class ModLister {
 	}
 
 	public void generateListOfModidsAndVersions() {
+		BufferedWriter w = IOUtils.newWriter(new File("modlist.txt"));
 		SquidUtils.instance().info("Generating modlist...");
 		for (int a = 0; a < Loader.instance().getModList().size(); a++) {
-			this.logger.log(StringUtils.newString(Loader.instance().getModList().get(a).getModId(), " ", Loader.instance().getModList().get(a).getVersion()));
+			try {
+				w.write(StringUtils.newString(Loader.instance().getModList().get(a).getModId(), " ", Loader.instance().getModList().get(a).getVersion()));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		SquidUtils.instance().info("Generated modlist.");
 	}

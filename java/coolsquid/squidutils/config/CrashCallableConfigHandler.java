@@ -8,11 +8,10 @@ import java.io.File;
 import java.util.List;
 
 import coolsquid.squidapi.config.ConfigHandler;
-import coolsquid.squidapi.config.impl.ConfigHandlerImpl;
 import coolsquid.squidapi.util.Utils;
 import cpw.mods.fml.common.ICrashCallable;
 
-public class CrashCallableConfigHandler extends ConfigHandlerImpl {
+public class CrashCallableConfigHandler extends ConfigHandler {
 
 	public static final ConfigHandler INSTANCE = new CrashCallableConfigHandler(new File("./config/SquidUtils/CrashCallables.cfg"));
 

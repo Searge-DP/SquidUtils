@@ -6,6 +6,8 @@ package coolsquid.squidutils.api.impl;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.util.DamageSource;
+import coolsquid.squidapi.util.Utils;
+import coolsquid.squidapi.util.collect.CollectUtils;
 import coolsquid.squidapi.util.collect.Registry;
 import coolsquid.squidapi.util.collect.impl.RegistryImpl;
 import coolsquid.squidutils.SquidUtils;
@@ -87,9 +89,7 @@ public class SquidUtilsAPIImpl implements SquidUtilsAPI {
 		if (mod == null) {
 			throw new IllegalStateException(new Throwable().getStackTrace()[0].getClassName() + " called an API method outside the lifecycle events");
 		}
-		else if (source == null || source.damageType == null) {
-			throw new IllegalArgumentException(mod.getName() + " passed null arguments to SquidUtils");
-		}
+		Utils.checkNotNull(source, source.damageType);
 		this.damageSources.register(mod.getModId() + ':' + source.damageType, source);
 	}
 
@@ -99,20 +99,18 @@ public class SquidUtilsAPIImpl implements SquidUtilsAPI {
 		if (mod == null) {
 			throw new IllegalStateException(new Throwable().getStackTrace()[0].getClassName() + " called an API method outside the lifecycle events");
 		}
-		else if (name == null) {
-			throw new IllegalArgumentException(mod.getName() + " passed null arguments to SquidUtils");
-		}
+		Utils.checkNotNull(name);
 		this.materials.register(mod.getModId() + ':' + name, material);
 	}
 
 	@Override
 	public Registry<DamageSource> getDamageSources() {
-		return this.damageSources;
+		return CollectUtils.immutableRegistry(this.damageSources);
 	}
 
 	@Override
 	public Registry<Material> getMaterials() {
-		return this.materials;
+		return CollectUtils.immutableRegistry(this.materials);
 	}
 
 	@Override
@@ -121,6 +119,7 @@ public class SquidUtilsAPIImpl implements SquidUtilsAPI {
 	}
 
 	public void setScripting(ScriptingAPI scripting) {
+		Utils.checkNotNull(scripting);
 		this.scripting = scripting;
 	}
 }

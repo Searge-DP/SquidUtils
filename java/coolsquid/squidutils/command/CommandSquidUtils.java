@@ -7,11 +7,11 @@ package coolsquid.squidutils.command;
 import java.util.List;
 
 import net.minecraft.command.ICommandSender;
+import net.minecraft.util.EnumChatFormatting;
 import coolsquid.squidapi.command.CommandBase;
 import coolsquid.squidapi.command.ISubCommand;
 import coolsquid.squidapi.command.OpOnly;
 import coolsquid.squidapi.helpers.server.chat.ChatMessage;
-import coolsquid.squidapi.helpers.server.chat.ChatMessage.Color;
 import coolsquid.squidutils.SquidUtils;
 
 public class CommandSquidUtils extends CommandBase implements OpOnly {
@@ -37,7 +37,7 @@ public class CommandSquidUtils extends CommandBase implements OpOnly {
 				SquidUtils.COMMON.getEventHandlerManager().unregister(args.get(0));
 				sender.addChatMessage(new ChatMessage("<SquidUtils> Handler successfully unregistered!"));
 			} catch (Exception e) {
-				sender.addChatMessage(new ChatMessage("<SquidUtils> ", e.getClass().getName()).setColor(Color.RED));
+				sender.addChatMessage(new ChatMessage("<SquidUtils> ", e.getClass().getName()).setColor(EnumChatFormatting.RED));
 				e.printStackTrace();
 			}
 		}

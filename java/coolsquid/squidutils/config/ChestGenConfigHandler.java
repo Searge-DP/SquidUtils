@@ -12,10 +12,9 @@ import net.minecraft.item.Item;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.common.ChestGenHooks;
 import coolsquid.squidapi.config.ConfigHandler;
-import coolsquid.squidapi.config.impl.ConfigHandlerImpl;
 import coolsquid.squidapi.reflection.ReflectionHelper;
 
-public class ChestGenConfigHandler extends ConfigHandlerImpl {
+public class ChestGenConfigHandler extends ConfigHandler {
 
 	public static final ConfigHandler INSTANCE = new ChestGenConfigHandler(new File("./config/SquidUtils/ChestGen.cfg"));
 

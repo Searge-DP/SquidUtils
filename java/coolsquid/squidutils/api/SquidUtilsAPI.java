@@ -6,18 +6,21 @@ package coolsquid.squidutils.api;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.util.DamageSource;
+
+import com.google.common.annotations.Beta;
+
 import coolsquid.squidapi.util.collect.Registry;
 
 /**
- * Instructions may be found at {@link http://coolsquidmc.blogspot.no/2015/05/using-squidutils-api.html}
+ * Instructions may be found at <a href=http://coolsquidmc.blogspot.no/2015/05/using-squidutils-api.html>my website</a>.
  * @author CoolSquid
  */
-
 public interface SquidUtilsAPI {
 
 	/**
 	 * Registers a damage source.
-	 * @param source the damagesource to register
+	 * @param source the damagesource to register. Cannot be null.
+	 * @throws IllegalArgumentException if the damagesource or source.damageSource is null.
 	 */
 	public abstract void registerDamageSource(DamageSource source);
 
@@ -25,23 +28,25 @@ public interface SquidUtilsAPI {
 	 * Registers a material.
 	 * @param name the name of the material
 	 * @param material the material to register
+	 * @throws IllegalArgumentException if the name or the material is null.
 	 */
 	public abstract void registerMaterial(String name, Material material);
 
 	/**
-	 * Gets the damage sources.
+	 * Returns an immutable registry wrapping around the internal damagesource registry
 	 * @return the damage sources
 	 */
 	public abstract Registry<DamageSource> getDamageSources();
 
 	/**
-	 * Gets the materials.
+	 * Returns an immutable registry wrapping around the internal material registry.
 	 * @return the materials
 	 */
 	public abstract Registry<Material> getMaterials();
 
 	/**
-	 * @return the scripting API if SquidUtils|Scripting is loaded, or null if it's not.
+	 * @return the ScriptingAPI instance.
 	 */
+	@Beta
 	public abstract ScriptingAPI getScripting();
 }

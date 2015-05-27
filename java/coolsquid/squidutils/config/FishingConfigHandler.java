@@ -12,10 +12,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.WeightedRandomFishable;
 import net.minecraftforge.common.config.ConfigCategory;
 import coolsquid.squidapi.config.ConfigHandler;
-import coolsquid.squidapi.config.impl.ConfigHandlerImpl;
 import coolsquid.squidapi.helpers.FishingHelper;
 
-public class FishingConfigHandler extends ConfigHandlerImpl {
+public class FishingConfigHandler extends ConfigHandler {
 
 	public static final ConfigHandler INSTANCE = new FishingConfigHandler(new File("./config/SquidUtils/Fishing.cfg"));
 

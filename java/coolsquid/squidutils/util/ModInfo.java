@@ -4,6 +4,7 @@
  *******************************************************************************/
 package coolsquid.squidutils.util;
 
+
 public class ModInfo {
 	public static final String modid = "SquidUtils";
 	public static final String name = "SquidUtils";

@@ -31,7 +31,7 @@ public abstract class CustomContentHandler<E> {
 				SquidUtils.instance().info("Found content file: " + file.getPath());
 				this.handle(gson.fromJson(IOUtils.readAll(file), this.type));
 			} catch (Throwable t) {
-				SquidUtils.instance().error(t);
+				SquidUtils.instance().catching(t);
 			}
 		}
 	}

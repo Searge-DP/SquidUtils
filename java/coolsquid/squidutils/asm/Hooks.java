@@ -9,10 +9,16 @@ import java.io.File;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.entity.Entity;
+import net.minecraft.item.Item;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
+import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidapi.util.Utils;
 import coolsquid.squidutils.SquidUtils;
+import coolsquid.squidutils.event.BlockRegisterEvent;
+import coolsquid.squidutils.event.ItemRegisterEvent;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 
 public class Hooks {
@@ -76,6 +82,16 @@ public class Hooks {
 
 	public static boolean isAllowedChar(char c) {
 		return SquidUtils.COMMON.getAllowedChars().contains(c) || c > 31 && c != 167 && c != 127;
+	}
+
+	public static boolean registerBlock(Block block, String name) {
+		String mod = Loader.instance().activeModContainer().getModId();
+		return MiscLib.getBlacklister(mod) == null ? !MinecraftForge.EVENT_BUS.post(new BlockRegisterEvent(block, name, mod)) : true;
+	}
+
+	public static boolean registerItem(Item item, String name) {
+		String mod = Loader.instance().activeModContainer().getModId();
+		return MiscLib.getBlacklister(mod) == null ? !MinecraftForge.EVENT_BUS.post(new ItemRegisterEvent(item, name, mod)) : true;
 	}
 
 	public static void save() {

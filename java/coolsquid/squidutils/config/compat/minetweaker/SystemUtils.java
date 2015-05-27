@@ -24,4 +24,9 @@ public class SystemUtils {
 	public static String lineSeparator() {
 		return System.lineSeparator();
 	}
+
+	@ZenMethod
+	public static long nanoTime() {
+		return System.nanoTime();
+	}
 }

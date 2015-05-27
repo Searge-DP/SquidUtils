@@ -8,6 +8,7 @@ import net.minecraft.launchwrapper.Launch;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.MethodNode;
@@ -56,5 +57,14 @@ public class ASMHelper {
 		c.accept(w);
 		byte[] b = w.toByteArray();
 		return b;
+	}
+
+	public static AnnotationNode getAnnotation(ClassNode c, String desc) {
+		for (AnnotationNode a: c.visibleAnnotations) {
+			if (desc.equals(a.desc)) {
+				return a;
+			}
+		}
+		throw new ASMException("Could not find annotation: " + desc);
 	}
 }

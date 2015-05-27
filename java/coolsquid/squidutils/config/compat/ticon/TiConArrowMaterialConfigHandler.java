@@ -9,10 +9,9 @@ import java.io.File;
 import tconstruct.library.TConstructRegistry;
 import tconstruct.library.tools.ArrowMaterial;
 import coolsquid.squidapi.config.ConfigHandler;
-import coolsquid.squidapi.config.impl.ConfigHandlerImpl;
 import coolsquid.squidapi.reflection.ReflectionHelper;
 
-public class TiConArrowMaterialConfigHandler extends ConfigHandlerImpl {
+public class TiConArrowMaterialConfigHandler extends ConfigHandler {
 
 	public static final ConfigHandler INSTANCE = new TiConArrowMaterialConfigHandler(new File("./config/SquidUtils/compat/TiCon/ArrowMaterials.cfg"));
 

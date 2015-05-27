@@ -328,8 +328,15 @@ public class Components {
 
 		@Override
 		public void run(Map<String, String> args) {
-			if (args.get("type").equals("all") && !ContentRemover.isBlacklistedModLoaded()) {
-				CraftingManager.getInstance().getRecipeList().clear();
+			if (args.get("type").equals("all")) {
+				for (int i = 0; i < CraftingManager.getInstance().getRecipeList().size(); i++) {
+					if (MiscLib.getBlacklister(CraftingManager.getInstance().getRecipeList().get(i)) == null) {
+						CraftingManager.getInstance().getRecipeList().remove(i);
+					}
+					else {
+						SquidUtils.instance().error("Recipe " + CraftingManager.getInstance().getRecipeList().get(i).toString() + " cannot be removed due to a request from the mod author.");
+					}
+				}
 			}
 			else {
 				ContentRemover.remove(args.get("item"), ContentType.RECIPE);

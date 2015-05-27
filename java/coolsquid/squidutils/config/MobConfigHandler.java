@@ -11,13 +11,12 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import coolsquid.squidapi.config.ConfigHandler;
-import coolsquid.squidapi.config.impl.ConfigHandlerImpl;
 import coolsquid.squidapi.util.EffectInfo;
 import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidutils.handlers.EntityHandler;
 import coolsquid.squidutils.util.EntityInfo;
 
-public class MobConfigHandler extends ConfigHandlerImpl {
+public class MobConfigHandler extends ConfigHandler {
 
 	public static final ConfigHandler INSTANCE = new MobConfigHandler(new File("./config/SquidUtils/Mobs.cfg"));
 

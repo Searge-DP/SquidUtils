@@ -8,10 +8,9 @@ import java.io.File;
 
 import net.minecraft.item.Item.ToolMaterial;
 import coolsquid.squidapi.config.ConfigHandler;
-import coolsquid.squidapi.config.impl.ConfigHandlerImpl;
 import coolsquid.squidutils.SquidUtils;
 
-public class ToolMaterialConfigHandler extends ConfigHandlerImpl {
+public class ToolMaterialConfigHandler extends ConfigHandler {
 
 	public static final ConfigHandler INSTANCE = new ToolMaterialConfigHandler(new File("./config/SquidUtils/ToolMaterials.cfg"));
 

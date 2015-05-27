@@ -9,10 +9,9 @@ import java.io.File;
 import tconstruct.library.TConstructRegistry;
 import tconstruct.library.tools.BowMaterial;
 import coolsquid.squidapi.config.ConfigHandler;
-import coolsquid.squidapi.config.impl.ConfigHandlerImpl;
 import coolsquid.squidapi.reflection.ReflectionHelper;
 
-public class TiConBowMaterialConfigHandler extends ConfigHandlerImpl {
+public class TiConBowMaterialConfigHandler extends ConfigHandler {
 
 	public static final ConfigHandler INSTANCE = new TiConBowMaterialConfigHandler(new File("./config/SquidUtils/compat/TiCon/BowMaterials.cfg"));
 

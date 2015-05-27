@@ -8,9 +8,8 @@ import java.io.File;
 
 import net.minecraft.world.WorldType;
 import coolsquid.squidapi.config.ConfigHandler;
-import coolsquid.squidapi.config.impl.ConfigHandlerImpl;
 
-public class WorldTypeConfigHandler extends ConfigHandlerImpl {
+public class WorldTypeConfigHandler extends ConfigHandler {
 
 	public static final ConfigHandler INSTANCE = new WorldTypeConfigHandler(new File("./config/SquidUtils/WorldTypes.cfg"));
 

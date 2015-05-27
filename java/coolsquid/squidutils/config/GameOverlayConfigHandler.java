@@ -8,10 +8,9 @@ import java.io.File;
 
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import coolsquid.squidapi.config.ConfigHandler;
-import coolsquid.squidapi.config.impl.ConfigHandlerImpl;
 import coolsquid.squidutils.SquidUtils;
 
-public class GameOverlayConfigHandler extends ConfigHandlerImpl {
+public class GameOverlayConfigHandler extends ConfigHandler {
 
 	public static final ConfigHandler INSTANCE = new GameOverlayConfigHandler(new File("./config/SquidUtils/GameOverlays.cfg"));
 

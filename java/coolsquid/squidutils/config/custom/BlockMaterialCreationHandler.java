@@ -39,7 +39,7 @@ public class BlockMaterialCreationHandler extends CustomContentHandler<Material>
 		@Override
 		public Material deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
 			JsonObject o = json.getAsJsonObject();
-			String name = o.get("name").getAsString();
+			final String name = o.get("name").getAsString();
 			Material material = new Material(MapColor.getMapColorForBlockColored(o.get("mapColor").getAsInt())) {
 				@Override
 				public String toString() {

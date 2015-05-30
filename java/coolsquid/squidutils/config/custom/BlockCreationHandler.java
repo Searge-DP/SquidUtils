@@ -138,9 +138,9 @@ public class BlockCreationHandler extends CustomContentHandler<BlockContainer> {
 			FluidRegistry.registerFluid(fluid);
 			BlockFluidClassic block;
 			if (o.has("effectId")) {
-				int id = o.get("effectId").getAsInt();
-				int duration = o.get("effectDuration").getAsInt();
-				int amplifier = o.has("effectAmplifier") ? o.get("effectAmplifier").getAsInt() : 0;
+				final int id = o.get("effectId").getAsInt();
+				final int duration = o.get("effectDuration").getAsInt();
+				final int amplifier = o.has("effectAmplifier") ? o.get("effectAmplifier").getAsInt() : 0;
 				block = new BlockFluidClassic(fluid, SquidUtils.API.getMaterials().get(o.get("material").getAsString())) {
 
 					@Override
@@ -171,8 +171,8 @@ public class BlockCreationHandler extends CustomContentHandler<BlockContainer> {
 
 		@Override
 		public BlockCrops newInstance(JsonObject o, JsonDeserializationContext context) {
-			Item seed = (Item) Item.itemRegistry.getObject(o.get("seed").getAsString());
-			Item product = (Item) Item.itemRegistry.getObject(o.get("product").getAsString());
+			final Item seed = (Item) Item.itemRegistry.getObject(o.get("seed").getAsString());
+			final Item product = (Item) Item.itemRegistry.getObject(o.get("product").getAsString());
 			return new BlockCrops() {
 
 				@Override

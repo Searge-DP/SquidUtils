@@ -30,7 +30,7 @@ public class AchievementConfigHandler extends ConfigHandler {
 			if (achievement != null && MiscLib.getBlacklister(achievement) == null) {
 				String name = achievement.statId;
 				if (SquidUtils.COMMON.isDebugMode()) {
-					SquidUtils.instance().info(name + " (" + achievement.getClass().getName() + ')');
+					SquidUtils.INSTANCE.info(name + " (" + achievement.getClass().getName() + ')');
 				}
 				achievement.achievementDescription = this.config.get(name, "description", achievement.achievementDescription).getString();
 				achievement.displayColumn = this.config.get(name, "displayColumn", achievement.displayColumn).getInt();

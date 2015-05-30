@@ -24,7 +24,7 @@ public class BlockMaterialConfigHandler extends ConfigHandler {
 		for (Material material: SquidUtils.API.getMaterials()) {
 			String name = SquidUtils.API.getMaterials().getName(material);
 			if (SquidUtils.COMMON.isDebugMode()) {
-				SquidUtils.instance().info(name + " (" + material.getClass().getName() + ')');
+				SquidUtils.INSTANCE.info(name + " (" + material.getClass().getName() + ')');
 			}
 			material.canBurn = this.config.get(name, "canBurn", material.canBurn).getBoolean();
 			material.isAdventureModeExempt = this.config.get(name, "isAdventureModeExempt", material.isAdventureModeExempt).getBoolean();

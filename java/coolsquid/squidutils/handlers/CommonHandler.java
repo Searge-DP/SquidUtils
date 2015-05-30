@@ -5,24 +5,30 @@
 package coolsquid.squidutils.handlers;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 
 import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
 import coolsquid.squidapi.util.ContentRemover;
 import coolsquid.squidapi.util.ContentRemover.ContentType;
 import coolsquid.squidapi.util.EventHandlerManager;
+import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidapi.util.collect.Registry;
 import coolsquid.squidapi.util.collect.impl.RegistryImpl;
 import coolsquid.squidutils.api.impl.IMCHandler;
+import cpw.mods.fml.common.IFuelHandler;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -34,6 +40,7 @@ public class CommonHandler {
 	private final Set<Block> physics = Sets.newHashSet();
 	private final Set<Character> allowedChars = Sets.newHashSet();
 	private final Set<ElementType> disabledOverlays = Sets.newHashSet();
+	private final Map<Item, Integer> fuels = Maps.newHashMap();
 	private final Registry<CreativeTabs> creativeTabs = new RegistryImpl<CreativeTabs>();
 	private final ArrayListMultimap<Item, String> tooltips = ArrayListMultimap.create();
 	private final EventHandlerManager eventHandlerManager = new EventHandlerManager();
@@ -137,5 +144,23 @@ public class CommonHandler {
 
 	public Registry<CreativeTabs> getCreativeTabs() {
 		return this.creativeTabs;
+	}
+
+	public void registerFuel(Item item, int burnTime) {
+		this.fuels.put(item, burnTime);
+	}
+
+	public void finishedLoading() {
+		if (MiscLib.CLIENT) {
+			this.registerCreativeTabs();
+		}
+		if (!this.fuels.isEmpty()) {
+			GameRegistry.registerFuelHandler(new IFuelHandler() {
+				@Override
+				public int getBurnTime(ItemStack fuel) {
+					return CommonHandler.this.fuels.containsKey(fuel.getItem()) ? CommonHandler.this.fuels.get(fuel.getItem()) : 0;
+				}
+			});
+		}
 	}
 }

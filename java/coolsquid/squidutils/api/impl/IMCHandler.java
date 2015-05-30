@@ -44,9 +44,9 @@ public class IMCHandler {
 				this.handleNBT(message.key, message.getNBTValue(), message.getSender());
 			}
 		} catch (Throwable t) {
-			SquidUtils.instance().error(message.key);
-			SquidUtils.instance().error(message.getSender());
-			SquidUtils.instance().error(t);
+			SquidUtils.INSTANCE.error(message.key);
+			SquidUtils.INSTANCE.error(message.getSender());
+			SquidUtils.INSTANCE.error(t);
 		}
 	}
 

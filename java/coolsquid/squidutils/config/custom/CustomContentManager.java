@@ -34,7 +34,7 @@ public class CustomContentManager {
 			try {
 				handler.load(gson);
 			} catch (Throwable t) {
-				SquidUtils.instance().catching(t);
+				SquidUtils.INSTANCE.catching(t);
 			}
 		}
 	}

@@ -25,7 +25,7 @@ import coolsquid.squidutils.scripting.handlers.TossHandler;
 public class SquidUtilsScripting {
 
 	public static void init() {
-		SquidUtils.instance().info("Initializing.");
+		SquidUtils.INSTANCE.info("Initializing.");
 
 		ScriptingAPI scripting = new ScriptingAPIImpl();
 		scripting.addTrigger("achievement", new AchievementHandler());
@@ -69,6 +69,6 @@ public class SquidUtilsScripting {
 			handlers.registerForgeHandler(new InteractionHandler());
 		}
 
-		SquidUtils.instance().info("Finished initialization.");
+		SquidUtils.INSTANCE.info("Finished initialization.");
 	}
 }

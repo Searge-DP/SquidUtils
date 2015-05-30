@@ -23,7 +23,7 @@ public class ToolMaterialConfigHandler extends ConfigHandler {
 		for (ToolMaterial material: ToolMaterial.values()) {
 			String name = material.toString();
 			if (SquidUtils.COMMON.isDebugMode()) {
-				SquidUtils.instance().info(name);
+				SquidUtils.INSTANCE.info(name);
 			}
 			material.maxUses = this.config.get(name, "durability", material.maxUses).getInt();
 			material.harvestLevel = this.config.get(name, "harvestLevel", material.harvestLevel).getInt();

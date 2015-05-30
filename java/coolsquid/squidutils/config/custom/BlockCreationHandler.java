@@ -10,9 +10,12 @@ import java.util.Map;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.BlockFalling;
+import net.minecraft.block.BlockFire;
+import net.minecraft.block.BlockLadder;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.EnumRarity;
+import net.minecraft.item.Item;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidClassic;
@@ -40,7 +43,7 @@ public class BlockCreationHandler extends CustomContentHandler<BlockContainer> {
 		super("blocks", BlockContainer.class);
 	}
 
-	public static void registerFactory(String type, Factory<?> factory) {
+	public static void registerFactory(String type, Factory<? extends Block> factory) {
 		factories.put(type.toUpperCase(), factory);
 	}
 
@@ -54,8 +57,20 @@ public class BlockCreationHandler extends CustomContentHandler<BlockContainer> {
 
 		registerFactory("fluid", new BlockFluidFactory());
 		registerFactory("basic", new BlockBasicFactory());
-		registerFactory("crops", new SimpleFactory<BlockCrops>(BlockCrops.class));
-		registerFactory("falling", new SimpleFactory<BlockFalling>(BlockFalling.class));
+		registerFactory("crops", new BlockCropsFactory());
+		registerFactory("fire", new BlockFireFactory());
+		registerFactory("falling", new Factory<BlockFalling>() {
+			@Override
+			public BlockFalling newInstance(JsonObject o, JsonDeserializationContext context) {
+				return new BlockFalling();
+			}
+		});
+		registerFactory("ladder", new Factory<BlockLadder>() {
+			@Override
+			public BlockLadder newInstance(JsonObject o, JsonDeserializationContext context) {
+				return new BlockLadder() {};
+			}
+		});
 	}
 
 	public static class BlockDeserializer implements JsonDeserializer<BlockContainer> {
@@ -94,24 +109,6 @@ public class BlockCreationHandler extends CustomContentHandler<BlockContainer> {
 		public BlockContainer(Block block, String name) {
 			this.block = block;
 			this.name = name;
-		}
-	}
-
-	public static interface Factory<E extends Block> {
-		public E newInstance(JsonObject o, JsonDeserializationContext context);
-	}
-
-	public static class SimpleFactory<E extends Block> implements Factory<E> {
-
-		private final Class<E> type;
-
-		public SimpleFactory(Class<E> type) {
-			this.type = type;
-		}
-
-		@Override
-		public E newInstance(JsonObject o, JsonDeserializationContext context) {
-			return context.deserialize(o, this.type);
 		}
 	}
 
@@ -167,6 +164,74 @@ public class BlockCreationHandler extends CustomContentHandler<BlockContainer> {
 		@Override
 		public BlockBase newInstance(JsonObject o, JsonDeserializationContext context) {
 			return new BlockBase(SquidUtils.API.getMaterials().get(o.get("material").getAsString()));
+		}
+	}
+
+	public static class BlockCropsFactory implements Factory<BlockCrops> {
+
+		@Override
+		public BlockCrops newInstance(JsonObject o, JsonDeserializationContext context) {
+			Item seed = (Item) Item.itemRegistry.getObject(o.get("seed").getAsString());
+			Item product = (Item) Item.itemRegistry.getObject(o.get("product").getAsString());
+			return new BlockCrops() {
+
+				@Override
+				protected Item func_149866_i() {
+					return seed;
+				}
+
+				@Override
+				protected Item func_149865_P() {
+					return product;
+				}
+			};
+		}
+	}
+
+	public static class BlockFireFactory implements Factory<BlockFire> {
+
+		@Override
+		public BlockFire newInstance(JsonObject o, JsonDeserializationContext context) {
+			BlockFire fire = new BlockFire() {};
+			FireInfo[] blocks = context.deserialize(o.get("blocks"), FireInfo[].class);
+			for (FireInfo block: blocks) {
+				fire.setFireInfo(block.getBlock(), block.getEncouragement(), block.getFlammibility());
+			}
+			return fire;
+		}
+
+		public static class FireInfo {
+
+			private String block;
+			private int encouragement, flammibility;
+
+			public FireInfo() {
+
+			}
+
+			public FireInfo(String block, int encouragement, int flammibility) {
+				this.block = block;
+				this.encouragement = encouragement;
+				this.flammibility = flammibility;
+			}
+
+			public FireInfo(Block block, int encouragement, int flammibility) {
+				this.block = Block.blockRegistry.getNameForObject(block);
+				this.encouragement = encouragement;
+				this.flammibility = flammibility;
+			}
+
+			public Block getBlock() {
+				return Block.getBlockFromName(this.block);
+			}
+
+			public int getEncouragement() {
+				return this.encouragement;
+			}
+
+			public int getFlammibility() {
+				return this.flammibility;
+			}
 		}
 	}
 }

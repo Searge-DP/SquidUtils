@@ -150,11 +150,11 @@ public class ModConfigHandler extends ConfigHandler {
 			SquidUtils.COMMON.addAllowedChar(s.charAt(0));
 		}
 
-		String seed = this.config.getString("defaultSeed", this.CATEGORY_GENERAL, "0", "Forces the world seed to be the specified value.");
+		String defaultSeed = this.config.getString("defaultSeed", this.CATEGORY_GENERAL, "0", "Forces the world seed to be the specified value.");
 		try {
-			this.defaultSeed = Long.parseLong(seed);
+			this.defaultSeed = Long.parseLong(defaultSeed);
 		} catch (NumberFormatException numberformatexception) {
-			this.defaultSeed = seed.hashCode();
+			this.defaultSeed = defaultSeed.hashCode();
 		}
 
 		IdentityHashMap<Block, Boolean> carriable = ReflectionHelper.in(EntityEnderman.class).field("carriable", "carriable").get();

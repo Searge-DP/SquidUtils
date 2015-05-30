@@ -35,14 +35,14 @@ public class ModLister {
 	}
 
 	public void generateListOfModids() {
-		SquidUtils.instance().info("Generating modlist...");
+		SquidUtils.INSTANCE.info("Generating modlist...");
 		IOUtils.writeLines(new File("modlist.txt"), this.getModids());
-		SquidUtils.instance().info("Generated modlist.");
+		SquidUtils.INSTANCE.info("Generated modlist.");
 	}
 
 	public void generateListOfModidsAndVersions() {
 		BufferedWriter w = IOUtils.newWriter(new File("modlist.txt"));
-		SquidUtils.instance().info("Generating modlist...");
+		SquidUtils.INSTANCE.info("Generating modlist...");
 		for (int a = 0; a < Loader.instance().getModList().size(); a++) {
 			try {
 				w.write(StringUtils.newString(Loader.instance().getModList().get(a).getModId(), " ", Loader.instance().getModList().get(a).getVersion()));
@@ -50,7 +50,7 @@ public class ModLister {
 				e.printStackTrace();
 			}
 		}
-		SquidUtils.instance().info("Generated modlist.");
+		SquidUtils.INSTANCE.info("Generated modlist.");
 	}
 
 	public List<String> getModids() {

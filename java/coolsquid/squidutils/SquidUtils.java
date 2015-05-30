@@ -5,18 +5,33 @@
 package coolsquid.squidutils;
 
 import java.io.File;
+import java.lang.reflect.Type;
 
 import minetweaker.MineTweakerAPI;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.world.EnumDifficulty;
+import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.common.ForgeHooks.SeedEntry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.AchievementEvent;
 
 import org.lwjgl.opengl.Display;
 
 import com.google.common.collect.Lists;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
+import com.google.gson.JsonSyntaxException;
 
 import coolsquid.squidapi.SquidAPI;
 import coolsquid.squidapi.SquidAPIMod;
@@ -25,6 +40,7 @@ import coolsquid.squidapi.config.ConfigurationManager;
 import coolsquid.squidapi.helpers.server.ServerHelper;
 import coolsquid.squidapi.util.EventHandlerManager;
 import coolsquid.squidapi.util.MiscLib;
+import coolsquid.squidapi.util.io.IOUtils;
 import coolsquid.squidutils.api.SquidUtilsAPI;
 import coolsquid.squidutils.api.impl.SquidUtilsAPIImpl;
 import coolsquid.squidutils.asm.Hooks;
@@ -107,7 +123,7 @@ import coolsquid.squidutils.util.ModLister;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
+import cpw.mods.fml.common.Mod.InstanceFactory;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLInterModComms.IMCEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
@@ -123,14 +139,13 @@ public class SquidUtils extends SquidAPIMod {
 	 * Instructions may be found at <a href=http://coolsquidmc.blogspot.no/2015/05/using-squidutils-api.html>my website</a>.
 	 */
 	public static final SquidUtilsAPI API = new SquidUtilsAPIImpl();
+	public static final SquidUtils INSTANCE = new SquidUtils();
 	public static final CommonHandler COMMON = new CommonHandler();
 	private static final EventHandlerManager handlers = COMMON.getEventHandlerManager();
 
-	@Instance
-	private static SquidUtils instance;
-
-	public static SquidUtils instance() {
-		return instance;
+	@InstanceFactory
+	private static SquidUtils instance() {
+		return INSTANCE;
 	}
 
 	public SquidUtils() {
@@ -321,6 +336,32 @@ public class SquidUtils extends SquidAPIMod {
 			}
 		}
 
+		File seedConfig = new File("./config/SquidUtils/Seeds.cfg");
+		GsonBuilder b = new GsonBuilder();
+		b.setPrettyPrinting();
+		b.registerTypeAdapter(ItemStack.class, new JsonDeserializer<ItemStack>() {
+			@Override
+			public ItemStack deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+				return new ItemStack((Item) Item.itemRegistry.getObject(json.getAsString()));
+			}
+		});
+		b.registerTypeAdapter(ItemStack.class, new JsonSerializer<ItemStack>() {
+			@Override
+			public JsonElement serialize(ItemStack src, Type typeOfSrc, JsonSerializationContext context) {
+				return new JsonPrimitive(Item.itemRegistry.getNameForObject(src.getItem()));
+			}
+		});
+		Gson gson = b.create();
+		if (!seedConfig.exists()) {
+			IOUtils.writeLine(seedConfig, gson.toJson(ForgeHooks.seedList.toArray()));
+		}
+		try {
+			ForgeHooks.seedList = Lists.newArrayList(gson.fromJson(IOUtils.readAll(seedConfig), SeedEntry[].class));
+		} catch (JsonSyntaxException e) {
+			IOUtils.writeLine(seedConfig, gson.toJson(ForgeHooks.seedList.toArray()));
+			this.catching(e);
+		}
+
 		this.info("Initialization finished.");
 	}
 
@@ -362,9 +403,7 @@ public class SquidUtils extends SquidAPIMod {
 
 	@EventHandler
 	private void finishedLoading(FMLLoadCompleteEvent event) {
-		if (MiscLib.CLIENT) {
-			COMMON.registerCreativeTabs();
-		}
+		COMMON.finishedLoading();
 		if (ModConfigHandler.INSTANCE.clearRecipes == 2) {
 			for (int i = 0; i < CraftingManager.getInstance().getRecipeList().size(); i++) {
 				if (MiscLib.getBlacklister(CraftingManager.getInstance().getRecipeList().get(i)) == null) {

@@ -23,7 +23,7 @@ public class ArmorMaterialConfigHandler extends ConfigHandler {
 		for (ArmorMaterial material: ArmorMaterial.values()) {
 			String name = material.toString();
 			if (SquidUtils.COMMON.isDebugMode()) {
-				SquidUtils.instance().info(name);
+				SquidUtils.INSTANCE.info(name);
 			}
 			material.enchantability = this.config.get(name, "enchantability", material.enchantability).getInt();
 			material.damageReductionAmountArray = this.config.get(name, "damageReduction", material.damageReductionAmountArray).getIntList();

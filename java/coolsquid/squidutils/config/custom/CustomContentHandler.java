@@ -28,10 +28,10 @@ public abstract class CustomContentHandler<E> {
 	final void load(Gson gson) {
 		for (File file: this.dir.listFiles()) {
 			try {
-				SquidUtils.instance().info("Found content file: " + file.getPath());
+				SquidUtils.INSTANCE.info("Found content file: " + file.getPath());
 				this.handle(gson.fromJson(IOUtils.readAll(file), this.type));
 			} catch (Throwable t) {
-				SquidUtils.instance().catching(t);
+				SquidUtils.INSTANCE.catching(t);
 			}
 		}
 	}

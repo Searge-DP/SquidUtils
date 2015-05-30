@@ -243,7 +243,7 @@ public class Components {
 			Item item = StringParser.parseItem(args.get("item"));
 			String a = MiscLib.getBlacklister(item);
 			if (a != null) {
-				SquidUtils.instance().warn(StringUtils.newString(a, " has requested to be blacklisted from modification. ", args.get("item"), " will not be modified."));
+				SquidUtils.INSTANCE.warn(StringUtils.newString(a, " has requested to be blacklisted from modification. ", args.get("item"), " will not be modified."));
 				return;
 			}
 			if (args.get("property").equals("stacksize")) {
@@ -312,7 +312,7 @@ public class Components {
 			ItemStack output = StringParser.parseItemStack(args.get("output"));
 			String a = MiscLib.getBlacklister(output.getItem());
 			if (a != null) {
-				SquidUtils.instance().warn(StringUtils.newString(a, " has requested to be blacklisted from modification. ", args.get("item"), " will not be modified."));
+				SquidUtils.INSTANCE.warn(StringUtils.newString(a, " has requested to be blacklisted from modification. ", args.get("item"), " will not be modified."));
 				return;
 			}
 			else if (type.equals("shapeless")) {
@@ -334,7 +334,7 @@ public class Components {
 						CraftingManager.getInstance().getRecipeList().remove(i);
 					}
 					else {
-						SquidUtils.instance().error("Recipe " + CraftingManager.getInstance().getRecipeList().get(i).toString() + " cannot be removed due to a request from the mod author.");
+						SquidUtils.INSTANCE.error("Recipe " + CraftingManager.getInstance().getRecipeList().get(i).toString() + " cannot be removed due to a request from the mod author.");
 					}
 				}
 			}
@@ -365,7 +365,7 @@ public class Components {
 			BiomeGenBase biome = BiomeGenBase.getBiome(id);
 			String a = MiscLib.getBlacklister(biome);
 			if (a != null) {
-				SquidUtils.instance().warn(StringUtils.newString(a, " has requested to be blacklisted from modification. ", args.get("item"), " will not be modified."));
+				SquidUtils.INSTANCE.warn(StringUtils.newString(a, " has requested to be blacklisted from modification. ", args.get("item"), " will not be modified."));
 				return;
 			}
 			if (key.equals("topblock")) {

@@ -47,8 +47,8 @@ public class ScriptHandler {
 
 	public void init() {
 		for (File file: new File("./config/SquidUtils").listFiles(FileFilters.SCRIPTS)) {
-			SquidUtils.instance().info("Found scripting file!");
-			SquidUtils.instance().info(file.getName());
+			SquidUtils.INSTANCE.info("Found scripting file!");
+			SquidUtils.INSTANCE.info(file.getName());
 			for (String line: IOUtils.newReader(file)) {
 				this.load(line);
 			}

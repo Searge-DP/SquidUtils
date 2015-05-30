@@ -36,7 +36,7 @@ public class ItemConfigHandler extends ConfigHandler {
 					String name = (String) object;
 					Item item = (Item) Item.itemRegistry.getObject(name);
 					if (SquidUtils.COMMON.isDebugMode()) {
-						SquidUtils.instance().info(name + " (" + item.getClass().getName() + ')');
+						SquidUtils.INSTANCE.info(name + " (" + item.getClass().getName() + ')');
 					}
 					item.maxStackSize = this.config.get(name, "stacksize", item.maxStackSize).getInt();
 					item.maxDamage = this.config.get(name, "maxDamage", item.maxDamage).getInt();
@@ -85,13 +85,17 @@ public class ItemConfigHandler extends ConfigHandler {
 						}
 						SquidUtils.COMMON.addTooltips(item, list);
 					}
+					int burnTime = this.config.get(name, "burnTime", 0).getInt();
+					if (burnTime > 0) {
+						SquidUtils.COMMON.registerFuel(item, burnTime);
+					}
 					if (!this.config.get(name, "enabled", true).getBoolean()) {
 						SquidUtils.COMMON.banItem(name);
 					}
 				}
 			} catch (Throwable t) {
-				SquidUtils.instance().error(object.getClass().getName());
-				SquidUtils.instance().error(t);
+				SquidUtils.INSTANCE.error(object.getClass().getName());
+				SquidUtils.INSTANCE.error(t);
 			}
 		}
 	}

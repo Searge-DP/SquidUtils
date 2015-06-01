@@ -35,11 +35,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class CommonHandler {
 
 	private final Set<DamageSource> disabledDamageSources = Sets.newHashSet();
-	private final Set<String> bannedItems = Sets.newHashSet();
+	private final Set<Item> bannedItems = Sets.newHashSet();
 	private final Set<String> disabledCommands = new HashSet<String>();
 	private final Set<Block> physics = Sets.newHashSet();
 	private final Set<Character> allowedChars = Sets.newHashSet();
 	private final Set<ElementType> disabledOverlays = Sets.newHashSet();
+	private final Set<Item> undroppableItems = Sets.newHashSet();
 	private final Map<Item, Integer> fuels = Maps.newHashMap();
 	private final Registry<CreativeTabs> creativeTabs = new RegistryImpl<CreativeTabs>();
 	private final ArrayListMultimap<Item, String> tooltips = ArrayListMultimap.create();
@@ -57,13 +58,14 @@ public class CommonHandler {
 		}
 	}
 
-	public void banItem(String name) {
+	public void banItem(Item item) {
+		String name = Item.itemRegistry.getNameForObject(item);
 		ContentRemover.remove(name, ContentType.RECIPE);
 		ContentRemover.remove(name, ContentType.SMELTING);
 		ContentRemover.remove(name, ContentType.FISH);
 		ContentRemover.remove(name, ContentType.JUNK);
 		ContentRemover.remove(name, ContentType.TREASURE);
-		this.bannedItems.add(name);
+		this.bannedItems.add(item);
 	}
 
 	public void disableDamageSource(DamageSource source) {
@@ -86,7 +88,7 @@ public class CommonHandler {
 		return this.disabledDamageSources;
 	}
 
-	public Set<String> getBannedItems() {
+	public Set<Item> getBannedItems() {
 		return this.bannedItems;
 	}
 
@@ -162,5 +164,17 @@ public class CommonHandler {
 				}
 			});
 		}
+	}
+
+	public void setUndroppable(Item item) {
+		this.undroppableItems.add(item);
+	}
+
+	public Set<Item> getUndroppableItems() {
+		return this.undroppableItems;
+	}
+
+	public Map<Item, Integer> getFuels() {
+		return this.fuels;
 	}
 }

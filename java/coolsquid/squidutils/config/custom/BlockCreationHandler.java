@@ -34,7 +34,7 @@ import coolsquid.squidutils.SquidUtils;
 import coolsquid.squidutils.config.custom.BlockCreationHandler.BlockContainer;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-public class BlockCreationHandler extends CustomContentHandler<BlockContainer> {
+public class BlockCreationHandler extends CreationHandler<BlockContainer> {
 
 	public static final BlockCreationHandler INSTANCE = new BlockCreationHandler();
 	private static final Map<String, Factory<? extends Block>> factories = Maps.newHashMap();

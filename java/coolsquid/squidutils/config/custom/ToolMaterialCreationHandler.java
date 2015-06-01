@@ -15,7 +15,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
-public class ToolMaterialCreationHandler extends CustomContentHandler<ToolMaterial> {
+public class ToolMaterialCreationHandler extends CreationHandler<ToolMaterial> {
 
 	public static final ToolMaterialCreationHandler INSTANCE = new ToolMaterialCreationHandler();
 

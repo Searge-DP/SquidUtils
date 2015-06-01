@@ -16,7 +16,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
-public class ChestGenCreationHandler extends CustomContentHandler<WeightedRandomChestContent> {
+public class ChestGenCreationHandler extends CreationHandler<WeightedRandomChestContent> {
 
 	public static final ChestGenCreationHandler INSTANCE = new ChestGenCreationHandler();
 

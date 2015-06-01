@@ -17,7 +17,7 @@ import com.google.gson.JsonParseException;
 
 import coolsquid.squidutils.SquidUtils;
 
-public class BlockMaterialCreationHandler extends CustomContentHandler<Material> {
+public class BlockMaterialCreationHandler extends CreationHandler<Material> {
 
 	public static final BlockMaterialCreationHandler INSTANCE = new BlockMaterialCreationHandler();
 

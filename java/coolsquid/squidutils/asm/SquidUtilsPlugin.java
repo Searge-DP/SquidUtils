@@ -4,32 +4,57 @@
  *******************************************************************************/
 package coolsquid.squidutils.asm;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import net.minecraft.launchwrapper.IClassTransformer;
+import net.minecraft.launchwrapper.Launch;
+import net.minecraft.launchwrapper.LaunchClassLoader;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.objectweb.asm.Label;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.ClassNode;
-import org.objectweb.asm.tree.FrameNode;
-import org.objectweb.asm.tree.InsnList;
-import org.objectweb.asm.tree.InsnNode;
-import org.objectweb.asm.tree.JumpInsnNode;
-import org.objectweb.asm.tree.LabelNode;
-import org.objectweb.asm.tree.MethodInsnNode;
-import org.objectweb.asm.tree.MethodNode;
-import org.objectweb.asm.tree.VarInsnNode;
 
+import com.google.common.collect.Maps;
+
+import coolsquid.squidapi.compat.EnumBlacklist;
+import coolsquid.squidapi.util.io.IOUtils;
+import coolsquid.squidutils.asm.transformers.BlockFallingTransformer;
+import coolsquid.squidutils.asm.transformers.BlockPortalTransformer;
+import coolsquid.squidutils.asm.transformers.BlockTransformer;
+import coolsquid.squidutils.asm.transformers.ChatAllowedCharactersTransformer;
+import coolsquid.squidutils.asm.transformers.GameRegistryTransformer;
+import cpw.mods.fml.relauncher.IFMLCallHook;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
+import cpw.mods.fml.relauncher.ReflectionHelper;
 
 @IFMLLoadingPlugin.TransformerExclusions("coolsquid.squidutils.asm")
 @IFMLLoadingPlugin.MCVersion("1.7.10")
-public class SquidUtilsPlugin implements IFMLLoadingPlugin, IClassTransformer {
+public class SquidUtilsPlugin implements IFMLLoadingPlugin, IClassTransformer, IFMLCallHook {
 
 	public static final Logger LOGGER = LogManager.getLogger("SquidUtils");
+	private static final Map<String, Transformer> toTransform = Maps.newConcurrentMap();
+
+	static {
+		toTransform.put("net.minecraft.block.Block", new BlockTransformer());
+		toTransform.put("net.minecraft.block.BlockPortal", new BlockPortalTransformer());
+		toTransform.put("net.minecraft.block.BlockFalling", new BlockFallingTransformer());
+		toTransform.put("net.minecraft.util.ChatAllowedCharacters", new ChatAllowedCharactersTransformer());
+		toTransform.put("cpw.mods.fml.common.registry.GameRegistry", new GameRegistryTransformer());
+		try {
+			SimpleConfig config = new SimpleConfig(new File("./config/SquidUtils/ASMHooks.txt"));
+			for (String name: toTransform.keySet()) {
+				if (!config.getBoolean(name, true)) {
+					toTransform.remove(name);
+				}
+			}
+			config.save();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	@Override
 	public String[] getASMTransformerClass() {
@@ -43,7 +68,7 @@ public class SquidUtilsPlugin implements IFMLLoadingPlugin, IClassTransformer {
 
 	@Override
 	public String getSetupClass() {
-		return null;
+		return SquidUtilsPlugin.class.getName();
 	}
 
 	@Override
@@ -58,129 +83,35 @@ public class SquidUtilsPlugin implements IFMLLoadingPlugin, IClassTransformer {
 
 	@Override
 	public byte[] transform(String untransformedName, String name, byte[] basicClass) {
-		if (name.equals("net.minecraft.block.Block")) {
+		if (toTransform.containsKey(name)) {
 			LOGGER.info("Transforming " + name);
 			ClassNode c = ASMHelper.createClassNodeFromBytes(basicClass);
-			MethodNode m = ASMHelper.getMethod(c, Names.SET_HARDNESS, Names.DESC);
-			transformSetter(m, "onSetHardness");
-			MethodNode m2 = ASMHelper.getMethod(c, Names.SET_RESISTANCE, Names.DESC);
-			transformSetter(m2, "onSetResistance");
-			MethodNode m3 = ASMHelper.getMethod(c, Names.SET_LIGHTLEVEL, Names.DESC);
-			transformSetter(m3, "onSetLightLevel");
-			basicClass = ASMHelper.getBytesFromClassNode(c);
-		}
-		else if (name.equals("net.minecraft.block.BlockPortal")) {
-			LOGGER.info("Transforming " + name);
-			ClassNode c = ASMHelper.createClassNodeFromBytes(basicClass);
-			MethodNode m = ASMHelper.getMethod(c, Names.BLOCK_PORTAL_TP, Names.BLOCK_PORTAL_TP_DESC);
-			transformBlockPortal(m);
-			basicClass = ASMHelper.getBytesFromClassNode(c);
-		}
-		else if (name.equals("net.minecraft.block.BlockFalling")) {
-			LOGGER.info("Transforming " + name);
-			ClassNode c = ASMHelper.createClassNodeFromBytes(basicClass);
-			MethodNode m = ASMHelper.getMethod(c, Names.BLOCK_FALLING_UPDATE, Names.BLOCK_FALLING_UPDATE_DESC);
-			transformBlockFalling(m);
-			basicClass = ASMHelper.getBytesFromClassNode(c);
-		}
-		else if (name.equals("net.minecraft.util.ChatAllowedCharacters")) {
-			LOGGER.info("Transforming " + name);
-			ClassNode c = ASMHelper.createClassNodeFromBytes(basicClass);
-			MethodNode m = ASMHelper.getMethod(c, Names.IS_ALLOWED_CHAR, "(C)Z");
-			transformAllowedChars(m);
-			basicClass = ASMHelper.getBytesFromClassNode(c);
-		}
-		else if (name.equals("cpw.mods.fml.common.registry.GameRegistry")) {
-			LOGGER.info("Transforming " + name);
-			ClassNode c = ASMHelper.createClassNodeFromBytes(basicClass);
-			MethodNode m = ASMHelper.getMethod(c, "registerBlock", "(Lnet/minecraft/block/Block;Ljava/lang/Class;Ljava/lang/String;[Ljava/lang/Object;)Lnet/minecraft/block/Block;");
-			transformRegisterBlock(m);
-			MethodNode m2 = ASMHelper.getMethod(c, "registerItem", "(Lnet/minecraft/item/Item;Ljava/lang/String;Ljava/lang/String;)Lnet/minecraft/item/Item;");
-			transformRegisterItem(m2);
-			basicClass = ASMHelper.getBytesFromClassNode(c);
+			toTransform.get(name).transform(c);
+			return ASMHelper.getBytesFromClassNode(c);
 		}
 		return basicClass;
 	}
 
-	private static void transformRegisterBlock(MethodNode m) {
-		InsnList list = new InsnList();
-
-		list.add(new VarInsnNode(Opcodes.ALOAD, 0));
-		list.add(new VarInsnNode(Opcodes.ALOAD, 2));
-		list.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "coolsquid/squidutils/asm/Hooks", "registerBlock", "(Lnet/minecraft/block/Block;Ljava/lang/String;)Z", false));
-		Label l1 = new Label();
-		list.add(new JumpInsnNode(Opcodes.IFNE, new LabelNode(l1)));
-		Label l2 = new Label();
-		list.add(new LabelNode(l2));
-		list.add(new VarInsnNode(Opcodes.ALOAD, 0));
-		list.add(new InsnNode(Opcodes.ARETURN));
-		list.add(new LabelNode(l1));
-		list.add(new FrameNode(Opcodes.F_SAME, 0, null, 0, null));
-
-		m.instructions.insertBefore(m.instructions.getFirst(), list);
-	}
-
-	private static void transformRegisterItem(MethodNode m) {
-		InsnList list = new InsnList();
-
-		list.add(new VarInsnNode(Opcodes.ALOAD, 0));
-		list.add(new VarInsnNode(Opcodes.ALOAD, 1));
-		list.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "coolsquid/squidutils/asm/Hooks", "registerItem", "(Lnet/minecraft/item/Item;Ljava/lang/String;)Z", false));
-		Label l1 = new Label();
-		list.add(new JumpInsnNode(Opcodes.IFNE, new LabelNode(l1)));
-		Label l2 = new Label();
-		list.add(new LabelNode(l2));
-		list.add(new VarInsnNode(Opcodes.ALOAD, 0));
-		list.add(new InsnNode(Opcodes.ARETURN));
-		list.add(new LabelNode(l1));
-		list.add(new FrameNode(Opcodes.F_SAME, 0, null, 0, null));
-
-		m.instructions.insertBefore(m.instructions.getFirst(), list);
-	}
-
-	private static void transformAllowedChars(MethodNode m) {
-		InsnList list = new InsnList();
-
-		list.add(new VarInsnNode(Opcodes.ILOAD, 0));
-		list.add(new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(Hooks.class), "isAllowedChar", "(C)Z", false));
-		list.add(new InsnNode(Opcodes.IRETURN));
-
-		m.instructions.insertBefore(m.instructions.getFirst(), list);
-	}
-
-	private static void transformSetter(MethodNode m, String hook) {
-		InsnList list = new InsnList();
-
-		list.add(new VarInsnNode(Opcodes.ALOAD, 0));
-		list.add(new VarInsnNode(Opcodes.FLOAD, 1));
-		list.add(new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(Hooks.class), hook, "(Lnet/minecraft/block/Block;F)V", false));
-		list.add(new VarInsnNode(Opcodes.ALOAD, 0));
-		list.add(new InsnNode(Opcodes.ARETURN));
-
-		m.instructions.insertBefore(m.instructions.getFirst(), list);
-	}
-
-	private static void transformBlockFalling(MethodNode m) {
-		InsnList list = new InsnList();
-
-		list.add(new VarInsnNode(Opcodes.ALOAD, 0));
-		list.add(new VarInsnNode(Opcodes.ALOAD, 1));
-		list.add(new VarInsnNode(Opcodes.ILOAD, 2));
-		list.add(new VarInsnNode(Opcodes.ILOAD, 3));
-		list.add(new VarInsnNode(Opcodes.ILOAD, 4));
-		list.add(new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(Hooks.class), "onBlockFallingUpdate", "(Lnet/minecraft/block/BlockFalling;Lnet/minecraft/world/World;III)V", false));
-		list.add(new InsnNode(Opcodes.RETURN));
-
-		m.instructions.insertBefore(m.instructions.getFirst(), list);
-	}
-
-	private static void transformBlockPortal(MethodNode m) {
-		InsnList list = new InsnList();
-
-		list.add(new VarInsnNode(Opcodes.ALOAD, 5));
-		list.add(new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(Hooks.class), "onEntityCollideWithPortal", "(Lnet/minecraft/entity/Entity;)V", false));
-		list.add(new InsnNode(Opcodes.RETURN));
-
-		m.instructions.insertBefore(m.instructions.getFirst(), list);
+	@Override
+	public Void call() throws Exception {
+		for (String exclusion: IOUtils.readLines(new File("./config/SquidUtils/TransformerExclusions.txt"))) {
+			if (EnumBlacklist.getBlacklister(exclusion) == null) {
+				Launch.classLoader.addTransformerExclusion(exclusion);
+			}
+		}
+		try {
+			SimpleConfig config = new SimpleConfig(new File("./config/SquidUtils/Transformers.txt"));
+			List<IClassTransformer> transformers = ReflectionHelper.getPrivateValue(LaunchClassLoader.class, Launch.classLoader, 3);
+			for (int a = 0; a < transformers.size(); a++) {
+				IClassTransformer transformer = transformers.get(a);
+				if (EnumBlacklist.getBlacklister(transformer) == null && !config.getBoolean(transformer.getClass().getName(), true)) {
+					transformers.remove(a);
+				}
+			}
+			config.save("Warning: Do NOT use this config unless you know what you're doing. It can cause major issues." + System.lineSeparator() + "#Be extremely careful with disabling FML's transformers.");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

@@ -17,7 +17,7 @@ import coolsquid.squidapi.util.version.UpdateChecker;
 import cpw.mods.fml.common.DummyModContainer;
 import cpw.mods.fml.common.ModMetadata;
 
-public class UpdateCheckerCreationHandler extends CustomContentHandler<UpdateChecker> {
+public class UpdateCheckerCreationHandler extends CreationHandler<UpdateChecker> {
 
 	public static final UpdateCheckerCreationHandler INSTANCE = new UpdateCheckerCreationHandler();
 

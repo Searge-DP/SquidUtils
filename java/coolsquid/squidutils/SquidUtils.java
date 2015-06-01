@@ -88,6 +88,11 @@ import coolsquid.squidutils.config.custom.CrashCallableCreationHandler;
 import coolsquid.squidutils.config.custom.CustomContentManager;
 import coolsquid.squidutils.config.custom.ItemCreationHandler;
 import coolsquid.squidutils.config.custom.RecipeCreationHandler;
+import coolsquid.squidutils.config.custom.RotaryRecipesHandler.CompactorRecipeCreationHandler;
+import coolsquid.squidutils.config.custom.RotaryRecipesHandler.GrinderRecipeCreationHandler;
+import coolsquid.squidutils.config.custom.RotaryRecipesHandler.GrinderSeedCreationHandler;
+import coolsquid.squidutils.config.custom.RotaryRecipesHandler.WorktableRecipeCreationHandler.WorktableShapedRecipeCreationHandler;
+import coolsquid.squidutils.config.custom.RotaryRecipesHandler.WorktableRecipeCreationHandler.WorktableShapelessRecipeCreationHandler;
 import coolsquid.squidutils.config.custom.ShutdownHookCreationHandler;
 import coolsquid.squidutils.config.custom.ToolMaterialCreationHandler;
 import coolsquid.squidutils.config.custom.UpdateCheckerCreationHandler;
@@ -217,6 +222,15 @@ public class SquidUtils extends SquidAPIMod {
 
 		if (Compat.UPTODATE.isEnabled()) {
 			UpToDateConfigHandler.INSTANCE.init();
+		}
+
+		if (Compat.ROTARYCRAFT.isEnabled()) {
+			CustomContentManager.INSTANCE.registerHandlers(
+					CompactorRecipeCreationHandler.INSTANCE,
+					GrinderRecipeCreationHandler.INSTANCE,
+					GrinderSeedCreationHandler.INSTANCE,
+					WorktableShapedRecipeCreationHandler.INSTANCE,
+					WorktableShapelessRecipeCreationHandler.INSTANCE);
 		}
 
 		if (MiscLib.CLIENT) {

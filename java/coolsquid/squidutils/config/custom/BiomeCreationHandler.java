@@ -20,7 +20,7 @@ import com.google.gson.JsonParseException;
 
 import coolsquid.squidutils.config.custom.BiomeCreationHandler.Biome;
 
-public class BiomeCreationHandler extends CustomContentHandler<Biome> {
+public class BiomeCreationHandler extends CreationHandler<Biome> {
 
 	public static final BiomeCreationHandler INSTANCE = new BiomeCreationHandler();
 

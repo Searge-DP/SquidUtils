@@ -7,7 +7,7 @@ package coolsquid.squidutils.config.custom;
 import coolsquid.squidapi.SquidAPI;
 import coolsquid.squidapi.util.objects.CrashCallable;
 
-public class CrashCallableCreationHandler extends CustomContentHandler<CrashCallable> {
+public class CrashCallableCreationHandler extends CreationHandler<CrashCallable> {
 
 	public static final CrashCallableCreationHandler INSTANCE = new CrashCallableCreationHandler();
 

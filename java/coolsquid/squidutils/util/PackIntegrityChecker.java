@@ -6,6 +6,7 @@ package coolsquid.squidutils.util;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Set;
 
 import net.minecraft.client.Minecraft;
@@ -32,7 +33,7 @@ public class PackIntegrityChecker {
 	public static final PackIntegrityChecker INSTANCE = new PackIntegrityChecker();
 
 	private final Set<String> set = Sets.newHashSet();
-	private final Set<String> alreadyWarned;
+	private final List<String> alreadyWarned;
 	private final File data = new File("./SquidAPI/SquidUtils/PackChecker.data");
 
 	private PackIntegrityChecker() {

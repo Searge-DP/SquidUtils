@@ -9,7 +9,7 @@ import org.apache.logging.log4j.message.SimpleMessage;
 import coolsquid.squidapi.SquidAPI;
 
 
-public class ShutdownHookCreationHandler extends CustomContentHandler<SimpleMessage> {
+public class ShutdownHookCreationHandler extends CreationHandler<SimpleMessage> {
 
 	public static final ShutdownHookCreationHandler INSTANCE = new ShutdownHookCreationHandler();
 

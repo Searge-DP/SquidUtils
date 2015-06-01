@@ -16,7 +16,7 @@ public class ItemBanHandler {
 
 	@SubscribeEvent
 	public void onInteract(PlayerInteractEvent event) {
-		if (event.entityPlayer.getHeldItem() != null && SquidUtils.COMMON.getBannedItems().contains(Item.itemRegistry.getNameForObject(event.entityPlayer.getHeldItem().getItem()))) {
+		if (event.entityPlayer.getHeldItem() != null && SquidUtils.COMMON.getBannedItems().contains(event.entityPlayer.getHeldItem().getItem())) {
 			event.setCanceled(true);
 		}
 	}
@@ -25,7 +25,7 @@ public class ItemBanHandler {
 	public void onItemJoin(EntityJoinWorldEvent event) {
 		if (event.entity instanceof EntityItem) {
 			EntityItem entityitem = (EntityItem) event.entity;
-			if (SquidUtils.COMMON.getBannedItems().contains(Item.itemRegistry.getNameForObject(entityitem.getEntityItem().getItem()))) {
+			if (SquidUtils.COMMON.getUndroppableItems().contains(entityitem.getEntityItem().getItem())) {
 				event.setCanceled(true);
 			}
 		}
@@ -33,7 +33,7 @@ public class ItemBanHandler {
 
 	@SubscribeEvent
 	public void onBlockPlaced(PlaceEvent event) {
-		if (SquidUtils.COMMON.getBannedItems().contains(Item.itemRegistry.getNameForObject(event.block))) {
+		if (SquidUtils.COMMON.getBannedItems().contains(Item.getItemFromBlock(event.block))) {
 			event.setCanceled(true);
 		}
 	}

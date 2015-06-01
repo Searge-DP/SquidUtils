@@ -17,7 +17,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
-public class RecipeCreationHandler extends CustomContentHandler<ShapedRecipes> {
+public class RecipeCreationHandler extends CreationHandler<ShapedRecipes> {
 
 	public static final RecipeCreationHandler INSTANCE = new RecipeCreationHandler();
 

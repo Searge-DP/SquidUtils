@@ -17,7 +17,7 @@ import com.google.gson.JsonParseException;
 
 import coolsquid.squidapi.util.StringParser;
 
-public class AchievementCreationHandler extends CustomContentHandler<Achievement> {
+public class AchievementCreationHandler extends CreationHandler<Achievement> {
 
 	public static final AchievementCreationHandler INSTANCE = new AchievementCreationHandler();
 

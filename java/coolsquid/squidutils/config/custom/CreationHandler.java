@@ -12,12 +12,12 @@ import coolsquid.squidapi.util.io.IOUtils;
 import coolsquid.squidutils.SquidUtils;
 
 
-public abstract class CustomContentHandler<E> {
+public abstract class CreationHandler<E> {
 
 	private final File dir;
 	private final Class<E> type;
 
-	public CustomContentHandler(String subdir, Class<E> type) {
+	public CreationHandler(String subdir, Class<E> type) {
 		this.dir = new File("./config/SquidUtils/custom/" + subdir);
 		if (!this.dir.exists()) {
 			this.dir.mkdirs();

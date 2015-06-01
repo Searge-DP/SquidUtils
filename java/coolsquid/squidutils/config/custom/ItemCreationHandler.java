@@ -8,7 +8,14 @@ import java.lang.reflect.Type;
 import java.util.Map;
 
 import net.minecraft.item.Item;
+import net.minecraft.item.Item.ToolMaterial;
+import net.minecraft.item.ItemArmor;
+import net.minecraft.item.ItemArmor.ArmorMaterial;
+import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemFood;
+import net.minecraft.item.ItemPickaxe;
+import net.minecraft.item.ItemSpade;
+import net.minecraft.item.ItemSword;
 
 import com.google.common.collect.Maps;
 import com.google.gson.JsonDeserializationContext;
@@ -20,7 +27,7 @@ import com.google.gson.JsonParseException;
 import coolsquid.squidutils.config.custom.ItemCreationHandler.ItemContainer;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-public class ItemCreationHandler extends CustomContentHandler<ItemContainer> {
+public class ItemCreationHandler extends CreationHandler<ItemContainer> {
 
 	public static final ItemCreationHandler INSTANCE = new ItemCreationHandler();
 	private static final Map<String, Factory<? extends Item>> factories = Maps.newHashMap();
@@ -39,6 +46,11 @@ public class ItemCreationHandler extends CustomContentHandler<ItemContainer> {
 
 		factories.put("food", new ItemFoodFactory());
 		factories.put("basic", new ItemBasicFactory());
+		factories.put("armor", new ItemArmorFactory());
+		factories.put("pickaxe", new ItemPickaxeFactory());
+		factories.put("sword", new ItemSwordFactory());
+		factories.put("axe", new ItemAxeFactory());
+		factories.put("shovel", new ItemSpadeFactory());
 	}
 
 	public static class ItemDeserializer implements JsonDeserializer<ItemContainer> {
@@ -107,5 +119,60 @@ public class ItemCreationHandler extends CustomContentHandler<ItemContainer> {
 		public Item newInstance(JsonObject o, JsonDeserializationContext context) {
 			return new Item();
 		}
+	}
+
+	public static class ItemArmorFactory implements Factory<ItemArmor> {
+
+		@Override
+		public ItemArmor newInstance(JsonObject o, JsonDeserializationContext context) {
+			ArmorMaterial m = null;
+			for (ArmorMaterial material: ArmorMaterial.values()) {
+				if (material.toString().equals(o.get("name").getAsString())) {
+					m = material;
+				}
+			}
+			return new ItemArmor(m, o.get("renderIndex").getAsInt(), o.get("armorType").getAsInt());
+		}
+	}
+
+	public static class ItemPickaxeFactory implements Factory<ItemPickaxe> {
+
+		@Override
+		public ItemPickaxe newInstance(JsonObject o, JsonDeserializationContext context) {
+			return new ItemPickaxe(getToolMaterial(o.get("name").getAsString())) {};
+		}
+	}
+
+	public static class ItemSpadeFactory implements Factory<ItemSpade> {
+
+		@Override
+		public ItemSpade newInstance(JsonObject o, JsonDeserializationContext context) {
+			return new ItemSpade(getToolMaterial(o.get("name").getAsString()));
+		}
+	}
+
+	public static class ItemSwordFactory implements Factory<ItemSword> {
+
+		@Override
+		public ItemSword newInstance(JsonObject o, JsonDeserializationContext context) {
+			return new ItemSword(getToolMaterial(o.get("name").getAsString()));
+		}
+	}
+
+	public static class ItemAxeFactory implements Factory<ItemAxe> {
+
+		@Override
+		public ItemAxe newInstance(JsonObject o, JsonDeserializationContext context) {
+			return new ItemAxe(getToolMaterial(o.get("name").getAsString())) {};
+		}
+	}
+
+	private static ToolMaterial getToolMaterial(String name) {
+		for (ToolMaterial material: ToolMaterial.values()) {
+			if (material.toString().equals(name)) {
+				return material;
+			}
+		}
+		return null;
 	}
 }

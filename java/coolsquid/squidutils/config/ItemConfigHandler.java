@@ -90,7 +90,10 @@ public class ItemConfigHandler extends ConfigHandler {
 						SquidUtils.COMMON.registerFuel(item, burnTime);
 					}
 					if (!this.config.get(name, "enabled", true).getBoolean()) {
-						SquidUtils.COMMON.banItem(name);
+						SquidUtils.COMMON.banItem(item);
+					}
+					if (!this.config.get(name, "canBeDropped", true).getBoolean()) {
+						SquidUtils.COMMON.setUndroppable(item);
 					}
 				}
 			} catch (Throwable t) {

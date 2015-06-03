@@ -94,23 +94,25 @@ public class SquidUtilsPlugin implements IFMLLoadingPlugin, IClassTransformer, I
 
 	@Override
 	public Void call() throws Exception {
-		for (String exclusion: IOUtils.readLines(new File("./config/SquidUtils/TransformerExclusions.txt"))) {
-			if (EnumBlacklist.getBlacklister(exclusion) == null) {
-				Launch.classLoader.addTransformerExclusion(exclusion);
-			}
-		}
-		try {
-			SimpleConfig config = new SimpleConfig(new File("./config/SquidUtils/Transformers.txt"));
-			List<IClassTransformer> transformers = ReflectionHelper.getPrivateValue(LaunchClassLoader.class, Launch.classLoader, 3);
-			for (int a = 0; a < transformers.size(); a++) {
-				IClassTransformer transformer = transformers.get(a);
-				if (EnumBlacklist.getBlacklister(transformer) == null && !config.getBoolean(transformer.getClass().getName(), true)) {
-					transformers.remove(a);
+		if (Names.DEV) {
+			for (String exclusion: IOUtils.readLines(new File("./config/SquidUtils/TransformerExclusions.txt"))) {
+				if (EnumBlacklist.getBlacklister(exclusion) == null) {
+					Launch.classLoader.addTransformerExclusion(exclusion);
 				}
 			}
-			config.save("Warning: Do NOT use this config unless you know what you're doing. It can cause major issues." + System.lineSeparator() + "#Be extremely careful with disabling FML's transformers.");
-		} catch (IOException e) {
-			e.printStackTrace();
+			try {
+				SimpleConfig config = new SimpleConfig(new File("./config/SquidUtils/Transformers.txt"));
+				List<IClassTransformer> transformers = ReflectionHelper.getPrivateValue(LaunchClassLoader.class, Launch.classLoader, 3);
+				for (int a = 0; a < transformers.size(); a++) {
+					IClassTransformer transformer = transformers.get(a);
+					if (EnumBlacklist.getBlacklister(transformer) == null && !config.getBoolean(transformer.getClass().getName(), true)) {
+						transformers.remove(a);
+					}
+				}
+				config.save("Warning: Do NOT use this config unless you know what you're doing. It can cause major issues." + System.lineSeparator() + "#Be extremely careful with disabling FML's transformers.");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		return null;
 	}

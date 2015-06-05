@@ -93,7 +93,7 @@ jar {
 }
 
 dependencies {
-    compile(group: 'coolsquid', name: 'SquidAPI', version: '1.1.10.18', classifier: 'dev')
+    compile(group: 'coolsquid', name: 'SquidAPI', version: '1.1.10.21', classifier: 'dev')
     compile name: "Botania" , version: botaniaVersion, classifier: "deobf"
     compile name: "MineTweaker3" , version: minetweakerVersion, classifier: "Dev"
     compile(group: 'tconstruct', name: 'TConstruct', version: tconstructVersion, classifier: 'deobf')

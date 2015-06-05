@@ -17,6 +17,8 @@ import com.google.gson.JsonParseException;
 
 public class ArmorMaterialCreationHandler extends CreationHandler<ArmorMaterial> {
 
+	public static final ArmorMaterialCreationHandler INSTANCE = new ArmorMaterialCreationHandler();
+
 	public ArmorMaterialCreationHandler() {
 		super("armormaterials", ArmorMaterial.class);
 	}

@@ -25,7 +25,6 @@ import coolsquid.squidutils.asm.transformers.BlockFallingTransformer;
 import coolsquid.squidutils.asm.transformers.BlockPortalTransformer;
 import coolsquid.squidutils.asm.transformers.BlockTransformer;
 import coolsquid.squidutils.asm.transformers.ChatAllowedCharactersTransformer;
-import coolsquid.squidutils.asm.transformers.GameRegistryTransformer;
 import cpw.mods.fml.relauncher.IFMLCallHook;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import cpw.mods.fml.relauncher.ReflectionHelper;
@@ -42,15 +41,18 @@ public class SquidUtilsPlugin implements IFMLLoadingPlugin, IClassTransformer, I
 		toTransform.put("net.minecraft.block.BlockPortal", new BlockPortalTransformer());
 		toTransform.put("net.minecraft.block.BlockFalling", new BlockFallingTransformer());
 		toTransform.put("net.minecraft.util.ChatAllowedCharacters", new ChatAllowedCharactersTransformer());
-		toTransform.put("cpw.mods.fml.common.registry.GameRegistry", new GameRegistryTransformer());
+		//toTransform.put("cpw.mods.fml.common.registry.GameRegistry", new GameRegistryTransformer());
 		try {
-			SimpleConfig config = new SimpleConfig(new File("./config/SquidUtils/ASMHooks.txt"));
-			for (String name: toTransform.keySet()) {
-				if (!config.getBoolean(name, true)) {
-					toTransform.remove(name);
+			File file = new File("./config/SquidUtils/ASMHooks.txt");
+			if (file.exists()) {
+				SimpleConfig config = new SimpleConfig(file);
+				for (String name: toTransform.keySet()) {
+					if (!config.getBoolean(name, true)) {
+						toTransform.remove(name);
+					}
 				}
+				config.save();
 			}
-			config.save();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

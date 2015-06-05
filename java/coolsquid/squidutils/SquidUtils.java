@@ -64,6 +64,7 @@ import coolsquid.squidutils.config.compat.ticon.TiConBowMaterialConfigHandler;
 import coolsquid.squidutils.config.compat.ticon.TiConToolMaterialConfigHandler;
 import coolsquid.squidutils.config.compat.uptodate.UpToDateConfigHandler;
 import coolsquid.squidutils.config.custom.AchievementCreationHandler;
+import coolsquid.squidutils.config.custom.ArmorMaterialCreationHandler;
 import coolsquid.squidutils.config.custom.BiomeCreationHandler;
 import coolsquid.squidutils.config.custom.BlockCreationHandler;
 import coolsquid.squidutils.config.custom.BlockMaterialCreationHandler;
@@ -165,6 +166,7 @@ public class SquidUtils extends SquidAPIMod {
 				BiomeCreationHandler.INSTANCE,
 				ChestGenCreationHandler.INSTANCE,
 				ToolMaterialCreationHandler.INSTANCE,
+				ArmorMaterialCreationHandler.INSTANCE,
 				ItemCreationHandler.INSTANCE,
 				BlockCreationHandler.INSTANCE);
 

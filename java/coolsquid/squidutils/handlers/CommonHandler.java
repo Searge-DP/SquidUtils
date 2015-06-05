@@ -4,6 +4,7 @@
  *******************************************************************************/
 package coolsquid.squidutils.handlers;
 
+import java.io.File;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -47,6 +48,7 @@ public class CommonHandler {
 	private final EventHandlerManager eventHandlerManager = new EventHandlerManager();
 	private final IMCHandler imc = new IMCHandler();
 	private boolean debug;
+	private final File config_dir = new File("./config/SquidUtils");
 
 	public void addTooltip(Item item, String tooltip) {
 		this.tooltips.put(item, tooltip);
@@ -176,5 +178,9 @@ public class CommonHandler {
 
 	public Map<Item, Integer> getFuels() {
 		return this.fuels;
+	}
+
+	public File getConfigDirectory() {
+		return this.config_dir;
 	}
 }

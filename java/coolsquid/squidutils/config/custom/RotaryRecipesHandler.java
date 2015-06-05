@@ -2,7 +2,7 @@
  * Copyright (c) 2015 CoolSquid.
  * All rights reserved.
  *******************************************************************************/
-package coolsquid.squidutils.config.custom;
+/*package coolsquid.squidutils.config.custom;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -110,4 +110,4 @@ public abstract class RotaryRecipesHandler<E> extends CreationHandler<E> {
 			public ItemStack output;
 		}
 	}
-}
+}*/

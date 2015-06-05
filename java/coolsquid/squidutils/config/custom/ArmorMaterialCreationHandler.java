@@ -35,7 +35,7 @@ public class ArmorMaterialCreationHandler extends CreationHandler<ArmorMaterial>
 		@Override
 		public ArmorMaterial deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
 			JsonObject o = json.getAsJsonObject();
-			return EnumHelper.addArmorMaterial(o.get("name").getAsString(), o.get("durability").getAsInt(), context.deserialize(o.get("reductionAmounts"), int[].class), o.get("enchantability").getAsInt());
+			return EnumHelper.addArmorMaterial(o.get("name").getAsString(), o.get("durability").getAsInt(), (int[]) context.deserialize(o.get("reductionAmounts"), int[].class), o.get("enchantability").getAsInt());
 		}
 	}
 }

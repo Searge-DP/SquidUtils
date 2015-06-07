@@ -8,6 +8,6 @@ package coolsquid.squidutils.util;
 public class ModInfo {
 	public static final String modid = "SquidUtils";
 	public static final String name = "SquidUtils";
-	public static final String version = "2.1.1";
+	public static final String version = "2.1.2";
 	public static final String dependencies = "required-after:SquidAPI;after:AppleCore;after:MineTweaker3";
 }

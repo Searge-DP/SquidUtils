@@ -91,6 +91,7 @@ import coolsquid.squidutils.handlers.GuiHandler;
 import coolsquid.squidutils.handlers.ItemBanHandler;
 import coolsquid.squidutils.handlers.LivingUpdateHandler;
 import coolsquid.squidutils.handlers.MinecartCollisionHandler;
+import coolsquid.squidutils.handlers.ModEventHandler;
 import coolsquid.squidutils.handlers.RegistrySearcher;
 import coolsquid.squidutils.handlers.RenderDistanceHandler;
 import coolsquid.squidutils.handlers.SeedForcer;
@@ -330,6 +331,7 @@ public class SquidUtils extends SquidAPIMod {
 				handlers.registerForgeHandler(new SeedForcer());
 			}
 		}
+		handlers.registerForgeHandler(new ModEventHandler());
 
 		this.info("Initialization finished.");
 	}

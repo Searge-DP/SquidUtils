@@ -13,7 +13,8 @@ public class ModEventHandler {
 	public void onCrashReportFormat(CrashReportEvent.FormatCommentEvent event) {
 		File file = new File(SquidUtils.COMMON.getConfigDirectory(), "CrashReportComment.txt");
 		if (file.exists()) {
-			event.getCommentBuilder().delete(0, event.getCommentBuilder().length())
+			event.getCommentBuilder()
+			.delete(0, event.getCommentBuilder().length())
 			.append(IOUtils.readAll(file));
 		}
 	}

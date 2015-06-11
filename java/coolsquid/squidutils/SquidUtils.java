@@ -238,7 +238,9 @@ public class SquidUtils extends SquidAPIMod {
 	private void init(FMLInitializationEvent event) {
 		this.info("Initializing.");
 
-		COMMON.registerCreativeTabs();
+		if (MiscLib.CLIENT) {
+			COMMON.registerCreativeTabs();
+		}
 		CustomContentManager.INSTANCE.loadAll();
 
 		SquidUtilsScripting.init();

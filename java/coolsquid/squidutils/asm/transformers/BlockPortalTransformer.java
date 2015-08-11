@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 CoolSquid.
++ * Copyright (c) 2015 CoolSquid.
  * All rights reserved.
  *******************************************************************************/
 package coolsquid.squidutils.asm.transformers;
@@ -16,12 +16,11 @@ import org.objectweb.asm.tree.VarInsnNode;
 import coolsquid.squidutils.asm.ASMHelper;
 import coolsquid.squidutils.asm.Hooks;
 import coolsquid.squidutils.asm.Names;
-import coolsquid.squidutils.asm.Transformer;
 
 public class BlockPortalTransformer implements Transformer {
 
 	@Override
-	public void transform(ClassNode c) {
+	public void accept(ClassNode c) {
 		MethodNode m = ASMHelper.getMethod(c, Names.BLOCK_PORTAL_TP, Names.BLOCK_PORTAL_TP_DESC);
 		transformBlockPortal(m);
 	}

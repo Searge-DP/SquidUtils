@@ -4,8 +4,13 @@
  *******************************************************************************/
 package coolsquid.squidutils.asm;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintStream;
+
 import net.minecraft.launchwrapper.Launch;
 
+import org.apache.commons.io.FileUtils;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.tree.AnnotationNode;
@@ -13,7 +18,7 @@ import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.MethodNode;
 
-import coolsquid.squidapi.exception.ASMException;
+import coolsquid.squidapi.util.objects.RuntimeInfo;
 
 public class ASMHelper {
 
@@ -25,7 +30,26 @@ public class ASMHelper {
 				return m;
 			}
 		}
-		throw new ASMException("Could not find method: " + s + s2);
+		SquidUtilsPlugin.LOGGER.error(String.format("Could not find method %s%s.", s, s2));
+		SquidUtilsPlugin.LOGGER.error("This is a critical error. Certain features may not function. Please report this error to CoolSquid with a copy of minecraft/SquidAPI/RuntimeInfo.txt.");
+		try (PrintStream printer = new PrintStream(FileUtils.openOutputStream(new File("./SquidAPI/Runtime.txt")))) {
+			new RuntimeInfo().print(printer);
+		} catch (IOException | ReflectiveOperationException e) {
+			e.printStackTrace();
+		}
+		logClass(c);
+		return null;
+	}
+
+	private static void logClass(ClassNode c) {
+		SquidUtilsPlugin.LOGGER.info("Methods:");
+		for (MethodNode m: c.methods) {
+			SquidUtilsPlugin.LOGGER.info(m.name + m.desc);
+		}
+		SquidUtilsPlugin.LOGGER.info("Fields:");
+		for (FieldNode m: c.fields) {
+			SquidUtilsPlugin.LOGGER.info(m.name);
+		}
 	}
 
 	public static FieldNode getField(ClassNode c, String s) {
@@ -34,14 +58,22 @@ public class ASMHelper {
 				return f;
 			}
 		}
-		throw new ASMException("Could not find field: " + s);
+		SquidUtilsPlugin.LOGGER.error(String.format("Could not find field %s.", s));
+		SquidUtilsPlugin.LOGGER.error("This is a critical error. Certain features may not function. Please report this error to CoolSquid with a copy of minecraft/SquidAPI/RuntimeInfo.txt.");
+		try (PrintStream printer = new PrintStream(FileUtils.openOutputStream(new File("./SquidAPI/Runtime.txt")))) {
+			new RuntimeInfo().print(printer);
+		} catch (IOException | ReflectiveOperationException e) {
+			e.printStackTrace();
+		}
+		logClass(c);
+		return null;
 	}
 
 	public static byte[] getBytesFromClassNode(ClassNode c) {
 		ClassWriter w = new ClassWriter(ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
 		c.accept(w);
 		byte[] b = w.toByteArray();
-		SquidUtilsPlugin.LOGGER.info("Successfully transformed " + c.name.replace("/", "."), ".");
+		SquidUtilsPlugin.LOGGER.info("Successfully transformed %s.", c.name.replace("/", "."));
 		return b;
 	}
 
@@ -52,19 +84,12 @@ public class ASMHelper {
 		return c;
 	}
 
-	public static byte[] getBytesFromClassNodeNoMsg(ClassNode c) {
-		ClassWriter w = new ClassWriter(ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
-		c.accept(w);
-		byte[] b = w.toByteArray();
-		return b;
-	}
-
 	public static AnnotationNode getAnnotation(ClassNode c, String desc) {
 		for (AnnotationNode a: c.visibleAnnotations) {
 			if (desc.equals(a.desc)) {
 				return a;
 			}
 		}
-		throw new ASMException("Could not find annotation: " + desc);
+		return null;
 	}
 }

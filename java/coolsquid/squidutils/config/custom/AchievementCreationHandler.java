@@ -22,7 +22,7 @@ public class AchievementCreationHandler extends CreationHandler<Achievement> {
 	public static final AchievementCreationHandler INSTANCE = new AchievementCreationHandler();
 
 	public AchievementCreationHandler() {
-		super("achievements", Achievement.class);
+		super("achievements", Achievement[].class);
 	}
 
 	@Override

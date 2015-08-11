@@ -20,7 +20,7 @@ public class ToolMaterialCreationHandler extends CreationHandler<ToolMaterial> {
 	public static final ToolMaterialCreationHandler INSTANCE = new ToolMaterialCreationHandler();
 
 	public ToolMaterialCreationHandler() {
-		super("toolmaterials", ToolMaterial.class);
+		super("toolmaterials", ToolMaterial[].class);
 	}
 
 	@Override

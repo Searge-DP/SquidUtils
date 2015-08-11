@@ -33,7 +33,7 @@ public class ItemCreationHandler extends CreationHandler<ItemContainer> {
 	private static final Map<String, Factory<? extends Item>> factories = Maps.newHashMap();
 
 	public ItemCreationHandler() {
-		super("items", ItemContainer.class);
+		super("items", ItemContainer[].class);
 	}
 
 	@Override

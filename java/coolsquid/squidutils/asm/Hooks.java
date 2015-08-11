@@ -4,72 +4,26 @@
  *******************************************************************************/
 package coolsquid.squidutils.asm;
 
-import java.io.File;
-
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.item.Item;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.Configuration;
-import coolsquid.squidapi.util.MiscLib;
-import coolsquid.squidapi.util.Utils;
+
+import org.objectweb.asm.Type;
+
 import coolsquid.squidutils.SquidUtils;
-import coolsquid.squidutils.event.BlockRegisterEvent;
-import coolsquid.squidutils.event.ItemRegisterEvent;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.ModContainer;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 
 public class Hooks {
 
-	private static final Configuration config = new Configuration(new File("./config/SquidUtils/ModPermissions.cfg"));
+	private static final String NAME = Type.getInternalName(Hooks.class);
+
 	public static boolean NETHER_PORTALS = true;
 
-	public static void onSetHardness(Block block, float value) {
-		if (block != null) {
-			ModContainer mod = Utils.getCurrentMod();
-			String name = Block.blockRegistry.getNameForObject(block);
-			String modid = mod.getModId();
-			boolean self = config.get(modid, "allowSetHardness:self", true).getBoolean();
-			boolean all = config.get(modid, "allowSetHardness:all", true).getBoolean();
-			if ((self && (name == null || name.startsWith(modid))) || all) {
-				block.blockHardness = value;
-				if (block.blockResistance < value * 5.0F) {
-					block.blockResistance = value * 5.0F;
-				}
-			}
-		}
-	}
-
-	public static void onSetResistance(Block block, float value) {
-		if (block != null) {
-			ModContainer mod = Utils.getCurrentMod();
-			String name = Block.blockRegistry.getNameForObject(block);
-			String modid = mod.getModId();
-			boolean self = config.get(modid, "allowSetResistance:self", true).getBoolean();
-			boolean all = config.get(modid, "allowSetResistance:all", true).getBoolean();
-			if ((self && (name == null || name.startsWith(modid))) || all) {
-				block.blockResistance = value * 3.0F;
-			}
-		}
-	}
-
-	public static void onSetLightLevel(Block block, float value) {
-		if (block != null) {
-			ModContainer mod = Utils.getCurrentMod();
-			String name = Block.blockRegistry.getNameForObject(block);
-			String modid = mod.getModId();
-			boolean self = config.get(modid, "allowSetLightLevel:self", true).getBoolean();
-			boolean all = config.get(modid, "allowSetLightLevel:all", true).getBoolean();
-			if ((self && (name == null || name.startsWith(modid))) || all) {
-				block.lightValue = (int) (value * 15.0F);
-			}
-		}
-	}
-
 	public static void onBlockFallingUpdate(BlockFalling block, World world, int x, int y, int z) {
-		if (!world.isRemote && SquidUtils.COMMON.getPhysics().contains(block)) {
+		if (!world.isRemote && SquidUtils.COMMON.hasPhysics(block)) {
 			block.func_149830_m(world, x, y, z);
 		}
 	}
@@ -81,22 +35,15 @@ public class Hooks {
 	}
 
 	public static boolean isAllowedChar(char c) {
-		return SquidUtils.COMMON.getAllowedChars().contains(c) || c > 31 && c != 167 && c != 127;
+		return SquidUtils.COMMON.isAllowedChar(c) || (c > 31 && c != 167 && c != 127);
 	}
 
-	public static boolean registerBlock(Block block, String name) {
-		String mod = Loader.instance().activeModContainer().getModId();
-		return MiscLib.getBlacklister(mod) == null ? !MinecraftForge.EVENT_BUS.post(new BlockRegisterEvent(block, name, mod)) : true;
+	@SideOnly(Side.CLIENT)
+	public static boolean hasSearchBar(CreativeTabs c) {
+		return c == CreativeTabs.tabAllSearch || SquidUtils.COMMON.hasSearchBar(c);
 	}
 
-	public static boolean registerItem(Item item, String name) {
-		String mod = Loader.instance().activeModContainer().getModId();
-		return MiscLib.getBlacklister(mod) == null ? !MinecraftForge.EVENT_BUS.post(new ItemRegisterEvent(item, name, mod)) : true;
-	}
-
-	public static void save() {
-		if (config.hasChanged()) {
-			config.save();
-		}
+	public static String getInternalName() {
+		return NAME;
 	}
 }

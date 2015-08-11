@@ -4,6 +4,8 @@
  *******************************************************************************/
 package coolsquid.squidutils.api.impl;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.Block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.DamageSource;
 import coolsquid.squidapi.util.Utils;
@@ -24,6 +26,7 @@ public class SquidUtilsAPIImpl implements SquidUtilsAPI {
 
 	final Registry<DamageSource> damageSources = new RegistryImpl<DamageSource>();
 	final Registry<Material> materials = new RegistryImpl<Material>();
+	final Registry<SoundType> soundTypes = new RegistryImpl<SoundType>();
 
 	private ScriptingAPI scripting;
 
@@ -78,6 +81,19 @@ public class SquidUtilsAPIImpl implements SquidUtilsAPI {
 		this.materials.register("web", Material.web);
 		this.materials.register("piston", Material.piston);
 
+		this.soundTypes.register("stone", Block.soundTypeStone);
+		this.soundTypes.register("wood", Block.soundTypeWood);
+		this.soundTypes.register("gravel", Block.soundTypeGravel);
+		this.soundTypes.register("grass", Block.soundTypeGrass);
+		this.soundTypes.register("piston", Block.soundTypePiston);
+		this.soundTypes.register("metal", Block.soundTypeMetal);
+		this.soundTypes.register("glass", Block.soundTypeGlass);
+		this.soundTypes.register("cloth", Block.soundTypeCloth);
+		this.soundTypes.register("sand", Block.soundTypeSand);
+		this.soundTypes.register("snow", Block.soundTypeSnow);
+		this.soundTypes.register("ladder", Block.soundTypeLadder);
+		this.soundTypes.register("anvil", Block.soundTypeAnvil);
+
 		if (SquidUtils.API != null) {
 			throw new UnsupportedOperationException("Use the existing instance >.<");
 		}
@@ -104,6 +120,16 @@ public class SquidUtilsAPIImpl implements SquidUtilsAPI {
 	}
 
 	@Override
+	public void registerSoundType(String name, SoundType soundType) {
+		ModContainer mod = Loader.instance().activeModContainer();
+		if (mod == null) {
+			throw new IllegalStateException(new Throwable().getStackTrace()[0].getClassName() + " called an API method outside the lifecycle events");
+		}
+		Utils.checkNotNull(name);
+		this.soundTypes.register(mod.getModId() + ':' + name, soundType);
+	}
+
+	@Override
 	public Registry<DamageSource> getDamageSources() {
 		return CollectUtils.immutableRegistry(this.damageSources);
 	}
@@ -111,6 +137,11 @@ public class SquidUtilsAPIImpl implements SquidUtilsAPI {
 	@Override
 	public Registry<Material> getMaterials() {
 		return CollectUtils.immutableRegistry(this.materials);
+	}
+
+	@Override
+	public Registry<SoundType> getSoundTypes() {
+		return CollectUtils.immutableRegistry(this.soundTypes);
 	}
 
 	@Override

@@ -20,7 +20,7 @@ public class DifficultyHandler {
 		@SubscribeEvent
 		public void event(LivingUpdateEvent event) {
 			if (event.entity instanceof EntityPlayer) {
-				if (Minecraft.getMinecraft().gameSettings.difficulty != difficulty) {
+				if (!Minecraft.getMinecraft().theWorld.getWorldInfo().getGameType().isCreative() && Minecraft.getMinecraft().gameSettings.difficulty != difficulty) {
 					Minecraft.getMinecraft().gameSettings.difficulty = difficulty;
 				}
 			}
@@ -30,7 +30,7 @@ public class DifficultyHandler {
 	public static class HardcoreForcer {
 
 		@SubscribeEvent
-		public void onTick(WorldEvent.Load event) {
+		public void onWorldLoad(WorldEvent.Load event) {
 			event.world.getWorldInfo().hardcore = true;
 		}
 	}
@@ -38,7 +38,7 @@ public class DifficultyHandler {
 	public static class CheatForcer {
 
 		@SubscribeEvent
-		public void onTick(WorldEvent.Load event) {
+		public void onWorldLoad(WorldEvent.Load event) {
 			event.world.getWorldInfo().allowCommands = false;
 		}
 	}

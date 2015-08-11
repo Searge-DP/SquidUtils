@@ -8,8 +8,8 @@ import java.io.File;
 
 import tconstruct.library.TConstructRegistry;
 import tconstruct.library.tools.BowMaterial;
+import coolsquid.lib.util.ReflectionHelper;
 import coolsquid.squidapi.config.ConfigHandler;
-import coolsquid.squidapi.reflection.ReflectionHelper;
 
 public class TiConBowMaterialConfigHandler extends ConfigHandler {
 
@@ -20,14 +20,13 @@ public class TiConBowMaterialConfigHandler extends ConfigHandler {
 	}
 
 	@Override
-	public void loadConfig() {
+	public void loadConfig() throws ReflectiveOperationException {
 		for (int id: TConstructRegistry.bowMaterials.keySet()) {
 			String name = id + "";
 			BowMaterial object = TConstructRegistry.bowMaterials.get(id);
-			ReflectionHelper material = ReflectionHelper.in(object);
 			int drawspeed = this.config.get(name, "drawspeed", object.drawspeed).getInt();
 			if (drawspeed != object.drawspeed) {
-				material.finalField("drawspeed", "drawspeed").set(drawspeed);
+				ReflectionHelper.setPublicFinalValue(BowMaterial.class, object, "drawspeed", drawspeed);
 			}
 		}
 	}

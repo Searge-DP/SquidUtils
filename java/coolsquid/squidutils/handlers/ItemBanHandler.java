@@ -16,7 +16,7 @@ public class ItemBanHandler {
 
 	@SubscribeEvent
 	public void onInteract(PlayerInteractEvent event) {
-		if (event.entityPlayer.getHeldItem() != null && SquidUtils.COMMON.getBannedItems().contains(event.entityPlayer.getHeldItem().getItem())) {
+		if (event.entityPlayer.getHeldItem() != null && SquidUtils.COMMON.isBanned(event.entityPlayer.getHeldItem().getItem())) {
 			event.setCanceled(true);
 		}
 	}
@@ -33,7 +33,7 @@ public class ItemBanHandler {
 
 	@SubscribeEvent
 	public void onBlockPlaced(PlaceEvent event) {
-		if (SquidUtils.COMMON.getBannedItems().contains(Item.getItemFromBlock(event.block))) {
+		if (SquidUtils.COMMON.isBanned(Item.getItemFromBlock(event.block))) {
 			event.setCanceled(true);
 		}
 	}

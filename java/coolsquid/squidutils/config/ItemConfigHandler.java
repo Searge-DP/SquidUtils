@@ -36,7 +36,7 @@ public class ItemConfigHandler extends ConfigHandler {
 					String name = (String) object;
 					Item item = (Item) Item.itemRegistry.getObject(name);
 					if (SquidUtils.COMMON.isDebugMode()) {
-						SquidUtils.INSTANCE.info(name + " (" + item.getClass().getName() + ')');
+						SquidUtils.log.info(name + " (" + item.getClass().getName() + ')');
 					}
 					item.maxStackSize = this.config.get(name, "stacksize", item.maxStackSize).getInt();
 					item.maxDamage = this.config.get(name, "maxDamage", item.maxDamage).getInt();
@@ -97,8 +97,8 @@ public class ItemConfigHandler extends ConfigHandler {
 					}
 				}
 			} catch (Throwable t) {
-				SquidUtils.INSTANCE.error(object.getClass().getName());
-				SquidUtils.INSTANCE.error(t);
+				SquidUtils.log.error(object.getClass().getName());
+				SquidUtils.log.error(t);
 			}
 		}
 	}

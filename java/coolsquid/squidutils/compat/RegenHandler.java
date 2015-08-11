@@ -2,18 +2,20 @@
  * Copyright (c) 2015 CoolSquid.
  * All rights reserved.
  *******************************************************************************/
-package coolsquid.squidutils.handlers;
+package coolsquid.squidutils.compat;
 
-import net.minecraftforge.event.entity.living.EnderTeleportEvent;
+import squeek.applecore.api.hunger.HealthRegenEvent;
 import coolsquid.squidutils.config.ModConfigHandler;
+import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
-public class TeleportationHandler {
+public class RegenHandler {
 
 	@SubscribeEvent
-	public void event(EnderTeleportEvent event) {
-		if (ModConfigHandler.INSTANCE.disableTeleportation) {
-			event.setCanceled(true);
+	public void event(HealthRegenEvent.AllowRegen event) {
+		if (ModConfigHandler.INSTANCE.noHungerRegen) {
+			event.setResult(Result.DENY);
+			return;
 		}
 	}
 }

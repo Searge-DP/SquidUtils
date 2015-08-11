@@ -4,7 +4,6 @@
  *******************************************************************************/
 package coolsquid.squidutils.config.compat.minetweaker;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.GameSettings.Options;
 import net.minecraft.util.EnumChatFormatting;
@@ -74,18 +73,6 @@ public class MiscUtils {
 	@ZenMethod
 	public static <E> Class<E> findClass(String name) {
 		return (Class<E>) Utils.getClass(name);
-	}
-
-	@ZenMethod
-	public static void disablePhysics() {
-		SquidUtils.COMMON.getPhysics().clear();
-	}
-
-	@ZenMethod
-	public static void disablePhysics(String[] blocks) {
-		for (String block: blocks) {
-			SquidUtils.COMMON.getPhysics().remove(Block.getBlockFromName(block));
-		}
 	}
 
 	@ZenMethod

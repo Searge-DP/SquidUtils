@@ -7,12 +7,11 @@ package coolsquid.squidutils.config;
 import java.io.File;
 import java.util.IdentityHashMap;
 
-import javax.swing.JOptionPane;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.monster.EntityEnderman;
+import coolsquid.lib.util.ReflectionHelper;
+import coolsquid.squidapi.SquidAPI;
 import coolsquid.squidapi.config.ConfigHandler;
-import coolsquid.squidapi.reflection.ReflectionHelper;
 import coolsquid.squidapi.util.Utils;
 import coolsquid.squidutils.SquidUtils;
 import coolsquid.squidutils.asm.Hooks;
@@ -34,16 +33,10 @@ public class ModConfigHandler extends ConfigHandler {
 	public final String CATEGORY_HUNGER = "Hunger options";
 	public final String CATEGORY_DISABLING = "Disabling";
 	public final String CATEGORY_CHAT = "Chat options";
-	public final String CATEGORY_HANDLERS = "Config handlers";
 
 	public String forceDifficulty = "FALSE";
-	public boolean noTNT;
 	public boolean noAchievements;
-	public boolean noWitherBoss;
-	public int potionStacks = 1;
-	public boolean chainRecipes;
 	public boolean noDebug;
-	public int pearlStack = 16;
 	public int maxRenderDistance = 16;
 	public boolean tntDropItems = true;
 	public boolean logStuff;
@@ -51,23 +44,14 @@ public class ModConfigHandler extends ConfigHandler {
 	public boolean allBlocksUnbreakable;
 	public int durabilityDivider = 1;
 	public int clearRecipes = 0;
-	public boolean tabVanilla = true;
 	public boolean infiniteDurability;
 	public float hardnessMultiplier = 1;
 	public boolean disableAnvil;
-	public boolean disableTeleportation;
-	public boolean disableBonemeal;
-	public boolean disableHoes;
-	public boolean disableBottleFluidInteraction;
 	public float starvationDamage = 1;
 	public boolean noPlantGrowth;
 	public boolean noHungerRegen;
-	public float walkSpeed = 0.1F;
-	public float flySpeed = 0.05F;
 	public int minHardness = 0;
 	public float explosionSizeMultiplier = 1;
-	public int worldSize = 0;
-	public boolean explodeTNTMinecartsOnCollide;
 	public boolean removeAllCommands;
 	public boolean keepTTCoreBug;
 	public int flammabilityMultiplier = 1;
@@ -93,7 +77,6 @@ public class ModConfigHandler extends ConfigHandler {
 		this.config.setCategoryComment(this.CATEGORY_HUNGER, "Modify hunger options. REQUIRES APPLE CORE!");
 		this.config.setCategoryComment(this.CATEGORY_DISABLING, "Disabling of various things.");
 		this.config.setCategoryComment(this.CATEGORY_CHAT, "Chat options");
-		this.config.setCategoryComment(this.CATEGORY_HANDLERS, "Config handlers");
 	}
 
 	/**
@@ -103,13 +86,8 @@ public class ModConfigHandler extends ConfigHandler {
 	@Override
 	public void loadConfig() {
 		this.forceDifficulty = this.config.getString("forceDifficulty", this.CATEGORY_GAMESETTINGS, "FALSE", "Forces the specified difficulty. Allows for HARDCORE, HARD, NORMAL, EASY, PEACEFUL or FALSE. Set to FALSE to disable.");
-		this.noTNT = this.config.getBoolean("noTNT", this.CATEGORY_GENERAL, false, "Stops TNT from exploding.");
 		this.noAchievements = this.config.getBoolean("noAchievements", this.CATEGORY_GENERAL, false, "Disables achievements.");
-		this.noWitherBoss = this.config.getBoolean("noWitherBoss", this.CATEGORY_GENERAL, false, "Disables the witherboss.");
-		this.potionStacks = this.config.getInt("maxPotionStackSize", this.CATEGORY_PROPERTIES, 1, 1, 64, "Sets the max stacksize for potions.");
-		this.chainRecipes = this.config.getBoolean("chainRecipes", this.CATEGORY_GENERAL, false, "Makes recipes for all pieces of chain armor.");
 		this.noDebug = this.config.getBoolean("noDebug", this.CATEGORY_GENERAL, false, "Makes it impossible to open the debug screen.");
-		this.pearlStack = this.config.getInt("maxEnderPearlStackSize", this.CATEGORY_PROPERTIES, 16, 1, 64, "Sets the max stacksize for enderpearls.");
 		this.maxRenderDistance = this.config.getInt("maxRenderDistance", this.CATEGORY_GAMESETTINGS, 16, 1, 16, "Sets the max render distance. Set to 16 to disable.");
 		this.tntDropItems = this.config.getBoolean("tntDropItems", this.CATEGORY_GENERAL, true, "Should TNT drop items when removed? Only applies if \"noTNT\" is true.");
 		this.logStuff = this.config.getBoolean("logStuff", this.CATEGORY_GENERAL, false, "Logs all blocks broken and all entity deaths.");
@@ -118,22 +96,13 @@ public class ModConfigHandler extends ConfigHandler {
 		this.durabilityDivider = this.config.getInt("durabilityDivider", this.CATEGORY_PROPERTIES, 1, 1, 1080, "All tools and armors durability will be divided by this.");
 		this.clearRecipes = this.config.getInt("clearRecipes", this.CATEGORY_GENERAL, 0, 0, 2, "Clears Vanilla recipes if 1, clears all recipes if 2. Set to 0 to disable. Clearing all recipes will not work if any of Reika's mods are loaded.");
 		this.infiniteDurability = this.config.getBoolean("infiniteDurability", this.CATEGORY_PROPERTIES, false, "Makes all items have infinite durability. Overrides \"durabilityDivider\".");
-		this.tabVanilla = this.config.getBoolean("tabVanilla", this.CATEGORY_CREATIVETABS, false, "Enables the extra Vanilla stuff creative tab.");
 		this.hardnessMultiplier = this.config.getFloat("hardnessMultiplier", this.CATEGORY_PROPERTIES, 1, 1, 100, "Multiplies all blocks hardness by the specified number. Set to 1.0 to disable.");
 		this.disableAnvil = this.config.getBoolean("disableAnvil", this.CATEGORY_GENERAL, false, "Disables the Vanilla anvil.");
-		this.disableTeleportation = this.config.getBoolean("disableTeleportation", this.CATEGORY_GENERAL, false, "Disables enderman and enderpearl teleportation.");
-		this.disableBonemeal = this.config.getBoolean("disableBonemeal", this.CATEGORY_GENERAL, false, "Disables bonemeal.");
-		this.disableHoes = this.config.getBoolean("disableHoes", this.CATEGORY_GENERAL, false, "Disables hoes.");
-		this.disableBottleFluidInteraction = this.config.getBoolean("disableBottleFluidInteraction", this.CATEGORY_GENERAL, false, "Disables bottles from working with cauldrons.");
 		this.starvationDamage = this.config.getFloat("starvationDamage", this.CATEGORY_HUNGER, 1, 0, 20, "Modifies the starvation damage.");
 		this.noPlantGrowth = this.config.getBoolean("noPlantGrowth", this.CATEGORY_HUNGER, false, "Disables plant growth.");
 		this.noHungerRegen = this.config.getBoolean("noHungerRegen", this.CATEGORY_HUNGER, false, "Disables hunger regen.");
-		this.walkSpeed = this.config.getFloat("walkSpeed", this.CATEGORY_GENERAL, 0.1F, 0F, 20F, "Sets the players walk speed.");
-		this.flySpeed = this.config.getFloat("flySpeed", this.CATEGORY_GENERAL, 0.05F, 0F, 20F, "Sets the players flying speed.");
 		this.minHardness = this.config.getInt("minHardness", this.CATEGORY_PROPERTIES, 0, 0, 1080, "Sets the minimum block hardness.");
 		this.explosionSizeMultiplier = this.config.getFloat("explosionSizeMultiplier", this.CATEGORY_GENERAL, 1, 0, 1080, "Multiplies the size of all explosions by the specified amount.");
-		this.worldSize = this.config.getInt("worldSize", this.CATEGORY_GENERAL, 0, 0, Integer.MAX_VALUE, "Sets the size of the world. Set to 0 to disable.");
-		this.explodeTNTMinecartsOnCollide = this.config.getBoolean("explodeTNTMinecartsOnCollide", this.CATEGORY_GENERAL, false, "Explodes minecarts with TNT whenever they collide with an entity.");
 		this.removeAllCommands = this.config.getBoolean("removeAllCommands", this.CATEGORY_GENERAL, false, "Removes all commands, except commands made with SquidUtils' scripting system. Other mods can blacklist their commands from removal.");
 		this.keepTTCoreBug = this.config.getBoolean("keepTTCoreBug", this.CATEGORY_GENERAL, false, "Keeps a ttCore/SquidUtils interaction bug launching fireworks whenever the player opens his inventory.");
 		this.removeBlockHighlight = this.config.getBoolean("removeBlockHighlight", this.CATEGORY_GENERAL, false, "Removes the box around the block the player is pointing at.");
@@ -153,28 +122,19 @@ public class ModConfigHandler extends ConfigHandler {
 		String defaultSeed = this.config.getString("defaultSeed", this.CATEGORY_GENERAL, "0", "Forces the world seed to be the specified value.");
 		try {
 			this.defaultSeed = Long.parseLong(defaultSeed);
-		} catch (NumberFormatException numberformatexception) {
+		} catch (NumberFormatException e) {
 			this.defaultSeed = defaultSeed.hashCode();
 		}
 
-		IdentityHashMap<Block, Boolean> carriable = ReflectionHelper.in(EntityEnderman.class).field("carriable", "carriable").get();
-		String[] c = Utils.newBlockNameArray(carriable.keySet());
-		carriable.clear();
-		for (String s: this.config.getStringList("carriableBlocks", this.CATEGORY_GENERAL, c, "The blocks that endermen can steal.")) {
-			carriable.put(Block.getBlockFromName(s), true);
-		}
-
-		String password = this.config.getString("password", this.CATEGORY_GENERAL, "", "Sets a password required to launch Minecraft.");
-		if (!(password.isEmpty())) {
-			try {
-				String p = JOptionPane.showInputDialog("password:");
-				if (!p.equals(password)) {
-					throw new SecurityException("Wrong password.");
-				}
+		try {
+			IdentityHashMap<Block, Boolean> carriable = ReflectionHelper.getPrivateStaticValue(EntityEnderman.class, "carriable");
+			String[] c = Utils.newBlockNameArray(carriable.keySet());
+			carriable.clear();
+			for (String s: this.config.getStringList("carriableBlocks", this.CATEGORY_GENERAL, c, "The blocks that endermen can steal.")) {
+				carriable.put(Block.getBlockFromName(s), true);
 			}
-			catch (NullPointerException e) {
-				throw new SecurityException("Wrong password.");
-			}
+		} catch (ReflectiveOperationException e1) {
+			SquidAPI.log.catching(e1);
 		}
 	}
 }

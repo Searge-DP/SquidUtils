@@ -25,7 +25,7 @@ public class BiomeCreationHandler extends CreationHandler<Biome> {
 	public static final BiomeCreationHandler INSTANCE = new BiomeCreationHandler();
 
 	public BiomeCreationHandler() {
-		super("biomes", Biome.class);
+		super("biomes", Biome[].class);
 	}
 
 	@Override

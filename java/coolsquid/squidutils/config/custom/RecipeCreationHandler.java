@@ -22,7 +22,7 @@ public class RecipeCreationHandler extends CreationHandler<ShapedRecipes> {
 	public static final RecipeCreationHandler INSTANCE = new RecipeCreationHandler();
 
 	public RecipeCreationHandler() {
-		super("recipes", ShapedRecipes.class);
+		super("recipes", ShapedRecipes[].class);
 	}
 
 	@SuppressWarnings("unchecked")

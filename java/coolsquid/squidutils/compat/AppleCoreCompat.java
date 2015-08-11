@@ -7,9 +7,6 @@ package coolsquid.squidutils.compat;
 import net.minecraftforge.common.MinecraftForge;
 import squeek.applecore.api.hunger.ExhaustionEvent;
 import coolsquid.squidutils.config.ModConfigHandler;
-import coolsquid.squidutils.handlers.FoodHandler;
-import coolsquid.squidutils.handlers.PlantHandler;
-import coolsquid.squidutils.handlers.RegenHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class AppleCoreCompat {

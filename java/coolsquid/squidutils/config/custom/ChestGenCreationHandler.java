@@ -21,7 +21,7 @@ public class ChestGenCreationHandler extends CreationHandler<WeightedRandomChest
 	public static final ChestGenCreationHandler INSTANCE = new ChestGenCreationHandler();
 
 	public ChestGenCreationHandler() {
-		super("chestgen", WeightedRandomChestContent.class);
+		super("chestgen", WeightedRandomChestContent[].class);
 	}
 
 	@Override

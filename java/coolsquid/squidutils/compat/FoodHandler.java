@@ -2,20 +2,16 @@
  * Copyright (c) 2015 CoolSquid.
  * All rights reserved.
  *******************************************************************************/
-package coolsquid.squidutils.handlers;
+package coolsquid.squidutils.compat;
 
-import squeek.applecore.api.hunger.HealthRegenEvent;
+import squeek.applecore.api.hunger.StarvationEvent;
 import coolsquid.squidutils.config.ModConfigHandler;
-import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
-public class RegenHandler {
+public class FoodHandler {
 
 	@SubscribeEvent
-	public void event(HealthRegenEvent.AllowRegen event) {
-		if (ModConfigHandler.INSTANCE.noHungerRegen) {
-			event.setResult(Result.DENY);
-			return;
-		}
+	public void event(StarvationEvent.Starve event) {
+		event.starveDamage = ModConfigHandler.INSTANCE.starvationDamage;
 	}
 }

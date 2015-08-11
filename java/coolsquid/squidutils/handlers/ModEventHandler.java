@@ -1,21 +1,27 @@
 package coolsquid.squidutils.handlers;
 
-import java.io.File;
-
-import coolsquid.squidapi.event.CrashReportEvent;
-import coolsquid.squidapi.util.io.IOUtils;
-import coolsquid.squidutils.SquidUtils;
+import net.minecraftforge.event.entity.player.AchievementEvent;
+import net.minecraftforge.event.world.WorldEvent.Load;
+import coolsquid.squidutils.config.ModConfigHandler;
+import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class ModEventHandler {
 
+	@SubscribeEvent(priority = EventPriority.HIGHEST)
+	public void onAchievement(AchievementEvent event) {
+		if (ModConfigHandler.INSTANCE.noAchievements) {
+			event.setCanceled(true);
+		}
+	}
+
 	@SubscribeEvent
-	public void onCrashReportFormat(CrashReportEvent.FormatCommentEvent event) {
-		File file = new File(SquidUtils.COMMON.getConfigDirectory(), "CrashReportComment.txt");
-		if (file.exists()) {
-			event.getCommentBuilder()
-			.delete(0, event.getCommentBuilder().length())
-			.append(IOUtils.readAll(file));
+	@SideOnly(Side.CLIENT)
+	public void onWorldLoad(Load event) {
+		if (ModConfigHandler.INSTANCE.defaultSeed != 0) {
+			event.world.getWorldInfo().randomSeed = ModConfigHandler.INSTANCE.defaultSeed;
 		}
 	}
 }

@@ -4,9 +4,6 @@
  *******************************************************************************/
 package coolsquid.squidutils.scripting;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.util.Map;
 
 import net.minecraft.block.Block;
@@ -16,12 +13,12 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.stats.Achievement;
 import net.minecraft.stats.AchievementList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.WeightedRandomChestContent;
+import net.minecraft.util.WeightedRandomFishable;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.BiomeGenBase.Height;
 import net.minecraftforge.common.BiomeManager;
@@ -29,24 +26,14 @@ import net.minecraftforge.common.BiomeManager.BiomeEntry;
 import net.minecraftforge.common.BiomeManager.BiomeType;
 import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.DungeonHooks;
-import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.common.FishingHooks;
 
 import com.google.common.collect.Maps;
 
+import coolsquid.lib.util.ReflectionHelper;
 import coolsquid.squidapi.SquidAPI;
 import coolsquid.squidapi.block.BlockBase;
-import coolsquid.squidapi.compat.BloodMagicCompat;
-import coolsquid.squidapi.compat.BotaniaCompat;
-import coolsquid.squidapi.compat.Compat;
-import coolsquid.squidapi.compat.RailCraftCompat;
-import coolsquid.squidapi.compat.RotaryCraftCompat;
-import coolsquid.squidapi.compat.ThermalExpansionCompat;
-import coolsquid.squidapi.creativetab.ITab;
-import coolsquid.squidapi.helpers.AchievementHelper;
-import coolsquid.squidapi.helpers.FishingHelper;
-import coolsquid.squidapi.helpers.RegistryHelper;
 import coolsquid.squidapi.item.ItemBase;
-import coolsquid.squidapi.reflection.ReflectionHelper;
 import coolsquid.squidapi.util.ContentRemover;
 import coolsquid.squidapi.util.ContentRemover.ContentType;
 import coolsquid.squidapi.util.MiscLib;
@@ -65,6 +52,7 @@ import coolsquid.squidutils.handlers.DropHandler.Drop;
 import coolsquid.starstones.block.BlockMeteorBase;
 import coolsquid.starstones.block.MeteorType;
 import coolsquid.starstones.creativetab.ModCreativeTabs;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.VillagerRegistry;
 
 @SuppressWarnings("deprecation")
@@ -91,7 +79,6 @@ public class Components {
 		SquidUtils.API.getScripting().addCommand("tab", new ScriptCommand(tabsubcommands));
 
 		Map<String, IScriptSubcommand> recipesubcommands = Maps.newHashMap();
-		recipesubcommands.put("create", new ScriptSubcommandRecipeCreate());
 		recipesubcommands.put("remove", new ScriptSubcommandRecipeRemove());
 		SquidUtils.API.getScripting().addCommand("recipe", new ScriptCommand(recipesubcommands));
 
@@ -120,14 +107,6 @@ public class Components {
 		villagersubcommands.put("remove", new ScriptSubcommandVillagerRemove());
 		SquidUtils.API.getScripting().addCommand("villager", new ScriptCommand(villagersubcommands));
 
-		Map<String, IScriptSubcommand> modsubcommands = Maps.newHashMap();
-		modsubcommands.put("Botania", new ScriptSubcommandModsBotania());
-		modsubcommands.put("RotaryCraft", new ScriptSubcommandModsRotaryCraft());
-		modsubcommands.put("ThermalExpansion", new ScriptSubcommandModsThermalExpansion());
-		modsubcommands.put("BloodMagic", new ScriptSubcommandModsBloodMagic());
-		modsubcommands.put("ThermalExpansion", new ScriptSubcommandModsRailCraft());
-		SquidUtils.API.getScripting().addCommand("mods", new ScriptCommand(modsubcommands));
-
 		Map<String, IScriptSubcommand> achievementsubcommands = Maps.newHashMap();
 		achievementsubcommands.put("create", new ScriptSubcommandAchievementCreate());
 		achievementsubcommands.put("remove", new ScriptSubcommandAchievementRemove());
@@ -137,11 +116,6 @@ public class Components {
 		smeltingsubcommands.put("create", new ScriptSubcommandSmeltingCreate());
 		smeltingsubcommands.put("remove", new ScriptSubcommandSmeltingRemove());
 		SquidUtils.API.getScripting().addCommand("smelting", new ScriptCommand(smeltingsubcommands));
-
-		Map<String, IScriptSubcommand> reflectionsubcommands = Maps.newHashMap();
-		smeltingsubcommands.put("field", new ScriptSubcommandReflectionField());
-		smeltingsubcommands.put("method", new ScriptSubcommandReflectionMethod());
-		SquidUtils.API.getScripting().addCommand("reflection", new ScriptCommand(reflectionsubcommands));
 	}
 
 	public static class ScriptSubcommandBlockCreate implements IScriptSubcommand {
@@ -170,7 +144,7 @@ public class Components {
 			else if (args.get("type").equals("glass")) {
 				BlockGlass b = new BlockGlass(Material.glass, false);
 				b.setCreativeTab(CreativeTabs.tabBlock).setBlockName(args.get("name"));
-				RegistryHelper.registerBlock(b, args.get("name"));
+				GameRegistry.registerBlock(b, args.get("name"));
 			}
 			else if (args.get("type").equals("basic")) {
 				BlockBase b = new BlockBase(args.get("name"));
@@ -228,7 +202,7 @@ public class Components {
 				if (args.containsKey("potionid")) {
 					food.setPotionEffect(IntUtils.parseInt(args.get("potionid")), IntUtils.parseInt(args.get("duration")), IntUtils.parseInt(args.get("amplifier")), Float.parseFloat(args.get("chance")));
 				}
-				RegistryHelper.registerItem(food, name);
+				GameRegistry.registerItem(food, name);
 			}
 			else if (args.get("type").equals("basic")) {
 				new ItemBase(name).setCreativeTab(CreativeTabs.tabMaterials);
@@ -243,7 +217,7 @@ public class Components {
 			Item item = StringParser.parseItem(args.get("item"));
 			String a = MiscLib.getBlacklister(item);
 			if (a != null) {
-				SquidUtils.INSTANCE.warn(StringUtils.newString(a, " has requested to be blacklisted from modification. ", args.get("item"), " will not be modified."));
+				SquidUtils.log.warn(StringUtils.newString(a, " has requested to be blacklisted from modification. ", args.get("item"), " will not be modified."));
 				return;
 			}
 			if (args.get("property").equals("stacksize")) {
@@ -295,32 +269,14 @@ public class Components {
 
 		@Override
 		public void run(Map<String, String> args) {
-			if (Block.blockRegistry.containsKey(args.get("icon"))) {
-				new ITab(args.get("name"), Item.getItemFromBlock(StringParser.parseBlock(args.get("icon"))));
-			}
-			else if (Item.itemRegistry.containsKey(args.get("icon"))) {
-				new ITab(args.get("name"), StringParser.parseItem(args.get("icon")));
-			}
-		}
-	}
+			final Item i = StringParser.parseItem(args.get("icon"));
+			new CreativeTabs(args.get("name")) {
 
-	public static class ScriptSubcommandRecipeCreate implements IScriptSubcommand {
-
-		@Override
-		public void run(Map<String, String> args) {
-			String type = args.get("type");
-			ItemStack output = StringParser.parseItemStack(args.get("output"));
-			String a = MiscLib.getBlacklister(output.getItem());
-			if (a != null) {
-				SquidUtils.INSTANCE.warn(StringUtils.newString(a, " has requested to be blacklisted from modification. ", args.get("item"), " will not be modified."));
-				return;
-			}
-			else if (type.equals("shapeless")) {
-				RegistryHelper.addShapelessRecipe(output, new ItemStack[] {StringParser.parseItemStack(args.get("input"))});
-			}
-			else if (type.equals("furnace")) {
-				RegistryHelper.addSmelting(StringParser.parseItem(args.get("input")), output);
-			}
+				@Override
+				public Item getTabIconItem() {
+					return i;
+				}
+			};
 		}
 	}
 
@@ -334,7 +290,7 @@ public class Components {
 						CraftingManager.getInstance().getRecipeList().remove(i);
 					}
 					else {
-						SquidUtils.INSTANCE.error("Recipe " + CraftingManager.getInstance().getRecipeList().get(i).toString() + " cannot be removed due to a request from the mod author.");
+						SquidUtils.log.error("Recipe " + CraftingManager.getInstance().getRecipeList().get(i).toString() + " cannot be removed due to a request from the mod author.");
 					}
 				}
 			}
@@ -365,7 +321,7 @@ public class Components {
 			BiomeGenBase biome = BiomeGenBase.getBiome(id);
 			String a = MiscLib.getBlacklister(biome);
 			if (a != null) {
-				SquidUtils.INSTANCE.warn(StringUtils.newString(a, " has requested to be blacklisted from modification. ", args.get("item"), " will not be modified."));
+				SquidUtils.log.warn(StringUtils.newString(a, " has requested to be blacklisted from modification. ", args.get("item"), " will not be modified."));
 				return;
 			}
 			if (key.equals("topblock")) {
@@ -420,13 +376,13 @@ public class Components {
 			String itemstack = args.get("itemstack");
 			int weight = IntUtils.parseInt(args.get("weight"));
 			if (type.equals("fish")) {
-				FishingHelper.addFish(StringParser.parseItemStack(itemstack), weight);
+				FishingHooks.addFish(new WeightedRandomFishable(StringParser.parseItemStack(itemstack), weight));
 			}
 			else if (type.equals("junk")) {
-				FishingHelper.addJunk(StringParser.parseItemStack(itemstack), weight);
+				FishingHooks.addJunk(new WeightedRandomFishable(StringParser.parseItemStack(itemstack), weight));
 			}
 			else if (type.equals("treasure")) {
-				FishingHelper.addTreasure(StringParser.parseItemStack(itemstack), weight);
+				FishingHooks.addTreasure(new WeightedRandomFishable(StringParser.parseItemStack(itemstack), weight));
 			}
 		}
 	}
@@ -480,163 +436,17 @@ public class Components {
 		}
 	}
 
-	public static class ScriptSubcommandModsBotania implements IScriptSubcommand {
-
-		@Override
-		public void run(Map<String, String> args) {
-			if (Compat.BOTANIA.isEnabled()) {
-				String action = args.get("action");
-				String type = args.get("type");
-				if (action.equals("add")) {
-					if (type.equals("manainfusion")) {
-						BotaniaCompat.registerManaInfusionRecipe(StringParser.parseItemStack(args.get("output")), StringParser.parseInput(args.get("input")), IntUtils.parseInt(args.get("mana")));
-					}
-					else if (type.equals("manaalchemy")) {
-						BotaniaCompat.registerManaAlchemyRecipe(StringParser.parseItemStack(args.get("output")), StringParser.parseInput(args.get("input")), IntUtils.parseInt(args.get("mana")));
-					}
-					else if (type.equals("manaconjuration")) {
-						BotaniaCompat.registerManaConjurationRecipe(StringParser.parseItemStack(args.get("output")), StringParser.parseInput(args.get("input")), IntUtils.parseInt(args.get("mana")));
-					}
-					else if (type.equals("petal")) {
-						Object[] inputs = new Object[9];
-						String[] aa = args.get("input").split(";");
-						for (int a = 0; a < aa.length; a++) {
-							inputs[a] = StringParser.parseInput(aa[a]);
-						}
-						BotaniaCompat.registerPetalRecipe(StringParser.parseItemStack(args.get("output")), inputs);
-					}
-					else if (type.equals("elventrade")) {
-						Object[] inputs = new Object[9];
-						String[] aa = args.get("input").split(";");
-						for (int a = 0; a < aa.length; a++) {
-							inputs[a] = StringParser.parseInput(aa[a]);
-						}
-						BotaniaCompat.registerElvenTradeRecipe(StringParser.parseItemStack(args.get("output")), inputs);
-					}
-				}
-			}
-		}
-	}
-
-	public static class ScriptSubcommandModsRotaryCraft implements IScriptSubcommand {
-
-		@Override
-		public void run(Map<String, String> args) {
-			if (Compat.ROTARYCRAFT.isEnabled()) {
-				String action = args.get("action");
-				String type = args.get("type");
-				if (action.equals("add")) {
-					if (type.equals("grinding")) {
-						RotaryCraftCompat.addGrindingRecipe(StringParser.parseItemStack(args.get("input")), StringParser.parseItemStack(args.get("output")));
-					}
-					else if (type.equals("worktable")) {
-						if (args.get("subtype").equals("shapeless")) {
-							RotaryCraftCompat.addShapelessWorktableRecipe(StringParser.parseItemStack(args.get("output")), StringParser.parseItemStack(args.get("input")));
-						}
-						else if (args.get("subtype").equals("shaped")) {
-							ItemStack[] inputs = new ItemStack[9];
-							String[] aa = args.get("input").split(";");
-							for (int a = 0; a < aa.length; a++) {
-								inputs[a] = StringParser.parseItemStack(aa[a]);
-							}
-							RotaryCraftCompat.addShapedWorktableRecipe(StringParser.parseItemStack(args.get("output")), inputs);
-						}
-					}
-					else if (type.equals("compactor")) {
-						RotaryCraftCompat.addCompactorRecipe(StringParser.parseItemStack(args.get("input")), StringParser.parseItemStack(args.get("output")), IntUtils.parseInt(args.get("pressure")), IntUtils.parseInt(args.get("temperature")));
-					}
-				}
-			}
-		}
-	}
-
-	public static class ScriptSubcommandModsThermalExpansion implements IScriptSubcommand {
-
-		@Override
-		public void run(Map<String, String> args) {
-			if (Compat.THERMALEXPANSION.isEnabled()) {
-				String action = args.get("action");
-				String type = args.get("type");
-				if (action.equals("add")) {
-					if (type.equals("pulverizer")) {
-						ThermalExpansionCompat.addPulverizerRecipe(StringParser.parseItemStack(args.get("input")), StringParser.parseItemStack(args.get("output")), IntUtils.parseInt(args.get("energy")));
-					}
-					else if (type.equals("sawmill")) {
-						ThermalExpansionCompat.addSawmillRecipe(StringParser.parseItemStack(args.get("input")), StringParser.parseItemStack(args.get("output")), IntUtils.parseInt(args.get("energy")));
-					}
-				}
-			}
-		}
-	}
-
-	public static class ScriptSubcommandModsRailCraft implements IScriptSubcommand {
-
-		@Override
-		public void run(Map<String, String> args) {
-			if (Compat.RAILCRAFT.isEnabled()) {
-				String action = args.get("action");
-				String type = args.get("type");
-				if (action.equals("add")) {
-					if (type.equals("blastfurnace")) {
-						ItemStack input = StringParser.parseItemStack(args.get("input"));
-						ItemStack output = StringParser.parseItemStack(args.get("output"));
-						RailCraftCompat.addBlastFurnaceRecipe(input, output, IntUtils.parseInt(args.get("cooktime")));
-					}
-					else if (type.equals("cokeoven")) {
-						ItemStack input = StringParser.parseItemStack(args.get("input"));
-						ItemStack output = StringParser.parseItemStack(args.get("output"));
-						RailCraftCompat.addCokeOvenRecipe(input, output, new FluidStack(IntUtils.parseInt(args.get("fluidid")), IntUtils.parseInt(args.get("fluidamount"))), IntUtils.parseInt(args.get("cooktime")));
-					}
-					else if (type.equals("rockcrusher")) {
-						ItemStack input = StringParser.parseItemStack(args.get("input"));
-						RailCraftCompat.addRockCrusherRecipe(input);
-					}
-					else if (type.equals("cokeoven")) {
-						ItemStack output = StringParser.parseItemStack(args.get("output"));
-						ItemStack[] components = new ItemStack[9];
-						String[] aa = args.get("input").split(";");
-						for (int a = 0; a < aa.length; a++) {
-							components[a] = StringParser.parseItemStack(aa[a]);
-						}
-						RailCraftCompat.addRollingMachineRecipe(output, components);
-					}
-				}
-			}
-		}
-	}
-
-	public static class ScriptSubcommandModsBloodMagic implements IScriptSubcommand {
-
-		@Override
-		public void run(Map<String, String> args) {
-			if (Compat.BLOODMAGIC.isEnabled()) {
-				String action = args.get("action");
-				String type = args.get("type");
-				if (action.equals("add")) {
-					if (type.equals("bloodaltar")) {
-						ItemStack input = StringParser.parseItemStack(args.get("input"));
-						ItemStack output = StringParser.parseItemStack(args.get("output"));
-						int minTier = IntUtils.parseInt(args.get("mintier"));
-						int liquidRequired = IntUtils.parseInt(args.get("liquidrequired"));
-						int consumptionRate = IntUtils.parseInt(args.get("consumptionrate"));
-						int drainRate = IntUtils.parseInt(args.get("drainrate"));
-						boolean canBeFilled = Boolean.parseBoolean(args.get("canbefilled"));
-						BloodMagicCompat.addBloodAltarRecipe(input, output, minTier, liquidRequired, consumptionRate, drainRate, canBeFilled);
-					}
-				}
-			}
-		}
-	}
-
 	public static class ScriptSubcommandAchievementCreate implements IScriptSubcommand {
 
 		@Override
 		public void run(Map<String, String> args) {
 			if (args.containsKey("parent")) {
-				AchievementHelper.addAchievement(args.get("name"), Integer.parseInt(args.get("x")), Integer.parseInt(args.get("y")), StringParser.parseItem(args.get("icon")), AchievementHelper.getAchievement(args.get("parent")));
+				Achievement a = new Achievement(args.get("name"), args.get("name"), Integer.parseInt(args.get("x")), Integer.parseInt(args.get("y")), StringParser.parseItem(args.get("icon")), StringParser.parseAchievement(args.get("parent")));
+				a.registerStat();
 			}
 			else {
-				AchievementHelper.addAchievement(args.get("name"), Integer.parseInt(args.get("x")), Integer.parseInt(args.get("y")), StringParser.parseItem(args.get("icon")));
+				Achievement a = new Achievement(args.get("name"), args.get("name"), Integer.parseInt(args.get("x")), Integer.parseInt(args.get("y")), StringParser.parseItem(args.get("icon")), null);
+				a.registerStat();
 			}
 		}
 	}
@@ -645,14 +455,18 @@ public class Components {
 
 		@Override
 		public void run(Map<String, String> args) {
-			Achievement target = AchievementHelper.getAchievement(args.get("name"));
+			Achievement target = StringParser.parseAchievement(args.get("name"));
 			for (int a = 0; a < AchievementList.achievementList.size(); a++) {
 				Achievement b = (Achievement) AchievementList.achievementList.get(a);
 				if (b == target) {
 					AchievementList.achievementList.remove(a);
 				}
 				else if (b.parentAchievement == target) {
-					ReflectionHelper.in(b).finalField("parentAchievement", "field_75992_c").set(AchievementHelper.getAchievement(args.get("replacement")));
+					try {
+						ReflectionHelper.setPrivateFinalValue(Achievement.class, b, MiscLib.DEV_ENVIRONMENT ? "parentAchievement" : "field_75992_c", StringParser.parseAchievement(args.get("replacement")));
+					} catch (ReflectiveOperationException e) {
+						e.printStackTrace();
+					}
 				}
 			}
 		}
@@ -662,7 +476,7 @@ public class Components {
 
 		@Override
 		public void run(Map<String, String> args) {
-			RegistryHelper.addSmelting(StringParser.parseItem(args.get("input")), StringParser.parseItemStack(args.get("output")));
+			GameRegistry.addSmelting(StringParser.parseItem(args.get("input")), StringParser.parseItemStack(args.get("output")), 10);
 		}
 	}
 
@@ -671,41 +485,6 @@ public class Components {
 		@Override
 		public void run(Map<String, String> args) {
 			ContentRemover.remove(args.get("output"), ContentType.SMELTING);
-		}
-	}
-
-	public static class ScriptSubcommandReflectionMethod implements IScriptSubcommand {
-
-		@Override
-		public void run(Map<String, String> args) {
-			try {
-				Class<?> a = Class.forName(args.get("class"));
-				Method b = a.getMethod(args.get("name"));
-				b.setAccessible(true);
-				b.invoke(null);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	public static class ScriptSubcommandReflectionField implements IScriptSubcommand {
-
-		@Override
-		public void run(Map<String, String> args) {
-			try {
-				Class<?> a = Class.forName(args.get("class"));
-				Field b = a.getField(args.get("name"));
-				b.setAccessible(true);
-				if (args.containsKey("final") && args.get("final").equals("true")) {
-					Field c = Field.class.getDeclaredField("modifiers");
-					c.setAccessible(true);
-					c.setInt(b, b.getModifiers() & ~Modifier.FINAL);
-				}
-				b.set(null, Double.parseDouble(args.get("value")));
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
 		}
 	}
 }

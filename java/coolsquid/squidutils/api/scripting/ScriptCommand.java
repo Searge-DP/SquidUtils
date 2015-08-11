@@ -7,6 +7,7 @@ package coolsquid.squidutils.api.scripting;
 import java.util.Map;
 
 public class ScriptCommand {
+
 	private final Map<String, IScriptSubcommand> subcommands;
 
 	public ScriptCommand(Map<String, IScriptSubcommand> subcommands) {

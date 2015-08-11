@@ -40,7 +40,7 @@ public class BlockCreationHandler extends CreationHandler<BlockContainer> {
 	private static final Map<String, Factory<? extends Block>> factories = Maps.newHashMap();
 
 	public BlockCreationHandler() {
-		super("blocks", BlockContainer.class);
+		super("blocks", BlockContainer[].class);
 	}
 
 	public static void registerFactory(String type, Factory<? extends Block> factory) {

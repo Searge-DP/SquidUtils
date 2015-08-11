@@ -14,7 +14,9 @@ public class DebugHandler {
 	@SubscribeEvent
 	public final void event(RenderGameOverlayEvent.Pre event) {
 		if (event.type == ElementType.DEBUG) {
+			event.setCanceled(true);
 			Minecraft.getMinecraft().gameSettings.showDebugInfo = false;
+			Minecraft.getMinecraft().gameSettings.saveOptions();
 		}
 	}
 }

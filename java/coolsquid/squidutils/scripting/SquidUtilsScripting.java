@@ -4,7 +4,7 @@
  *******************************************************************************/
 package coolsquid.squidutils.scripting;
 
-import coolsquid.squidapi.util.EventHandlerManager;
+import net.minecraftforge.common.MinecraftForge;
 import coolsquid.squidutils.SquidUtils;
 import coolsquid.squidutils.api.ScriptingAPI;
 import coolsquid.squidutils.api.impl.ScriptingAPIImpl;
@@ -21,11 +21,12 @@ import coolsquid.squidutils.scripting.handlers.ServerChatHandler;
 import coolsquid.squidutils.scripting.handlers.SmeltingHandler;
 import coolsquid.squidutils.scripting.handlers.TeleportationHandler;
 import coolsquid.squidutils.scripting.handlers.TossHandler;
+import cpw.mods.fml.common.FMLCommonHandler;
 
 public class SquidUtilsScripting {
 
 	public static void init() {
-		SquidUtils.INSTANCE.info("Initializing.");
+		SquidUtils.log.info("Initializing.");
 
 		ScriptingAPI scripting = new ScriptingAPIImpl();
 		scripting.addTrigger("achievement", new AchievementHandler());
@@ -46,29 +47,28 @@ public class SquidUtilsScripting {
 
 		ScriptHandler.INSTANCE.init();
 
-		EventHandlerManager handlers = SquidUtils.COMMON.getEventHandlerManager();
 		if (ScriptHandler.INSTANCE.onCraft) {
-			handlers.registerFMLHandler(new CraftingHandler());
+			FMLCommonHandler.instance().bus().register(new CraftingHandler());
 		}
 		if (ScriptHandler.INSTANCE.onSmelt) {
-			handlers.registerFMLHandler(new SmeltingHandler());
+			FMLCommonHandler.instance().bus().register(new SmeltingHandler());
 		}
 		if (ScriptHandler.INSTANCE.onHurt) {
-			handlers.registerForgeHandler(new DamageHandler());
+			MinecraftForge.EVENT_BUS.register(new DamageHandler());
 		}
 		if (ScriptHandler.INSTANCE.onHeal) {
-			handlers.registerForgeHandler(new HealingHandler());
+			MinecraftForge.EVENT_BUS.register(new HealingHandler());
 		}
 		if (ScriptHandler.INSTANCE.onToss) {
-			handlers.registerForgeHandler(new TossHandler());
+			MinecraftForge.EVENT_BUS.register(new TossHandler());
 		}
 		if (ScriptHandler.INSTANCE.onExplosion) {
-			handlers.registerForgeHandler(new ExplosionHandler());
+			MinecraftForge.EVENT_BUS.register(new ExplosionHandler());
 		}
 		if (ScriptHandler.INSTANCE.onInteraction) {
-			handlers.registerForgeHandler(new InteractionHandler());
+			MinecraftForge.EVENT_BUS.register(new InteractionHandler());
 		}
 
-		SquidUtils.INSTANCE.info("Finished initialization.");
+		SquidUtils.log.info("Finished initialization.");
 	}
 }

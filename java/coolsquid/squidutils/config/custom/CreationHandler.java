@@ -6,18 +6,19 @@ package coolsquid.squidutils.config.custom;
 
 import java.io.File;
 
+import org.apache.commons.io.FileUtils;
+
 import com.google.gson.Gson;
 
-import coolsquid.squidapi.util.io.IOUtils;
 import coolsquid.squidutils.SquidUtils;
 
 
 public abstract class CreationHandler<E> {
 
 	private final File dir;
-	private final Class<E> type;
+	private final Class<E[]> type;
 
-	public CreationHandler(String subdir, Class<E> type) {
+	public CreationHandler(String subdir, Class<E[]> type) {
 		this.dir = new File("./config/SquidUtils/custom/" + subdir);
 		if (!this.dir.exists()) {
 			this.dir.mkdirs();
@@ -28,10 +29,12 @@ public abstract class CreationHandler<E> {
 	final void load(Gson gson) {
 		for (File file: this.dir.listFiles()) {
 			try {
-				SquidUtils.INSTANCE.info("Found content file: " + file.getPath());
-				this.handle(gson.fromJson(IOUtils.readAll(file), this.type));
+				SquidUtils.log.info("Found content file: " + file.getPath());
+				for (E e: gson.fromJson(FileUtils.readFileToString(file), this.type)) {
+					this.handle(e);
+				}
 			} catch (Throwable t) {
-				SquidUtils.INSTANCE.catching(t);
+				SquidUtils.log.catching(t);
 			}
 		}
 	}

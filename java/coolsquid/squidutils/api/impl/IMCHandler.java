@@ -9,7 +9,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
-import coolsquid.squidapi.reflection.ReflectionHelper;
+import coolsquid.lib.util.ReflectionHelper;
 import coolsquid.squidutils.SquidUtils;
 import cpw.mods.fml.common.event.FMLInterModComms.IMCEvent;
 import cpw.mods.fml.common.event.FMLInterModComms.IMCMessage;
@@ -44,16 +44,16 @@ public class IMCHandler {
 				this.handleNBT(message.key, message.getNBTValue(), message.getSender());
 			}
 		} catch (Throwable t) {
-			SquidUtils.INSTANCE.error(message.key);
-			SquidUtils.INSTANCE.error(message.getSender());
-			SquidUtils.INSTANCE.error(t);
+			SquidUtils.log.error(message.key);
+			SquidUtils.log.error(message.getSender());
+			SquidUtils.log.error(t);
 		}
 	}
 
-	private void handleNBT(String key, NBTTagCompound tag, String sender) throws ClassNotFoundException {
+	private void handleNBT(String key, NBTTagCompound tag, String sender) throws ReflectiveOperationException {
 		Class<?> clazz = Class.forName(tag.getString("class"));
 		String field = tag.getString("field");
-		Object object = ReflectionHelper.in(clazz).field(field, field).get();
+		Object object = ReflectionHelper.getPrivateStaticValue(clazz, field);
 		if (key.equals("registerDamageSource")) {
 			registerDamageSource(sender, (DamageSource) object);
 		}
@@ -68,9 +68,9 @@ public class IMCHandler {
 		}
 	}
 
-	private void handleString(String key, String message, String sender) throws ClassNotFoundException {
+	private void handleString(String key, String message, String sender) throws ReflectiveOperationException {
 		String[] values = message.split(" ");
-		Object object = ReflectionHelper.in(Class.forName(values[0])).field(values[1], values[1]).get();
+		Object object = ReflectionHelper.getPrivateStaticValue(Class.forName(values[0]), values[1]);
 		if (key.equals("registerDamageSource")) {
 			registerDamageSource(sender, (DamageSource) object);
 		}

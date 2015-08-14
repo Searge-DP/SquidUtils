@@ -12,7 +12,7 @@ public class CrashCallableCreationHandler extends CreationHandler<CrashCallable>
 	public static final CrashCallableCreationHandler INSTANCE = new CrashCallableCreationHandler();
 
 	public CrashCallableCreationHandler() {
-		super("crashcallables", CrashCallable.class);
+		super("crashcallables", CrashCallable[].class);
 	}
 
 	@Override

@@ -14,7 +14,7 @@ public class ShutdownHookCreationHandler extends CreationHandler<SimpleMessage> 
 	public static final ShutdownHookCreationHandler INSTANCE = new ShutdownHookCreationHandler();
 
 	public ShutdownHookCreationHandler() {
-		super("shutdownmessages", SimpleMessage.class);
+		super("shutdownmessages", SimpleMessage[].class);
 	}
 
 	@Override

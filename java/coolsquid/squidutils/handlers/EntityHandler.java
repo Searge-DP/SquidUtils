@@ -12,6 +12,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIAvoidEntity;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -19,7 +20,6 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
-import coolsquid.squidapi.helpers.PotionHelper;
 import coolsquid.squidapi.util.EffectInfo;
 import coolsquid.squidutils.SquidUtils;
 import coolsquid.squidutils.config.ModConfigHandler;
@@ -67,7 +67,7 @@ public class EntityHandler {
 			}
 			if (!props.effects.isEmpty()) {
 				for (EffectInfo a: props.effects) {
-					living.addPotionEffect(PotionHelper.newEffect(a));
+					living.addPotionEffect(new PotionEffect(a.getId(), a.getDuration(), a.getAmplifier()));
 				}
 			}
 			if (entity instanceof EntityCreeper && !props.avoidCats) {

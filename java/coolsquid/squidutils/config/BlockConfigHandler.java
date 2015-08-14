@@ -12,12 +12,13 @@ import net.minecraft.init.Blocks;
 import coolsquid.squidapi.config.ConfigHandler;
 import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidapi.util.StringParser;
-import coolsquid.squidapi.util.StringUtils;
 import coolsquid.squidutils.SquidUtils;
 
 public class BlockConfigHandler extends ConfigHandler {
 
 	public static final ConfigHandler INSTANCE = new BlockConfigHandler(new File("./config/SquidUtils/Blocks.cfg"));
+	private static final double DEFAULT_DOUBLE = -1;
+	private static final int DEFAULT_INT = -1;
 
 	private BlockConfigHandler(File file) {
 		super(file);
@@ -31,25 +32,30 @@ public class BlockConfigHandler extends ConfigHandler {
 					String name = (String) object;
 					Block block = Block.getBlockFromName(name);
 					if (SquidUtils.COMMON.isDebugMode()) {
-						SquidUtils.INSTANCE.info(name + " (" + block.getClass().getName() + ')');
+						SquidUtils.log.info(name + " (" + block.getClass().getName() + ')');
 					}
 					block.blockHardness = (float) this.config.get(name, "hardness", block.blockHardness).getDouble();
 					block.blockResistance = (float) this.config.get(name, "resistance", block.blockResistance).getDouble();
 					if (MiscLib.CLIENT) {
-						String texture = StringUtils.ensureNotNull(block.textureName);
-						String texture2 = this.config.get(name, "texture", texture).getString();
-						if (!texture.equals(texture2)) {
+						String texture2 = this.config.get(name, "texture", "default").getString();
+						if (!"default".equals(texture2)) {
 							block.setBlockTextureName(texture2);
 						}
-						if (block.getCreativeTabToDisplayOn() == null) {
-							this.config.get(name, "creativeTab", "null").getString();
-						}
-						else {
-							block.setCreativeTab(StringParser.parseCreativeTab(this.config.get(name, "creativeTab", block.getCreativeTabToDisplayOn().getTabLabel()).getString()));
-						}
+						String tab = this.config.get(name, "creativeTab", "default").getString();
+						if (!"default".equals(tab))
+							block.setCreativeTab(StringParser.parseCreativeTab(tab));
 					}
-					block.slipperiness = (float) this.config.get(name, "slipperiness", block.slipperiness).getDouble();
-					block.lightValue = this.config.get(name, "lightLevel", block.lightValue).getInt();
+					double slipperiness = this.config.get(name, "slipperiness", DEFAULT_DOUBLE).getDouble();
+					if (slipperiness != DEFAULT_DOUBLE)
+						block.slipperiness = (float) slipperiness;
+					int lightValue = this.config.get(name, "lightLevel", DEFAULT_INT).getInt();
+					if (lightValue != DEFAULT_INT)
+						block.lightValue = lightValue;
+					try {
+						block.stepSound = SquidUtils.API.getSoundTypes().get(this.config.get(name, "stepSound", SquidUtils.API.getSoundTypes().getName(block.stepSound)).getString());
+					} catch (Throwable t) {
+
+					}
 					Blocks.fire.setFireInfo(block, this.config.get(name, "fireEncouragement", Blocks.fire.getEncouragement(block)).getInt(), this.config.get(name, "flammability", Blocks.fire.getFlammability(block)).getInt());
 					if (block instanceof BlockFalling) {
 						if (this.config.get(name, "physics", true).getBoolean()) {
@@ -62,12 +68,11 @@ public class BlockConfigHandler extends ConfigHandler {
 						block.blockResistance *= (float) BlockMaterialConfigHandler.INSTANCE.getConfig().get(material, "resistanceMultiplier", 1).getDouble();
 						block.slipperiness *= (float) BlockMaterialConfigHandler.INSTANCE.getConfig().get(material, "slipperinessMultiplier", 1).getDouble();
 						block.lightValue *= BlockMaterialConfigHandler.INSTANCE.getConfig().get(material, "lightLevelMultiplier", 1).getInt();
-						Blocks.fire.setFireInfo(block, BlockMaterialConfigHandler.INSTANCE.getConfig().get(material, "fireEncouragementMultiplier", 1).getInt() * Blocks.fire.getEncouragement(block), this.config.get(name, "flammabilityMultiplier", 0).getInt() * Blocks.fire.getFlammability(block));
+						Blocks.fire.setFireInfo(block, BlockMaterialConfigHandler.INSTANCE.getConfig().get(material, "fireEncouragementMultiplier", 1).getInt() * Blocks.fire.getEncouragement(block), BlockMaterialConfigHandler.INSTANCE.getConfig().get(name, "flammabilityMultiplier", 0).getInt() * Blocks.fire.getFlammability(block));
 					}
 				}
 			} catch (Throwable t) {
-				SquidUtils.INSTANCE.error(object.getClass().getName());
-				SquidUtils.INSTANCE.error(t);
+				SquidUtils.log.catching(t);
 			}
 		}
 		if (BlockMaterialConfigHandler.INSTANCE.getConfig().hasChanged()) {

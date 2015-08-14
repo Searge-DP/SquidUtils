@@ -6,9 +6,9 @@ package coolsquid.squidutils.config;
 
 import java.io.File;
 
+import coolsquid.lib.hooks.WorldGenHooks;
 import coolsquid.squidapi.config.ConfigHandler;
 import coolsquid.squidapi.util.MiscLib;
-import coolsquid.squidutils.helpers.WorldGenHelper;
 import cpw.mods.fml.common.IWorldGenerator;
 
 public class WorldGenConfigHandler extends ConfigHandler {
@@ -21,10 +21,10 @@ public class WorldGenConfigHandler extends ConfigHandler {
 
 	@Override
 	public void loadConfig() {
-		for (IWorldGenerator i: WorldGenHelper.worldGenerators) {
+		for (IWorldGenerator i: WorldGenHooks.getWorldGenerators()) {
 			if (MiscLib.getBlacklister(i) == null) {
 				if (!this.config.get(i.getClass().getName().replace('.', '/'), "enable", true).getBoolean()) {
-					WorldGenHelper.remove(i);
+					WorldGenHooks.getWorldGenerators().remove(i);
 				}
 			}
 		}

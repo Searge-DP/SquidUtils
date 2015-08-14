@@ -13,26 +13,26 @@ public class LogUtils {
 
 	@ZenMethod
 	public static void info(String msg) {
-		SquidUtils.INSTANCE.info(msg);
+		SquidUtils.log.info(msg);
 	}
 
 	@ZenMethod
 	public static void debug(String msg) {
-		SquidUtils.INSTANCE.debug(msg);
+		SquidUtils.log.debug(msg);
 	}
 
 	@ZenMethod
 	public static void warn(String msg) {
-		SquidUtils.INSTANCE.warn(msg);
+		SquidUtils.log.warn(msg);
 	}
 
 	@ZenMethod
 	public static void error(String msg) {
-		SquidUtils.INSTANCE.error(msg);
+		SquidUtils.log.error(msg);
 	}
 
 	@ZenMethod
 	public static void fatal(String msg) {
-		SquidUtils.INSTANCE.fatal(msg);
+		SquidUtils.log.fatal(msg);
 	}
 }

@@ -11,8 +11,8 @@ import java.util.HashMap;
 import net.minecraft.item.Item;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.common.ChestGenHooks;
+import coolsquid.lib.util.ReflectionHelper;
 import coolsquid.squidapi.config.ConfigHandler;
-import coolsquid.squidapi.reflection.ReflectionHelper;
 
 public class ChestGenConfigHandler extends ConfigHandler {
 
@@ -23,11 +23,11 @@ public class ChestGenConfigHandler extends ConfigHandler {
 	}
 
 	@Override
-	public void loadConfig() {
-		HashMap<String, ChestGenHooks> chests = ReflectionHelper.in(ChestGenHooks.class).field("chestInfo", "chestInfo").get();
+	public void loadConfig() throws ReflectiveOperationException {
+		HashMap<String, ChestGenHooks> chests = ReflectionHelper.getPrivateStaticValue(ChestGenHooks.class, "chestInfo");
 		for (String category: chests.keySet()) {
 			ChestGenHooks chest = chests.get(category);
-			ArrayList<WeightedRandomChestContent> contents = ReflectionHelper.in(chest).field("contents", "contents").get();
+			ArrayList<WeightedRandomChestContent> contents = ReflectionHelper.getPrivateValue(ChestGenHooks.class, chest, "contents");
 			for (int a = 0; a < contents.size(); a++) {
 				WeightedRandomChestContent content = contents.get(a);
 				String name = category + "." + Item.itemRegistry.getNameForObject(content.theItemId.getItem());

@@ -22,7 +22,7 @@ public class UpdateCheckerCreationHandler extends CreationHandler<UpdateChecker>
 	public static final UpdateCheckerCreationHandler INSTANCE = new UpdateCheckerCreationHandler();
 
 	public UpdateCheckerCreationHandler() {
-		super("updatecheckers", UpdateChecker.class);
+		super("updatecheckers", UpdateChecker[].class);
 	}
 
 	@Override

@@ -7,6 +7,7 @@ package coolsquid.squidutils.util;
 import java.util.Map;
 import java.util.Set;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import com.google.common.collect.Maps;
@@ -26,6 +27,7 @@ public class EntityInfo {
 	public Map<Integer, ItemStack> equipment;
 	public boolean avoidCats;
 	public int armor;
+	public Set<Item> drops;
 
 	public EntityInfo() {
 		this.effects = Sets.newHashSet();

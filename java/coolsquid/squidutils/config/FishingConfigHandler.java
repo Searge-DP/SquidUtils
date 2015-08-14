@@ -8,11 +8,9 @@ import java.io.File;
 import java.util.List;
 
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.WeightedRandomFishable;
-import net.minecraftforge.common.config.ConfigCategory;
+import coolsquid.lib.hooks.FishingHooks;
 import coolsquid.squidapi.config.ConfigHandler;
-import coolsquid.squidapi.helpers.FishingHelper;
 
 public class FishingConfigHandler extends ConfigHandler {
 
@@ -24,31 +22,20 @@ public class FishingConfigHandler extends ConfigHandler {
 
 	@Override
 	public void loadConfig() {
-		for (String category: FishingHelper.getCategories().keySet()) {
-			List<WeightedRandomFishable> list = FishingHelper.getCategories().get(category);
-			for (int a = 0; a < list.size(); a++) {
-				WeightedRandomFishable fish = list.get(a);
-				String name = category + "." + Item.itemRegistry.getNameForObject(fish.field_150711_b.getItem());
-				if (!this.config.get(name, "enable", true).getBoolean()) {
-					list.remove(a);
-				}
-				fish.field_150710_d = this.config.get(name, "enchanted", fish.field_150710_d).getBoolean();
-				fish.field_150712_c = (float) this.config.get(name, "damage", fish.field_150712_c).getDouble();
+		this.load("fish", FishingHooks.getFish());
+		this.load("junk", FishingHooks.getJunk());
+		this.load("treasure", FishingHooks.getTreasure());
+	}
+
+	private void load(String category, List<WeightedRandomFishable> list) {
+		for (int a = 0; a < list.size(); a++) {
+			WeightedRandomFishable fish = list.get(a);
+			String name = category + "." + Item.itemRegistry.getNameForObject(fish.field_150711_b.getItem());
+			if (!this.config.get(name, "enable", true).getBoolean()) {
+				list.remove(a);
 			}
-		}
-		ConfigCategory custom = this.config.getCategory("custom");
-		for (ConfigCategory fish: custom.getChildren()) {
-			for (ConfigCategory cat: fish.getChildren()) {
-				if (fish.getName().equals("fish")) {
-					FishingHelper.addFish(new ItemStack((Item) Item.itemRegistry.getObject(cat.getName())), cat.get("weight").getInt());
-				}
-				else if (fish.getName().equals("junk")) {
-					FishingHelper.addJunk(new ItemStack((Item) Item.itemRegistry.getObject(cat.getName())), cat.get("weight").getInt());
-				}
-				else if (fish.getName().equals("treasure")) {
-					FishingHelper.addTreasure(new ItemStack((Item) Item.itemRegistry.getObject(cat.getName())), cat.get("weight").getInt());
-				}
-			}
+			fish.field_150710_d = this.config.get(name, "enchanted", fish.field_150710_d).getBoolean();
+			fish.field_150712_c = (float) this.config.get(name, "damage", fish.field_150712_c).getDouble();
 		}
 	}
 }

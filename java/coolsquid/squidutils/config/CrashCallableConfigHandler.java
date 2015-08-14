@@ -5,10 +5,9 @@
 package coolsquid.squidutils.config;
 
 import java.io.File;
-import java.util.List;
 
 import coolsquid.squidapi.config.ConfigHandler;
-import coolsquid.squidapi.util.Utils;
+import coolsquid.squidapi.util.MiscLib;
 import cpw.mods.fml.common.ICrashCallable;
 
 public class CrashCallableConfigHandler extends ConfigHandler {
@@ -21,13 +20,12 @@ public class CrashCallableConfigHandler extends ConfigHandler {
 
 	@Override
 	public void loadConfig() {
-		List<ICrashCallable> list = Utils.getCrashCallables();
-		for (int a = 0; a < list.size(); a++) {
-			ICrashCallable callable = list.get(a);
+		for (int a = 0; a < MiscLib.CRASH_CALLABLES.size(); a++) {
+			ICrashCallable callable = MiscLib.CRASH_CALLABLES.get(a);
 			if (!callable.getClass().getName().startsWith("coolsquid.")) {
 				String name = callable.getLabel().replace(":", "").replace(" ", "");
 				if (!this.config.get(name, "enable", true).getBoolean()) {
-					list.remove(a);
+					MiscLib.CRASH_CALLABLES.remove(a);
 				}
 			}
 		}

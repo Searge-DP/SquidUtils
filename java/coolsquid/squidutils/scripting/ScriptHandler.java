@@ -5,6 +5,9 @@
 package coolsquid.squidutils.scripting;
 
 import java.io.File;
+import java.io.IOException;
+
+import org.apache.commons.io.FileUtils;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
@@ -15,7 +18,6 @@ import coolsquid.squidapi.util.MiscLib;
 import coolsquid.squidapi.util.StringParser;
 import coolsquid.squidapi.util.StringUtils;
 import coolsquid.squidapi.util.io.FileFilters;
-import coolsquid.squidapi.util.io.IOUtils;
 import coolsquid.squidapi.util.math.IntUtils;
 import coolsquid.squidutils.SquidUtils;
 import coolsquid.squidutils.util.EventInfo;
@@ -47,10 +49,14 @@ public class ScriptHandler {
 
 	public void init() {
 		for (File file: new File("./config/SquidUtils").listFiles(FileFilters.SCRIPTS)) {
-			SquidUtils.INSTANCE.info("Found scripting file!");
-			SquidUtils.INSTANCE.info(file.getName());
-			for (String line: IOUtils.newReader(file)) {
-				this.load(line);
+			SquidUtils.log.info("Found scripting file!");
+			SquidUtils.log.info(file.getName());
+			try {
+				for (String line: FileUtils.readLines(file)) {
+					this.load(line);
+				}
+			} catch (IOException e) {
+				SquidAPI.log.catching(e);
 			}
 		}
 	}

@@ -8,8 +8,8 @@ import java.io.File;
 
 import tconstruct.library.TConstructRegistry;
 import tconstruct.library.tools.ToolMaterial;
+import coolsquid.lib.util.ReflectionHelper;
 import coolsquid.squidapi.config.ConfigHandler;
-import coolsquid.squidapi.reflection.ReflectionHelper;
 
 public class TiConToolMaterialConfigHandler extends ConfigHandler {
 
@@ -20,10 +20,9 @@ public class TiConToolMaterialConfigHandler extends ConfigHandler {
 	}
 
 	@Override
-	public void loadConfig() {
+	public void loadConfig() throws ReflectiveOperationException {
 		for (String name: TConstructRegistry.toolMaterialStrings.keySet()) {
 			ToolMaterial object = TConstructRegistry.toolMaterialStrings.get(name);
-			ReflectionHelper material = ReflectionHelper.in(object);
 			int attack = this.config.get(name, "attack", object.attack).getInt();
 			int durability = this.config.get(name, "durability", object.durability).getInt();
 			float handleModifier = (float) this.config.get(name, "handleModifier", object.handleModifier).getDouble();
@@ -32,25 +31,25 @@ public class TiConToolMaterialConfigHandler extends ConfigHandler {
 			int primaryColor = this.config.get(name, "primaryColor", object.primaryColor).getInt();
 			int reinforced = this.config.get(name, "reinforced", object.reinforced).getInt();
 			if (attack != object.attack) {
-				material.finalField("attack", "attack").set(attack);
+				ReflectionHelper.setPublicFinalValue(ToolMaterial.class, object, "attack", attack);
 			}
 			if (durability != object.durability) {
-				material.finalField("durability", "durability").set(durability);
+				ReflectionHelper.setPublicFinalValue(ToolMaterial.class, object, "durability", durability);
 			}
 			if (handleModifier != object.handleModifier) {
-				material.finalField("handleModifier", "handleModifier").set(handleModifier);
+				ReflectionHelper.setPublicFinalValue(ToolMaterial.class, object, "handleModifier", handleModifier);
 			}
 			if (harvestLevel != object.harvestLevel) {
-				material.finalField("harvestLevel", "harvestLevel").set(harvestLevel);
+				ReflectionHelper.setPublicFinalValue(ToolMaterial.class, object, "harvestLevel", harvestLevel);
 			}
 			if (miningspeed != object.miningspeed) {
-				material.finalField("miningspeed", "miningspeed").set(miningspeed);
+				ReflectionHelper.setPublicFinalValue(ToolMaterial.class, object, "miningspeed", miningspeed);
 			}
 			if (primaryColor != object.primaryColor) {
-				material.finalField("primaryColor", "primaryColor").set(primaryColor);
+				ReflectionHelper.setPublicFinalValue(ToolMaterial.class, object, "primaryColor", primaryColor);
 			}
 			if (reinforced != object.reinforced) {
-				material.finalField("reinforced", "reinforced").set(reinforced);
+				ReflectionHelper.setPublicFinalValue(ToolMaterial.class, object, "reinforced", reinforced);
 			}
 		}
 	}

@@ -5,7 +5,9 @@
 package coolsquid.squidutils.handlers;
 
 import java.io.File;
+import java.util.BitSet;
 import java.util.HashSet;
+import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -16,15 +18,15 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
+import net.minecraftforge.common.MinecraftForge;
 
 import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
 import coolsquid.squidapi.util.ContentRemover;
 import coolsquid.squidapi.util.ContentRemover.ContentType;
-import coolsquid.squidapi.util.EventHandlerManager;
 import coolsquid.squidapi.util.MiscLib;
+import coolsquid.squidapi.util.Utils;
 import coolsquid.squidapi.util.collect.Registry;
 import coolsquid.squidapi.util.collect.impl.RegistryImpl;
 import coolsquid.squidutils.api.impl.IMCHandler;
@@ -36,16 +38,16 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class CommonHandler {
 
 	private final Set<DamageSource> disabledDamageSources = Sets.newHashSet();
-	private final Set<Item> bannedItems = Sets.newHashSet();
+	private final Set<Item> bannedItems = Utils.identityHashSet();
 	private final Set<String> disabledCommands = new HashSet<String>();
-	private final Set<Block> physics = Sets.newHashSet();
-	private final Set<Character> allowedChars = Sets.newHashSet();
+	private final Set<Block> physics = Utils.identityHashSet();
+	private final BitSet allowedChars = new BitSet();
 	private final Set<ElementType> disabledOverlays = Sets.newHashSet();
-	private final Set<Item> undroppableItems = Sets.newHashSet();
-	private final Map<Item, Integer> fuels = Maps.newHashMap();
+	private final Set<Item> undroppableItems = Utils.identityHashSet();
+	private final Set<CreativeTabs> tabsWithSearch = Utils.identityHashSet();
+	private final Map<Item, Integer> fuels = new IdentityHashMap<Item, Integer>();
 	private final Registry<CreativeTabs> creativeTabs = new RegistryImpl<CreativeTabs>();
 	private final ArrayListMultimap<Item, String> tooltips = ArrayListMultimap.create();
-	private final EventHandlerManager eventHandlerManager = new EventHandlerManager();
 	private final IMCHandler imc = new IMCHandler();
 	private boolean debug;
 	private final File config_dir = new File("./config/SquidUtils");
@@ -79,7 +81,11 @@ public class CommonHandler {
 	}
 
 	public void addAllowedChar(char c) {
-		this.allowedChars.add(c);
+		this.allowedChars.set(c);
+	}
+
+	public boolean isAllowedChar(char c) {
+		return this.allowedChars.get(c);
 	}
 
 	public void activatePhysicsForBlock(BlockFalling block) {
@@ -90,8 +96,8 @@ public class CommonHandler {
 		return this.disabledDamageSources;
 	}
 
-	public Set<Item> getBannedItems() {
-		return this.bannedItems;
+	public boolean isBanned(Item item) {
+		return this.bannedItems.contains(item);
 	}
 
 	public Set<String> getDisabledCommands() {
@@ -102,16 +108,8 @@ public class CommonHandler {
 		return this.tooltips;
 	}
 
-	public Set<Block> getPhysics() {
-		return this.physics;
-	}
-
-	public Set<Character> getAllowedChars() {
+	public BitSet getAllowedChars() {
 		return this.allowedChars;
-	}
-
-	public EventHandlerManager getEventHandlerManager() {
-		return this.eventHandlerManager;
 	}
 
 	public boolean isDebugMode() {
@@ -127,10 +125,10 @@ public class CommonHandler {
 	}
 
 	public void disableOverlay(ElementType overlay) {
-		this.disabledOverlays.add(overlay);
-		if (!this.eventHandlerManager.getEventHandlers().containsKey("GameOverlayHandler")) {
-			this.eventHandlerManager.registerForgeHandler(new GameOverlayHandler());
+		if (this.disabledOverlays.isEmpty()) {
+			MinecraftForge.EVENT_BUS.register(new GameOverlayHandler());
 		}
+		this.disabledOverlays.add(overlay);
 	}
 
 	public Set<ElementType> getDisabledOverlays() {
@@ -182,5 +180,25 @@ public class CommonHandler {
 
 	public File getConfigDirectory() {
 		return this.config_dir;
+	}
+
+	public File getConfigFile(String name) {
+		return new File(this.getConfigDirectory(), name);
+	}
+
+	public boolean hasPhysics(BlockFalling block) {
+		return this.physics.contains(block);
+	}
+
+	public Set<Item> getBannedItems() {
+		return this.bannedItems;
+	}
+
+	public void setHasSearchBar(CreativeTabs c) {
+		this.tabsWithSearch.add(c);
+	}
+
+	public boolean hasSearchBar(CreativeTabs c) {
+		return this.tabsWithSearch.contains(c);
 	}
 }

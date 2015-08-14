@@ -4,6 +4,7 @@
  *******************************************************************************/
 package coolsquid.squidutils.api;
 
+import net.minecraft.block.Block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.DamageSource;
 
@@ -33,6 +34,14 @@ public interface SquidUtilsAPI {
 	public abstract void registerMaterial(String name, Material material);
 
 	/**
+	 * Registers a sound type.
+	 *
+	 * @param name the name
+	 * @param soundType the sound type
+	 */
+	public abstract void registerSoundType(String name, SoundType soundType);
+
+	/**
 	 * Returns an immutable registry wrapping around the internal damagesource registry
 	 * @return the damage sources
 	 */
@@ -43,6 +52,12 @@ public interface SquidUtilsAPI {
 	 * @return the materials
 	 */
 	public abstract Registry<Material> getMaterials();
+
+	/**
+	 * Returns an immutable registry wrapping around the internal sound type registry.
+	 * @return the sound types
+	 */
+	public abstract Registry<SoundType> getSoundTypes();
 
 	/**
 	 * @return the ScriptingAPI instance.

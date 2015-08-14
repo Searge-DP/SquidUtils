@@ -22,7 +22,7 @@ public class BlockMaterialCreationHandler extends CreationHandler<Material> {
 	public static final BlockMaterialCreationHandler INSTANCE = new BlockMaterialCreationHandler();
 
 	public BlockMaterialCreationHandler() {
-		super("materials", Material.class);
+		super("materials", Material[].class);
 	}
 
 	@Override

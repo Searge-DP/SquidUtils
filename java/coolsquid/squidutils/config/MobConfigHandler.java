@@ -51,6 +51,12 @@ public class MobConfigHandler extends ConfigHandler {
 				if (name.equalsIgnoreCase("creeper")) {
 					props.avoidCats = this.config.get(name, "avoidCats", true).getBoolean();
 				}
+				/*if (((Class<?>) EntityList.stringToClassMapping.get(name)).isAssignableFrom(EntityLivingBase.class)) {
+					props.drops = Sets.newHashSet();
+					for (String s: this.config.get(name, "drops", new String[0]).getStringList()) {
+						props.drops.add((Item) Item.itemRegistry.getObject(s));
+					}
+				}*/
 			}
 		}
 	}

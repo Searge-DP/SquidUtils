@@ -16,12 +16,11 @@ import org.objectweb.asm.tree.VarInsnNode;
 import coolsquid.squidutils.asm.ASMHelper;
 import coolsquid.squidutils.asm.Hooks;
 import coolsquid.squidutils.asm.Names;
-import coolsquid.squidutils.asm.Transformer;
 
 public class BlockFallingTransformer implements Transformer {
 
 	@Override
-	public void transform(ClassNode c) {
+	public void accept(ClassNode c) {
 		MethodNode m = ASMHelper.getMethod(c, Names.BLOCK_FALLING_UPDATE, Names.BLOCK_FALLING_UPDATE_DESC);
 		transformBlockFalling(m);
 	}

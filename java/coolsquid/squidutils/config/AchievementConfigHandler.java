@@ -11,8 +11,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Achievement;
 import net.minecraft.stats.AchievementList;
 import coolsquid.squidapi.config.ConfigHandler;
-import coolsquid.squidapi.helpers.AchievementHelper;
 import coolsquid.squidapi.util.MiscLib;
+import coolsquid.squidapi.util.StringParser;
 import coolsquid.squidutils.SquidUtils;
 
 public class AchievementConfigHandler extends ConfigHandler {
@@ -30,14 +30,14 @@ public class AchievementConfigHandler extends ConfigHandler {
 			if (achievement != null && MiscLib.getBlacklister(achievement) == null) {
 				String name = achievement.statId;
 				if (SquidUtils.COMMON.isDebugMode()) {
-					SquidUtils.INSTANCE.info(name + " (" + achievement.getClass().getName() + ')');
+					SquidUtils.log.info(name + " (" + achievement.getClass().getName() + ')');
 				}
 				achievement.achievementDescription = this.config.get(name, "description", achievement.achievementDescription).getString();
 				achievement.displayColumn = this.config.get(name, "displayColumn", achievement.displayColumn).getInt();
 				achievement.displayRow = this.config.get(name, "displayRow", achievement.displayRow).getInt();
 				achievement.isSpecial = this.config.get(name, "isSpecial", achievement.isSpecial).getBoolean();
 				if (achievement.parentAchievement != null) {
-					achievement.parentAchievement = AchievementHelper.getAchievement(this.config.get(name, "parent", achievement.parentAchievement.statId).getString());
+					achievement.parentAchievement = StringParser.parseAchievement(this.config.get(name, "parent", achievement.parentAchievement.statId).getString());
 				}
 				achievement.theItemStack = new ItemStack((Item) Item.itemRegistry.getObject(this.config.get(name, "item", Item.itemRegistry.getNameForObject(achievement.theItemStack.getItem())).getString()));
 				if (!this.config.get(name, "enable", true).getBoolean()) {
